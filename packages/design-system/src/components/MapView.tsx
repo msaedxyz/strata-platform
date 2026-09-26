@@ -64,9 +64,15 @@ export function MapView({
     if (!el || loading || error) return undefined;
     let cancelled = false;
     setStatus({ kind: "loading" });
-    Promise.all([import("maplibre-gl"), import("maplibre-gl/dist/maplibre-gl.css")])
-      .then(([mod]) => {
+    Promise.all([
+      import("maplibre-gl"),
+      import("maplibre-gl/dist/maplibre-gl.css"),
+      // The bundler builds the MapLibre worker and gives its URL. MapLibre cannot find it in a bundle by itself.
+      import("maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url"),
+    ])
+      .then(([mod, , worker]) => {
         if (cancelled) return;
+        if (worker.default && mod.getWorkerUrl?.() !== worker.default) mod.setWorkerUrl?.(worker.default);
         lib.current = mod;
         const instance = new mod.Map({
           container: el,

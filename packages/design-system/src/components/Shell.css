@@ -76,10 +76,11 @@
   display: flex;
   justify-content: center;
   margin-bottom: var(--space-4);
+  overflow: hidden;
   color: var(--color-state-accent);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
-  letter-spacing: var(--font-letter-spacing-wide);
+  letter-spacing: var(--font-letter-spacing-tight);
 }
 
 .sds-nav__list {
