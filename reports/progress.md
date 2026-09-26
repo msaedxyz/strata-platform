@@ -17,11 +17,13 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 - Read API for the modules and docs/api-contract.md.
 - The Compose stack starts in the sandbox. A login through Keycloak works and the API answers through nginx. The sandbox uses a local override because Docker Hub rate limits the SeaweedFS image.
 - M3 done: seven agents, deterministic and Anthropic backends, guardrails, quarantine, proposals, Tier 0 alerts, gold set of 50 documents and a held-out set of 12, eval job in CI. 205 Python tests pass. Held-out extraction precision 0.727 and recall 0.667 are below target. Report: reports/M3.md.
+- M6 frontend done: the 18 modules on the design system, 351 unit tests and 77 e2e tests, criteria 5 to 7 pass against mocks. Report: reports/M6-frontend.md.
+- The stack enriches the 146 real snapshot items: 128 signals, 27 Tier 0 alerts, 17 demand drivers, 10 projects.
 
 ## In progress
 
 - Track 1 (M4): governance API, roles, alerts, telemetry, personal data.
-- Track 2: frontend part of M6 (the 18 modules).
+- Backtest harness subagent (new files only).
 
 ## Next
 
