@@ -45,6 +45,12 @@ def test_backtest_gives_each_event_a_first_signal_or_a_miss_with_a_reason(backte
             assert row["reason"] in runner.MISS_REASONS, row
             assert row["reason_text"] == runner.MISS_REASONS[row["reason"]]
             assert isinstance(row["trace_outcomes"], list)
+    # The report also gives the result with fewer matching rules (config sensitivity).
+    variants = result["sensitivity"]
+    assert [v["name"] for v in variants] == [v["name"] for v in backtest["cfg"].get("sensitivity") or []]
+    for v in variants:
+        assert v["detected"] <= result["summary"]["detected"]
+        assert set(v["per_event"]) == {r["event_id"] for r in result["events"]}
 
 
 def test_backtest_enriches_each_source_before_the_next_source_arrives(backtest):
@@ -117,7 +123,7 @@ def test_matching_is_strict_on_title_words_and_company_level_signals():
     site = runner.EntityRef("e1", "site", "Lumwana mine", "lumwana")
     assert runner.match_signal(_sig("x", site), rules, on)[0] == "site"
     project = runner.EntityRef("p1", "project", "Lumwana Super Pit expansion")
-    assert runner.match_signal(_sig("x", project, site), rules, on) == ("project", "project entity 'Lumwana Super Pit expansion'")
+    assert runner.match_signal(_sig("x", project, site), rules, on) == ("project", "entity 'Lumwana Super Pit expansion'")
     other_project = runner.EntityRef("p2", "project", "Kansanshi S3 Expansion", site_key="kansanshi")
     assert runner.match_signal(_sig("x", other_project), rules, on) is None
 

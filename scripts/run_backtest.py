@@ -150,6 +150,31 @@ def markdown(result: dict) -> str:
         f"The window is {'strict' if result['window']['strict'] else 'not strict'}, "
         "so the conditions above use all events.",
         "",
+    ]
+    variants = result.get("sensitivity") or []
+    if variants:
+        lines += [
+            "## Sensitivity to the matching rules",
+            "",
+            "The same replay, with fewer matching rules. The first row is the result above.",
+            "",
+            "| Rules | Detected | Median lead time | Two docs/09 conditions |",
+            "|---|---|---|---|",
+            f"| All rules ({', '.join(result['matching']['rule_order'])}) | {s['detected']} of {s['events']} | "
+            f"{_fmt_months(s['median_lead_months'])} | {_status(s['docs09_conditions_passed'])} |",
+        ]
+        for v in variants:
+            lines.append(f"| {v['name']} ({', '.join(v['rules'])}) | {v['detected']} of {v['events']} | "
+                         f"{_fmt_months(v['median_lead_months'])} | {_status(v['docs09_conditions_passed'])} |")
+        lines += ["", "First signal date of each event for each set of rules:", "",
+                  "| Event | All rules | " + " | ".join(v["name"] for v in variants) + " |",
+                  "|---|---|" + "---|" * len(variants)]
+        for r in result["events"]:
+            cells = [r.get("first_signal_date") or "miss"] + [v["per_event"].get(r["event_id"]) or "miss"
+                                                              for v in variants]
+            lines.append(f"| {r['event_id']} | " + " | ".join(cells) + " |")
+        lines.append("")
+    lines += [
         "## Events",
         "",
         "| Event | Date | Project | Type | First signal date | First signal title | Tier | Match | Lead time |",
@@ -170,7 +195,7 @@ def markdown(result: dict) -> str:
     misses = [r for r in result["events"] if not r.get("detected")]
     lines += ["", "## Misses", ""]
     if not misses:
-        lines.append("Strata found an earlier signal for each event. There is no miss.")
+        lines += ["Strata found an earlier signal for each event. There is no miss.", ""]
     for r in misses:
         lines.append(f"### {r['event_id']}: {_cell(r['project'])}")
         lines.append("")
@@ -187,6 +212,18 @@ def markdown(result: dict) -> str:
             lines.append(f"- {o['trace_id']} ({o['date']}): {_cell(o['title'])}. Enrichment status: {o['status']}.{extra}")
         lines.append("")
     lines += [
+        "## Signals",
+        "",
+        "Each SignalScored event of the replay, in date order, with the entities that it names.",
+        "",
+        "| Date | Title | Tier | Tier rule | Entities |",
+        "|---|---|---|---|---|",
+    ]
+    for sig in result["signals"]:
+        lines.append(f"| {sig['date']} | {_cell(sig['title'])} | {sig['tier']} | {sig['tier_rule']} | "
+                     f"{_cell(', '.join(sig['entities']) or 'none')} |")
+    lines += [
+        "",
         "## Method",
         "",
         "1. The harness starts with a fresh database. It loads brief v1 and the watch lists.",
@@ -208,8 +245,15 @@ def markdown(result: dict) -> str:
         "1. The traces were found with hindsight. The gaps are therefore an upper limit.",
         "2. The text of each trace is its title only. The agents see no body text.",
         "3. The deterministic backend ran the agents. The Anthropic backend has no backtest numbers yet.",
-        "",
     ]
+    hits = [r for r in result["events"] if r.get("detected")]
+    weak = [r["event_id"] for r in hits
+            if not any(m.startswith(("project:", "site:")) for m in r["match_all"])]
+    if weak:
+        lines.append(f"4. {len(weak)} of {len(hits)} detected events ({', '.join(weak)}) match on the title words or "
+                     "the operator entity only. The resolver did not link the site or the project of the event to "
+                     "the first signal.")
+    lines.append("")
     return "\n".join(lines)
 
 

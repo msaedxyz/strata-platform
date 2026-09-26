@@ -288,20 +288,20 @@ def signal_matches(sig: Signal, rules: dict, matching: dict) -> list[tuple[str, 
                 if e.type != "project":
                     continue
                 if e.name and any(n in e.name.lower() for n in names):
-                    hit = f"project entity '{e.name}'"
+                    hit = f"entity '{e.name}'"
                 elif e.site_key and e.site_key in site_keys:
-                    hit = f"project entity '{e.name}' at site {e.site_key}"
+                    hit = f"entity '{e.name}' at site {e.site_key}"
                 if hit:
                     break
         elif rule == "site":
-            hit = next((f"site entity '{e.name}' ({e.brief_key})" for e in sig.entities
+            hit = next((f"entity '{e.name}' ({e.brief_key})" for e in sig.entities
                         if e.type == "site" and e.brief_key in site_keys), None)
         elif rule == "title":
             words = _words(sig.title)
-            hit = next(("title words " + " + ".join(g) for g in rules.get("title_terms") or []
+            hit = next(("words " + " + ".join(g) for g in rules.get("title_terms") or []
                         if all(w.lower() in words for w in g)), None)
         elif rule == "company" and matching.get("company_level_counts"):
-            hit = next((f"operator entity '{e.name}' ({e.brief_key})" for e in sig.entities
+            hit = next((f"entity '{e.name}' ({e.brief_key})" for e in sig.entities
                         if e.type == "organisation" and e.brief_key in company_keys), None)
         if hit:
             found.append((rule, hit))
@@ -355,6 +355,46 @@ def _miss_reason(outcomes: list[dict], matching: dict) -> str:
     return "trace_out_of_scope"
 
 
+def first_signal(sigs: list[Signal], rules: dict, matching: dict, event_date: date):
+    """The earliest matching signal before the event date, and the earliest one on or after it."""
+    late = None
+    for s in sigs:
+        if s.tier not in matching["count_tiers"]:
+            continue
+        found = signal_matches(s, rules, matching)
+        if not found:
+            continue
+        if s.published_at < event_date:
+            return (s, found), late
+        late = late or (s, found)
+    return None, late
+
+
+def sensitivity(sigs: list[Signal], events: list[dict], cfg: dict) -> list[dict]:
+    """The pass conditions again with fewer matching rules (config sensitivity). Shows how much each rule adds."""
+    out = []
+    for variant in cfg.get("sensitivity") or []:
+        matching = {**cfg["matching"], "rule_order": list(variant["rules"])}
+        rows = []
+        for ev in events:
+            rules = (cfg.get("events") or {}).get(ev["id"])
+            first = first_signal(sigs, rules, matching, ev["date"])[0] if rules else None
+            in_window = _as_date(cfg["window"]["start"]) <= ev["date"] <= _as_date(cfg["window"]["end"])
+            row = {"event_id": ev["id"], "in_window": in_window,
+                   "counted": in_window or not cfg["window"].get("strict", False), "detected": first is not None}
+            if first:
+                row["lead_days"] = (ev["date"] - first[0].published_at).days
+                row["first_signal_date"] = first[0].published_at.isoformat()
+            rows.append(row)
+        s = summarise(rows, cfg)
+        out.append({"name": variant["name"], "rules": list(variant["rules"]), "events": s["events"],
+                    "detected": s["detected"], "detection_rate": s["detection_rate"],
+                    "median_lead_months": s["median_lead_months"],
+                    "docs09_conditions_passed": s["docs09_conditions_passed"],
+                    "per_event": {r["event_id"]: r.get("first_signal_date") for r in rows}})
+    return out
+
+
 def _months(days: int, cfg: dict) -> float:
     return round(days / float(cfg["pass_conditions"]["days_per_month"]), 1)
 
@@ -385,18 +425,7 @@ def evaluate(conn: psycopg.Connection, events: list[dict], traces: list[dict], s
             row.update(detected=False, reason="no_rules", reason_text=MISS_REASONS["no_rules"], trace_outcomes=[])
             rows.append(row)
             continue
-        first = None
-        late = None
-        for s in sigs:
-            if s.tier not in matching["count_tiers"]:
-                continue
-            m = signal_matches(s, rules, matching)
-            if not m:
-                continue
-            if s.published_at < ev["date"]:
-                first = (s, m)
-                break
-            late = late or (s, m)
+        first, late = first_signal(sigs, rules, matching, ev["date"])
         if first:
             s, found = first
             basis, what = found[0]
@@ -420,7 +449,8 @@ def evaluate(conn: psycopg.Connection, events: list[dict], traces: list[dict], s
         rows.append(row)
     signal_list = [{"source_id": s.source_id, "date": s.published_at.isoformat(), "title": s.title, "tier": s.tier,
                     "tier_rule": s.tier_rule, "entities": [f"{e.type}:{e.name}" for e in s.entities]} for s in sigs]
-    return {"events": rows, "summary": summarise(rows, cfg), "signals": signal_list}
+    return {"events": rows, "summary": summarise(rows, cfg), "sensitivity": sensitivity(sigs, events, cfg),
+            "signals": signal_list}
 
 
 def _stats(rows: list[dict], cfg: dict) -> dict:

@@ -51,6 +51,12 @@ matching:
   company_level_counts: true
   rule_order: [project, site, title, company]
 
+# The report also gives the result with fewer rules. This shows how much of the result comes from the
+# title words and the company level rule, and how much comes from the entity links of the resolver.
+sensitivity:
+  - {name: "Without the title words", rules: [project, site, company]}
+  - {name: "Entity links only, no company level", rules: [project, site]}
+
 events:
   EV-001:
     site_keys: [lumwana]
