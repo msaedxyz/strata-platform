@@ -65,14 +65,20 @@ def taxonomy(user: User = Depends(require_viewer)) -> dict:
 
 # ---------- ticker, signals, drivers ----------
 
+# The alert of a signal (docs/06: the alert shows its status in every place where it appears).
+_ALERT_JOIN = ("LEFT JOIN LATERAL (SELECT pa.id, pa.status FROM proj_alert pa "
+               "WHERE pa.signal_id = s.id OR pa.source_id = s.source_id ORDER BY pa.raised_at DESC LIMIT 1) a ON true")
+
 
 @router.get("/ticker")
 def ticker(limit: int = Query(40, le=200), user: User = Depends(require_viewer)) -> dict:
     """The latest Tier 0 and Tier 1 signals, and counts by tier for the last 24 hours and 7 days."""
     with connection() as conn:
         items = conn.execute(
-            "SELECT id, title, url, publisher, published_at, tier, tier_rule, score, read_at_source, evidence_ids, recorded_at "
-            "FROM proj_signal WHERE tier IN (0, 1) ORDER BY coalesce(published_at, recorded_at) DESC LIMIT %s",
+            "SELECT s.id, s.title, s.url, s.publisher, s.published_at, s.tier, s.tier_rule, s.score, s.read_at_source, "
+            "s.evidence_ids, s.recorded_at, a.id AS alert_id, a.status AS alert_status "
+            f"FROM proj_signal s {_ALERT_JOIN} WHERE s.tier IN (0, 1) "
+            "ORDER BY coalesce(s.published_at, s.recorded_at) DESC LIMIT %s",
             (limit,),
         ).fetchall()
         counts = conn.execute(
@@ -119,8 +125,8 @@ def signals(
     with connection() as conn:
         total = conn.execute(f"SELECT count(*) AS n FROM proj_signal WHERE {clause}", args).fetchone()["n"]
         items = conn.execute(
-            f"SELECT * FROM proj_signal WHERE {clause} ORDER BY coalesce(published_at, recorded_at) DESC, id DESC "
-            "LIMIT %s OFFSET %s",
+            f"SELECT s.*, a.id AS alert_id, a.status AS alert_status FROM proj_signal s {_ALERT_JOIN} "
+            f"WHERE {clause} ORDER BY coalesce(s.published_at, s.recorded_at) DESC, s.id DESC LIMIT %s OFFSET %s",
             [*args, limit, offset],
         ).fetchall()
     return {"total": total, "items": _rows(items)}
@@ -393,6 +399,18 @@ def priority(limit: int = Query(100, le=500), user: User = Depends(require_viewe
     return {"items": _rows(items)}
 
 
+def _personal_view(conn, person_id: str | None, blob: dict | None) -> dict:
+    from services.governance import personal
+
+    if not person_id:
+        return {f: None for f in personal.encrypted_fields()}
+    try:
+        return personal.reader_view(conn, person_id, blob)
+    except personal.PersonalDataUnavailable:
+        return {**{f: None for f in personal.encrypted_fields()}, "erased": personal.is_erased(conn, person_id),
+                "unavailable": True}
+
+
 @router.get("/deals/{deal_id}/relationship")
 def deal_relationship(deal_id: str, user: User = Depends(require_viewer)) -> dict:
     """Buyer roles, contacts, touchpoints, next action and prequalification status for one opportunity."""
@@ -409,9 +427,15 @@ def deal_relationship(deal_id: str, user: User = Depends(require_viewer)) -> dic
         engagement = conn.execute(
             "SELECT * FROM proj_engagement WHERE deal_id = %s ORDER BY recorded_at DESC", (deal_id,)
         ).fetchall()
-    grouped: dict[str, list] = {"contact": [], "touchpoint": [], "next_action": [], "prequalification": []}
-    for row in _rows(engagement):
-        grouped[row["kind"]].append(row)
+        grouped: dict[str, list] = {"contact": [], "touchpoint": [], "next_action": [], "prequalification": []}
+        for row in _rows(engagement):
+            if row["kind"] == "contact":
+                # The personal fields are encrypted with the key of the person (docs/06). After erasure they are empty.
+                data = dict(row["data"])
+                blob = data.pop("personal", None)
+                data.update(_personal_view(conn, data.get("contact_id"), blob))
+                row["data"] = data
+            grouped[row["kind"]].append(row)
     return {
         "deal": _jsonable(dict(deal)),
         "buyer_roles": _rows(buyers),

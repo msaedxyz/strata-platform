@@ -20,6 +20,7 @@ from services.collectors.schedule import next_fire
 from services.collectors.text import collectors_config
 from services.common.db import connection
 from services.common.storage import get_storage
+from services.governance.event_store import append_event
 from services.governance.source_proposals import ProposalError, ProposalForbidden, approve_source_proposal
 
 from ..auth import User, require_admin, require_analyst, require_viewer
@@ -111,6 +112,17 @@ class ManualUrl(BaseModel):
     licence_code: str | None = None
 
 
+def _audit_source(conn, result, user: User, origin: str) -> None:
+    """docs/06, audit log: each user action that changes data is an event with actor type human."""
+    if not result.source_id:
+        return
+    append_event(conn, stream_type="source", stream_id=result.source_id, event_type="SourceAdded",
+                 payload={"source_id": result.source_id, "status": result.status, "origin": origin[:500],
+                          "duplicate_of": result.duplicate_of},
+                 actor_type="human", actor_id=user.id)
+    conn.commit()
+
+
 def _manual_response(result) -> dict:
     return {"source_id": result.source_id, "status": result.status, "duplicate_of": result.duplicate_of}
 
@@ -152,11 +164,13 @@ async def manual_upload(
                     user_id=user.id, title=form.get("title") or None, publisher=form.get("publisher") or None,
                     licence_code=form.get("licence_code") or None, url=form.get("url") or None,
                 )
+                _audit_source(conn, result, user, upload.filename or "upload")
             return _manual_response(result)
         body = ManualUrl.model_validate(await request.json())
         with connection() as conn:
             result = ingest_url(conn, url=body.url, user_id=user.id, title=body.title, publisher=body.publisher,
                                 licence_code=body.licence_code)
+            _audit_source(conn, result, user, body.url)
         return _manual_response(result)
     except ForbiddenDomainError as exc:
         raise HTTPException(422, f"{exc}. Upload the file instead") from exc
@@ -261,6 +275,11 @@ def create_brief(body: NewBrief, user: User = Depends(require_admin)) -> dict:
         except brief_mod.BriefValidationError as exc:
             conn.rollback()
             raise HTTPException(422, {"errors": exc.errors}) from exc
+        if created:
+            append_event(conn, stream_type="brief", stream_id="main", event_type="BriefVersionCreated",
+                         payload={"brief_version_id": row["id"], "version": row["version"],
+                                  "change_note": body.change_note},
+                         actor_type="human", actor_id=user.id, brief_version_id=row["id"])
         if body.activate:
             brief_mod.activate(conn, row["id"], actor_type="human", actor_id=user.id)
         conn.commit()

@@ -15,7 +15,7 @@ from services.common.ids import new_id
 from services.common.logging import setup_logging
 
 from .auth import User, current_user, require_viewer
-from .live import broadcaster
+from .live import alert_message, broadcaster, record_alert_delivery
 from .routers import include_routers
 
 
@@ -102,7 +102,11 @@ async def live(request: Request, user: User = Depends(require_viewer)):
                     break
                 try:
                     message = await asyncio.wait_for(queue.get(), timeout=15)
+                    if message.get("stream_type") == "alert":
+                        message = await asyncio.to_thread(alert_message, message, user.id)
                     yield {"event": message.get("event_type") or message.get("kind") or "event", "data": json.dumps(message)}
+                    if message.get("event_type") == "AlertRaised":
+                        await asyncio.to_thread(record_alert_delivery, message["stream_id"], user.id)
                 except TimeoutError:
                     yield {"event": "ping", "data": "{}"}
         finally:

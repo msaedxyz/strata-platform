@@ -19,6 +19,8 @@ schemas:
       province: {type: [string, "null"]}
       external_ids: {type: object}
       resolution_confidence: {type: number, minimum: 0, maximum: 1}
+      # A person: the personal fields are encrypted (services/governance/personal.py). Never clear text.
+      personal: {type: object, required: [v, alg, nonce, ct]}
   EntityAttributeAsserted:
     type: object
     required: [predicate, value]
@@ -150,7 +152,10 @@ schemas:
       role: {type: string}
       organisation_id: {type: [string, "null"]}
       found_via: {type: string}
-      personal: {type: object}
+      # The name, business email and business phone are encrypted with the key of the person.
+      personal: {type: object, required: [v, alg, nonce, ct]}
+    # Clear personal fields never go into the event store.
+    not: {anyOf: [{required: [name]}, {required: [email]}, {required: [phone]}]}
   TouchpointLogged:
     type: object
     required: [kind, date, note]
@@ -225,3 +230,17 @@ schemas:
   BriefVersionActivated:
     type: object
     required: [brief_version_id, version]
+  BriefVersionCreated:
+    type: object
+    required: [brief_version_id, version]
+  SourceAdded:
+    type: object
+    required: [source_id, status]
+  # An admin erased a person: the key is deleted (docs/06, personal data). No personal field in the payload.
+  PersonErased:
+    type: object
+    required: [security_log_id, method]
+    additionalProperties: false
+    properties:
+      security_log_id: {type: string}
+      method: {const: key_deleted}

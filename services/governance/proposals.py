@@ -37,8 +37,21 @@ class ProposalError(ValueError):
     pass
 
 
+class ProposalStateError(ProposalError):
+    """The proposal is not pending. The API maps this error to HTTP 409."""
+
+
 class ProposalForbidden(PermissionError):
     """The API maps this error to HTTP 403."""
+
+
+def check_actor(events: list[dict], created_by_type: str) -> None:
+    """An event type whose policy names an actor type (engagement events: human) accepts no other creator."""
+    policies = approval_policy()["policies"]
+    for ev in events:
+        actor = (policies.get(ev["event_type"]) or {}).get("actor")
+        if actor and actor != created_by_type:
+            raise ProposalError(f"{ev['event_type']} needs actor type {actor}, not {created_by_type}")
 
 
 # ---------- policy ----------
@@ -157,6 +170,7 @@ def create_proposal(
     clean = [_clean_event(e) for e in events]
     for ev in clean:
         validate_payload(ev["event_type"], ev["payload"])
+    check_actor(clean, created_by_type)
     policy = proposal_policy(clean, force_review=force_review)
     proposal_id = new_id()
     evidence_ids = list(dict.fromkeys(i for ev in clean for i in ev["evidence_ids"]))
@@ -201,7 +215,7 @@ def _pending(conn: psycopg.Connection, proposal_id: str) -> dict:
     if proposal is None:
         raise LookupError(f"no proposal {proposal_id}")
     if proposal["status"] != "pending":
-        raise ProposalError(f"proposal {proposal_id} is {proposal['status']}")
+        raise ProposalStateError(f"proposal {proposal_id} is {proposal['status']}")
     return proposal
 
 

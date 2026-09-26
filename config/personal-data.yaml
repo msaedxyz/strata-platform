@@ -1,0 +1,17 @@
+# Personal data of person entities. Source: docs/06-governance.md, personal data.
+# The legal basis and the retention period are in docs/assumptions.md (row 17).
+#
+# Strata keeps business contact data only. The fields in "encrypted_fields" are encrypted with a
+# separate key for each person (AES-256-GCM). The master key in STRATA_MASTER_KEY wraps each key.
+# To erase a person, the governance service deletes the key. The history stays intact.
+encrypted_fields: [name, email, phone]
+# Business contact data that stays in clear text: the role, the organisation and the source of the contact.
+clear_fields: [role, organisation_id, found_via]
+# The value that the API shows in place of a personal field after erasure. Other fields become null.
+erased_name: "[erased]"
+# The name of a person entity in the canonical record. The real name is only in the encrypted fields.
+placeholder_name: "[personal data]"
+# The blind index that finds an existing person: the business email, else the name and the organisation.
+lookup_fields: [email, name, organisation_id]
+legal_basis: "Legitimate interest of the business (docs/assumptions.md row 17)"
+retention_months_after_last_touchpoint: 24

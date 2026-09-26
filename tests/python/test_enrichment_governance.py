@@ -255,7 +255,7 @@ def test_tier0_alert_is_raised_unconfirmed_at_once_with_frontend_and_email_deliv
     assert alert["fetched_at"] is not None
     deliveries = {d["channel"]: d for d in edb.execute("SELECT * FROM alert_delivery WHERE alert_id = %s",
                                                        (row["stream_id"],)).fetchall()}
-    assert deliveries["frontend"]["status"] == "delivered"
+    assert deliveries["frontend"]["status"] == "broadcast"  # "delivered" when the live stream sends it (M4)
     assert deliveries["email"]["status"] == "delivered"
     assert len(smtp.messages) == 1 and "Diesel shortage in Solwezi" in smtp.messages[0]
     edb.commit()
