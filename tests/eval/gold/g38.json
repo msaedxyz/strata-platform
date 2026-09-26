@@ -1,0 +1,72 @@
+{
+  "id": "g38",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Kansanshi takes delivery of 30 new haul trucks",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g38",
+    "published_at": "2026-09-08T08:00:00Z",
+    "fetched_at": "2026-09-09T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Kansanshi takes delivery of 30 new haul trucks\n\nKansanshi Mining Plc took delivery of 30 new haul trucks for the S3 pit at the Kansanshi mine in Solwezi. The trucks each carry 240 tonnes.\n\nThe mine now runs a fleet of 110 haul trucks.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_solwezi",
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [
+      "fleet_purchase"
+    ],
+    "directions": [
+      "procurement"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Kansanshi",
+        "type": "site",
+        "resolution": "site:kansanshi"
+      },
+      {
+        "text": "Kansanshi Mining Plc",
+        "type": "organisation",
+        "resolution": "org:kansanshi_mining_plc",
+        "accept": [
+          "site:kansanshi"
+        ]
+      },
+      {
+        "text": "Kansanshi mine",
+        "type": "site",
+        "resolution": "site:kansanshi"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "fleet_trucks",
+        "subject": "Kansanshi mine",
+        "certainty": "stated",
+        "value": "30"
+      },
+      {
+        "predicate": "fleet_trucks",
+        "subject": "Kansanshi mine",
+        "certainty": "stated",
+        "value": "110"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "g04",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Zambia Lobito Rail Project reaches financial close",
+    "publisher": "Corridor Finance News (synthetic)",
+    "url": "https://synthetic.test/gold/g04",
+    "published_at": "2026-09-18T08:00:00Z",
+    "fetched_at": "2026-09-19T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Zambia Lobito Rail Project reaches financial close\n\nThe Africa Finance Corporation (AFC) said that the Zambia Lobito Rail Project reached financial close on 18 September 2026. Lenders committed US$3.2 billion of debt for the 830 kilometre line from Chingola to the Angolan border.\n\nAFC said that it will appoint the EPC contractors for the three construction lots before the end of the year. Construction of the first lot is expected to start in 2027.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport"
+    ],
+    "geographies": [
+      "dist_chingola",
+      "prov_copperbelt",
+      "ao",
+      "corr_lobito",
+      "zm"
+    ],
+    "themes": [
+      "financing_close",
+      "transport_infrastructure_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [
+      "epc_contract",
+      "construction_contract"
+    ],
+    "entities": [
+      {
+        "text": "Africa Finance Corporation",
+        "type": "organisation",
+        "resolution": "org:africa_finance_corporation"
+      },
+      {
+        "text": "AFC",
+        "type": "organisation",
+        "resolution": "org:africa_finance_corporation"
+      },
+      {
+        "text": "Zambia Lobito Rail Project",
+        "type": "project",
+        "resolution": "new",
+        "accept": [
+          "site:zambia_lobito_rail"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "expected_start",
+        "subject": "Zambia Lobito Rail Project",
+        "certainty": "stated",
+        "value": "2027"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Zambia Lobito Rail Project",
+        "stage": "financing_fid"
+      }
+    ],
+    "deal_expected": true,
+    "expected_tier": 0
+  }
+}

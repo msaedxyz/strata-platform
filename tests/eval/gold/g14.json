@@ -1,0 +1,70 @@
+{
+  "id": "g14",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "Public consultation on the Nansanga farm block ESIA",
+    "publisher": "Ministry of Agriculture (synthetic)",
+    "url": "https://synthetic.test/gold/g14",
+    "published_at": "2026-09-12T08:00:00Z",
+    "fetched_at": "2026-09-13T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": true
+  },
+  "text": "Public consultation on the Nansanga farm block ESIA\n\nThe Ministry of Agriculture held public consultation meetings in Serenje on the Environmental and Social Impact Assessment of the Nansanga Commodity Value Chain Transformation Project. The meetings were held on 10 and 11 September 2026.\n\nThe project will develop 5,000 hectares of irrigated land at the Nansanga farm block. It will build roads, a dam and power lines. The African Development Bank will finance the project.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "agriculture"
+    ],
+    "geographies": [
+      "dist_serenje",
+      "prov_central",
+      "zm"
+    ],
+    "themes": [
+      "eia_filed",
+      "agri_expansion"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Ministry of Agriculture",
+        "type": "organisation",
+        "resolution": "org:ministry_of_agriculture"
+      },
+      {
+        "text": "Nansanga Commodity Value Chain Transformation Project",
+        "type": "project",
+        "resolution": "new",
+        "accept": [
+          "site:nansanga_farm_block"
+        ]
+      },
+      {
+        "text": "Nansanga farm block",
+        "type": "site",
+        "resolution": "site:nansanga_farm_block"
+      },
+      {
+        "text": "African Development Bank",
+        "type": "organisation",
+        "resolution": "org:afdb"
+      }
+    ],
+    "claims": [],
+    "projects": [
+      {
+        "name": "Nansanga Commodity Value Chain Transformation Project",
+        "stage": "eia_filed"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

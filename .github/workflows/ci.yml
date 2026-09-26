@@ -35,6 +35,53 @@ jobs:
         if: always()
         with: {name: python-test-results, path: test-results}
 
+  eval:
+    # docs/05 evaluation: run the gold set on each change to a prompt, a model, a schema, the rules or a validator.
+    # The run fails when a metric is below its target or falls by more than two points against the baseline.
+    name: Agent evaluation on the gold set
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    env:
+      HAS_ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            enrichment:
+              - 'prompts/**'
+              - 'config/models.yaml'
+              - 'config/agent-schemas.yaml'
+              - 'config/enrichment-rules.yaml'
+              - 'config/eval-targets.yaml'
+              - 'config/tiers.yaml'
+              - 'config/lifecycle*.yaml'
+              - 'config/taxonomy/**'
+              - 'services/enrichment/**'
+              - 'tests/eval/**'
+      - if: steps.changes.outputs.enrichment == 'true'
+        uses: astral-sh/setup-uv@v6
+        with: {python-version: "3.12"}
+      - if: steps.changes.outputs.enrichment == 'true'
+        run: uv sync --frozen
+      - name: Evaluate with the deterministic backend
+        if: steps.changes.outputs.enrichment == 'true'
+        env:
+          STRATA_AGENT_BACKEND: deterministic
+        run: uv run python -m services.enrichment.eval --backend deterministic
+      - name: Evaluate with the Anthropic backend (only when the secret exists)
+        if: steps.changes.outputs.enrichment == 'true' && env.HAS_ANTHROPIC_KEY == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          STRATA_AGENT_BACKEND: anthropic
+        run: uv run python -m services.enrichment.eval --backend anthropic
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.changes.outputs.enrichment == 'true'
+        with: {name: eval-results, path: tests/eval/results}
+
   frontend:
     name: Frontend lint, typecheck, tests and build
     runs-on: ubuntu-latest

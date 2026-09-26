@@ -1,0 +1,87 @@
+{
+  "id": "g31",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "Ndola Lime placed on care and maintenance",
+    "publisher": "ZCCM-IH (synthetic)",
+    "url": "https://synthetic.test/gold/g31",
+    "published_at": "2026-09-15T08:00:00Z",
+    "fetched_at": "2026-09-16T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Ndola Lime placed on care and maintenance\n\nZCCM Investments Holdings Plc said that the Ndola Lime Company plant has been placed on care and maintenance while it looks for a new investor. The plant employed 300 workers.\n\nZCCM-IH said that it holds 100 percent of Ndola Lime.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "industry"
+    ],
+    "geographies": [
+      "dist_ndola",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "care_and_maintenance"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "ZCCM Investments Holdings Plc",
+        "type": "organisation",
+        "resolution": "org:zccm_ih"
+      },
+      {
+        "text": "ZCCM-IH",
+        "type": "organisation",
+        "resolution": "org:zccm_ih"
+      },
+      {
+        "text": "Ndola Lime Company",
+        "type": "organisation",
+        "resolution": "org:ndola_lime_company",
+        "accept": [
+          "site:ndola_lime"
+        ]
+      },
+      {
+        "text": "Ndola Lime",
+        "type": "organisation",
+        "resolution": "org:ndola_lime_company",
+        "accept": [
+          "site:ndola_lime"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Ndola Lime",
+        "certainty": "stated",
+        "value": "care_and_maintenance"
+      },
+      {
+        "predicate": "employees",
+        "subject": "Ndola Lime",
+        "certainty": "stated",
+        "value": "300"
+      },
+      {
+        "predicate": "ownership_percent",
+        "subject": "ZCCM-IH",
+        "certainty": "stated",
+        "value": "100%",
+        "object": "Ndola Lime"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

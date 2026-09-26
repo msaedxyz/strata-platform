@@ -1,0 +1,56 @@
+{
+  "id": "g45",
+  "synthetic": true,
+  "note": "Synthetic snapshot item: title only.",
+  "source": {
+    "type": "snapshot",
+    "title": "Maamba Energy completes 300MW expansion",
+    "publisher": "example.test",
+    "url": "https://synthetic.test/gold/g45",
+    "published_at": "2026-09-05T08:00:00Z",
+    "fetched_at": "2026-09-06T06:00:00Z",
+    "retention_policy": "link_only",
+    "read_at_source": true,
+    "early_signal": false
+  },
+  "text": "Maamba Energy completes 300MW expansion",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power"
+    ],
+    "geographies": [
+      "dist_sinazongwe",
+      "prov_southern",
+      "zm"
+    ],
+    "themes": [
+      "power_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Maamba Energy",
+        "type": "organisation",
+        "resolution": "org:maamba_energy",
+        "accept": [
+          "site:maamba"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "generation_mw",
+        "subject": "Maamba Energy",
+        "certainty": "stated",
+        "value": "300"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

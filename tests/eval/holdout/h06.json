@@ -1,0 +1,72 @@
+{
+  "id": "h06",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Kasenseli plant expansion passes pre-feasibility",
+    "publisher": "North-Western News (synthetic)",
+    "url": "https://synthetic.test/gold/h06",
+    "published_at": "2026-09-08T08:00:00Z",
+    "fetched_at": "2026-09-09T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Kasenseli plant expansion passes pre-feasibility\n\nKamushinshi Mineral Resources has completed a pre-feasibility study for the Kasenseli Plant Expansion Project in Mwinilunga district. The study proposes a new carbon-in-leach plant that will treat 500,000 tonnes of ore a year at a cost of US$60 million.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_mwinilunga",
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [
+      "feasibility_study"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Kamushinshi Mineral Resources",
+        "type": "organisation",
+        "resolution": "org:kamushinshi_mineral_resources",
+        "accept": [
+          "site:kasenseli"
+        ]
+      },
+      {
+        "text": "Kasenseli Plant Expansion Project",
+        "type": "project",
+        "resolution": "new"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "capex",
+        "subject": "Kasenseli Plant Expansion Project",
+        "certainty": "stated",
+        "value": "60000000 USD"
+      },
+      {
+        "predicate": "production_target",
+        "subject": "Kasenseli Plant Expansion Project",
+        "certainty": "stated",
+        "value": "500000 t/y"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Kasenseli Plant Expansion Project",
+        "stage": "scoping_prefeasibility"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

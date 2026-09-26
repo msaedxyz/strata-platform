@@ -1,0 +1,46 @@
+{
+  "id": "g42",
+  "synthetic": true,
+  "note": "Synthetic Google News item: title and description only.",
+  "source": {
+    "type": "google_news",
+    "title": "AfDB approves US$255 million loan for Zambian road works on Lobito corridor - ZNBC",
+    "publisher": "ZNBC",
+    "url": "https://synthetic.test/gold/g42",
+    "published_at": "2026-09-13T08:00:00Z",
+    "fetched_at": "2026-09-14T06:00:00Z",
+    "retention_policy": "link_only",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "AfDB approves US$255 million loan for Zambian road works on Lobito corridor - ZNBC\n\nAfDB approves US$255 million loan for Zambian road works on Lobito corridor  ZNBC",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport"
+    ],
+    "geographies": [
+      "corr_lobito",
+      "zm"
+    ],
+    "themes": [
+      "financing_close",
+      "transport_infrastructure_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "AfDB",
+        "type": "organisation",
+        "resolution": "org:afdb"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

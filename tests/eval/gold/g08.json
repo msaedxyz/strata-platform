@@ -1,0 +1,60 @@
+{
+  "id": "g08",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Arc Minerals reports drill results from Cheyeza East",
+    "publisher": "Exploration Weekly (synthetic)",
+    "url": "https://synthetic.test/gold/g08",
+    "published_at": "2026-09-11T08:00:00Z",
+    "fetched_at": "2026-09-12T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Arc Minerals reports drill results from Cheyeza East\n\nArc Minerals said that drilling at the Cheyeza East prospect in North-Western Province intersected 42 metres of copper mineralisation. The company completed 12,000 metres of diamond drilling in 2026.\n\nArc Minerals and its partner Anglo American plan a second drilling programme in 2027. The company expects to publish a maiden resource estimate for the West Lunga licences in 2027.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [
+      "exploration_drilling"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Arc Minerals",
+        "type": "organisation",
+        "resolution": "org:arc_minerals"
+      },
+      {
+        "text": "Cheyeza East",
+        "type": "site",
+        "resolution": "site:arc_minerals_nw"
+      },
+      {
+        "text": "Anglo American",
+        "type": "organisation",
+        "resolution": "org:anglo_american"
+      },
+      {
+        "text": "West Lunga",
+        "type": "site",
+        "resolution": "site:arc_minerals_nw"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

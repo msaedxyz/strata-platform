@@ -1,0 +1,72 @@
+{
+  "id": "g47",
+  "synthetic": true,
+  "note": "Synthetic speculative article. A rumour of a future tender is not a notice.",
+  "source": {
+    "type": "rss",
+    "title": "First Quantum could tender Sentinel contract mining, sources say",
+    "publisher": "Mining Talk (synthetic)",
+    "url": "https://synthetic.test/gold/g47",
+    "published_at": "2026-09-26T08:00:00Z",
+    "fetched_at": "2026-09-27T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "First Quantum could tender Sentinel contract mining, sources say\n\nFirst Quantum Minerals is considering a new contract mining tender for the Sentinel mine in Kalumbila, industry sources said. The company could invite bids early next year.\n\nFirst Quantum declined to comment. The Sentinel mine runs a fleet of about 100 haul trucks.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_kalumbila",
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [
+      "tender_notice",
+      "contract_mining"
+    ],
+    "directions": [
+      "procurement"
+    ],
+    "deal_types": [
+      "contract_mining",
+      "tender"
+    ],
+    "entities": [
+      {
+        "text": "First Quantum",
+        "type": "organisation",
+        "resolution": "org:first_quantum"
+      },
+      {
+        "text": "First Quantum Minerals",
+        "type": "organisation",
+        "resolution": "org:first_quantum"
+      },
+      {
+        "text": "Sentinel",
+        "type": "site",
+        "resolution": "site:sentinel"
+      },
+      {
+        "text": "Sentinel mine",
+        "type": "site",
+        "resolution": "site:sentinel"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "fleet_trucks",
+        "subject": "Sentinel mine",
+        "certainty": "reported",
+        "value": "100"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

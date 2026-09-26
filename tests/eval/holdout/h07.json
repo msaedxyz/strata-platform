@@ -1,0 +1,56 @@
+{
+  "id": "h07",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "google_news",
+    "title": "Maamba Energy signs PPA for 300MW solar project - Energy News",
+    "publisher": "Energy News",
+    "url": "https://synthetic.test/gold/h07",
+    "published_at": "2026-09-09T08:00:00Z",
+    "fetched_at": "2026-09-10T06:00:00Z",
+    "retention_policy": "link_only",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Maamba Energy signs PPA for 300MW solar project - Energy News\n\nMaamba Energy signs PPA for 300MW solar project  Energy News",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power"
+    ],
+    "geographies": [
+      "zm"
+    ],
+    "themes": [
+      "power_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [
+      "power_supply"
+    ],
+    "entities": [
+      {
+        "text": "Maamba Energy",
+        "type": "organisation",
+        "resolution": "org:maamba_energy",
+        "accept": [
+          "site:maamba"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "generation_mw",
+        "subject": "Maamba Energy",
+        "certainty": "stated",
+        "value": "300"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

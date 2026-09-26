@@ -1,0 +1,51 @@
+{
+  "id": "h02",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Truckers wait four days at Kazungula",
+    "publisher": "Corridor Logistics Monitor (synthetic)",
+    "url": "https://synthetic.test/gold/h02",
+    "published_at": "2026-09-04T08:00:00Z",
+    "fetched_at": "2026-09-05T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Truckers wait four days at Kazungula\n\nTrucks carrying copper and fuel waited up to four days at the Kazungula one-stop border post this week after a network failure at the customs office. Transporters said that the queue stretched for 15 kilometres.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport"
+    ],
+    "geographies": [
+      "dist_kazungula",
+      "prov_southern",
+      "zm"
+    ],
+    "themes": [
+      "border_delay"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Kazungula",
+        "type": "site",
+        "resolution": "site:kazungula_border"
+      },
+      {
+        "text": "Kazungula one-stop border post",
+        "type": "site",
+        "resolution": "site:kazungula_border"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

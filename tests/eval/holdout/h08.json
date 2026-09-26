@@ -1,0 +1,49 @@
+{
+  "id": "h08",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "ZESCO reduces load shedding to four hours",
+    "publisher": "Lusaka Daily (synthetic)",
+    "url": "https://synthetic.test/gold/h08",
+    "published_at": "2026-09-10T08:00:00Z",
+    "fetched_at": "2026-09-11T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "ZESCO reduces load shedding to four hours\n\nZESCO Limited has reduced load shedding to four hours a day after rains raised water levels at Lake Kariba.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power"
+    ],
+    "geographies": [
+      "zm"
+    ],
+    "themes": [
+      "load_shedding"
+    ],
+    "directions": [
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "ZESCO Limited",
+        "type": "organisation",
+        "resolution": "org:zesco"
+      },
+      {
+        "text": "ZESCO",
+        "type": "organisation",
+        "resolution": "org:zesco"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

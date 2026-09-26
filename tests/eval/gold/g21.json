@@ -1,0 +1,80 @@
+{
+  "id": "g21",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Lubambe awards load and haul contract",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g21",
+    "published_at": "2026-09-20T08:00:00Z",
+    "fetched_at": "2026-09-21T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Lubambe awards load and haul contract\n\nLubambe Copper Mines Plc has awarded a load and haul contract to Copperbelt Earthmoving Limited for the Lubambe mine in Chililabombwe. The three year contract is worth US$60 million.\n\nThe contractor will deploy 25 haul trucks and four excavators from January 2027.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_chililabombwe",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "contractor_award",
+      "contract_mining"
+    ],
+    "directions": [
+      "procurement"
+    ],
+    "deal_types": [
+      "contract_mining"
+    ],
+    "entities": [
+      {
+        "text": "Lubambe",
+        "type": "organisation",
+        "resolution": "org:lubambe_copper_mines"
+      },
+      {
+        "text": "Lubambe Copper Mines Plc",
+        "type": "organisation",
+        "resolution": "org:lubambe_copper_mines",
+        "accept": [
+          "site:lubambe"
+        ]
+      },
+      {
+        "text": "Copperbelt Earthmoving Limited",
+        "type": "organisation",
+        "resolution": "new"
+      },
+      {
+        "text": "Lubambe mine",
+        "type": "site",
+        "resolution": "site:lubambe"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "contract_value",
+        "subject": "Lubambe mine",
+        "certainty": "stated",
+        "value": "60000000 USD"
+      },
+      {
+        "predicate": "fleet_trucks",
+        "subject": "Lubambe mine",
+        "certainty": "stated",
+        "value": "25"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 1
+  }
+}

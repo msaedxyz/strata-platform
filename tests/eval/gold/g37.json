@@ -1,0 +1,68 @@
+{
+  "id": "g37",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Chisamba solar plant now supplies 100 MW",
+    "publisher": "Energy Monitor (synthetic)",
+    "url": "https://synthetic.test/gold/g37",
+    "published_at": "2026-09-09T08:00:00Z",
+    "fetched_at": "2026-09-10T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Chisamba solar plant now supplies 100 MW\n\nZESCO Limited said that the Chisamba solar power plant in Central Province now supplies 100 MW to the national grid after the completion of Phase II.\n\nZESCO said that the plant reduces the need for diesel generation at mines during load shedding.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power"
+    ],
+    "geographies": [
+      "dist_chisamba",
+      "prov_central",
+      "zm"
+    ],
+    "themes": [
+      "power_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "ZESCO Limited",
+        "type": "organisation",
+        "resolution": "org:zesco"
+      },
+      {
+        "text": "ZESCO",
+        "type": "organisation",
+        "resolution": "org:zesco"
+      },
+      {
+        "text": "Chisamba solar power plant",
+        "type": "site",
+        "resolution": "site:chisamba_solar"
+      },
+      {
+        "text": "Chisamba solar",
+        "type": "site",
+        "resolution": "site:chisamba_solar"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "generation_mw",
+        "subject": "Chisamba solar power plant",
+        "certainty": "stated",
+        "value": "100"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

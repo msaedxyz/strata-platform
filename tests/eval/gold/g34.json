@@ -1,0 +1,54 @@
+{
+  "id": "g34",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Bridge collapse closes Mwinilunga-Jimbe road",
+    "publisher": "North-Western News (synthetic)",
+    "url": "https://synthetic.test/gold/g34",
+    "published_at": "2026-09-12T08:00:00Z",
+    "fetched_at": "2026-09-13T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Bridge collapse closes Mwinilunga-Jimbe road\n\nA bridge on the Mwinilunga-Jimbe road collapsed after heavy rain on Sunday. The Road Development Agency closed the road to heavy trucks for two weeks.\n\nTransporters to Angola now use a longer route through Solwezi.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport"
+    ],
+    "geographies": [
+      "dist_mwinilunga",
+      "dist_solwezi",
+      "prov_north_western",
+      "corr_lobito",
+      "ao",
+      "zm"
+    ],
+    "themes": [
+      "road_disruption"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Mwinilunga-Jimbe road",
+        "type": "site",
+        "resolution": "site:mwinilunga_jimbe_t5"
+      },
+      {
+        "text": "Road Development Agency",
+        "type": "organisation",
+        "resolution": "org:rda"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

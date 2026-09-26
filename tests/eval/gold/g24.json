@@ -1,0 +1,66 @@
+{
+  "id": "g24",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "TAZAMA pipeline shut for ten days after leak",
+    "publisher": "Energy Monitor (synthetic)",
+    "url": "https://synthetic.test/gold/g24",
+    "published_at": "2026-09-19T08:00:00Z",
+    "fetched_at": "2026-09-20T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "TAZAMA pipeline shut for ten days after leak\n\nTAZAMA Pipelines Limited has stopped pumping diesel through the TAZAMA pipeline after a leak near Mpika. The company said that pumping will resume after repairs that take about ten days.\n\nThe Ministry of Energy said that oil marketing companies will bring more diesel by road from Dar es Salaam during the shutdown.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "fuel_supply"
+    ],
+    "geographies": [
+      "corr_dar_es_salaam",
+      "tz",
+      "zm"
+    ],
+    "themes": [
+      "pipeline_outage"
+    ],
+    "directions": [
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "TAZAMA Pipelines Limited",
+        "type": "organisation",
+        "resolution": "org:tazama_pipelines",
+        "accept": [
+          "site:tazama_pipeline"
+        ]
+      },
+      {
+        "text": "TAZAMA pipeline",
+        "type": "site",
+        "resolution": "site:tazama_pipeline"
+      },
+      {
+        "text": "Ministry of Energy",
+        "type": "organisation",
+        "resolution": "org:ministry_of_energy"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "TAZAMA pipeline",
+        "certainty": "stated",
+        "value": "suspended"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

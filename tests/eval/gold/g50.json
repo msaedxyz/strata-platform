@@ -1,0 +1,30 @@
+{
+  "id": "g50",
+  "synthetic": true,
+  "note": "Synthetic item about a mine outside the brief geographies. Out of scope.",
+  "source": {
+    "type": "rss",
+    "title": "Workers strike at Chilean copper mine",
+    "publisher": "World Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g50",
+    "published_at": "2026-09-22T08:00:00Z",
+    "fetched_at": "2026-09-23T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Workers strike at Chilean copper mine\n\nWorkers at a large copper mine in northern Chile started a strike on Monday over wages. The company said that production at the mine fell by half.",
+  "labels": {
+    "in_scope": false,
+    "sectors": [],
+    "geographies": [],
+    "themes": [],
+    "directions": [],
+    "deal_types": [],
+    "entities": [],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": null
+  }
+}

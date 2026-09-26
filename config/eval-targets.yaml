@@ -1,0 +1,18 @@
+# Evaluation targets for the gold set (docs/05-enrichment.md, evaluation).
+# The eval runner (python -m services.enrichment.eval) fails when a metric is below its target,
+# or when a metric falls by more than max_drop_points against tests/eval/baseline.json.
+gold_dir: tests/eval/gold
+baseline: tests/eval/baseline.json
+results: tests/eval/results/latest.json
+max_drop_points: 2        # percentage points
+targets:
+  canonical_facts_verified: 1.00
+  extraction_precision: 0.90
+  extraction_recall: 0.75
+  resolution_precision: 0.95
+  classification_macro_f1: 0.85
+  lifecycle_stage_accuracy: 0.85
+# Classes of the classification macro F1: in_scope, each sector and each activity direction.
+classification_label_groups: [in_scope, sectors, directions]
+# Predicates that the extraction metrics count. project_stage is scored by the lifecycle metric.
+extraction_excluded_predicates: [project_stage, project_at_site]

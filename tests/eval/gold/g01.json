@@ -1,0 +1,94 @@
+{
+  "id": "g01",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "ZEMA invites comments on the Mimbula Phase 3 Expansion Project",
+    "publisher": "ZEMA (synthetic)",
+    "url": "https://synthetic.test/gold/g01",
+    "published_at": "2026-09-15T08:00:00Z",
+    "fetched_at": "2026-09-16T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": true
+  },
+  "text": "ZEMA invites comments on the Mimbula Phase 3 Expansion Project\n\nThe Zambia Environmental Management Agency (ZEMA) has received an Environmental Impact Statement for the Mimbula Phase 3 Expansion Project in Chingola district, Copperbelt Province. The developer, Mimbula Minerals Limited, submitted the Environmental Impact Statement on 14 September 2026.\n\nThe project will add a new open pit and a heap leach pad to the Mimbula copper mine. It will raise cathode output to 30,000 tonnes a year. The developer estimates the capital cost at US$120 million.\n\nPublic consultation meetings will take place in Chingola on 1 October 2026. Written comments must reach ZEMA by 16 October 2026.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_chingola",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "eia_filed",
+      "mine_expansion"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "ZEMA",
+        "type": "organisation",
+        "resolution": "org:zema"
+      },
+      {
+        "text": "Zambia Environmental Management Agency",
+        "type": "organisation",
+        "resolution": "org:zema"
+      },
+      {
+        "text": "Mimbula Phase 3 Expansion Project",
+        "type": "project",
+        "resolution": "new"
+      },
+      {
+        "text": "Mimbula Minerals Limited",
+        "type": "organisation",
+        "resolution": "org:mimbula_minerals",
+        "accept": [
+          "site:mimbula"
+        ]
+      },
+      {
+        "text": "Mimbula copper mine",
+        "type": "site",
+        "resolution": "site:mimbula"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "production_target",
+        "subject": "Mimbula Phase 3 Expansion Project",
+        "certainty": "stated",
+        "value": "30000 t/y"
+      },
+      {
+        "predicate": "capex",
+        "subject": "Mimbula Phase 3 Expansion Project",
+        "certainty": "stated",
+        "value": "120000000 USD"
+      },
+      {
+        "predicate": "buyer_role_owner",
+        "subject": "Mimbula Phase 3 Expansion Project",
+        "certainty": "stated",
+        "object": "Mimbula Minerals Limited"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Mimbula Phase 3 Expansion Project",
+        "stage": "eia_filed"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

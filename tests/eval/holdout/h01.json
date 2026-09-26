@@ -1,0 +1,88 @@
+{
+  "id": "h01",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Lubambe approves new shaft project",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/h01",
+    "published_at": "2026-09-03T08:00:00Z",
+    "fetched_at": "2026-09-04T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Lubambe approves new shaft project\n\nJCHX has approved a US$300 million plan to sink a new shaft at the Lubambe mine. The board of Lubambe Copper Mines Plc approved the Lubambe New Shaft Project on 2 September 2026.\n\nThe company will appoint a shaft sinking contractor in the first quarter of 2027. The mine employs 1,800 workers.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "zm"
+    ],
+    "themes": [
+      "mine_expansion",
+      "financing_close"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [
+      "epc_contract"
+    ],
+    "entities": [
+      {
+        "text": "JCHX",
+        "type": "organisation",
+        "resolution": "org:jchx"
+      },
+      {
+        "text": "Lubambe mine",
+        "type": "site",
+        "resolution": "site:lubambe"
+      },
+      {
+        "text": "Lubambe Copper Mines Plc",
+        "type": "organisation",
+        "resolution": "org:lubambe_copper_mines",
+        "accept": [
+          "site:lubambe"
+        ]
+      },
+      {
+        "text": "Lubambe New Shaft Project",
+        "type": "project",
+        "resolution": "new"
+      },
+      {
+        "text": "Lubambe",
+        "type": "organisation",
+        "resolution": "org:lubambe_copper_mines"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "capex",
+        "subject": "Lubambe New Shaft Project",
+        "certainty": "stated",
+        "value": "300000000 USD"
+      },
+      {
+        "predicate": "employees",
+        "subject": "Lubambe mine",
+        "certainty": "stated",
+        "value": "1800"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Lubambe New Shaft Project",
+        "stage": "financing_fid"
+      }
+    ],
+    "deal_expected": true,
+    "expected_tier": 0
+  }
+}

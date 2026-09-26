@@ -1,0 +1,62 @@
+{
+  "id": "g32",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Mopani to retrench 400 workers at Nkana",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g32",
+    "published_at": "2026-09-14T08:00:00Z",
+    "fetched_at": "2026-09-15T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Mopani to retrench 400 workers at Nkana\n\nMopani Copper Mines Plc has issued retrenchment notices to 400 workers at the Nkana mine in Kitwe. The company said that the job cuts follow the closure of an old shaft.\n\nThe Mineworkers Union of Zambia said that it will challenge the retrenchments.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_kitwe",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "retrenchment",
+      "closure"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Mopani",
+        "type": "organisation",
+        "resolution": "org:mopani_copper_mines"
+      },
+      {
+        "text": "Mopani Copper Mines Plc",
+        "type": "organisation",
+        "resolution": "org:mopani_copper_mines"
+      },
+      {
+        "text": "Nkana mine",
+        "type": "site",
+        "resolution": "site:mopani_nkana"
+      },
+      {
+        "text": "Mineworkers Union of Zambia",
+        "type": "organisation",
+        "resolution": "new"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

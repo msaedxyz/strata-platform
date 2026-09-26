@@ -1,0 +1,78 @@
+{
+  "id": "h12",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "KoBold secures loan for Mingomba",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/h12",
+    "published_at": "2026-09-14T08:00:00Z",
+    "fetched_at": "2026-09-15T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "KoBold secures loan for Mingomba\n\nKoBold Metals has signed a US$500 million project finance facility for the Mingomba copper project with a group of development banks. KoBold expects first production in 2030.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_chililabombwe",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "financing_close"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "KoBold Metals",
+        "type": "organisation",
+        "resolution": "org:kobold_metals"
+      },
+      {
+        "text": "KoBold",
+        "type": "organisation",
+        "resolution": "org:kobold_metals"
+      },
+      {
+        "text": "Mingomba copper project",
+        "type": "site",
+        "resolution": "site:mingomba"
+      },
+      {
+        "text": "Mingomba copper project",
+        "type": "project",
+        "resolution": "new"
+      },
+      {
+        "text": "Mingomba",
+        "type": "site",
+        "resolution": "site:mingomba"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "expected_start",
+        "subject": "Mingomba copper project",
+        "certainty": "stated",
+        "value": "2030"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Mingomba copper project",
+        "stage": "financing_fid"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

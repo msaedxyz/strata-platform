@@ -1,0 +1,145 @@
+# JSON output schemas of the enrichment agents (docs/05-enrichment.md).
+# Each agent returns JSON that matches its schema. The Anthropic backend sends the schema as a
+# structured output format. The deterministic backend returns the same shape.
+# Rule 11: the schemas stay in configuration, not in code.
+# Structured outputs need additionalProperties false and a required list on each object.
+
+version: 1
+
+# Reason codes of the quarantine table. A guardrail failure writes one row with one of these codes.
+quarantine_reason_codes:
+  - {code: schema_invalid, description: "The output does not match the JSON schema of the agent, also after one retry"}
+  - {code: span_mismatch, description: "An evidence quote is not the exact substring of the normalised text at its offsets"}
+  - {code: quote_too_long, description: "An evidence quote has more than 500 characters"}
+  - {code: no_evidence, description: "An output item needs evidence but has no verified evidence span"}
+  - {code: value_not_in_quote, description: "The value of a claim does not appear in its evidence quote"}
+  - {code: value_mismatch, description: "The normalised value of a claim differs from the normalised value in its quote"}
+  - {code: value_unparseable, description: "The normalisers cannot read the value of a claim for its value type"}
+  - {code: unknown_taxonomy_code, description: "The classifier gave a code that is not in config/taxonomy"}
+  - {code: unknown_predicate, description: "The extractor gave a predicate that is not in config/taxonomy/predicates.yaml"}
+  - {code: unknown_stage, description: "The lifecycle agent gave a stage that is not in config/lifecycle.yaml"}
+  - {code: unknown_entity, description: "The resolver chose an entity id that is not one of its candidates"}
+  - {code: refusal, description: "The model declined the request (stop_reason refusal)"}
+  - {code: truncated, description: "The output was cut at the token limit (stop_reason max_tokens)"}
+  - {code: backend_error, description: "The backend call failed: rate limit, API error or network error"}
+  - {code: no_text, description: "The source has no stored text to enrich"}
+
+definitions:
+  evidence:
+    type: object
+    additionalProperties: false
+    required: [quote, start, end]
+    properties:
+      quote: {type: string}
+      start: {type: integer}
+      end: {type: integer}
+
+schemas:
+  classifier:
+    type: object
+    additionalProperties: false
+    required: [in_scope, reason, sectors, geographies, themes, activity_types, deal_types, evidence]
+    properties:
+      in_scope: {type: boolean}
+      reason: {type: string}
+      sectors: {type: array, items: {type: string}}
+      geographies: {type: array, items: {type: string}}
+      themes: {type: array, items: {type: string}}
+      activity_types: {type: array, items: {type: string}}
+      deal_types: {type: array, items: {type: string}}
+      evidence: {type: array, items: {$ref: "#/definitions/evidence"}}
+
+  extractor:
+    type: object
+    additionalProperties: false
+    required: [mentions, claims]
+    properties:
+      mentions:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [text, type, start, end]
+          properties:
+            text: {type: string}
+            type: {enum: [organisation, site, project, person, location, other]}
+            start: {type: integer}
+            end: {type: integer}
+      claims:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [subject, subject_type, predicate, object, value_text, value, certainty, certainty_cue, evidence]
+          properties:
+            subject: {type: string}
+            subject_type: {enum: [organisation, site, project, opportunity, market, location, any]}
+            predicate: {type: string}
+            object: {type: [string, "null"]}
+            value_text: {type: [string, "null"]}
+            value: {type: [string, "null"]}
+            certainty: {enum: [stated, reported, speculative]}
+            certainty_cue: {type: [string, "null"]}
+            evidence: {type: array, items: {$ref: "#/definitions/evidence"}}
+
+  resolver:
+    type: object
+    additionalProperties: false
+    required: [decisions]
+    properties:
+      decisions:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [mention, decision, entity_id, confidence, reason, evidence]
+          properties:
+            mention: {type: string}
+            decision: {enum: [match, new, no_decision]}
+            entity_id: {type: [string, "null"]}
+            confidence: {type: number}
+            reason: {type: string}
+            evidence: {type: array, items: {$ref: "#/definitions/evidence"}}
+
+  scorer:
+    # The model adds one judgement feature only. The tier comes from config/tiers.yaml rules.
+    type: object
+    additionalProperties: false
+    required: [judgement, rationale, evidence]
+    properties:
+      judgement: {type: [number, "null"]}
+      rationale: {type: string}
+      evidence: {type: array, items: {$ref: "#/definitions/evidence"}}
+
+  lifecycle:
+    type: object
+    additionalProperties: false
+    required: [projects]
+    properties:
+      projects:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [project, stage, stage_event, certainty, evidence]
+          properties:
+            project: {type: string}
+            stage: {type: string}
+            stage_event: {type: string}
+            certainty: {enum: [stated, reported, speculative]}
+            evidence: {type: array, items: {$ref: "#/definitions/evidence"}}
+
+  summariser:
+    type: object
+    additionalProperties: false
+    required: [sentences]
+    properties:
+      sentences:
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required: [text, evidence]
+          properties:
+            text: {type: string}
+            evidence: {type: array, items: {$ref: "#/definitions/evidence"}}

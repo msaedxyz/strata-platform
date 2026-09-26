@@ -1,0 +1,83 @@
+{
+  "id": "g15",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "AfDB approves loan for the Mwinilunga-Jimbe road",
+    "publisher": "AfDB (synthetic)",
+    "url": "https://synthetic.test/gold/g15",
+    "published_at": "2026-09-13T08:00:00Z",
+    "fetched_at": "2026-09-14T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": true
+  },
+  "text": "AfDB approves loan for the Mwinilunga-Jimbe road\n\nThe African Development Bank (AfDB) has approved a US$255 million loan to Zambia for the Lobito Integrated Economic Corridor Development Project. The loan finances the upgrade of the 110 kilometre Mwinilunga-Jimbe road (T5) and a one-stop border post at Jimbe.\n\nThe Road Development Agency will issue a general procurement notice for the civil works in October 2026.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport"
+    ],
+    "geographies": [
+      "dist_mwinilunga",
+      "prov_north_western",
+      "corr_lobito",
+      "zm"
+    ],
+    "themes": [
+      "financing_close",
+      "transport_infrastructure_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [
+      "construction_contract"
+    ],
+    "entities": [
+      {
+        "text": "African Development Bank",
+        "type": "organisation",
+        "resolution": "org:afdb"
+      },
+      {
+        "text": "AfDB",
+        "type": "organisation",
+        "resolution": "org:afdb"
+      },
+      {
+        "text": "Lobito Integrated Economic Corridor Development Project",
+        "type": "project",
+        "resolution": "new",
+        "accept": [
+          "site:mwinilunga_jimbe_t5"
+        ]
+      },
+      {
+        "text": "Mwinilunga-Jimbe road",
+        "type": "site",
+        "resolution": "site:mwinilunga_jimbe_t5"
+      },
+      {
+        "text": "Jimbe",
+        "type": "site",
+        "resolution": "site:jimbe_border"
+      },
+      {
+        "text": "Road Development Agency",
+        "type": "organisation",
+        "resolution": "org:rda"
+      }
+    ],
+    "claims": [],
+    "projects": [
+      {
+        "name": "Lobito Integrated Economic Corridor Development Project",
+        "stage": "financing_fid"
+      }
+    ],
+    "deal_expected": true,
+    "expected_tier": 0
+  }
+}

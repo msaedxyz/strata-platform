@@ -1,0 +1,54 @@
+{
+  "id": "g28",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Border delays at Nakonde slow fuel tankers",
+    "publisher": "Corridor Logistics Monitor (synthetic)",
+    "url": "https://synthetic.test/gold/g28",
+    "published_at": "2026-09-16T08:00:00Z",
+    "fetched_at": "2026-09-17T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Border delays at Nakonde slow fuel tankers\n\nFuel tankers from Dar es Salaam waited three days at the Nakonde-Tunduma border post because of a system outage at the Tanzanian customs office.\n\nThe Zambia Revenue Authority said that clearance resumed on Friday.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport",
+      "fuel_supply"
+    ],
+    "geographies": [
+      "dist_nakonde",
+      "prov_muchinga",
+      "corr_dar_es_salaam",
+      "tz",
+      "zm"
+    ],
+    "themes": [
+      "border_delay"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Nakonde-Tunduma border post",
+        "type": "site",
+        "resolution": "site:nakonde_border"
+      },
+      {
+        "text": "Zambia Revenue Authority",
+        "type": "organisation",
+        "resolution": "new"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

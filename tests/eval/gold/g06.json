@@ -1,0 +1,105 @@
+{
+  "id": "g06",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "KoBold starts construction of the Mingomba shaft",
+    "publisher": "State House (synthetic)",
+    "url": "https://synthetic.test/gold/g06",
+    "published_at": "2026-09-12T08:00:00Z",
+    "fetched_at": "2026-09-13T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "KoBold starts construction of the Mingomba shaft\n\nKoBold Metals has started construction of the main shaft at the Mingomba copper project in Chililabombwe district. The company broke ground on the shaft collar in August 2026.\n\nKoBold said that the shaft will reach a depth of 1,500 metres. The company has 350 employees and contractors at the site. KoBold owns 71 percent of Mingomba and ZCCM-IH owns 29 percent.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_chililabombwe",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "construction_mobilisation",
+      "new_mine_project"
+    ],
+    "directions": [
+      "demand_up",
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "KoBold",
+        "type": "organisation",
+        "resolution": "org:kobold_metals"
+      },
+      {
+        "text": "KoBold Metals",
+        "type": "organisation",
+        "resolution": "org:kobold_metals"
+      },
+      {
+        "text": "Mingomba copper project",
+        "type": "site",
+        "resolution": "site:mingomba"
+      },
+      {
+        "text": "Mingomba copper project",
+        "type": "project",
+        "resolution": "new"
+      },
+      {
+        "text": "Mingomba",
+        "type": "site",
+        "resolution": "site:mingomba"
+      },
+      {
+        "text": "ZCCM-IH",
+        "type": "organisation",
+        "resolution": "org:zccm_ih"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Mingomba copper project",
+        "certainty": "stated",
+        "value": "under_construction"
+      },
+      {
+        "predicate": "employees",
+        "subject": "Mingomba",
+        "certainty": "stated",
+        "value": "350"
+      },
+      {
+        "predicate": "ownership_percent",
+        "subject": "KoBold",
+        "certainty": "stated",
+        "value": "71%",
+        "object": "Mingomba"
+      },
+      {
+        "predicate": "ownership_percent",
+        "subject": "ZCCM-IH",
+        "certainty": "stated",
+        "value": "29%",
+        "object": "Mingomba"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Mingomba copper project",
+        "stage": "construction_mobilisation"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

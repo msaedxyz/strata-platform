@@ -1,0 +1,99 @@
+{
+  "id": "g09",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Euro Africa resumes production at Kalengwa",
+    "publisher": "Zambian Business Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g09",
+    "published_at": "2026-09-10T08:00:00Z",
+    "fetched_at": "2026-09-11T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Euro Africa resumes production at Kalengwa\n\nEuro Africa Kalengwa Mines Limited has resumed production at the Kalengwa copper mine in Mufumbwe district after a shutdown of three years. The Kalengwa Restart Project cost US$135 million.\n\nThe company said that the mine will produce 12,000 tonnes of copper a year. It has hired 600 workers.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_mufumbwe",
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [
+      "mine_restart"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Euro Africa",
+        "type": "organisation",
+        "resolution": "org:euro_africa_kalengwa"
+      },
+      {
+        "text": "Euro Africa Kalengwa Mines Limited",
+        "type": "organisation",
+        "resolution": "org:euro_africa_kalengwa",
+        "accept": [
+          "site:kalengwa"
+        ]
+      },
+      {
+        "text": "Kalengwa",
+        "type": "site",
+        "resolution": "site:kalengwa"
+      },
+      {
+        "text": "Kalengwa copper mine",
+        "type": "site",
+        "resolution": "site:kalengwa"
+      },
+      {
+        "text": "Kalengwa Restart Project",
+        "type": "project",
+        "resolution": "new"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Kalengwa copper mine",
+        "certainty": "stated",
+        "value": "producing"
+      },
+      {
+        "predicate": "capex",
+        "subject": "Kalengwa Restart Project",
+        "certainty": "stated",
+        "value": "135000000 USD"
+      },
+      {
+        "predicate": "production_target",
+        "subject": "Kalengwa copper mine",
+        "certainty": "stated",
+        "value": "12000 t/y"
+      },
+      {
+        "predicate": "employees",
+        "subject": "Kalengwa copper mine",
+        "certainty": "stated",
+        "value": "600"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Kalengwa Restart Project",
+        "stage": "restart"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

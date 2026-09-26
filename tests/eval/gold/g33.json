@@ -1,0 +1,46 @@
+{
+  "id": "g33",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Low rainfall cuts Kariba water levels",
+    "publisher": "Southern Province News (synthetic)",
+    "url": "https://synthetic.test/gold/g33",
+    "published_at": "2026-09-13T08:00:00Z",
+    "fetched_at": "2026-09-14T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Low rainfall cuts Kariba water levels\n\nThe Zambezi River Authority said that low rainfall in the catchment cut the usable water in Lake Kariba to 15 percent. The Authority reduced the water allocation for power generation for 2027.\n\nFarmers in Southern Province also reported crop failure after the dry season.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power",
+      "agriculture"
+    ],
+    "geographies": [
+      "prov_southern",
+      "zm"
+    ],
+    "themes": [
+      "drought"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Zambezi River Authority",
+        "type": "organisation",
+        "resolution": "org:zambezi_river_authority"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "g40",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "New steel plant for Lusaka South MFEZ",
+    "publisher": "ZDA (synthetic)",
+    "url": "https://synthetic.test/gold/g40",
+    "published_at": "2026-09-06T08:00:00Z",
+    "fetched_at": "2026-09-07T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "New steel plant for Lusaka South MFEZ\n\nThe Zambia Development Agency has issued an investment licence to Kafue Steel Works Limited for a steel plant in the Lusaka South Multi-Facility Economic Zone. The investment is US$45 million.\n\nThe plant will employ 450 people when it opens in 2028.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "industry"
+    ],
+    "geographies": [
+      "dist_lusaka",
+      "prov_lusaka",
+      "zm"
+    ],
+    "themes": [
+      "industrial_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Zambia Development Agency",
+        "type": "organisation",
+        "resolution": "org:zda"
+      },
+      {
+        "text": "Kafue Steel Works Limited",
+        "type": "organisation",
+        "resolution": "new"
+      },
+      {
+        "text": "Lusaka South Multi-Facility Economic Zone",
+        "type": "site",
+        "resolution": "site:lusaka_south_mfez"
+      },
+      {
+        "text": "Lusaka South MFEZ",
+        "type": "site",
+        "resolution": "site:lusaka_south_mfez"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "capex",
+        "subject": "Kafue Steel Works Limited",
+        "certainty": "stated",
+        "value": "45000000 USD"
+      },
+      {
+        "predicate": "expected_start",
+        "subject": "Kafue Steel Works Limited",
+        "certainty": "stated",
+        "value": "2028"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

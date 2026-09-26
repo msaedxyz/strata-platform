@@ -1,0 +1,63 @@
+{
+  "id": "g36",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Zambia Sugar reports record cane harvest at Nakambala",
+    "publisher": "Farming Zambia (synthetic)",
+    "url": "https://synthetic.test/gold/g36",
+    "published_at": "2026-09-10T08:00:00Z",
+    "fetched_at": "2026-09-11T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Zambia Sugar reports record cane harvest at Nakambala\n\nZambia Sugar Plc said that the Nakambala estate produced a record 480,000 tonnes of sugar in the 2026 season. The company increased the area under cane by 1,000 hectares.\n\nZambia Sugar said that it will hire more haulage trucks for the next harvest season.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "agriculture"
+    ],
+    "geographies": [
+      "dist_mazabuka",
+      "prov_southern",
+      "zm"
+    ],
+    "themes": [
+      "production_increase",
+      "harvest_marketing"
+    ],
+    "directions": [
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Zambia Sugar Plc",
+        "type": "organisation",
+        "resolution": "org:zambia_sugar",
+        "accept": [
+          "site:nakambala"
+        ]
+      },
+      {
+        "text": "Zambia Sugar",
+        "type": "organisation",
+        "resolution": "org:zambia_sugar",
+        "accept": [
+          "site:nakambala"
+        ]
+      },
+      {
+        "text": "Nakambala",
+        "type": "site",
+        "resolution": "site:nakambala"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

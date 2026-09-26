@@ -1,0 +1,77 @@
+{
+  "id": "g02",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "GoviEx completes definitive feasibility study for the Muntanga Uranium Project",
+    "publisher": "GoviEx (synthetic)",
+    "url": "https://synthetic.test/gold/g02",
+    "published_at": "2026-09-14T08:00:00Z",
+    "fetched_at": "2026-09-15T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": true
+  },
+  "text": "GoviEx completes definitive feasibility study for the Muntanga Uranium Project\n\nGoviEx Uranium Inc. said on Monday that it has completed a definitive feasibility study for the Muntanga Uranium Project in Siavonga district, Southern Province.\n\nThe study shows an open pit operation with a life of 12 years and a capital cost of US$180 million. The mine will produce about 1,500 tonnes of uranium oxide a year at full capacity. GoviEx plans to start the search for project finance in the first quarter of 2027.\n\nThe company expects to make a construction decision in 2027.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_siavonga",
+      "prov_southern",
+      "zm"
+    ],
+    "themes": [
+      "feasibility_study"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "GoviEx",
+        "type": "organisation",
+        "resolution": "org:goviex"
+      },
+      {
+        "text": "GoviEx Uranium Inc.",
+        "type": "organisation",
+        "resolution": "org:goviex"
+      },
+      {
+        "text": "Muntanga Uranium Project",
+        "type": "project",
+        "resolution": "new",
+        "accept": [
+          "site:muntanga"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "capex",
+        "subject": "Muntanga Uranium Project",
+        "certainty": "stated",
+        "value": "180000000 USD"
+      },
+      {
+        "predicate": "production_target",
+        "subject": "Muntanga Uranium Project",
+        "certainty": "stated",
+        "value": "1500 t/y"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Muntanga Uranium Project",
+        "stage": "feasibility"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

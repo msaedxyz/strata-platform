@@ -1,0 +1,3653 @@
+{
+  "backend": "deterministic",
+  "model_id": "deterministic-v1",
+  "prompt_version": "rules-v1",
+  "metrics": {
+    "canonical_facts_verified": 1.0,
+    "extraction_precision": 0.9524,
+    "extraction_recall": 0.9524,
+    "resolution_precision": 0.9797,
+    "classification_macro_f1": 0.9845,
+    "lifecycle_stage_accuracy": 1.0
+  },
+  "extra": {
+    "certainty_accuracy_on_matched_claims": 0.9833,
+    "tier_accuracy": 0.9787,
+    "deal_accuracy": 1.0,
+    "counts": {
+      "documents": 50,
+      "fact_events": 196,
+      "claims_predicted": 63,
+      "claims_gold": 63,
+      "claims_matched": 60,
+      "resolution_decisions": 148,
+      "lifecycle_projects": 14
+    },
+    "class_f1": {
+      "direction:demand_down": 1.0,
+      "direction:demand_up": 0.9524,
+      "direction:procurement": 1.0,
+      "direction:project_pipeline": 0.9756,
+      "in_scope": 1.0,
+      "sector:agriculture": 1.0,
+      "sector:fuel_supply": 0.9474,
+      "sector:industry": 1.0,
+      "sector:mining": 0.9545,
+      "sector:power": 1.0,
+      "sector:transport": 1.0
+    },
+    "quarantine_reason_codes": {}
+  },
+  "documents": [
+    {
+      "id": "g01",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "eia_filed",
+        "mine_expansion"
+      ],
+      "gold_themes": [
+        "eia_filed",
+        "mine_expansion"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "buyer_role_owner",
+          "subject": "Mimbula Phase 3 Expansion Project",
+          "value": "mimbula minerals",
+          "object": "Mimbula Minerals Limited",
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "production_target",
+          "subject": "Mimbula Phase 3 Expansion Project",
+          "value": "30000 t/y",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "capex",
+          "subject": "Mimbula Phase 3 Expansion Project",
+          "value": "120000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "ZEMA",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zema",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mimbula",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mimbula",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Zambia Environmental Management Agency",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zema",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mimbula Minerals Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mimbula_minerals",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mimbula copper mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mimbula",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mimbula Phase 3 Expansion Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:mimbula phase 3 expansion project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Mimbula Phase 3 Expansion Project",
+          "gold_stage": "eia_filed",
+          "predicted": "eia_filed",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g02",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "feasibility_study"
+      ],
+      "gold_themes": [
+        "feasibility_study"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "capex",
+          "subject": "Muntanga Uranium Project",
+          "value": "180000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "production_target",
+          "subject": "Muntanga Uranium Project",
+          "value": "1500 t/y",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "GoviEx",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:goviex",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Muntanga Uranium Project",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:muntanga",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "GoviEx Uranium Inc.",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:goviex",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Muntanga Uranium Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:muntanga uranium project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Muntanga Uranium Project",
+          "gold_stage": "feasibility",
+          "predicted": "feasibility",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g03",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "mining_licence_granted"
+      ],
+      "gold_themes": [
+        "mining_licence_granted"
+      ],
+      "deals": [
+        "epc_contract"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "licence_number",
+          "subject": "Fishtie Copper Project",
+          "value": "lml-35-2026",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "ownership_percent",
+          "subject": "Mimosa Resources",
+          "value": "100%",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "expected_start",
+          "subject": "Fishtie Copper Project",
+          "value": "2029",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Mimosa Resources",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mimosa_resources",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Fishtie",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kashime",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Ministry of Mines and Minerals Development",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:ministry_of_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Fishtie Copper Project",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kashime",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Fishtie Copper Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:fishtie copper project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Fishtie Copper Project",
+          "gold_stage": "licence_granted",
+          "predicted": "licence_granted",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g04",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "transport"
+      ],
+      "gold_sectors": [
+        "transport"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "financing_close",
+        "transport_infrastructure_project"
+      ],
+      "gold_themes": [
+        "financing_close",
+        "transport_infrastructure_project"
+      ],
+      "deals": [
+        "epc_contract"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "expected_start",
+          "subject": "Zambia Lobito Rail Project",
+          "value": "2027",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Zambia Lobito Rail Project",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:zambia_lobito_rail",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Africa Finance Corporation",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:africa_finance_corporation",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "AFC",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:africa_finance_corporation",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Zambia Lobito Rail Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:zambia lobito rail project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Zambia Lobito Rail Project",
+          "gold_stage": "financing_fid",
+          "predicted": "financing_fid",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g05",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "procurement",
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "procurement",
+        "project_pipeline"
+      ],
+      "themes": [
+        "contract_mining",
+        "contractor_award",
+        "mine_expansion"
+      ],
+      "gold_themes": [
+        "contractor_award",
+        "contract_mining",
+        "mine_expansion"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "buyer_role_mining_contractor",
+          "subject": "Lumwana Super Pit Project",
+          "value": "kanyika mining services",
+          "object": "Kanyika Mining Services Limited",
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "contract_value",
+          "subject": "Lumwana Super Pit Project",
+          "value": "410000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "fleet_trucks",
+          "subject": "Lumwana Super Pit Project",
+          "value": "45",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "production_target",
+          "subject": "Lumwana Super Pit Project",
+          "value": "240000 t/y",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Barrick",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:barrick",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Barrick Mining Corporation",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:barrick",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lumwana Super Pit Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:lumwana super pit project:0",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kanyika Mining Services Limited",
+          "type": "organisation",
+          "decision": "new",
+          "entity_id": "new:organisation:kanyika mining services:1",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Lumwana Super Pit Project",
+          "gold_stage": "contractor_procurement",
+          "predicted": "contractor_procurement",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g06",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up",
+        "project_pipeline"
+      ],
+      "themes": [
+        "construction_mobilisation"
+      ],
+      "gold_themes": [
+        "construction_mobilisation",
+        "new_mine_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Mingomba copper project",
+          "value": "under_construction",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "employees",
+          "subject": "Mingomba copper project",
+          "value": "350",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "ownership_percent",
+          "subject": "KoBold",
+          "value": "71%",
+          "object": "Mingomba",
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "ownership_percent",
+          "subject": "ZCCM-IH",
+          "value": "29%",
+          "object": "Mingomba",
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "KoBold",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kobold_metals",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mingomba",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mingomba",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "KoBold Metals",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kobold_metals",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mingomba copper project",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mingomba",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "ZCCM-IH",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zccm_ih",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mingomba copper project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:mingomba copper project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Mingomba copper project",
+          "gold_stage": "construction_mobilisation",
+          "predicted": "construction_mobilisation",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g07",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_daily_site_status_change",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up"
+      ],
+      "themes": [
+        "commissioning_rampup"
+      ],
+      "gold_themes": [
+        "commissioning_rampup"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Kitumba",
+          "value": "ramping_up",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "production_target",
+          "subject": "Kitumba copper mine",
+          "value": "3300000 t/y",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "employees",
+          "subject": "Kitumba copper mine",
+          "value": "1100",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Sinomine",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:sinomine",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kitumba",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kitumba",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Sinomine Resource Group",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:sinomine",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kitumba copper mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kitumba",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g08",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "exploration_drilling"
+      ],
+      "gold_themes": [
+        "exploration_drilling"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Arc Minerals",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:arc_minerals",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Cheyeza East",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:arc_minerals_nw",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Anglo American",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:anglo_american",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "West Lunga",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:arc_minerals_nw",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g09",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "mine_restart"
+      ],
+      "gold_themes": [
+        "mine_restart"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Kalengwa",
+          "value": "producing",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "capex",
+          "subject": "Kalengwa Restart Project",
+          "value": "135000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "production_target",
+          "subject": "Kalengwa",
+          "value": "12000 t/y",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "employees",
+          "subject": "Kalengwa",
+          "value": "600",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Euro Africa",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:euro_africa_kalengwa",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kalengwa",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kalengwa",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Euro Africa Kalengwa Mines Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:euro_africa_kalengwa",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kalengwa copper mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kalengwa",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kalengwa Restart Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:kalengwa restart project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Kalengwa Restart Project",
+          "gold_stage": "restart",
+          "predicted": "restart",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g10",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "power"
+      ],
+      "gold_sectors": [
+        "power"
+      ],
+      "directions": [
+        "procurement",
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "procurement",
+        "project_pipeline"
+      ],
+      "themes": [
+        "contractor_award",
+        "power_project",
+        "tender_notice"
+      ],
+      "gold_themes": [
+        "tender_notice",
+        "power_project"
+      ],
+      "deals": [
+        "epc_contract",
+        "tender"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "capex",
+          "subject": "Batoka Gorge Hydro-Electric Project",
+          "value": "5000000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "generation_mw",
+          "subject": "Batoka Gorge Hydro-Electric Project",
+          "value": "2400",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "tender_deadline",
+          "subject": "Batoka Gorge Hydro-Electric Project",
+          "value": "2026-11-30",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Zambezi River Authority",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zambezi_river_authority",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Batoka Gorge",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:batoka_gorge",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Batoka Gorge Hydro-Electric Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:batoka gorge hydro-electric project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Batoka Gorge Hydro-Electric Project",
+          "gold_stage": "contractor_procurement",
+          "predicted": "contractor_procurement",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g11",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up"
+      ],
+      "themes": [
+        "commissioning_rampup"
+      ],
+      "gold_themes": [
+        "commissioning_rampup"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Enterprise Nickel Project",
+          "value": "producing",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "production_target",
+          "subject": "Enterprise Nickel Project",
+          "value": "30000 t/y",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "First Quantum",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:first_quantum",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "First Quantum Minerals",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:first_quantum",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Enterprise Nickel Project",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:enterprise",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Sentinel mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:sentinel",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Enterprise Nickel Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:enterprise nickel project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Enterprise Nickel Project",
+          "gold_stage": "steady_operation",
+          "predicted": "steady_operation",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g12",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "industry"
+      ],
+      "gold_sectors": [
+        "industry"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "industrial_project"
+      ],
+      "gold_themes": [
+        "industrial_project",
+        "financing_close"
+      ],
+      "deals": [
+        "construction_contract"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "capex",
+          "subject": "Phoenix Project",
+          "value": "95000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "production_target",
+          "subject": "Phoenix Project",
+          "value": "1200000 t/y",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Chilanga Cement",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:chilanga_cement",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Phoenix Project",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:chilanga_cement_ndola",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Phoenix Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:phoenix project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Phoenix Project",
+          "gold_stage": "financing_fid",
+          "predicted": "financing_fid",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g13",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "power"
+      ],
+      "gold_sectors": [
+        "power"
+      ],
+      "directions": [
+        "demand_up",
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline",
+        "demand_up"
+      ],
+      "themes": [
+        "construction_mobilisation",
+        "power_project"
+      ],
+      "gold_themes": [
+        "power_project",
+        "construction_mobilisation"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "generation_mw",
+          "subject": "Maamba Phase II Expansion Project",
+          "value": "300",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "employees",
+          "subject": "Maamba",
+          "value": "800",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "capex",
+          "subject": "Maamba Phase II Expansion Project",
+          "value": "400000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Maamba",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:maamba",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Maamba Energy Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:maamba_energy",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Maamba Phase II Expansion Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:maamba phase ii expansion project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Maamba Phase II Expansion Project",
+          "gold_stage": "construction_mobilisation",
+          "predicted": "construction_mobilisation",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g14",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "agriculture"
+      ],
+      "gold_sectors": [
+        "agriculture"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "agri_expansion",
+        "eia_filed"
+      ],
+      "gold_themes": [
+        "eia_filed",
+        "agri_expansion"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Nansanga farm block",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:nansanga_farm_block",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Ministry of Agriculture",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:ministry_of_agriculture",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Nansanga Commodity Value Chain Transformation Project",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:nansanga_farm_block",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "African Development Bank",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:afdb",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Nansanga Commodity Value Chain Transformation Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:nansanga commodity value chain transformation project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Nansanga Commodity Value Chain Transformation Project",
+          "gold_stage": "eia_filed",
+          "predicted": "eia_filed",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g15",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "transport"
+      ],
+      "gold_sectors": [
+        "transport"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "financing_close",
+        "transport_infrastructure_project"
+      ],
+      "gold_themes": [
+        "financing_close",
+        "transport_infrastructure_project"
+      ],
+      "deals": [
+        "construction_contract"
+      ],
+      "deal_expected": true,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "AfDB",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:afdb",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mwinilunga-Jimbe road",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mwinilunga_jimbe_t5",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "African Development Bank",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:afdb",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lobito Integrated Economic Corridor Development Project",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mwinilunga_jimbe_t5",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Jimbe",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:jimbe_border",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Road Development Agency",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:rda",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lobito Integrated Economic Corridor Development Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:lobito integrated economic corridor development project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Lobito Integrated Economic Corridor Development Project",
+          "gold_stage": "financing_fid",
+          "predicted": "financing_fid",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g16",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_open_procurement_notice",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply",
+        "mining"
+      ],
+      "gold_sectors": [
+        "fuel_supply",
+        "mining"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "fuel_supply_tender",
+        "tender_notice"
+      ],
+      "gold_themes": [
+        "tender_notice",
+        "fuel_supply_tender"
+      ],
+      "deals": [
+        "fuel_supply_contract",
+        "fuel_supply_contract",
+        "tender"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "tender_deadline",
+          "subject": "Kansanshi mine",
+          "value": "2026-10-15",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Kansanshi Mining Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kansanshi_mining_plc",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kansanshi mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kansanshi",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Energy Regulation Board",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:erb",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g17",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_open_procurement_notice",
+      "expected_tier": 0,
+      "sectors": [
+        "mining",
+        "transport"
+      ],
+      "gold_sectors": [
+        "transport",
+        "mining"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "haulage_contract",
+        "tender_notice"
+      ],
+      "gold_themes": [
+        "tender_notice",
+        "haulage_contract"
+      ],
+      "deals": [
+        "haulage_contract",
+        "tender"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "tender_deadline",
+          "subject": "NFCA",
+          "value": "2026-10-20",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "NFC Africa Mining Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:nfca",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kasumbalesa border post",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kasumbalesa_border",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "ZPPA",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zppa",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "NFCA",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:nfca",
+          "correct": false,
+          "labelled": false
+        },
+        {
+          "mention": "NFCA",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:chambishi",
+          "correct": false,
+          "labelled": false
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g18",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_open_procurement_notice",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "prequalification_notice"
+      ],
+      "gold_themes": [
+        "prequalification_notice"
+      ],
+      "deals": [
+        "contract_mining",
+        "prequalification"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "tender_deadline",
+          "subject": "Mopani",
+          "value": "2026-10-31",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Mopani",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mopani_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mopani Copper Mines Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mopani_copper_mines",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g19",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "procurement",
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "procurement",
+        "project_pipeline"
+      ],
+      "themes": [
+        "eoi_notice",
+        "mine_expansion"
+      ],
+      "gold_themes": [
+        "eoi_notice",
+        "mine_expansion"
+      ],
+      "deals": [
+        "epc_contract",
+        "epc_contract",
+        "eoi"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "tender_deadline",
+          "subject": "Konkola Deep Mining Project",
+          "value": "2026-11-06",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "KCM",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kcm",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Konkola Copper Mines Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kcm",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Konkola Deep Mining Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:konkola deep mining project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Konkola Deep Mining Project",
+          "gold_stage": "contractor_procurement",
+          "predicted": "contractor_procurement",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "g20",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_open_procurement_notice",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply",
+        "industry"
+      ],
+      "gold_sectors": [
+        "industry",
+        "fuel_supply"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "tender_notice"
+      ],
+      "gold_themes": [
+        "tender_notice",
+        "fuel_supply_tender"
+      ],
+      "deals": [
+        "fuel_supply_contract",
+        "tender"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "tender_deadline",
+          "subject": "NCZ",
+          "value": "2026-10-09",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "NCZ",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:ncz",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "NCZ",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:ncz_kafue",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Nitrogen Chemicals of Zambia Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:ncz",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g21",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 1,
+      "tier_rule": "t1_contractor_award_watched",
+      "expected_tier": 1,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "contract_mining",
+        "contractor_award"
+      ],
+      "gold_themes": [
+        "contractor_award",
+        "contract_mining"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "contract_value",
+          "subject": "Lubambe mine",
+          "value": "60000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "fleet_trucks",
+          "subject": "Lubambe mine",
+          "value": "25",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Lubambe",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:lubambe_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lubambe Copper Mines Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:lubambe_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lubambe mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:lubambe",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Copperbelt Earthmoving Limited",
+          "type": "organisation",
+          "decision": "new",
+          "entity_id": "new:organisation:copperbelt earthmoving:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g22",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_open_procurement_notice",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply",
+        "power"
+      ],
+      "gold_sectors": [
+        "power",
+        "fuel_supply"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "fuel_supply_tender",
+        "tender_notice"
+      ],
+      "gold_themes": [
+        "tender_notice",
+        "fuel_supply_tender"
+      ],
+      "deals": [
+        "fuel_supply_contract",
+        "fuel_supply_contract"
+      ],
+      "deal_expected": true,
+      "claims": [
+        {
+          "predicate": "tender_deadline",
+          "subject": "Kariba North Bank Extension",
+          "value": "2026-10-23",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "KNBEPC",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:knbepc",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kariba North Bank Extension Power Corporation Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:knbepc",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kariba North Bank Extension",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kariba_north_bank",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g23",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply"
+      ],
+      "gold_sectors": [
+        "fuel_supply"
+      ],
+      "directions": [
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up"
+      ],
+      "themes": [
+        "fuel_shortage"
+      ],
+      "gold_themes": [
+        "fuel_shortage"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Energy Regulation Board",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:erb",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g24",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_daily_site_status_change",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply"
+      ],
+      "gold_sectors": [
+        "fuel_supply"
+      ],
+      "directions": [
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up"
+      ],
+      "themes": [
+        "pipeline_outage"
+      ],
+      "gold_themes": [
+        "pipeline_outage"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "TAZAMA pipeline",
+          "value": "suspended",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "TAZAMA pipeline",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:tazama_pipeline",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "TAZAMA Pipelines Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:tazama_pipelines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Ministry of Energy",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:ministry_of_energy",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g25",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply"
+      ],
+      "gold_sectors": [
+        "fuel_supply"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "erb_price_change"
+      ],
+      "gold_themes": [
+        "erb_price_change"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "fuel_price",
+          "subject": "fuel market",
+          "value": "28.4 ZMW",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "fuel_price",
+          "subject": "fuel market",
+          "value": "27.1 ZMW",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "ERB",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:erb",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Energy Regulation Board",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:erb",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g26",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 0,
+      "sectors": [
+        "mining",
+        "power"
+      ],
+      "gold_sectors": [
+        "power"
+      ],
+      "directions": [
+        "demand_down",
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up",
+        "demand_down"
+      ],
+      "themes": [
+        "drought",
+        "load_shedding"
+      ],
+      "gold_themes": [
+        "load_shedding",
+        "drought"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "ZESCO",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zesco",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kariba North Bank",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kariba_north_bank",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g27",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 0,
+      "sectors": [
+        "transport"
+      ],
+      "gold_sectors": [
+        "transport"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "border_delay"
+      ],
+      "gold_themes": [
+        "border_delay"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Kasumbalesa",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kasumbalesa_border",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kasumbalesa border post",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kasumbalesa_border",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g28",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply",
+        "transport"
+      ],
+      "gold_sectors": [
+        "transport",
+        "fuel_supply"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "border_delay"
+      ],
+      "gold_themes": [
+        "border_delay"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Nakonde-Tunduma border post",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:nakonde_border",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g29",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "fuel_supply"
+      ],
+      "gold_sectors": [
+        "fuel_supply"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "erb_price_change"
+      ],
+      "gold_themes": [
+        "erb_price_change"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "fuel_price",
+          "subject": "fuel market",
+          "value": "28.4 ZMW",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "ERB",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:erb",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Energy Regulation Board",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:erb",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g30",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_daily_site_status_change",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "suspension"
+      ],
+      "gold_themes": [
+        "suspension"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Mufulira mine",
+          "value": "suspended",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "employees",
+          "subject": "Mufulira mine",
+          "value": "1200",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Mufulira mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mopani_mufulira",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mopani Copper Mines Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mopani_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mopani",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mopani_copper_mines",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g31",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "industry"
+      ],
+      "gold_sectors": [
+        "industry"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "care_and_maintenance"
+      ],
+      "gold_themes": [
+        "care_and_maintenance"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Ndola Lime",
+          "value": "care_and_maintenance",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "employees",
+          "subject": "Ndola Lime Company",
+          "value": "300",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "ownership_percent",
+          "subject": "ZCCM-IH",
+          "value": "100%",
+          "object": "Ndola Lime",
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Ndola Lime",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:ndola_lime_company",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "ZCCM Investments Holdings Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zccm_ih",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "ZCCM-IH",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zccm_ih",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g32",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "retrenchment"
+      ],
+      "gold_themes": [
+        "retrenchment",
+        "closure"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Mopani",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mopani_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mopani Copper Mines Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mopani_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Nkana mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mopani_nkana",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g33",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "agriculture",
+        "power"
+      ],
+      "gold_sectors": [
+        "power",
+        "agriculture"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "drought"
+      ],
+      "gold_themes": [
+        "drought"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Zambezi River Authority",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zambezi_river_authority",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g34",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "transport"
+      ],
+      "gold_sectors": [
+        "transport"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "road_disruption"
+      ],
+      "gold_themes": [
+        "road_disruption"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Mwinilunga-Jimbe road",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mwinilunga_jimbe_t5",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Road Development Agency",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:rda",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g35",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "agriculture"
+      ],
+      "gold_sectors": [
+        "agriculture"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "agri_expansion"
+      ],
+      "gold_themes": [
+        "agri_expansion"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Zambeef",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zambeef",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mpongwe Farms",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:zambeef_mpongwe",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Zambeef Products Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zambeef",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g36",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "agriculture"
+      ],
+      "gold_sectors": [
+        "agriculture"
+      ],
+      "directions": [
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up"
+      ],
+      "themes": [
+        "harvest_marketing",
+        "production_increase"
+      ],
+      "gold_themes": [
+        "production_increase",
+        "harvest_marketing"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Zambia Sugar",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zambia_sugar",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Nakambala",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zambia_sugar",
+          "correct": false,
+          "labelled": true
+        },
+        {
+          "mention": "Nakambala",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:nakambala",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g37",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 2,
+      "sectors": [
+        "fuel_supply",
+        "mining",
+        "power"
+      ],
+      "gold_sectors": [
+        "power"
+      ],
+      "directions": [
+        "demand_up",
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "load_shedding",
+        "power_project"
+      ],
+      "gold_themes": [
+        "power_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "generation_mw",
+          "subject": "Chisamba solar",
+          "value": "100",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Chisamba solar",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:chisamba_solar",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "ZESCO Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zesco",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Chisamba solar power plant",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:chisamba_solar",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g38",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "fleet_purchase"
+      ],
+      "gold_themes": [
+        "fleet_purchase"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "fleet_trucks",
+          "subject": "Kansanshi",
+          "value": "30",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "fleet_trucks",
+          "subject": "Kansanshi mine",
+          "value": "110",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Kansanshi",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kansanshi",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kansanshi Mining Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kansanshi_mining_plc",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kansanshi mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kansanshi",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g39",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "industry"
+      ],
+      "gold_sectors": [
+        "industry"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "industrial_project"
+      ],
+      "gold_themes": [
+        "industrial_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "production_target",
+          "subject": "Masaiti cement plant",
+          "value": "3000000 t/y",
+          "object": null,
+          "certainty": "reported",
+          "matched": true
+        },
+        {
+          "predicate": "expected_start",
+          "subject": "Masaiti cement plant",
+          "value": "2028",
+          "object": null,
+          "certainty": "speculative",
+          "matched": false
+        }
+      ],
+      "missed_claims": [
+        {
+          "predicate": "expected_start",
+          "subject": "Dangote",
+          "certainty": "speculative",
+          "value": "2028"
+        }
+      ],
+      "resolutions": [
+        {
+          "mention": "Dangote Cement Zambia",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:dangote_cement_zambia",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Masaiti cement plant",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:dangote_masaiti",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g40",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "industry"
+      ],
+      "gold_sectors": [
+        "industry"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "industrial_project"
+      ],
+      "gold_themes": [
+        "industrial_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "capex",
+          "subject": "Lusaka South Multi-Facility Economic Zone",
+          "value": "45000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": false
+        },
+        {
+          "predicate": "expected_start",
+          "subject": "Lusaka South Multi-Facility Economic Zone",
+          "value": "2028",
+          "object": null,
+          "certainty": "stated",
+          "matched": false
+        }
+      ],
+      "missed_claims": [
+        {
+          "predicate": "capex",
+          "subject": "Kafue Steel Works Limited",
+          "certainty": "stated",
+          "value": "45000000 USD"
+        },
+        {
+          "predicate": "expected_start",
+          "subject": "Kafue Steel Works Limited",
+          "certainty": "stated",
+          "value": "2028"
+        }
+      ],
+      "resolutions": [
+        {
+          "mention": "Lusaka South MFEZ",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:lusaka_south_mfez",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Zambia Development Agency",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zda",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lusaka South Multi-Facility Economic Zone",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:lusaka_south_mfez",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kafue Steel Works Limited",
+          "type": "organisation",
+          "decision": "new",
+          "entity_id": "new:organisation:kafue steel works:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g41",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_daily_site_status_change",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "mine_restart"
+      ],
+      "gold_themes": [
+        "mine_restart"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Mopani Mufulira mine",
+          "value": "producing",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Mopani Mufulira mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mopani_mufulira",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g42",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "transport"
+      ],
+      "gold_sectors": [
+        "transport"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "financing_close",
+        "transport_infrastructure_project"
+      ],
+      "gold_themes": [
+        "financing_close",
+        "transport_infrastructure_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "AfDB",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:afdb",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g43",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply",
+        "transport"
+      ],
+      "gold_sectors": [
+        "fuel_supply",
+        "transport"
+      ],
+      "directions": [
+        "demand_down",
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up",
+        "demand_down"
+      ],
+      "themes": [
+        "border_delay",
+        "fuel_shortage"
+      ],
+      "gold_themes": [
+        "fuel_shortage",
+        "border_delay"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Kasumbalesa",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kasumbalesa_border",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g44",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up"
+      ],
+      "themes": [
+        "production_increase"
+      ],
+      "gold_themes": [
+        "production_increase"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Kagem",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kagem_mining",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kagem",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kagem",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g45",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "power"
+      ],
+      "gold_sectors": [
+        "power"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "power_project"
+      ],
+      "gold_themes": [
+        "power_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "generation_mw",
+          "subject": "Maamba Energy",
+          "value": "300",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Maamba Energy",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:maamba_energy",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g46",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [],
+      "gold_directions": [],
+      "themes": [],
+      "gold_themes": [],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "ownership_percent",
+          "subject": "Vedanta",
+          "value": "80%",
+          "object": "KCM",
+          "certainty": "reported",
+          "matched": true
+        },
+        {
+          "predicate": "ownership_percent",
+          "subject": "ZCCM-IH",
+          "value": "20%",
+          "object": "KCM",
+          "certainty": "reported",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Vedanta",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:vedanta_resources",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "KCM",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kcm",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Vedanta Resources",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:vedanta_resources",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Konkola Copper Mines Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:kcm",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "ZCCM-IH",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zccm_ih",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g47",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "contract_mining",
+        "fleet_purchase"
+      ],
+      "gold_themes": [
+        "tender_notice",
+        "contract_mining"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "fleet_trucks",
+          "subject": "Sentinel mine",
+          "value": "100",
+          "object": null,
+          "certainty": "reported",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "First Quantum",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:first_quantum",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "First Quantum Minerals",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:first_quantum",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Sentinel mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:sentinel",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g48",
+      "status": "out_of_scope",
+      "gold_in_scope": false,
+      "tier": null,
+      "tier_rule": null,
+      "expected_tier": null,
+      "sectors": [],
+      "gold_sectors": [],
+      "directions": [],
+      "gold_directions": [],
+      "themes": [],
+      "gold_themes": [],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g49",
+      "status": "out_of_scope",
+      "gold_in_scope": false,
+      "tier": null,
+      "tier_rule": null,
+      "expected_tier": null,
+      "sectors": [],
+      "gold_sectors": [],
+      "directions": [],
+      "gold_directions": [],
+      "themes": [],
+      "gold_themes": [],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "g50",
+      "status": "out_of_scope",
+      "gold_in_scope": false,
+      "tier": null,
+      "tier_rule": null,
+      "expected_tier": null,
+      "sectors": [],
+      "gold_sectors": [],
+      "directions": [],
+      "gold_directions": [],
+      "themes": [],
+      "gold_themes": [],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [],
+      "lifecycle": [],
+      "quarantine": []
+    }
+  ],
+  "failures": []
+}

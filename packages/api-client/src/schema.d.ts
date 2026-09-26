@@ -441,6 +441,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/quarantine": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Quarantine */
+        get: operations["list_quarantine_api_quarantine_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/quarantine/{quarantine_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Quarantine */
+        get: operations["get_quarantine_api_quarantine__quarantine_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/session/login": {
         parameters: {
             query?: never;
@@ -654,6 +688,51 @@ export interface components {
             change_note?: string | null;
             /** Yaml */
             yaml: string;
+        };
+        /** QuarantineList */
+        QuarantineList: {
+            /** Items */
+            items: components["schemas"]["QuarantineRecord"][];
+            /** Reason Codes */
+            reason_codes: {
+                [key: string]: string;
+            };
+            /** Total */
+            total: number;
+        };
+        /** QuarantineRecord */
+        QuarantineRecord: {
+            /** Agent */
+            agent: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Detail */
+            detail: {
+                [key: string]: unknown;
+            };
+            /** Id */
+            id: string;
+            /** Model Id */
+            model_id: string | null;
+            /** Output */
+            output?: unknown | null;
+            /** Prompt Version */
+            prompt_version: string | null;
+            /** Reason */
+            reason: string | null;
+            /** Reason Code */
+            reason_code: string;
+            /** Run Id */
+            run_id: string | null;
+            /** Source Id */
+            source_id: string | null;
+            /** Source Title */
+            source_title?: string | null;
+            /** Source Url */
+            source_url?: string | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -1407,6 +1486,72 @@ export interface operations {
                     "application/json": {
                         [key: string]: unknown;
                     };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_quarantine_api_quarantine_get: {
+        parameters: {
+            query?: {
+                reason_code?: string | null;
+                agent?: string | null;
+                source_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuarantineList"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_quarantine_api_quarantine__quarantine_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                quarantine_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuarantineRecord"];
                 };
             };
             /** @description Validation Error */
