@@ -1,0 +1,42 @@
+// Browser end to end tests on the running local stack: nginx with the web build, the real API, the real Keycloak
+// login page and the live stream. Start the stack first (make e2e does it). See tests/e2e/README.md.
+// The Python suite (tests/e2e/python) runs first. It activates the acceptance brief and waits for the collectors.
+import { existsSync } from "node:fs";
+import { defineConfig, devices } from "@playwright/test";
+
+if (!process.env.PLAYWRIGHT_BROWSERS_PATH && existsSync("/opt/pw-browsers")) {
+  process.env.PLAYWRIGHT_BROWSERS_PATH = "/opt/pw-browsers";
+}
+
+const WEB_URL = process.env.E2E_WEB_URL ?? "http://localhost:8088";
+const OUT = process.env.E2E_RESULTS_DIR ?? "../../../test-results/e2e";
+
+export default defineConfig({
+  testDir: "tests",
+  outputDir: `${OUT}/browser-artifacts`,
+  // The tests share one stack and one database. They run one at a time, in file order.
+  fullyParallel: false,
+  workers: 1,
+  retries: 0,
+  timeout: 180_000,
+  expect: { timeout: 20_000 },
+  reporter: [
+    ["list"],
+    ["junit", { outputFile: `${OUT}/browser.xml` }],
+    ["json", { outputFile: `${OUT}/browser.json` }],
+  ],
+  use: {
+    ...devices["Desktop Chrome"],
+    baseURL: WEB_URL,
+    viewport: { width: 1920, height: 1080 },
+    trace: "retain-on-failure",
+    screenshot: "only-on-failure",
+    // The stack is on localhost. A proxy of the host must not see these requests.
+    launchOptions: { args: ["--no-proxy-server"] },
+  },
+  projects: [
+    { name: "stack", testIgnore: /perf\.spec\.ts/ },
+    // docs/07 criteria 6 and 7 seed 10 000 signals and 500 deals. They run last, after the scenarios.
+    { name: "perf", testMatch: /perf\.spec\.ts/, dependencies: ["stack"] },
+  ],
+});

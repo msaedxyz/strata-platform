@@ -3,6 +3,8 @@ packages:
   - "packages/*"
   # The audit tool installs on its own with its own lock file.
   - "!tools/audit"
+  # The browser end to end tests install on their own too (pnpm --dir tests/e2e/browser install --ignore-workspace).
+  - "!tests/e2e/browser"
 
 # Packages that may run install scripts.
 onlyBuiltDependencies:
