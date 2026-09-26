@@ -6,7 +6,7 @@
     "canonical_facts_verified": 1.0,
     "extraction_precision": 0.9,
     "extraction_recall": 0.75,
-    "resolution_precision": 0.9697,
+    "resolution_precision": 0.9706,
     "classification_macro_f1": 0.9376,
     "lifecycle_stage_accuracy": 1.0
   },
@@ -20,7 +20,7 @@
       "claims_predicted": 10,
       "claims_gold": 12,
       "claims_matched": 9,
-      "resolution_decisions": 33,
+      "resolution_decisions": 34,
       "lifecycle_projects": 3
     },
     "class_f1": {
@@ -721,6 +721,14 @@
           "type": "organisation",
           "decision": "match",
           "entity_id": "org:barrick",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lumwana",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:lumwana",
           "correct": true,
           "labelled": true
         },

@@ -498,6 +498,29 @@ def _claim(subject: dict | None, subject_type: str, predicate: str, value_text: 
     }
 
 
+def _plausible_amount(normal: str) -> bool:
+    """A project amount below claims.min_project_money_amount is a parse fault, not a fact (M4)."""
+    try:
+        amount = float(normal.split()[0])
+    except (ValueError, IndexError):
+        return False
+    return amount >= float(config.get("claims.min_project_money_amount", 0))
+
+
+def _asset_after(text: str, in_sentence: list[dict], after: int, r: dict) -> dict | None:
+    """The first project, site or organisation after the amount with "in", "into", "at" or "for" between them."""
+    gap_max = int(r.get("capex_asset_max_gap_chars", 60))
+    prep = r.get("capex_asset_preposition") or r"\b(?:in|into)\b"
+    for m in sorted(in_sentence, key=lambda x: x["start"]):
+        if m["start"] < after or m["type"] not in ("project", "site", "organisation"):
+            continue
+        gap = text[after:m["start"]]
+        if len(gap) <= gap_max and re.search(prep, gap, re.IGNORECASE):
+            return m
+        return None
+    return None
+
+
 def extract_claims(text: str, mentions: list[dict], ctx: dict, alt_sites: list[dict] | None = None) -> list[dict]:
     r = config.rules()["claims"]
     c = compiled()
@@ -545,14 +568,24 @@ def extract_claims(text: str, mentions: list[dict], ctx: dict, alt_sites: list[d
             if predicate == "fuel_price":
                 claims.append(_claim({"text": "fuel market"}, "market", predicate, q[s:e], normal, cert, span))
             elif predicate == "contract_value":
+                if not _plausible_amount(normal):
+                    continue
                 claims.append(_claim(subj(("site", "project", "organisation")), "opportunity", predicate, q[s:e],
                                      normal, cert, span))
             elif predicate == "capex":
+                if not _plausible_amount(normal):
+                    continue
                 # Capital spending belongs to a project: the project of the sentence, else the first project of the
                 # document, else the site or the organisation of the sentence (M4: "a plan to sink a new shaft
                 # at the X mine" is about the project that the next sentence names).
-                project = next((m for m in in_sentence if m["type"] == "project"), None) or \
-                    next((m for m in mentions if m["type"] == "project"), None)
+                project = next((m for m in in_sentence if m["type"] == "project"), None)
+                if any(re.search(p, q, re.IGNORECASE) for p in r.get("capex_investor_cues") or []):
+                    # "X invests $Y in Z": the asset Z, never the investor X.
+                    asset = project or _asset_after(text, in_sentence, sent.start + e, r)
+                    if asset is not None:
+                        claims.append(_claim(asset, "project", predicate, q[s:e], normal, cert, span))
+                    continue
+                project = project or next((m for m in mentions if m["type"] == "project"), None)
                 claims.append(_claim(project or subj(("site", "organisation")), "project", predicate, q[s:e],
                                      normal, cert, span))
         # Numbers.

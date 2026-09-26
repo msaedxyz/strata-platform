@@ -170,7 +170,7 @@ theme_synonyms:
   tender_notice: ['\binvit(?:es|ed|ing) (?:bids|tenders)\b', '\binvitation to tender\b', '\bbids? (?:for|from)\b', '\btenders? for\b', '\bcall(?:s|ed)? for (?:bids|tenders|proposals)\b']
   eoi_notice: ['\bexpressions? of interest\b']
   prequalification_notice: ['\bsupplier portal\b', '\bregister (?:as|on) (?:a |the )?(?:supplier|vendor)', '\bsupplier (?:database|list)\b', '\bprequalified\b']
-  contractor_award: ['\baward(?:s|ed)? (?:\w+ ){0,4}contracts?\b', '\bappoint(?:s|ed)? (?:\w+ ){0,5}(?:as )?(?:the )?(?:\w+ )?contractor\b', '\bshortlist(?:ed)?\b', '\bwon (?:a|the) (?:\w+ ){0,3}contract\b']
+  contractor_award: ['\b(?:wins?|won) (?:a |an |the )?(?:\w+ ){0,3}(?:order|contract)s?\b', '\baward(?:s|ed)? (?:\w+ ){0,4}contracts?\b', '\bappoint(?:s|ed)? (?:\w+ ){0,5}(?:as )?(?:the )?(?:\w+ )?contractor\b', '\bshortlist(?:ed)?\b', '\bwon (?:a|the) (?:\w+ ){0,3}contract\b']
   contract_mining: ['\bmining fleet\b', '\bcontract mining fleet\b', '\bpre-strip\b']
   haulage_contract: ['\bhaulage (?:contract|contractor|tender|services|of)\b', '\bhaul(?:s|ed|ing)? (?:ore|concentrate|copper|cathode|coal)\b']
   fleet_purchase: ['\b\d+ (?:new )?(?:haul )?trucks\b', '\bexcavators\b', '\bloaders\b', '\blocomotives\b', '\bwagons\b']
@@ -319,6 +319,8 @@ procurement:
     - '\bappointed (?:\w+ ){1,6}as (?:the )?(?:\w+ )?contractor\b'
     - '\bpreferred bidder\b'
     - '\bwon (?:a|the) (?:\w+ ){0,3}contract\b'
+    # M4: a supplier that wins an order from a buyer ("Epiroc wins large order from Mopani").
+    - '\b(?:wins?|won) (?:a |an |the )?(?:\w+ ){0,3}orders? from\b'
   # Categories of the Tier 0 open procurement rule (config/tiers.yaml procurement_categories_in_scope).
   categories:
     fuel: ['\bdiesel\b', '\bfuel\b', '\bpetroleum products\b', '\blubricants\b']
@@ -366,11 +368,15 @@ lifecycle_stage_cues:
     - '\bmaiden resource\b'
     - '(?-i:\b(?:JORC|NI 43-101)\b)'
   scoping_prefeasibility:
+    - '\b(?:scoping|pre-?feasibility) study (?:on|for|of|at|into) (?:[\w''’$.,-]+ ){0,8}?(?:is |are |was )?(?:expected|due|under ?way|in progress|nearing completion)\b'
     - '\b(?:completed|published|released|announced) (?:a |an |the |its )?(?:scoping|pre-?feasibility) study\b'
     - '\bpre-?feasibility study (?:shows|showed|found|confirmed|was completed|results)\b'
     - '\bscoping study (?:shows|showed|found|confirmed|was completed|results)\b'
     - '\bpreliminary economic assessment\b'
   feasibility:
+    # M4: a study that is under way or due names the stage too ("Feasibility study on X expected by year-end").
+    - '(?<!pre-)(?<!pre)\bfeasibility study (?:on|for|of|at|into) (?:[\w''’$.,-]+ ){0,8}?(?:is |are |was )?(?:expected|due|under ?way|in progress|nearing completion)\b'
+    - '(?<!pre-)(?<!pre)\bfeasibility study (?:is |was )?(?:under ?way|in progress|being (?:prepared|finalised|finalized|completed))\b'
     - '\b(?:completed|published|released|announced|finished) (?:a |an |the |its )?(?:definitive |bankable )?(?<!pre-)feasibility study\b'
     - '\b(?:definitive|bankable) feasibility study (?:shows|showed|found|confirmed|was completed|results)\b'
     - '(?<!pre-)(?<!pre)\bfeasibility study (?:shows|showed|found|confirmed|was completed|results)\b'
@@ -487,9 +493,21 @@ mentions:
   # a geography name, not in this stop list and belongs to one site only.
   derive_site_short_names: true
   short_name_min_chars: 5
-  short_name_stoplist: [Sentinel, Enterprise, Phoenix, Trident, Zambia, Zambian, Mopani, Chilanga, Lusaka, Tanzania, Ndola, Kafue, Kariba, Batoka, Chambishi, Lumwana, Tunduma, Mwinilunga, Nkana, Broken, Katima, Wenela, Mkushi, Mpongwe, Chisamba, Masaiti, Lobito, Angola, Dangote, Amatheon, Zambeef, Mwami, Mchinji, Kasenseli, Kazungula, Jimbe, Kabwe]
+  # M4: a bare word names a watched site when exactly one watched site has that word as the only distinctive word
+  # of its name ("Lumwana" for "Lumwana mine"; "Lumwana Multi-Facility Economic Zone" has more words). The generic
+  # words are project_generic_words. Geography names and the words below never do.
+  sole_token_site_names: true
+  sole_token_stoplist: [Sentinel, Enterprise, Phoenix, Trident, Broken, Zambia, Zambian, Lusaka, Copperbelt]
+  short_name_stoplist: [Sentinel, Enterprise, Phoenix, Trident, Zambia, Zambian, China, Mopani, Chilanga, Lusaka, Tanzania, Ndola, Kafue, Kariba, Batoka, Chambishi, Lumwana, Tunduma, Mwinilunga, Nkana, Broken, Katima, Wenela, Mkushi, Mpongwe, Chisamba, Masaiti, Lobito, Angola, Dangote, Amatheon, Zambeef, Mwami, Mchinji, Kasenseli, Kazungula, Jimbe, Kabwe]
 
 claims:
+  # M4: "X invests $Y in Z" (the verb, not the noun "investment"): the capital goes to Z (the asset), not to the
+  # investor X. Without an asset after the preposition, the extractor gives no capex claim.
+  capex_investor_cues: ['\binvest(?:s|ed|ing)?\b']
+  capex_asset_preposition: '\b(?:in|into|at|for)\b'
+  capex_asset_max_gap_chars: 60
+  # A capex or contract value below this amount is no project amount (a unit word that the parser missed).
+  min_project_money_amount: 1000
   # The owner in "X, the developer of the Y project" or "owned by X" is at most this many characters from the cue.
   owner_max_gap_chars: 12
   money_cues:

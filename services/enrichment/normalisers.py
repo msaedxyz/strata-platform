@@ -31,9 +31,10 @@ __all__ = [
 ]
 
 _NUM = r"(?P<num>\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)"
-_MULT = r"(?:\s?(?P<mult>billion|bn|million|mn|thousand|m|b|k)\b)?"
+# The unit words ignore case, so that a headline ("$1.1 Billion", "$1B", "US$2 BN") gives the full amount (M4).
+_MULT = r"(?:\s?(?P<mult>(?i:billion|bn|million|mn|thousand|m|b|k))\b)?"
 _PRE = r"(?P<pre>US\$|U\.S\.\s?\$|USD|US dollars|ZMW|ZMK|ZK|(?<![A-Za-z])K(?=\d)|\$|€|EUR|£|GBP|ZAR|CNY)"
-_POST = r"(?P<post>USD|US dollars|dollars|kwacha|ZMW|EUR|euros|GBP|ZAR)"
+_POST = r"(?P<post>USD|(?i:US dollars|dollars|kwacha|euros)|ZMW|EUR|GBP|ZAR)"
 
 _MONEY_A = re.compile(_PRE + r"\s?" + _NUM + _MULT + r"(?:\s?" + _POST + r"\b)?")
 _MONEY_B = re.compile(r"(?<![\w$€£.])" + _NUM + _MULT + r"\s" + _POST + r"\b")

@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-09-26T14:14:18+00:00",
+  "run_at": "2026-09-26T14:25:26+00:00",
   "backend": "deterministic",
   "brief_version": 1,
   "dataset": {
@@ -43,9 +43,9 @@
       ],
       "published_at": "2022-05-09T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F125W86Z0SQF35SB38QYGR",
+      "source_id": "01M3F1PHY3JW8ESQ3HTQ262SPT",
       "enrich_status": "in_scope",
-      "run_id": "01M3F125WG2G4CWWN4ZRGFNA1H",
+      "run_id": "01M3F1PHYKG6H40TYV1DK1BNXT",
       "tier": 0,
       "tier_rule": "t0_new_project_first_trace",
       "sources_visible": 1,
@@ -60,9 +60,9 @@
       ],
       "published_at": "2023-07-07T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126AYBQNG39WPCKTB11S4",
+      "source_id": "01M3F1PJB9DYF19WZ910VVBWX5",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126B5G1FZT85JHH3NH7YV",
+      "run_id": "01M3F1PJBFK27JGQE6MTVKGVWS",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 2,
@@ -77,9 +77,9 @@
       ],
       "published_at": "2023-10-04T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126CT4D8F04YYMGEX4XYE",
+      "source_id": "01M3F1PJCYS043XTGCZ2A92VYF",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126D1HXPCFA9P6ZGC2KAP",
+      "run_id": "01M3F1PJD5WRATER2DVP82BFHM",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 3,
@@ -93,9 +93,9 @@
       ],
       "published_at": "2023-12-12T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126EGEQC7C69W9K4F8M4G",
+      "source_id": "01M3F1PJEJCDP5M93VQXYYW11H",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126EQKBBKZNC2CGRP8Z89",
+      "run_id": "01M3F1PJERR417SFWZET7MSMP0",
       "tier": 0,
       "tier_rule": "t0_new_project_first_trace",
       "sources_visible": 4,
@@ -110,9 +110,9 @@
       ],
       "published_at": "2023-12-22T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126HJ92EKVCHXJCWZPKRS",
+      "source_id": "01M3F1PJHCKEK9JXY9R6K0W3YA",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126HVFXQNZTS34BJCVD2T",
+      "run_id": "01M3F1PJHM354WAMGRM2BPNT4X",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 5,
@@ -127,9 +127,9 @@
       ],
       "published_at": "2023-12-22T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126KQT69HDGFE05FGYRG1",
+      "source_id": "01M3F1PJKDY02G31MG3SYG7GRD",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126M3EP8A3ND5N1MDTDE4",
+      "run_id": "01M3F1PJKWWJSE3W7BEQQV07GS",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 6,
@@ -143,9 +143,9 @@
       ],
       "published_at": "2024-01-29T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126P6E8DVAQ76QTMGWV1A",
+      "source_id": "01M3F1PJNZYTCW1FKZFYK77W42",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126PFYFCDJDWHJ9SNRYT2",
+      "run_id": "01M3F1PJP66F6ZVPQJF2NQ10MZ",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 7,
@@ -160,9 +160,9 @@
       ],
       "published_at": "2024-02-02T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126R2AM37ZJSRYN8DHNCK",
+      "source_id": "01M3F1PJQQK74EKZ8WCNX9TXNP",
       "enrich_status": "out_of_scope",
-      "run_id": "01M3F126R8DERG9FJ5DQTRKNVJ",
+      "run_id": "01M3F1PJQXNKJEC1SZW8BN6VC3",
       "tier": null,
       "tier_rule": null,
       "sources_visible": 8,
@@ -176,9 +176,9 @@
       ],
       "published_at": "2024-07-22T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126RQ69YBVV8G0XCFBGRN",
+      "source_id": "01M3F1PJREM9ZTN37KYQTTKWKN",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126S2MHJD710H9QP0TQS1",
+      "run_id": "01M3F1PJRQXF3CRZGMC2PHRAFS",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 9,
@@ -192,11 +192,11 @@
       ],
       "published_at": "2024-09-11T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126V4F53AC68QEFJTA7T5",
+      "source_id": "01M3F1PJT5ZF6JAWFDKYX8XMC1",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126VCVJT9G78RW82XFZT5",
-      "tier": 2,
-      "tier_rule": "t2_relevant",
+      "run_id": "01M3F1PJTDZR4VJCVZSH26BZKM",
+      "tier": 0,
+      "tier_rule": "t0_enters_engagement_window",
       "sources_visible": 10,
       "later_sources_visible": 0
     },
@@ -208,9 +208,9 @@
       ],
       "published_at": "2025-05-02T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126X4393GZ2BPFRADCP8Z",
+      "source_id": "01M3F1PJX3TW7VG05BX0BH0VT0",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126XD8ANJVAP6XRT31RFP",
+      "run_id": "01M3F1PJXC7HASXK2QZJ5PW34B",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 11,
@@ -224,9 +224,9 @@
       ],
       "published_at": "2025-06-24T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F126ZK3A6PP1C9X6HQ3N7H",
+      "source_id": "01M3F1PJZ6G3BEGAV25YWB8Y04",
       "enrich_status": "in_scope",
-      "run_id": "01M3F126ZTNXNW06NS39MGMEQS",
+      "run_id": "01M3F1PJZD44VZMGF7FE799Y3X",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 12,
@@ -240,9 +240,9 @@
       ],
       "published_at": "2025-11-07T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F12728A94GX2PVHMF56AMS",
+      "source_id": "01M3F1PK0V8RWP8K09VNF2GNCT",
       "enrich_status": "in_scope",
-      "run_id": "01M3F1272FBEJB6300KP4TJBW3",
+      "run_id": "01M3F1PK14NE8Z4QMT91PB3DFE",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "sources_visible": 13,
@@ -256,11 +256,11 @@
       ],
       "published_at": "2026-04-10T00:00:00+00:00",
       "ingest_status": "new",
-      "source_id": "01M3F12741PTD6PHVFADVPT9ZA",
+      "source_id": "01M3F1PK2MMJF0R9WSQJWPTJVT",
       "enrich_status": "in_scope",
-      "run_id": "01M3F12748NWB2EPFFBFE966GC",
-      "tier": 2,
-      "tier_rule": "t2_relevant",
+      "run_id": "01M3F1PK2TSYAD5V1FVDYCT73X",
+      "tier": 1,
+      "tier_rule": "t1_contractor_award_watched",
       "sources_visible": 14,
       "later_sources_visible": 0
     }
@@ -282,7 +282,7 @@
       "first_signal_date": "2022-05-09",
       "first_signal_title": "First Quantum board signs off development of Kansanshi S3 Expansion, Enterprise nickel project",
       "first_signal_url": "https://im-mining.com/2022/05/09/first-quantum-board-signs-off-development-of-kansanshi-s3-expansion-enterprise-nickel-project/",
-      "first_signal_source_id": "01M3F125W86Z0SQF35SB38QYGR",
+      "first_signal_source_id": "01M3F1PHY3JW8ESQ3HTQ262SPT",
       "first_signal_tier": 0,
       "first_signal_tier_rule": "t0_new_project_first_trace",
       "first_signal_entities": [
@@ -319,15 +319,17 @@
       "first_signal_date": "2023-07-07",
       "first_signal_title": "Great Future Beckons for Lumwana as Barrick Unlocks Potential",
       "first_signal_url": "https://www.barrick.com/English/news/news-details/2023/great-future-beckons-for-lumwana-as-barrick-unlocks-potential/default.aspx",
-      "first_signal_source_id": "01M3F126AYBQNG39WPCKTB11S4",
+      "first_signal_source_id": "01M3F1PJB9DYF19WZ910VVBWX5",
       "first_signal_tier": 2,
       "first_signal_tier_rule": "t2_relevant",
       "first_signal_entities": [
-        "organisation:Barrick Mining Corporation"
+        "organisation:Barrick Mining Corporation",
+        "site:Lumwana mine"
       ],
-      "match_basis": "title",
-      "match_detail": "words Lumwana",
+      "match_basis": "site",
+      "match_detail": "entity 'Lumwana mine' (lumwana)",
       "match_all": [
+        "site: entity 'Lumwana mine' (lumwana)",
         "title: words Lumwana",
         "company: entity 'Barrick Mining Corporation' (barrick)"
       ],
@@ -351,15 +353,17 @@
       "first_signal_date": "2023-07-07",
       "first_signal_title": "Great Future Beckons for Lumwana as Barrick Unlocks Potential",
       "first_signal_url": "https://www.barrick.com/English/news/news-details/2023/great-future-beckons-for-lumwana-as-barrick-unlocks-potential/default.aspx",
-      "first_signal_source_id": "01M3F126AYBQNG39WPCKTB11S4",
+      "first_signal_source_id": "01M3F1PJB9DYF19WZ910VVBWX5",
       "first_signal_tier": 2,
       "first_signal_tier_rule": "t2_relevant",
       "first_signal_entities": [
-        "organisation:Barrick Mining Corporation"
+        "organisation:Barrick Mining Corporation",
+        "site:Lumwana mine"
       ],
-      "match_basis": "title",
-      "match_detail": "words Lumwana",
+      "match_basis": "site",
+      "match_detail": "entity 'Lumwana mine' (lumwana)",
       "match_all": [
+        "site: entity 'Lumwana mine' (lumwana)",
         "title: words Lumwana",
         "company: entity 'Barrick Mining Corporation' (barrick)"
       ],
@@ -383,7 +387,7 @@
       "first_signal_date": "2023-12-22",
       "first_signal_title": "ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines",
       "first_signal_url": "https://www.actusnews.com/en/zccm/pr/2023/12/22/zccm-ih-transaction-announcement-regarding-mopani-copper-mines",
-      "first_signal_source_id": "01M3F126HJ92EKVCHXJCWZPKRS",
+      "first_signal_source_id": "01M3F1PJHCKEK9JXY9R6K0W3YA",
       "first_signal_tier": 2,
       "first_signal_tier_rule": "t2_relevant",
       "first_signal_entities": [
@@ -416,7 +420,7 @@
       "first_signal_date": "2025-06-24",
       "first_signal_title": "AfDB invests $1B in Lobito Corridor, signs Zambia rail pact",
       "first_signal_url": "https://efficacynews.africa/2025/06/24/afdb-invests-1b-in-lobito-corridor-signs-zambia-rail-pact/",
-      "first_signal_source_id": "01M3F126ZK3A6PP1C9X6HQ3N7H",
+      "first_signal_source_id": "01M3F1PJZ6G3BEGAV25YWB8Y04",
       "first_signal_tier": 2,
       "first_signal_tier_rule": "t2_relevant",
       "first_signal_entities": [
@@ -447,7 +451,7 @@
       "first_signal_date": "2023-12-22",
       "first_signal_title": "ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines",
       "first_signal_url": "https://www.actusnews.com/en/zccm/pr/2023/12/22/zccm-ih-transaction-announcement-regarding-mopani-copper-mines",
-      "first_signal_source_id": "01M3F126HJ92EKVCHXJCWZPKRS",
+      "first_signal_source_id": "01M3F1PJHCKEK9JXY9R6K0W3YA",
       "first_signal_tier": 2,
       "first_signal_tier_rule": "t2_relevant",
       "first_signal_entities": [
@@ -480,7 +484,7 @@
       "first_signal_date": "2024-07-22",
       "first_signal_title": "Vedanta Regains Control of Konkola Copper Mines in Zambia",
       "first_signal_url": "https://www.prnewswire.com/news-releases/vedanta-regains-control-of-konkola-copper-mines-in-zambia-302202425.html",
-      "first_signal_source_id": "01M3F126RQ69YBVV8G0XCFBGRN",
+      "first_signal_source_id": "01M3F1PJREM9ZTN37KYQTTKWKN",
       "first_signal_tier": 2,
       "first_signal_tier_rule": "t2_relevant",
       "first_signal_entities": [
@@ -570,13 +574,13 @@
         "site"
       ],
       "events": 7,
-      "detected": 2,
-      "detection_rate": 0.2857,
-      "median_lead_months": 11.7,
+      "detected": 3,
+      "detection_rate": 0.4286,
+      "median_lead_months": 13.8,
       "docs09_conditions_passed": false,
       "per_event": {
-        "EV-001": null,
-        "EV-002": "2023-12-12",
+        "EV-001": "2023-07-07",
+        "EV-002": "2023-07-07",
         "EV-003": null,
         "EV-004": null,
         "EV-005": null,
@@ -587,7 +591,7 @@
   ],
   "signals": [
     {
-      "source_id": "01M3F125W86Z0SQF35SB38QYGR",
+      "source_id": "01M3F1PHY3JW8ESQ3HTQ262SPT",
       "date": "2022-05-09",
       "title": "First Quantum board signs off development of Kansanshi S3 Expansion, Enterprise nickel project",
       "tier": 0,
@@ -601,17 +605,18 @@
       ]
     },
     {
-      "source_id": "01M3F126AYBQNG39WPCKTB11S4",
+      "source_id": "01M3F1PJB9DYF19WZ910VVBWX5",
       "date": "2023-07-07",
       "title": "Great Future Beckons for Lumwana as Barrick Unlocks Potential",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "entities": [
-        "organisation:Barrick Mining Corporation"
+        "organisation:Barrick Mining Corporation",
+        "site:Lumwana mine"
       ]
     },
     {
-      "source_id": "01M3F126CT4D8F04YYMGEX4XYE",
+      "source_id": "01M3F1PJCYS043XTGCZ2A92VYF",
       "date": "2023-10-04",
       "title": "Barrick Earmarks $2 Billion for Copper 'Super Pit' in Zambia",
       "tier": 2,
@@ -621,18 +626,19 @@
       ]
     },
     {
-      "source_id": "01M3F126EGEQC7C69W9K4F8M4G",
+      "source_id": "01M3F1PJEJCDP5M93VQXYYW11H",
       "date": "2023-12-12",
       "title": "Lycopodium engaged by Barrick for Lumwana copper expansion study",
       "tier": 0,
       "tier_rule": "t0_new_project_first_trace",
       "entities": [
         "organisation:Barrick Mining Corporation",
+        "site:Lumwana mine",
         "project:Lumwana copper expansion"
       ]
     },
     {
-      "source_id": "01M3F126HJ92EKVCHXJCWZPKRS",
+      "source_id": "01M3F1PJHCKEK9JXY9R6K0W3YA",
       "date": "2023-12-22",
       "title": "ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines",
       "tier": 2,
@@ -643,7 +649,7 @@
       ]
     },
     {
-      "source_id": "01M3F126KQT69HDGFE05FGYRG1",
+      "source_id": "01M3F1PJKDY02G31MG3SYG7GRD",
       "date": "2023-12-22",
       "title": "Abu Dhabi's IRH Will Invest $1.1 Billion in Mopani Copper Deal",
       "tier": 2,
@@ -654,18 +660,19 @@
       ]
     },
     {
-      "source_id": "01M3F126P6E8DVAQ76QTMGWV1A",
+      "source_id": "01M3F1PJNZYTCW1FKZFYK77W42",
       "date": "2024-01-29",
       "title": "Barrick Gold accelerates Lumwana mine expansion project",
       "tier": 2,
       "tier_rule": "t2_relevant",
       "entities": [
         "organisation:Barrick Mining Corporation",
-        "site:Lumwana mine"
+        "site:Lumwana mine",
+        "project:Lumwana copper expansion"
       ]
     },
     {
-      "source_id": "01M3F126RQ69YBVV8G0XCFBGRN",
+      "source_id": "01M3F1PJREM9ZTN37KYQTTKWKN",
       "date": "2024-07-22",
       "title": "Vedanta Regains Control of Konkola Copper Mines in Zambia",
       "tier": 2,
@@ -676,15 +683,18 @@
       ]
     },
     {
-      "source_id": "01M3F126V4F53AC68QEFJTA7T5",
+      "source_id": "01M3F1PJT5ZF6JAWFDKYX8XMC1",
       "date": "2024-09-11",
       "title": "Feasibility study on Lumwana Super Pit expansion expected by year-end",
-      "tier": 2,
-      "tier_rule": "t2_relevant",
-      "entities": []
+      "tier": 0,
+      "tier_rule": "t0_enters_engagement_window",
+      "entities": [
+        "site:Lumwana mine",
+        "project:Lumwana copper expansion"
+      ]
     },
     {
-      "source_id": "01M3F126X4393GZ2BPFRADCP8Z",
+      "source_id": "01M3F1PJX3TW7VG05BX0BH0VT0",
       "date": "2025-05-02",
       "title": "Vedanta Resources weighs Zambia copper IPO to fund $1 billion investment",
       "tier": 2,
@@ -694,7 +704,7 @@
       ]
     },
     {
-      "source_id": "01M3F126ZK3A6PP1C9X6HQ3N7H",
+      "source_id": "01M3F1PJZ6G3BEGAV25YWB8Y04",
       "date": "2025-06-24",
       "title": "AfDB invests $1B in Lobito Corridor, signs Zambia rail pact",
       "tier": 2,
@@ -704,7 +714,7 @@
       ]
     },
     {
-      "source_id": "01M3F12728A94GX2PVHMF56AMS",
+      "source_id": "01M3F1PK0V8RWP8K09VNF2GNCT",
       "date": "2025-11-07",
       "title": "Vedanta spins off Konkola Copper Mines into US-domiciled CopperTech Metals Inc",
       "tier": 2,
@@ -715,11 +725,11 @@
       ]
     },
     {
-      "source_id": "01M3F12741PTD6PHVFADVPT9ZA",
+      "source_id": "01M3F1PK2MMJF0R9WSQJWPTJVT",
       "date": "2026-04-10",
       "title": "Epiroc wins large order from Mopani Copper Mines in Zambia",
-      "tier": 2,
-      "tier_rule": "t2_relevant",
+      "tier": 1,
+      "tier_rule": "t1_contractor_award_watched",
       "entities": [
         "organisation:Mopani Copper Mines Plc"
       ]

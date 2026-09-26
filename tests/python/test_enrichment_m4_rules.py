@@ -137,3 +137,64 @@ def test_a_project_site_proposal_names_the_site_and_a_status_change_has_a_from_s
     assert status[0]["events"][0]["stream_id"] == sid
     assert payload["from_status"] == "producing" and payload["from_status_source"] == "brief_status_hint"
     edb.commit()
+
+
+# ---------- faults that the lead time backtest found ----------
+
+
+@pytest.mark.parametrize("text,normal", [
+    ("$1.1 Billion", "1100000000 USD"), ("$2 Billion", "2000000000 USD"), ("$1B", "1000000000 USD"),
+    ("US$2 BN", "2000000000 USD"), ("$498M", "498000000 USD"), ("K2.5 Million", "2500000 ZMW"),
+    ("20 Million US Dollars", "20000000 USD"), ("$1.2bn", "1200000000 USD"), ("K28.40 per litre", "28.4 ZMW"),
+])
+def test_money_units_in_headline_case_give_the_full_amount(text, normal):
+    from services.enrichment.normalisers import normalise_value
+
+    assert normalise_value("money", text) == normal
+
+
+def test_capital_that_an_investor_puts_into_an_asset_belongs_to_the_asset(brief):
+    a = run("Gulf fund to put money into Kansanshi\n\nA Gulf fund will invest US$800 Million in Kansanshi Mining Plc "
+            "over five years.", brief)
+    capex = claims(a, "capex")
+    assert [(c["subject"], c["normalised"]) for c in capex] == [("Kansanshi Mining Plc", "800000000 USD")]
+    no_asset = run("Development bank backs Zambian trade route\n\nThe African Development Bank invests $2B in the "
+                   "southern trade corridor of Zambia.", brief)
+    assert claims(no_asset, "capex") == []
+    noun = run("Mimbula plant approved\n\nThe board approved the Mimbula Leach Plant Project. The investment is "
+               "US$70 million.", brief)
+    assert [c["subject"] for c in claims(noun, "capex")] == ["Mimbula Leach Plant Project"]
+
+
+def test_an_amount_below_the_minimum_is_no_project_amount(brief):
+    a = run("Odd figure\n\nKansanshi Mining Plc will spend $12 on the Kansanshi Sulphide Project.", brief)
+    assert claims(a, "capex") == []
+
+
+def test_a_bare_distinctive_site_word_names_the_one_watched_site(brief):
+    a = run("Great year ahead for Lumwana\n\nBarrick said that Lumwana will grow.", brief)
+    assert "site:lumwana" in {r["entity_id"] for r in a.resolutions}
+    mfez = run("Investors tour the Lumwana MFEZ in North-Western Province, Zambia", brief)
+    assert "site:lumwana" not in {r["entity_id"] for r in mfez.resolutions}
+
+
+def test_a_feasibility_study_that_is_due_names_the_feasibility_stage(brief):
+    from services.enrichment.entity_index import EntityRecord
+
+    records = brief_records(brief) + [EntityRecord(id="project:known", type="project", name="Lumwana copper expansion",
+                                                   site_id="site:lumwana", watch="daily")]
+    a = run("Feasibility study on Lumwana Super Pit expansion expected by year-end", brief, MemoryIndex(records),
+            source_type="snapshot")
+    assert [(p["id"], p.get("stage"), p["new"]) for p in a.projects] == [("project:known", "feasibility", False)]
+    stage = [f for f in a.facts if f.kind == "ProjectStageChanged"]
+    assert stage and stage[0].events[0].payload["to_stage"] == "feasibility"
+    # The project enters the engagement window (docs/05 Tier 0). Else the watched stage change rule gives Tier 1.
+    assert a.tier_rule in ("t0_enters_engagement_window", "t1_stage_change_watched")
+    planned = run("Owner plans to start a feasibility study on the Kitumba Deeps Project next year, Zambia", brief)
+    assert not any(p.get("stage") == "feasibility" for p in planned.projects)
+
+
+def test_an_item_that_names_only_the_operator_of_a_watched_site_is_watched(brief):
+    a = run("Equipment maker wins large order from Mopani Copper Mines in Zambia", brief, source_type="snapshot")
+    assert a.features["watched"] is True and a.features["watched_via_operator"] is True
+    assert a.tier == 1 and a.tier_rule == "t1_contractor_award_watched"

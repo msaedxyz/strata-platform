@@ -6,7 +6,7 @@
     "canonical_facts_verified": 1.0,
     "extraction_precision": 0.9524,
     "extraction_recall": 0.9524,
-    "resolution_precision": 0.9797,
+    "resolution_precision": 0.9732,
     "classification_macro_f1": 0.9845,
     "lifecycle_stage_accuracy": 1.0
   },
@@ -20,7 +20,7 @@
       "claims_predicted": 63,
       "claims_gold": 63,
       "claims_matched": 60,
-      "resolution_decisions": 148,
+      "resolution_decisions": 149,
       "lifecycle_projects": 14
     },
     "class_f1": {
@@ -487,7 +487,7 @@
         },
         {
           "predicate": "contract_value",
-          "subject": "Lumwana Super Pit Project",
+          "subject": "Lumwana",
           "value": "410000000 USD",
           "object": null,
           "certainty": "stated",
@@ -518,6 +518,14 @@
           "decision": "match",
           "entity_id": "org:barrick",
           "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lumwana",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:lumwana",
+          "correct": false,
           "labelled": true
         },
         {

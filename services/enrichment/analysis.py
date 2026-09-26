@@ -824,6 +824,7 @@ def _plan(c: _Ctx, a: Analysis, res: dict) -> None:
 def _features(c: _Ctx, a: Analysis, res: dict) -> dict:
     cls = a.classification or {}
     watched_levels = set()
+    operator_levels = set()
     entity_ids = []
     for entry in res.values():
         if entry.get("entity_id") and entry["decision"] in ("match", "new"):
@@ -831,6 +832,9 @@ def _features(c: _Ctx, a: Analysis, res: dict) -> dict:
             rec = c.index.get(entry["entity_id"])
             if rec and rec.type == "site":
                 watched_levels.add(rec.watch)
+            elif rec and rec.type == "organisation":
+                # M4: the operator of a watched site makes the item watched ("Epiroc wins order from Mopani").
+                operator_levels.add(rec.operated_watch)
     for p in a.projects:
         watched_levels.add(p.get("watch") or "none")
     a.entity_ids = sorted(set(entity_ids))
@@ -852,7 +856,8 @@ def _features(c: _Ctx, a: Analysis, res: dict) -> dict:
         "in_scope": True,
         "watch_daily": "daily" in watched_levels,
         "watch_weekly": "weekly" in watched_levels,
-        "watched": bool(watched_levels & {"daily", "weekly"}),
+        "watched": bool((watched_levels | operator_levels) & {"daily", "weekly"}),
+        "watched_via_operator": bool(operator_levels & {"daily", "weekly"}) and not (watched_levels & {"daily", "weekly"}),
         "directions": list(a.directions),
         "early_signal_source": bool(c.doc.early_signal),
         "certainty": a.certainty,

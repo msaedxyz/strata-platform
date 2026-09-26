@@ -60,6 +60,7 @@ class EntityRecord:
     forecast_start: str | None = None
     pending: bool = False          # a new entity of an open proposal
     site_classes: list[str] = field(default_factory=list)  # organisations: classes of the sites they operate
+    operated_watch: str = "none"   # organisations: the highest watch level of the sites they operate (M4)
 
     def surfaces(self) -> list[str]:
         return [s for s in dict.fromkeys([self.name, *self.aliases]) if s]
@@ -90,7 +91,36 @@ def short_names(records: list[EntityRecord]) -> dict[str, str]:
                     and first not in geo_names:
                 seen.setdefault(first, set()).add(r.id)
     all_surfaces = {s for r in records for s in r.surfaces()}
-    return {w: next(iter(ids)) for w, ids in seen.items() if len(ids) == 1 and w not in all_surfaces}
+    out = {w: next(iter(ids)) for w, ids in seen.items() if len(ids) == 1 and w not in all_surfaces}
+    out.update({w: sid for w, sid in sole_token_names(records, geo_names).items()
+                if w not in all_surfaces and w not in out})
+    return out
+
+
+def sole_token_names(records: list[EntityRecord], geo_names: set[str]) -> dict[str, str]:
+    """M4: a word that is the only distinctive word of the name of exactly one watched site ("Lumwana" for
+    "Lumwana mine"). The generic words are mentions.project_generic_words of config/enrichment-rules.yaml."""
+    from . import config
+
+    if not config.get("mentions.sole_token_site_names", False):
+        return {}
+    generic = {str(w).lower() for w in config.get("mentions.project_generic_words", []) or []}
+    stop = set(config.get("mentions.sole_token_stoplist", []) or [])
+    min_chars = int(config.get("mentions.short_name_min_chars", 5))
+    found: dict[str, set[str]] = {}
+    for r in records:
+        if r.type != "site" or r.watch not in ("daily", "weekly"):
+            continue
+        words = [w.strip("().,") for w in re.split(r"[\s/]+", r.name) if w.strip("().,")]
+        distinctive = [w for w in words if w.lower() not in generic and not all(
+            p.lower() in generic for p in re.split(r"[-–]", w))]
+        if len(distinctive) != 1:
+            continue
+        word = distinctive[0]
+        if len(word) >= min_chars and word[0].isupper() and word.isalpha() and word not in stop \
+                and word not in geo_names:
+            found.setdefault(word, set()).add(r.id)
+    return {w: next(iter(ids)) for w, ids in found.items() if len(ids) == 1}
 
 
 class MemoryIndex:
@@ -179,12 +209,14 @@ class DbIndex(MemoryIndex):
                 corridor=r["corridor"], country=r["country"], external_ids=r["external_ids"] or {},
             )
         for r in conn.execute(
-            """SELECT r.subject_id, array_agg(DISTINCT s.site_class) AS classes FROM proj_relationship r
+            """SELECT r.subject_id, array_agg(DISTINCT s.site_class) AS classes, array_agg(DISTINCT s.watch) AS watches
+               FROM proj_relationship r
                JOIN proj_entity s ON s.id = r.object_id AND s.type = 'site'
                WHERE r.predicate = 'operates' AND r.superseded_by IS NULL GROUP BY r.subject_id"""
         ).fetchall():
             if r["subject_id"] in records:
                 records[r["subject_id"]].site_classes = sorted(c for c in r["classes"] if c)
+                records[r["subject_id"]].operated_watch = _highest_watch(r["watches"] or [])
         for r in conn.execute(
             "SELECT id, name, site_id, stage, forecast_start FROM proj_project"
         ).fetchall():
@@ -231,19 +263,26 @@ class DbIndex(MemoryIndex):
         return out[:limit]
 
 
+def _highest_watch(levels: list[str]) -> str:
+    return "daily" if "daily" in levels else ("weekly" if "weekly" in levels else "none")
+
+
 def brief_records(brief: dict) -> list[EntityRecord]:
     """Entity records for the watch lists and organisations of a brief. Ids are "site:<key>" and "org:<key>"."""
     records = []
     operated: dict[str, list[str]] = {}
+    operated_watch: dict[str, list[str]] = {}
     for level in ("daily", "weekly"):
         for site in (brief.get("watch") or {}).get(level) or []:
             if site.get("operator"):
                 operated.setdefault(site["operator"], []).append(site.get("site_class"))
+                operated_watch.setdefault(site["operator"], []).append(level)
     for org in brief.get("organisations") or []:
         records.append(EntityRecord(
             id=f"org:{org['id']}", type="organisation", name=org["name"], aliases=list(org.get("aliases") or []),
             key=org["id"], country=org.get("country"), external_ids=org.get("external_ids") or {},
             site_classes=sorted(set(operated.get(org["id"], []))),
+            operated_watch=_highest_watch(operated_watch.get(org["id"], [])),
         ))
     for level in ("daily", "weekly"):
         for site in (brief.get("watch") or {}).get(level) or []:
