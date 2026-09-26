@@ -1,0 +1,890 @@
+{
+  "backend": "deterministic",
+  "model_id": "deterministic-v1",
+  "prompt_version": "rules-v1",
+  "metrics": {
+    "canonical_facts_verified": 1.0,
+    "extraction_precision": 0.8182,
+    "extraction_recall": 0.6429,
+    "resolution_precision": 0.9714,
+    "classification_macro_f1": 0.9506,
+    "lifecycle_stage_accuracy": 1.0
+  },
+  "extra": {
+    "certainty_accuracy_on_matched_claims": 1.0,
+    "tier_accuracy": 0.9091,
+    "deal_accuracy": 1.0,
+    "counts": {
+      "documents": 12,
+      "fact_events": 37,
+      "claims_predicted": 11,
+      "claims_gold": 14,
+      "claims_matched": 9,
+      "resolution_decisions": 35,
+      "lifecycle_projects": 4
+    },
+    "class_f1": {
+      "direction:demand_down": 0.8,
+      "direction:demand_up": 1.0,
+      "direction:procurement": 1.0,
+      "direction:project_pipeline": 1.0,
+      "in_scope": 1.0,
+      "sector:agriculture": 1.0,
+      "sector:fuel_supply": 1.0,
+      "sector:industry": 1.0,
+      "sector:mining": 0.8571,
+      "sector:power": 0.8,
+      "sector:transport": 1.0
+    },
+    "quarantine_reason_codes": {}
+  },
+  "documents": [
+    {
+      "id": "k01",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "feasibility_study"
+      ],
+      "gold_themes": [
+        "feasibility_study"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "capex",
+          "subject": "Fishtie North Extension Project",
+          "value": "185000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Mimosa",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mimosa_resources",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kashime",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kashime",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mimosa Resources",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mimosa_resources",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Fishtie",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kashime",
+          "correct": false,
+          "labelled": true
+        },
+        {
+          "mention": "Fishtie North Extension Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:fishtie north extension project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Fishtie North Extension Project",
+          "gold_stage": "feasibility",
+          "predicted": "feasibility",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "k02",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "power"
+      ],
+      "gold_sectors": [
+        "power"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "eia_filed",
+        "power_project"
+      ],
+      "gold_themes": [
+        "eia_filed",
+        "power_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "generation_mw",
+          "subject": "Chikowa Solar PV Project",
+          "value": "60",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [
+        {
+          "predicate": "buyer_role_owner",
+          "subject": "Chikowa Solar PV Project",
+          "certainty": "stated",
+          "object": "Luangwa Renewables Limited"
+        }
+      ],
+      "resolutions": [
+        {
+          "mention": "ZEMA",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zema",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Zambia Environmental Management Agency",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zema",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Chikowa Solar PV Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:chikowa solar pv project:0",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Luangwa Renewables Limited",
+          "type": "organisation",
+          "decision": "new",
+          "entity_id": "new:organisation:luangwa renewables:1",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Chikowa Solar PV Project",
+          "gold_stage": "eia_filed",
+          "predicted": "eia_filed",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "k03",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply"
+      ],
+      "gold_sectors": [
+        "fuel_supply"
+      ],
+      "directions": [
+        "demand_up"
+      ],
+      "gold_directions": [
+        "demand_up"
+      ],
+      "themes": [
+        "pipeline_outage"
+      ],
+      "gold_themes": [
+        "pipeline_outage"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Ndola fuel terminal",
+          "value": "suspended",
+          "object": null,
+          "certainty": "stated",
+          "matched": false
+        }
+      ],
+      "missed_claims": [
+        {
+          "predicate": "site_status",
+          "subject": "TAZAMA",
+          "certainty": "stated",
+          "value": "suspended"
+        }
+      ],
+      "resolutions": [
+        {
+          "mention": "TAZAMA",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:tazama_pipelines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "TAZAMA",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:tazama_pipeline",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "TAZAMA Pipelines Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:tazama_pipelines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Ndola fuel terminal",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:ndola_fuel_terminal",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "k04",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "agriculture"
+      ],
+      "gold_sectors": [
+        "agriculture"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "agri_expansion"
+      ],
+      "gold_themes": [
+        "agri_expansion"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Zambeef",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zambeef",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Zambeef Products Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:zambeef",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "k05",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_open_procurement_notice",
+      "expected_tier": 0,
+      "sectors": [
+        "mining"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "procurement"
+      ],
+      "gold_directions": [
+        "procurement"
+      ],
+      "themes": [
+        "contract_mining",
+        "eoi_notice"
+      ],
+      "gold_themes": [
+        "eoi_notice",
+        "contract_mining"
+      ],
+      "deals": [
+        "contract_mining"
+      ],
+      "deal_expected": true,
+      "claims": [],
+      "missed_claims": [
+        {
+          "predicate": "tender_deadline",
+          "subject": "Lubambe Copper Mines Plc",
+          "certainty": "stated",
+          "value": "2026-11-20"
+        }
+      ],
+      "resolutions": [
+        {
+          "mention": "Lubambe",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:lubambe_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lubambe Copper Mines Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:lubambe_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lubambe mine",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:lubambe",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "k06",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 2,
+      "sectors": [
+        "industry"
+      ],
+      "gold_sectors": [
+        "industry"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "care_and_maintenance"
+      ],
+      "gold_themes": [
+        "care_and_maintenance"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Ndola Lime Company",
+          "value": "care_and_maintenance",
+          "object": null,
+          "certainty": "reported",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Ndola Lime",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:ndola_lime_company",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "k07",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "expected_tier": 0,
+      "sectors": [
+        "industry"
+      ],
+      "gold_sectors": [
+        "industry"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "financing_close"
+      ],
+      "gold_themes": [
+        "financing_close",
+        "industrial_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [
+        {
+          "predicate": "expected_start",
+          "subject": "Chongwe Float Glass Project",
+          "certainty": "stated",
+          "value": "2027-03"
+        }
+      ],
+      "resolutions": [
+        {
+          "mention": "Lusaka South MFEZ",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:lusaka_south_mfez",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Lusaka South Multi-Facility Economic Zone",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:lusaka_south_mfez",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Silica Glass Industries Limited",
+          "type": "organisation",
+          "decision": "new",
+          "entity_id": "new:organisation:silica glass industries:0",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Chongwe Float Glass Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:chongwe float glass project:1",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Chongwe Float Glass Project",
+          "gold_stage": "financing_fid",
+          "predicted": "financing_fid",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    },
+    {
+      "id": "k08",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "expected_tier": 0,
+      "sectors": [
+        "mining",
+        "transport"
+      ],
+      "gold_sectors": [
+        "transport"
+      ],
+      "directions": [],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [],
+      "gold_themes": [
+        "border_delay"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "Kasumbalesa",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kasumbalesa_border",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kasumbalesa border post",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kasumbalesa_border",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "k09",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
+      "expected_tier": 0,
+      "sectors": [
+        "fuel_supply"
+      ],
+      "gold_sectors": [
+        "fuel_supply"
+      ],
+      "directions": [
+        "demand_down"
+      ],
+      "gold_directions": [
+        "demand_down"
+      ],
+      "themes": [
+        "erb_price_change"
+      ],
+      "gold_themes": [
+        "erb_price_change"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "fuel_price",
+          "subject": "fuel market",
+          "value": "1.35 ZMW",
+          "object": null,
+          "certainty": "stated",
+          "matched": false
+        },
+        {
+          "predicate": "fuel_price",
+          "subject": "fuel market",
+          "value": "29.75 ZMW",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "fuel_price",
+          "subject": "fuel market",
+          "value": "30.1 ZMW",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "ERB",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:erb",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Energy Regulation Board",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:erb",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "k10",
+      "status": "out_of_scope",
+      "gold_in_scope": false,
+      "tier": null,
+      "tier_rule": null,
+      "expected_tier": null,
+      "sectors": [],
+      "gold_sectors": [],
+      "directions": [],
+      "gold_directions": [],
+      "themes": [],
+      "gold_themes": [],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [],
+      "missed_claims": [],
+      "resolutions": [],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "k11",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 0,
+      "tier_rule": "t0_daily_site_status_change",
+      "expected_tier": 0,
+      "sectors": [
+        "mining",
+        "power"
+      ],
+      "gold_sectors": [
+        "mining"
+      ],
+      "directions": [
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "project_pipeline"
+      ],
+      "themes": [
+        "mine_restart"
+      ],
+      "gold_themes": [
+        "mine_restart"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "site_status",
+          "subject": "Nkana cobalt plant",
+          "value": "producing",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [
+        {
+          "predicate": "production_target",
+          "subject": "Nkana cobalt plant",
+          "certainty": "stated",
+          "value": "5000 t/y"
+        }
+      ],
+      "resolutions": [
+        {
+          "mention": "Mopani",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mopani_copper_mines",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Nkana cobalt plant",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:mopani_nkana",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Mopani Copper Mines Plc",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:mopani_copper_mines",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [],
+      "quarantine": []
+    },
+    {
+      "id": "k12",
+      "status": "in_scope",
+      "gold_in_scope": true,
+      "tier": 1,
+      "tier_rule": "t1_stage_change_watched",
+      "expected_tier": 1,
+      "sectors": [
+        "power"
+      ],
+      "gold_sectors": [
+        "power"
+      ],
+      "directions": [
+        "procurement",
+        "project_pipeline"
+      ],
+      "gold_directions": [
+        "procurement",
+        "project_pipeline"
+      ],
+      "themes": [
+        "contractor_award",
+        "power_project"
+      ],
+      "gold_themes": [
+        "contractor_award",
+        "power_project"
+      ],
+      "deals": [],
+      "deal_expected": false,
+      "claims": [
+        {
+          "predicate": "buyer_role_epc_contractor",
+          "subject": "Kariba North Bank Phase II Project",
+          "value": "powerchina",
+          "object": "PowerChina",
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "contract_value",
+          "subject": "Kariba North Bank",
+          "value": "410000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
+          "predicate": "generation_mw",
+          "subject": "Kariba North Bank Phase II Project",
+          "value": "180",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        }
+      ],
+      "missed_claims": [],
+      "resolutions": [
+        {
+          "mention": "PowerChina",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:powerchina",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kariba North Bank Extension",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kariba_north_bank",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kariba North Bank Extension Power Corporation Limited",
+          "type": "organisation",
+          "decision": "match",
+          "entity_id": "org:knbepc",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kariba North Bank",
+          "type": "site",
+          "decision": "match",
+          "entity_id": "site:kariba_north_bank",
+          "correct": true,
+          "labelled": true
+        },
+        {
+          "mention": "Kariba North Bank Phase II Project",
+          "type": "project",
+          "decision": "new",
+          "entity_id": "new:project:kariba north bank phase ii project:0",
+          "correct": true,
+          "labelled": true
+        }
+      ],
+      "lifecycle": [
+        {
+          "project": "Kariba North Bank Phase II Project",
+          "gold_stage": "contractor_procurement",
+          "predicted": "contractor_procurement",
+          "found": true,
+          "correct": true
+        }
+      ],
+      "quarantine": []
+    }
+  ],
+  "failures": []
+}
