@@ -36,15 +36,29 @@ export async function token(user: User): Promise<string> {
     password: devPassword(),
     scope: "openid",
   });
-  const res = await fetch(`${KEYCLOAK_URL}/realms/strata/protocol/openid-connect/token`, { method: "POST", body });
+  const res = await fetchOnce(`${KEYCLOAK_URL}/realms/strata/protocol/openid-connect/token`, { method: "POST", body });
   if (!res.ok) throw new Error(`Keycloak refused the password grant for ${user}: HTTP ${res.status}`);
   const json = (await res.json()) as { access_token: string; expires_in: number };
   tokens.set(user, { token: json.access_token, until: Date.now() + json.expires_in * 1000 });
   return json.access_token;
 }
 
+/**
+ * fetch with one retry on a network error (not on an HTTP error). Node reuses keep-alive sockets. A socket
+ * that the server closed a moment before gives "fetch failed". Only safe requests use this: GET and the
+ * token request, which has no side effect.
+ */
+async function fetchOnce(url: string, init?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, init);
+  } catch (err) {
+    if (!(err instanceof TypeError)) throw err;
+    return await fetch(url, init);
+  }
+}
+
 export async function apiGet<T = any>(path: string, user: User = "viewer"): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, { headers: { Authorization: `Bearer ${await token(user)}` } });
+  const res = await fetchOnce(`${API_URL}${path}`, { headers: { Authorization: `Bearer ${await token(user)}` } });
   if (!res.ok) throw new Error(`GET ${path}: HTTP ${res.status} ${await res.text()}`);
   return (await res.json()) as T;
 }
