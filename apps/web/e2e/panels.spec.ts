@@ -8,6 +8,19 @@ async function header(page: import("@playwright/test").Page, id: string) {
   return panel(page, id).locator(".sds-panel-header");
 }
 
+/** The box of an element after the grid transitions end: two reads in a row give the same box. */
+async function stableBox(locator: import("@playwright/test").Locator) {
+  let last = "";
+  for (let i = 0; i < 40; i++) {
+    const box = await locator.boundingBox();
+    const key = JSON.stringify(box);
+    if (box && key === last) return box;
+    last = key;
+    await locator.page().waitForTimeout(50);
+  }
+  throw new Error("the element did not stop moving");
+}
+
 /** Column width and row pitch of the grid in pixels, from the grid element and the grid settings. */
 async function metrics(page: import("@playwright/test").Page) {
   return page.evaluate(() => {
@@ -42,7 +55,7 @@ test.describe("criterion 3: panel behaviour", () => {
   test("drag: a panel moves by its header to another grid position", async ({ page }) => {
     await openWorkspace(page);
     const before = await grid(page, "priority-list");
-    const h = await (await header(page, "priority-list")).boundingBox();
+    const h = await stableBox(await header(page, "priority-list"));
     const m = await metrics(page);
     const colPitch = m.gridWidth / 12;
     await page.mouse.move(h!.x + 40, h!.y + h!.height / 2);
@@ -55,7 +68,7 @@ test.describe("criterion 3: panel behaviour", () => {
 
   test("snap: after a drag by a part of a column, the panel sits exactly on a grid cell", async ({ page }) => {
     await openWorkspace(page);
-    const h = await (await header(page, "priority-list")).boundingBox();
+    const h = await stableBox(await header(page, "priority-list"));
     const m = await metrics(page);
     const colPitch = m.gridWidth / 12;
     await page.mouse.move(h!.x + 40, h!.y + 10);
@@ -84,7 +97,7 @@ test.describe("criterion 3: panel behaviour", () => {
     await openWorkspace(page);
     const before = await grid(page, "priority-list");
     const handle = panel(page, "priority-list").locator(".react-resizable-handle-se");
-    const box = await handle.boundingBox();
+    const box = await stableBox(handle);
     const m = await metrics(page);
     const colPitch = m.gridWidth / 12;
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
@@ -99,7 +112,7 @@ test.describe("criterion 3: panel behaviour", () => {
     await openWorkspace(page);
     const before = await grid(page, "deal-map");
     const handle = panel(page, "deal-map").locator(".react-resizable-handle-e");
-    const box = await handle.boundingBox();
+    const box = await stableBox(handle);
     const m = await metrics(page);
     const colPitch = m.gridWidth / 12;
     await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);

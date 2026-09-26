@@ -49,6 +49,28 @@ jobs:
       - run: pnpm test
       - run: pnpm build
 
+  frontend-e2e:
+    name: Frontend end to end, accessibility and visual parity (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: pnpm}
+      - run: pnpm install --frozen-lockfile
+      - name: Install Chromium for the pinned Playwright version
+        run: pnpm --filter @strata/web exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      # Skips with "blocked: no Infora audit (beta.infora.io unreachable)" until audit/ exists.
+      - run: pnpm test:visual
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-e2e-results
+          path: |
+            apps/web/test-results
+            packages/design-system/test-results
+
   api-client:
     name: OpenAPI schema and typed client
     runs-on: ubuntu-latest

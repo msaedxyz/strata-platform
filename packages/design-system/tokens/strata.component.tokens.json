@@ -24,7 +24,7 @@
       "sm": { "$value": "{space.6}" },
       "md": { "$value": "{space.8}" }
     },
-    "nav-rail": { "$value": { "value": 48, "unit": "px" } },
+    "nav-rail": { "$value": { "value": 72, "unit": "px" } },
     "top-bar": { "$value": { "value": 40, "unit": "px" } },
     "ticker": { "$value": "{space.12}" },
     "panel-header": { "$value": "{space.12}" },
