@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main, build/strata, "claude/**"]
+    branches: [main, build/strata]
 
 permissions:
   contents: read
