@@ -135,3 +135,5 @@ docs/07 asks to record the Infora components that each module uses. The list use
 | alert-telemetry | PanelFrame, BarChart, Sparkline, DataTable |
 | next-actions | PanelFrame, DataTable, DatePicker, Badge, Button |
 
+| 2026-09-26 | Track 2 starts the frontend part of M6 after M5. It builds the modules against docs/api-contract.md with mocked API routes in its tests. Track 1 continues with M3 and M4. The M6 backend parts follow M4 | M5 is done and M6 frontend work does not depend on the M3 and M4 code. The contract keeps the two tracks consistent | CLAUDE.md, 08 |
+| 2026-09-26 | The map uses the Natural Earth country boundaries from the npm package world-atlas as its base layer, with no tile server | Natural Earth is in the public domain. The build network cannot reach a tile server. A tile style can come later through VITE_MAP_STYLE_URL | 07 |
