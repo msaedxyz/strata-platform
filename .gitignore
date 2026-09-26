@@ -18,3 +18,5 @@ playwright-report/
 /tmp/
 coverage/
 *.log
+# Local object storage of the filesystem backend
+.data/

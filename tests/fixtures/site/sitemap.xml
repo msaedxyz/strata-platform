@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Fixture sitemap. It lists one allowed page, one page that robots.txt disallows, and one page on a
+     google_news_only domain. The collectors fetch only the first page. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>{{BASE_URL}}/notices/zema-eia-kitumba.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>{{BASE_URL}}/private/board-minutes.html</loc><lastmod>2026-09-16</lastmod></url>
+  <url><loc>https://www.miningweekly.com/article/fqm-kansanshi-s3-contracts-2026-09-21</loc><lastmod>2026-09-21</lastmod></url>
+</urlset>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic fixture feed for the Strata collector tests. The fixture brief proposes this feed as
+     a new source (docs/04 criterion 13). The item is invented test data. -->
+<rss version="2.0">
+  <channel>
+    <title>Katanga Corridor News (fixture)</title>
+    <link>{{BASE_URL}}/corridor/</link>
+    <description>Synthetic corridor news for collector tests</description>
+    <item>
+      <title>Kitumba copper project names EPC contractor shortlist</title>
+      <link>{{BASE_URL}}/corridor/2026/09/kitumba-epc-shortlist.html</link>
+      <guid isPermaLink="false">corridor-kitumba-epc-shortlist</guid>
+      <pubDate>Fri, 25 Sep 2026 12:00:00 +0200</pubDate>
+      <description>The owners of the Kitumba copper project in Mumbwa district named three companies on the shortlist for the engineering, procurement and construction contract. The owners expect to award the contract after the environmental approval.</description>
+    </item>
+  </channel>
+</rss>

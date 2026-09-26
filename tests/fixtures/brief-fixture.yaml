@@ -1,0 +1,131 @@
+# Fixture Monitoring Brief for the collector tests and `make fixtures`.
+# Every source points at the local fixture server (tests/fixtures/server.py).
+# "{{FIXTURE_BASE_URL}}" becomes the base URL of the server when the brief loads.
+# The watch lists are a small part of config/monitoring-brief/v1.yaml. The fixture content is about these sites.
+# The loader gives the brief the next free version number.
+
+version: 1
+name: "Fixture brief: Zambia mining and industrials"
+timezone: Africa/Lusaka
+contact_email_env: STRATA_CONTACT_EMAIL
+taxonomy_ref: config/taxonomy/
+tiers_ref: config/tiers.yaml
+
+sectors: [mining, power, transport, fuel_supply]
+geographies: [zm, cd, prov_copperbelt, prov_north_western, prov_central, dist_solwezi, dist_chingola, dist_mufulira, corr_kasumbalesa]
+deal_types: [fuel_supply_contract, haulage_contract, contract_mining, epc_contract, tender, eoi]
+
+licences:
+  gn_link_only: link_only
+  verify_then_purge: verify_then_purge
+  full: full
+
+watch:
+  daily:
+    - id: kansanshi
+      name: "Kansanshi mine"
+      aliases: ["Kansanshi Mining Plc", "Kansanshi copper-gold mine"]
+      site_class: mine
+      operator: kansanshi_mining_plc
+      owners: [first_quantum, zccm_ih]
+      district: dist_solwezi
+      province: prov_north_western
+      geometry: {lat: -12.14333, lon: 26.38583, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Kansanshi_mine", licence: "CC BY-SA 4.0"}
+    - id: mopani_mufulira
+      name: "Mopani Mufulira mine"
+      aliases: ["Mufulira mine", "Mopani Mufulira"]
+      site_class: mine
+      operator: mopani_copper_mines
+      owners: []
+      district: dist_mufulira
+      province: prov_copperbelt
+      geometry: null
+    - id: kcm_nchanga
+      name: "KCM Nchanga mine and smelter"
+      aliases: ["Nchanga mine", "Nchanga smelter"]
+      site_class: mine
+      operator: kcm
+      owners: []
+      district: dist_chingola
+      province: prov_copperbelt
+      geometry: null
+    - id: kasumbalesa_border
+      name: "Kasumbalesa border post"
+      aliases: ["Kasumbalesa"]
+      site_class: border
+      operator: null
+      owners: []
+      district: null
+      province: prov_copperbelt
+      corridor: corr_kasumbalesa
+      geometry: null
+  weekly:
+    - id: lumwana
+      name: "Lumwana mine"
+      aliases: ["Lumwana copper mine", "Lumwana expansion"]
+      site_class: mine
+      operator: barrick
+      owners: [barrick]
+      district: null
+      province: prov_north_western
+      geometry: {lat: -12.2242, lon: 25.8186, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Lumwana_mine", licence: "CC BY-SA 4.0"}
+
+organisations:
+  - {id: first_quantum, name: "First Quantum Minerals", aliases: ["FQM", "First Quantum"], role: operator, country: ca, external_ids: {}}
+  - {id: kansanshi_mining_plc, name: "Kansanshi Mining Plc", aliases: [], role: operator, country: zm, external_ids: {}}
+  - {id: zccm_ih, name: "ZCCM Investments Holdings Plc", aliases: ["ZCCM-IH"], role: government, country: zm, external_ids: {}}
+  - {id: mopani_copper_mines, name: "Mopani Copper Mines Plc", aliases: ["Mopani"], role: operator, country: zm, external_ids: {}}
+  - {id: kcm, name: "Konkola Copper Mines Plc", aliases: ["KCM"], role: operator, country: zm, external_ids: {}}
+  - {id: barrick, name: "Barrick Mining Corporation", aliases: ["Barrick"], role: operator, country: ca, external_ids: {}}
+
+themes:
+  - {code: contract_award, name: "Contract award", direction: procurement, keywords: ["contract awarded", "haulage contract", "contract mining"]}
+  - {code: tender_notice, name: "Tender notice", direction: procurement, keywords: ["invitation for bids", "tender", "expression of interest"]}
+  - {code: eia_filed, name: "Environmental assessment filed", direction: project_pipeline, keywords: ["environmental impact statement", "public disclosure meeting"]}
+  - {code: site_suspension, name: "Site suspension", direction: demand_down, keywords: ["suspended", "suspension"]}
+  - {code: fuel_shortage, name: "Fuel shortage", direction: demand_up, keywords: ["fuel shortage", "ran out of diesel"]}
+  - {code: border_delay, name: "Border delay", direction: demand_down, keywords: ["border delay", "truck queue"]}
+  - {code: erb_price_change, name: "ERB price decision", direction: demand_down, keywords: ["pump prices", "Energy Regulation Board"]}
+
+exclusions: ["football", "Nkana FC"]
+
+google_news:
+  edition: {hl: en-ZM, gl: ZM, ceid: "ZM:en"}
+  licence_code: gn_link_only
+  queries:
+    - {id: fx_gn_kansanshi, q: "Kansanshi mine", schedule: daily}
+    - {id: fx_gn_kasumbalesa, q: "Kasumbalesa border", schedule: daily}
+
+google_news_only:
+  - miningweekly.com
+  - reuters.com
+
+sources:
+  news:
+    - {id: fx_rss_mining, name: "Copperbelt Mining Wire (fixture)", type: rss, url: "{{FIXTURE_BASE_URL}}/feeds/mining.xml", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 0.2}
+    - {id: fx_rss_business, name: "Zambia Business Daily (fixture)", type: rss, url: "{{FIXTURE_BASE_URL}}/feeds/business.xml", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 0.2}
+    - {id: fx_atom_logistics, name: "Corridor Logistics Monitor (fixture)", type: atom, url: "{{FIXTURE_BASE_URL}}/feeds/logistics.atom", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 0.2}
+    - {id: fx_web_lumwana, name: "North-Western Mining Review (fixture)", type: web, url: "{{FIXTURE_BASE_URL}}/news/lumwana-expansion.html", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 0.2}
+    - {id: fx_sitemap, name: "ZEMA notices sitemap (fixture)", type: sitemap, url: "{{FIXTURE_BASE_URL}}/sitemap.xml", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 0.2}
+  early_signal:
+    - {id: fx_pdf_zppa, source_type: procurement_notices, name: "ZPPA tender notice (fixture)", type: pdf, url: "{{FIXTURE_BASE_URL}}/docs/zppa-haulage-tender.pdf", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 0.2}
+    - {id: fx_pdf_erb, source_type: market_regulator, name: "ERB press statement, scanned (fixture)", type: pdf, url: "{{FIXTURE_BASE_URL}}/docs/erb-fuel-prices-scanned.pdf", schedule: daily, licence_code: full, rate_limit_seconds: 0.2}
+  proposed:
+    - {id: fx_prop_corridor, name: "Katanga Corridor News (fixture)", type: rss, url: "{{FIXTURE_BASE_URL}}/feeds/corridor.xml", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 0.2, reason: "Covers projects on the Kasumbalesa corridor, such as Kitumba."}
+
+known_gaps:
+  - {name: "Zambia Mining Cadastre", reason: "The fixture brief has no cadastre source.", workaround: "manual upload"}
+
+scoring:
+  weights:
+    watch_daily: 3.0
+    watch_weekly: 1.5
+    theme_direction_procurement: 3.0
+    theme_direction_project_pipeline: 2.5
+    theme_direction_demand_up: 2.0
+    theme_direction_demand_down: 2.0
+    early_signal_source: 2.0
+    certainty_stated: 1.0
+    certainty_reported: 0.5
+    certainty_speculative: 0.2
+    recency_days_half_life: 14

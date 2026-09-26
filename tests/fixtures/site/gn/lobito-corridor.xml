@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Synthetic Google News search feed (query "Lobito corridor"). The tests add this query in a new
+     brief version (docs/04 criterion 7). The item is invented test data. -->
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <generator>NFE/5.0</generator>
+    <title>"Lobito corridor" - Google News</title>
+    <link>https://news.google.com/search?q=Lobito+corridor&amp;hl=en-ZM&amp;gl=ZM&amp;ceid=ZM:en</link>
+    <language>en-ZM</language>
+    <description>Google News</description>
+    <item>
+      <title>Zambia-Lobito rail line reaches financial close - Railways Africa</title>
+      <link>https://news.google.com/rss/articles/CBMiP2h0dHBzOi8vd3d3LnJhaWx3YXlzYWZyaWNhLmNvbS9uZXdzL2xvYml0by1yYWlsLWZpbmFuY2lhbC1jbG9zZdIBAA?oc=5</link>
+      <guid isPermaLink="false">CBMiP2h0dHBzOi8vd3d3LnJhaWx3YXlzYWZyaWNhLmNvbS9uZXdzL2xvYml0by1yYWlsLWZpbmFuY2lhbC1jbG9zZdIBAA</guid>
+      <pubDate>Fri, 25 Sep 2026 09:00:00 GMT</pubDate>
+      <description>&lt;a href="https://news.google.com/rss/articles/CBMiP2h0dHBzOi8vd3d3LnJhaWx3YXlzYWZyaWNhLmNvbS9uZXdzL2xvYml0by1yYWlsLWZpbmFuY2lhbC1jbG9zZdIBAA?oc=5" target="_blank"&gt;Zambia-Lobito rail line reaches financial close&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;Railways Africa&lt;/font&gt;</description>
+      <source url="https://www.railwaysafrica.com">Railways Africa</source>
+    </item>
+  </channel>
+</rss>
