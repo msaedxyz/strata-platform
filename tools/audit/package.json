@@ -1,0 +1,30 @@
+{
+  "name": "@strata/audit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Read-only audit tooling for the Infora dashboard (Strata M0)",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "audit": "tsx src/run-all.ts",
+    "check-tokens": "tsx src/check-tokens.ts",
+    "mock-site": "tsx tests/mock-site/server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "test:fast": "playwright test tests/unit.spec.ts tests/guard.spec.ts"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "1.56.1",
+    "@types/node": "^22.20.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
