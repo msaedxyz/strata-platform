@@ -51,6 +51,11 @@ def demand_model() -> dict:
 
 
 @lru_cache
+def priority() -> dict:
+    return load_yaml("priority.yaml")
+
+
+@lru_cache
 def taxonomy(name: str) -> Any:
     return load_yaml("taxonomy", f"{name}.yaml")
 
@@ -69,5 +74,5 @@ def lifecycle_codes() -> list[str]:
 
 
 def clear_caches() -> None:
-    for fn in (stages, lifecycle, tiers, approval_policy, models, demand_model, taxonomy):
+    for fn in (stages, lifecycle, tiers, approval_policy, models, demand_model, priority, taxonomy):
         fn.cache_clear()

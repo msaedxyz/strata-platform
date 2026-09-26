@@ -24,7 +24,8 @@ PROJECTION_TABLES = [
 # Columns that a fold does not own. Proposal events set them.
 _PENDING_COLUMNS = {"proj_deal": ("stage_pending", "pending_proposal_id"), "proj_entity": ("status_pending",)}
 
-# Columns that other modules calculate (for example the priority list). A fold does not overwrite them.
+# Columns that other modules calculate (the priority list, services/projections/priority.py). A fold does not
+# overwrite them.
 _DERIVED_COLUMNS = {
     "proj_deal": ("buyer_fit", "confidence", "lead_time_days", "demand_litres_month", "priority_score", "priority_breakdown"),
     "proj_entity": ("last_signal_at",),
@@ -228,3 +229,13 @@ def projection_hashes(conn: psycopg.Connection) -> dict[str, str]:
             digest.update(json.dumps(_canonical(dict(row)), sort_keys=True, default=str).encode())
         result[table] = digest.hexdigest()
     return result
+
+
+def _register_default_hooks() -> None:
+    """The priority list calculator (docs/05 scorer rules 5 and 6) runs after the folds of each event."""
+    from .priority import on_event
+
+    register_hook(on_event)
+
+
+_register_default_hooks()

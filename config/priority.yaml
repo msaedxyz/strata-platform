@@ -1,0 +1,73 @@
+# Priority list and opportunities from projects. Source: docs/05-enrichment.md (scorer rules 5 and 6).
+# The calculator is services/projections/priority.py. It runs as a projector hook, so a rebuild gives the same values.
+# All weights, scores and groups are planning defaults for review by Mohamed. See docs/assumptions.md.
+version: priority-v1
+
+# Scorer rule 5: rank by lead time, demand estimate, confidence and the fit of the buyer.
+# The weighted score is the sum of weight x score. Each score is 0 to 1. The weights add up to 1.
+weights:
+  lead_time: 0.35
+  demand: 0.25
+  confidence: 0.2
+  buyer_fit: 0.2
+
+# Lead time: days from the "as of" date of the calculation to the forecast start of contractor procurement.
+# The "as of" date is the recorded time of the event that caused the calculation (a rebuild gives the same value).
+# The score is a linear interpolation between the points [days, score]. Enough time to build a relationship
+# before the procurement scores highest. A window that is very far away or already open scores lower.
+lead_time:
+  points: [[-365, 0.05], [0, 0.3], [90, 0.8], [180, 1.0], [540, 1.0], [1095, 0.4], [1825, 0.2]]
+  unknown_score: 0.0        # no forecast date
+  horizon_days: 3650        # a forecast further away than this counts as unknown
+
+# Demand estimate in litres a month (config/demand-model.yaml). Linear interpolation between the points.
+demand:
+  points: [[0, 0.0], [20000, 0.3], [100000, 0.6], [500000, 0.9], [2000000, 1.0]]
+  unknown_score: 0.0        # no estimate: an input has no evidence
+
+# Confidence from the certainty of the evidence of the deal (the DealIdentified event).
+confidence:
+  certainty_scores: {stated: 1.0, reported: 0.6, speculative: 0.3}
+  unknown_score: 0.5        # a deal that a user added without a certainty
+
+# Buyer fit from the buyer roles of the project and the site of the deal (RelationshipAsserted buyer_role_*).
+# The organisation that buys diesel is often a contractor (docs/03, buyers). The best role gives the score.
+buyer_fit:
+  role_scores:
+    buyer_role_mining_contractor: 1.0
+    buyer_role_haulage_contractor: 1.0
+    buyer_role_epc_contractor: 0.9
+    buyer_role_owner: 0.5
+    buyer_role_fuel_supplier: 0.2
+  # An owner that buys fuel directly: the organisation of the deal is the owner, or the owner operates the site
+  # and the project names no contractor.
+  owner_direct_buyer_score: 0.9
+  # The deal names an organisation, but no buyer role is known.
+  organisation_only_score: 0.4
+  unknown_score: 0.3
+
+# Scorer rule 6: a deal whose project is in the engagement window and has no contact found gets the highest
+# rank in its group. The list shows the groups in this order. Each deal stage is in one group.
+groups:
+  - {id: early, name: "Signal to approach", stages: [signal, qualified, contact_found, approach]}
+  - {id: engaged, name: "Relationship to prequalification", stages: [relationship_active, prequalification]}
+  - {id: bidding, name: "Tender and negotiation", stages: [tender_or_proposal, negotiation]}
+  - {id: closed, name: "Closed", stages: [won, lost, parked]}
+no_contact_rule:
+  # A contact is found when a ContactAdded event exists for the deal, when a touchpoint names a contact, or when
+  # the deal stage is at or after this stage.
+  contact_found_from_stage: contact_found
+  # Added to the score of a deal that the rule selects. The list also sorts these deals first in their group.
+  boost: 1.0
+
+# Opportunities from projects (M6). When a project is first identified, or reaches a lifecycle stage up to
+# max_stage, the enrichment proposes one diesel supply opportunity for the project. Always review.
+project_opportunity:
+  enabled: true
+  deal_type: fuel_supply_contract
+  title: "Diesel supply for {project_name}"
+  # A project with an unknown stage, or a stage at or before this stage (config/lifecycle.yaml order, or the
+  # restart path order for a restart stage), gets the opportunity.
+  max_stage: contractor_procurement
+  # No new opportunity when the project already has an open deal of one of these types.
+  skip_if_deal_types: [fuel_supply_contract]

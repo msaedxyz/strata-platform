@@ -23,3 +23,6 @@ agents:
   lifecycle: {model: claude-sonnet-5, prompt: prompts/lifecycle/v1.md}
   window_forecaster: {model: none, note: "The forecaster calculates from intervals. A model does not produce the forecast."}
   summariser: {model: claude-haiku-4-5-20251001, prompt: prompts/summariser/v1.md}
+  # M6 follow-up steps. They calculate from configuration. A model does not produce their output.
+  demand_estimator: {model: none, note: "The estimate comes from a formula in config/demand-model.yaml and facts with evidence."}
+  opportunity_proposer: {model: none, note: "One diesel supply opportunity for each project, from config/priority.yaml."}
