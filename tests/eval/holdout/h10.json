@@ -1,0 +1,75 @@
+{
+  "id": "h10",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "TAZARA awards track renewal contract to CCECC",
+    "publisher": "Railways Weekly (synthetic)",
+    "url": "https://synthetic.test/gold/h10",
+    "published_at": "2026-09-12T08:00:00Z",
+    "fetched_at": "2026-09-13T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "TAZARA awards track renewal contract to CCECC\n\nThe Tanzania-Zambia Railway (TAZARA) has awarded a US$120 million track renewal contract to China Civil Engineering Construction Corporation (CCECC). Work on the first 200 kilometres will start in January 2027.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport"
+    ],
+    "geographies": [
+      "zm",
+      "tz"
+    ],
+    "themes": [
+      "contractor_award"
+    ],
+    "directions": [
+      "procurement"
+    ],
+    "deal_types": [
+      "construction_contract"
+    ],
+    "entities": [
+      {
+        "text": "TAZARA",
+        "type": "organisation",
+        "resolution": "org:tazara",
+        "accept": [
+          "site:tazara"
+        ]
+      },
+      {
+        "text": "Tanzania-Zambia Railway",
+        "type": "organisation",
+        "resolution": "org:tazara",
+        "accept": [
+          "site:tazara"
+        ]
+      },
+      {
+        "text": "CCECC",
+        "type": "organisation",
+        "resolution": "org:ccecc"
+      },
+      {
+        "text": "China Civil Engineering Construction Corporation",
+        "type": "organisation",
+        "resolution": "org:ccecc"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "contract_value",
+        "subject": "TAZARA",
+        "certainty": "stated",
+        "value": "120000000 USD"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 1
+  }
+}

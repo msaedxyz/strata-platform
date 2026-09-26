@@ -1,0 +1,56 @@
+{
+  "id": "h11",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Barrick said to weigh sale of Lumwana stake",
+    "publisher": "Business Wire Zambia (synthetic)",
+    "url": "https://synthetic.test/gold/h11",
+    "published_at": "2026-09-13T08:00:00Z",
+    "fetched_at": "2026-09-14T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Barrick said to weigh sale of Lumwana stake\n\nBarrick Mining Corporation is reportedly considering the sale of a 20 percent stake in the Lumwana mine, according to people familiar with the matter. The mine produced 120,000 tonnes of copper in 2025.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [],
+    "directions": [],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Barrick Mining Corporation",
+        "type": "organisation",
+        "resolution": "org:barrick"
+      },
+      {
+        "text": "Lumwana mine",
+        "type": "site",
+        "resolution": "site:lumwana"
+      },
+      {
+        "text": "Barrick",
+        "type": "organisation",
+        "resolution": "org:barrick"
+      },
+      {
+        "text": "Lumwana",
+        "type": "site",
+        "resolution": "site:lumwana"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

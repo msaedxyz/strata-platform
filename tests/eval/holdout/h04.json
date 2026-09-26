@@ -1,0 +1,80 @@
+{
+  "id": "h04",
+  "synthetic": true,
+  "note": "Held-out synthetic document, written after the rule changes and not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Gemfields suspends mining at Kagem after pit wall failure",
+    "publisher": "Gem News (synthetic)",
+    "url": "https://synthetic.test/gold/h04",
+    "published_at": "2026-09-06T08:00:00Z",
+    "fetched_at": "2026-09-07T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Gemfields suspends mining at Kagem after pit wall failure\n\nKagem Mining Limited has suspended mining operations at the Kagem emerald mine in Lufwanyama after a pit wall failure. Gemfields said that processing of stockpiles continues. About 300 contractor employees are affected.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_lufwanyama",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "suspension"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Gemfields",
+        "type": "organisation",
+        "resolution": "org:gemfields"
+      },
+      {
+        "text": "Kagem Mining Limited",
+        "type": "organisation",
+        "resolution": "org:kagem_mining",
+        "accept": [
+          "site:kagem"
+        ]
+      },
+      {
+        "text": "Kagem emerald mine",
+        "type": "site",
+        "resolution": "site:kagem"
+      },
+      {
+        "text": "Kagem",
+        "type": "site",
+        "resolution": "site:kagem",
+        "accept": [
+          "org:kagem_mining"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Kagem emerald mine",
+        "certainty": "stated",
+        "value": "suspended"
+      },
+      {
+        "predicate": "employees",
+        "subject": "Kagem emerald mine",
+        "certainty": "stated",
+        "value": "300"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}
