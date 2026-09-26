@@ -412,6 +412,16 @@ describe("DataTable virtualize (docs/07 criteria 6 and 7)", () => {
     expect(screen.getByText("500 rows")).toBeInTheDocument();
   });
 
+  it("a control in a cell does not select the row; a click on the cell does", () => {
+    const onRowClick = vi.fn();
+    const withButton: Column<Row>[] = [...columns, { id: "act", header: "Action", value: () => "", cell: (r) => <button type="button">Evidence {r.name}</button> }];
+    render(<DataTable columns={withButton} rows={rows} getRowId={(r) => r.id} label="Rows" onRowClick={onRowClick} />);
+    fireEvent.click(screen.getByRole("button", { name: "Evidence Alpha" }));
+    expect(onRowClick).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByText("Alpha"));
+    expect(onRowClick).toHaveBeenCalledTimes(1);
+  });
+
   it("renders every row without virtualize", () => {
     render(<DataTable columns={columns} rows={many.slice(0, 50)} getRowId={(r) => r.id} label="Few" />);
     expect(screen.getAllByRole("row").filter((r) => r.closest("tbody"))).toHaveLength(50);

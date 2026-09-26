@@ -67,6 +67,7 @@ export interface DataTableProps<T> {
 }
 
 const DEFAULT_MIN_WIDTH = 40;
+const INTERACTIVE = "button, a[href], input, select, textarea, [role='button']";
 
 /** The row height of a density in pixels, from the size.row tokens. The virtualizer uses it as the first estimate. */
 function rowEstimate(density: Density): number {
@@ -226,7 +227,7 @@ export function DataTable<T>({
         virtualizer.scrollToIndex(next);
         requestAnimationFrame(() => rowRefs.current[next]?.focus());
       } else rowRefs.current[next]?.focus();
-    } else if (e.key === "Enter" && onRowClick) {
+    } else if (e.key === "Enter" && onRowClick && e.target === e.currentTarget) {
       e.preventDefault();
       onRowClick(row);
     }
@@ -364,8 +365,11 @@ export function DataTable<T>({
                     className={cx("sds-table__row", selectedRowId === id && "sds-table__row--selected", onRowClick && "sds-table__row--clickable")}
                     tabIndex={i === rowFocus ? 0 : -1}
                     aria-selected={selectedRowId !== undefined ? selectedRowId === id : undefined}
-                    onClick={() => {
+                    onClick={(e) => {
                       setActiveRow(i);
+                      // A control in a cell (for example a provenance control or a button) does not also select the row.
+                      const control = (e.target as HTMLElement).closest(INTERACTIVE);
+                      if (control && e.currentTarget.contains(control)) return;
                       onRowClick?.(row);
                     }}
                     onKeyDown={(e) => onRowKey(e, row, i)}

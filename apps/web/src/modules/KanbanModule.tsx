@@ -7,7 +7,7 @@ import { useCallback, useMemo, useState } from "react";
 import type { Deal } from "../api/types";
 import { moveDealStage } from "../api/writes";
 import { useCan } from "../auth/RequireRole";
-import { moduleConfig } from "../config/modules";
+import { moduleConfig, sharedResources } from "../config/modules";
 import { useResource } from "../data/resource";
 import { useAction } from "./common/actions";
 import { useApi, useStages, useTaxonomy } from "./common/api";
@@ -17,10 +17,10 @@ import { ModuleRoot, resourceState } from "./common/ui";
 
 const cfg = moduleConfig.kanban;
 
-/** GET /api/deals. The Kanban board, the next actions and the relationship panel share it. */
+/** GET /api/deals. The Kanban board, the next actions, the relationship panel and the timeline share it. */
 export function useDeals() {
   const { reads } = useApi();
-  return useResource<{ items: Deal[] }>("deals", reads.deals, { live: cfg.live.events, batchMs: cfg.live.batchMs });
+  return useResource<{ items: Deal[] }>("deals", reads.deals, { live: sharedResources.deals.live.events, batchMs: sharedResources.deals.live.batchMs });
 }
 
 export function KanbanModule(_: PanelProps) {

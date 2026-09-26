@@ -117,6 +117,16 @@ export const moduleConfig = {
 
 export type ModuleId = keyof typeof moduleConfig;
 
+/**
+ * Reads that more than one module shares. The shared read listens to the events of each module that uses it:
+ * GET /api/deals serves the Kanban board, the next actions, the relationship panel and the timeline picker.
+ */
+export const sharedResources = {
+  deals: {
+    live: { events: [...new Set([...moduleConfig.kanban.live.events, ...moduleConfig["next-actions"].live.events, ...ENGAGEMENT_EVENTS])], batchMs: LIVE_BATCH_MS },
+  },
+} as const;
+
 /** The live event types of a module, or an empty list for a module that is not live. */
 export function liveEvents(id: ModuleId): readonly string[] {
   return moduleConfig[id].live?.events ?? [];
