@@ -25,15 +25,17 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 - Tokens are removed from all logs (Python log filter and nginx log format).
 - M7 e2e suite: 24 Python scenario tests and 8 browser tests on the Compose stack, make e2e targets, CI job e2e, clean clone check, DB restart hardening. The lead fixed bugs B1 (parallel enrichment), B2 (signal feed summary) and B5 (brief activation without entities). Report: reports/M7-e2e.md.
 - Tool for the parallel run with Argo: scripts/argo_compare.py.
+- The e2e suite passes on the sandbox stack: 24 Python scenario tests, 8 browser tests, 5 performance tests. In CI the clean clone, the log check, the Python scenarios and the browser scenarios pass.
+- Final report: reports/final.md.
 
 ## In progress
 
-- M6 integration: priority calculator, demand estimates, evidence ids for all facts in the read API, frontend write types from the real API, live update test on the real stack.
-- Final check of CI with the e2e job, then the final report.
+- CI run of the final commits.
 
 ## Next
 
-- M6 modules, then M7 acceptance tests, backtest and the final report.
+- Mohamed: allow beta.infora.io, news.google.com and the source hosts, set ANTHROPIC_API_KEY, then run the audit and the parallel run with Argo (reports/final.md, sections 8 and 10).
+- Add 13 or more backtest events with evidence.
 
 ## Problems and workarounds
 
