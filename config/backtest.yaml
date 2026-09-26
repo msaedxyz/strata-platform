@@ -1,0 +1,89 @@
+# Lead time backtest (docs/09-acceptance.md, "Lead time backtest").
+# services/backtest reads this file. scripts/run_backtest.py runs the backtest.
+#
+# The harness replays each trace of the dataset as a source, in date order. It enriches each source
+# before it loads the next source. Then it finds the first Strata signal for each event.
+
+dataset:
+  events: tests/backtest/events.yaml
+  traces: tests/backtest/traces.yaml
+
+# How a trace becomes a source. The collector pipeline (services/collectors/pipeline.ingest) stores it.
+replay:
+  backend: deterministic            # STRATA_AGENT_BACKEND for the replay. Deterministic, so the run repeats
+  source_type: snapshot             # a trace is like a research snapshot item: title, link, publisher and date
+  licence_code: gn_link_only        # brief v1 maps gn_link_only to the retention policy link_only
+  brief_source_id: "backtest:traces"
+  read_at_source: true              # the text is the title only. The reader must open the link
+  # The replay collects each trace on its publication day. fetched_at = published_at, so the scorer sees
+  # no collection delay and the near duplicate window uses the replay date, not the date of the run.
+  fetch_delay_hours: 0
+
+# Events in the backtest window. docs/09 says "the last three years".
+window:
+  start: 2023-10-01
+  end: 2026-09-26
+  # strict: false keeps events outside the window (EV-007) in the pass conditions, with a flag.
+  # strict: true removes them. See docs/decisions.md (Keep EV-007 with a flag).
+  strict: false
+
+pass_conditions:
+  min_detection_rate: 0.70          # share of events with an earlier signal
+  min_median_lead_months: 6.0       # median lead time of the events with an earlier signal
+  min_events: 20                    # docs/09 step 1: at least 20 events. Reported as its own condition
+  days_per_month: 30.44
+
+# Matching rules. A signal is a SignalScored event in the event store (stream 'source').
+# A signal matches an event when its source date is strictly before the event date and at least one
+# rule below is true. The rules are strict on purpose:
+# 1. project: the signal names a project entity whose name contains one of project_names, or whose
+#    site is one of site_keys.
+# 2. site: the signal names a site entity with a brief key in site_keys.
+# 3. title: the signal title contains all the words of one group in title_terms (whole words, any case).
+# 4. company: the signal names an organisation with a brief key in company_keys. This is a company
+#    level signal. It counts only when company_level_counts is true (docs/decisions.md 2026-09-26:
+#    "A company level trace counts as a trace of the project, with a note"). company_keys holds only
+#    the operator of the event site, and only when that operator has no other watched site in Zambia
+#    that the event could be confused with. Parent owners, DFIs and ZCCM-IH never count, because they
+#    hold many assets.
+matching:
+  count_tiers: [0, 1, 2]
+  company_level_counts: true
+  rule_order: [project, site, title, company]
+
+events:
+  EV-001:
+    site_keys: [lumwana]
+    project_names: ["Lumwana Super Pit", "Lumwana expansion", "Lumwana copper expansion"]
+    title_terms: [["Lumwana"]]
+    company_keys: [barrick]          # Barrick operates one mine in Zambia: Lumwana
+  EV-002:
+    site_keys: [lumwana]
+    project_names: ["Lumwana Super Pit", "Lumwana expansion", "Lumwana copper expansion"]
+    title_terms: [["Lumwana"]]
+    company_keys: [barrick]
+  EV-003:
+    site_keys: [mopani_mufulira, mopani_nkana]
+    project_names: ["Mopani", "Mufulira", "Nkana", "Synclinorium", "Mindola"]
+    title_terms: [["Mopani"], ["Mufulira"], ["Nkana"]]
+    company_keys: [mopani_copper_mines]   # not IRH (parent) and not ZCCM-IH (many assets)
+  EV-004:
+    site_keys: [mopani_mufulira, mopani_nkana]
+    project_names: ["Mopani", "Mufulira", "Nkana", "Synclinorium", "Mindola"]
+    title_terms: [["Mopani"], ["Mufulira"], ["Nkana"]]
+    company_keys: [mopani_copper_mines]
+  EV-005:
+    site_keys: [kcm_nchanga, kcm_konkola]
+    project_names: ["Tailings Leach", "Nchanga", "Konkola"]
+    title_terms: [["Konkola"], ["KCM"], ["Nchanga"]]
+    company_keys: [kcm]              # not Vedanta or CopperTech (parent owners)
+  EV-006:
+    site_keys: [zambia_lobito_rail]
+    project_names: ["Lobito rail", "Zambia-Lobito", "Zambia Lobito", "Jimbe"]
+    title_terms: [["Lobito", "Zambia", "rail"], ["Chingola", "Jimbe"]]
+    company_keys: []                 # Africa Finance Corporation leads many projects. A company signal is not specific
+  EV-007:
+    site_keys: [kansanshi]
+    project_names: ["Kansanshi S3", "Kansanshi expansion"]
+    title_terms: [["Kansanshi"]]
+    company_keys: [kansanshi_mining_plc]  # not First Quantum, which operates other mines in Zambia
