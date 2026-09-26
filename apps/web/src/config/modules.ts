@@ -71,7 +71,8 @@ export const moduleConfig = {
     live: { events: DEAL_EVENTS, batchMs: LIVE_BATCH_MS },
   },
   "priority-list": {
-    live: { events: [...DEAL_EVENTS, ...ENGAGEMENT_EVENTS, "DemandEstimated", "ProcurementWindowForecast"], batchMs: LIVE_BATCH_MS },
+    // The priority calculator (services/projections/priority.py) runs on deal, engagement, project and relationship events.
+    live: { events: [...new Set([...DEAL_EVENTS, ...ENGAGEMENT_EVENTS, ...PROJECT_EVENTS])], batchMs: LIVE_BATCH_MS },
     limit: 500,
     virtualizeAbove: 100,
   },
