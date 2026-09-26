@@ -128,7 +128,12 @@ export const PanelFrame = forwardRef<HTMLElement, PanelFrameProps>(function Pane
         menuItems={menuItems}
         dragHandle={dragHandle}
       />
-      {!collapsed && <div className={cx("sds-panel__body", flush && "sds-panel__body--flush")}>{body}</div>}
+      {!collapsed && (
+        // The body scrolls. tabIndex 0 lets a keyboard user scroll it (axe rule scrollable-region-focusable).
+        <div className={cx("sds-panel__body", flush && "sds-panel__body--flush")} tabIndex={0}>
+          {body}
+        </div>
+      )}
     </section>
   );
 });

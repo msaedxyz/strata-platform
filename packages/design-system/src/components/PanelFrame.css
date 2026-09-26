@@ -86,6 +86,10 @@
   padding: var(--space-3);
 }
 
+.sds-panel__body:focus-visible {
+  outline-offset: calc(-1 * var(--border-width-focus));
+}
+
 .sds-panel__body--flush {
   padding: 0;
 }

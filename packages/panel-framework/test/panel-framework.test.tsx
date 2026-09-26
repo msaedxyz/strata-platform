@@ -197,6 +197,26 @@ describe("PanelGrid", () => {
     expect(item("alpha")).toHaveAttribute("data-w", "5");
   });
 
+  it("keeps each workspace layout apart when the workspace changes", async () => {
+    const user = userEvent.setup();
+    const other: WorkspaceDefinition = { id: "other", name: "Other", icon: "layout", defaultPanels: [{ i: "gamma", x: 0, y: 0, w: 4, h: 6 }] };
+    const store = new MemoryLayoutStore();
+    function Switcher({ ws }: { ws: WorkspaceDefinition }) {
+      const controller = useWorkspace(ws, store, registry);
+      return <PanelGrid controller={controller} registry={registry} role="analyst" />;
+    }
+    const view = render(<Switcher ws={workspace} />);
+    await user.click(screen.getByRole("button", { name: "Close Beta" }));
+    view.rerender(<Switcher ws={other} />);
+    expect(item("gamma")).not.toBeNull();
+    expect(item("alpha")).toBeNull();
+    view.rerender(<Switcher ws={workspace} />);
+    expect(item("alpha")).not.toBeNull();
+    expect(item("beta")).toBeNull();
+    expect(store.load("ws")!.panels.map((p) => p.i)).toEqual(["alpha"]);
+    expect(store.load("other")!.panels.map((p) => p.i)).toEqual(["gamma"]);
+  });
+
   it("shows the empty state when every panel is closed", async () => {
     const user = userEvent.setup();
     render(<Harness store={new MemoryLayoutStore()} />);

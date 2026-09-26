@@ -82,7 +82,7 @@ export function ToastProvider({ children, duration = 5000 }: ToastProviderProps)
 
   const value = useMemo(() => ({ show, dismiss }), [show, dismiss]);
   const region = (
-    <div className="sds-toast-region" aria-live="polite" aria-label="Messages">
+    <div className="sds-toast-region" aria-live="polite">
       {toasts.map((t) => (
         <Toast key={t.id} title={t.title} description={t.description} tone={t.tone} onDismiss={() => dismiss(t.id)} />
       ))}

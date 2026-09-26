@@ -57,14 +57,14 @@ function DialogFrame({
           className,
         )}
       >
-        <header className={cx("sds-dialog__header", hideTitle && "sds-dialog__header--bare")}>
+        <div className={cx("sds-dialog__header", hideTitle && "sds-dialog__header--bare")}>
           <h2 id={titleId} className={cx("sds-dialog__title", hideTitle && "sds-visually-hidden")}>
             {title}
           </h2>
           {!hideTitle && <IconButton label="Close" icon="close" size="sm" onClick={onClose} />}
-        </header>
+        </div>
         <div className="sds-dialog__body">{children}</div>
-        {footer && <footer className="sds-dialog__footer">{footer}</footer>}
+        {footer && <div className="sds-dialog__footer">{footer}</div>}
       </div>
     </div>
   );
