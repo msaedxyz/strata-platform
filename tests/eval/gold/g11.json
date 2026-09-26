@@ -1,0 +1,89 @@
+{
+  "id": "g11",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "First Quantum declares commercial production at Enterprise",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g11",
+    "published_at": "2026-09-09T08:00:00Z",
+    "fetched_at": "2026-09-10T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "First Quantum declares commercial production at Enterprise\n\nFirst Quantum Minerals has declared commercial production at the Enterprise Nickel Project in Kalumbila district. The mine reached its design capacity of 30,000 tonnes of nickel a year in August 2026.\n\nFirst Quantum said that the Enterprise open pit uses the haul fleet of the nearby Sentinel mine.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_kalumbila",
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [
+      "commissioning_rampup"
+    ],
+    "directions": [
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "First Quantum",
+        "type": "organisation",
+        "resolution": "org:first_quantum"
+      },
+      {
+        "text": "First Quantum Minerals",
+        "type": "organisation",
+        "resolution": "org:first_quantum"
+      },
+      {
+        "text": "Enterprise",
+        "type": "site",
+        "resolution": "site:enterprise"
+      },
+      {
+        "text": "Enterprise Nickel Project",
+        "type": "site",
+        "resolution": "site:enterprise"
+      },
+      {
+        "text": "Enterprise Nickel Project",
+        "type": "project",
+        "resolution": "new"
+      },
+      {
+        "text": "Sentinel mine",
+        "type": "site",
+        "resolution": "site:sentinel"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "production_target",
+        "subject": "Enterprise Nickel Project",
+        "certainty": "stated",
+        "value": "30000 t/y"
+      },
+      {
+        "predicate": "site_status",
+        "subject": "Enterprise Nickel Project",
+        "certainty": "stated",
+        "value": "producing"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Enterprise Nickel Project",
+        "stage": "steady_operation"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

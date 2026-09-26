@@ -1,0 +1,62 @@
+{
+  "id": "g25",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "ERB raises diesel pump price",
+    "publisher": "ERB (synthetic)",
+    "url": "https://synthetic.test/gold/g25",
+    "published_at": "2026-09-29T08:00:00Z",
+    "fetched_at": "2026-09-30T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": true
+  },
+  "text": "ERB raises diesel pump price\n\nThe Energy Regulation Board (ERB) has increased the pump price of diesel to K28.40 per litre from K27.10 per litre. The new prices take effect at midnight on 30 September 2026.\n\nThe ERB said that the increase follows higher import costs and a weaker kwacha.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "fuel_supply"
+    ],
+    "geographies": [
+      "zm"
+    ],
+    "themes": [
+      "erb_price_change"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Energy Regulation Board",
+        "type": "organisation",
+        "resolution": "org:erb"
+      },
+      {
+        "text": "ERB",
+        "type": "organisation",
+        "resolution": "org:erb"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "fuel_price",
+        "subject": "fuel market",
+        "certainty": "stated",
+        "value": "28.4 ZMW"
+      },
+      {
+        "predicate": "fuel_price",
+        "subject": "fuel market",
+        "certainty": "stated",
+        "value": "27.1 ZMW"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

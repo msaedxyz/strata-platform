@@ -1,0 +1,72 @@
+{
+  "id": "g39",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Dangote Cement Zambia plans second kiln at Masaiti",
+    "publisher": "Industry Zambia (synthetic)",
+    "url": "https://synthetic.test/gold/g39",
+    "published_at": "2026-09-07T08:00:00Z",
+    "fetched_at": "2026-09-08T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Dangote Cement Zambia plans second kiln at Masaiti\n\nDangote Cement Zambia plans to build a second kiln at its Masaiti cement plant to raise capacity to 3 million tonnes a year. The company said that it is in talks with lenders on a US$250 million loan.\n\nDangote may start construction in 2028 if the financing closes.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "industry"
+    ],
+    "geographies": [
+      "dist_masaiti",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "industrial_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Dangote Cement Zambia",
+        "type": "organisation",
+        "resolution": "org:dangote_cement_zambia",
+        "accept": [
+          "site:dangote_masaiti"
+        ]
+      },
+      {
+        "text": "Masaiti cement plant",
+        "type": "site",
+        "resolution": "site:dangote_masaiti"
+      },
+      {
+        "text": "Dangote",
+        "type": "organisation",
+        "resolution": "org:dangote_cement_zambia"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "production_target",
+        "subject": "Masaiti cement plant",
+        "certainty": "stated",
+        "value": "3000000 t/y"
+      },
+      {
+        "predicate": "expected_start",
+        "subject": "Dangote",
+        "certainty": "speculative",
+        "value": "2028"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

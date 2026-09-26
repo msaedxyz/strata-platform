@@ -1,0 +1,68 @@
+{
+  "id": "g22",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "KNBEPC invites bids for standby generator fuel supply",
+    "publisher": "KNBEPC (synthetic)",
+    "url": "https://synthetic.test/gold/g22",
+    "published_at": "2026-09-21T08:00:00Z",
+    "fetched_at": "2026-09-22T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "KNBEPC invites bids for standby generator fuel supply\n\nKariba North Bank Extension Power Corporation Limited (KNBEPC) invites bids for the supply of diesel for the standby generators at the Kariba North Bank Extension power station in Siavonga.\n\nThe station needs about 40,000 litres of diesel a month. Bids close on 23 October 2026.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power",
+      "fuel_supply"
+    ],
+    "geographies": [
+      "dist_siavonga",
+      "prov_southern",
+      "zm"
+    ],
+    "themes": [
+      "tender_notice",
+      "fuel_supply_tender"
+    ],
+    "directions": [
+      "procurement"
+    ],
+    "deal_types": [
+      "fuel_supply_contract",
+      "tender"
+    ],
+    "entities": [
+      {
+        "text": "Kariba North Bank Extension Power Corporation Limited",
+        "type": "organisation",
+        "resolution": "org:knbepc"
+      },
+      {
+        "text": "KNBEPC",
+        "type": "organisation",
+        "resolution": "org:knbepc"
+      },
+      {
+        "text": "Kariba North Bank Extension",
+        "type": "site",
+        "resolution": "site:kariba_north_bank"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "tender_deadline",
+        "subject": "Kariba North Bank Extension",
+        "certainty": "stated",
+        "value": "2026-10-23"
+      }
+    ],
+    "projects": [],
+    "deal_expected": true,
+    "expected_tier": 0
+  }
+}

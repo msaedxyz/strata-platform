@@ -1,0 +1,75 @@
+{
+  "id": "g46",
+  "synthetic": true,
+  "note": "Synthetic rumour article. Each claim is reported or speculative.",
+  "source": {
+    "type": "rss",
+    "title": "Vedanta reportedly in talks to sell a stake in KCM",
+    "publisher": "Business Wire Zambia (synthetic)",
+    "url": "https://synthetic.test/gold/g46",
+    "published_at": "2026-09-25T08:00:00Z",
+    "fetched_at": "2026-09-26T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Vedanta reportedly in talks to sell a stake in KCM\n\nVedanta Resources is in talks to sell a minority stake in Konkola Copper Mines Plc to a Middle East investor, people familiar with the matter said. The deal could value KCM at about US$2 billion.\n\nSources said that the buyer may take 30 percent of the company. Vedanta owns 80 percent of KCM and ZCCM-IH owns 20 percent.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "zm"
+    ],
+    "themes": [],
+    "directions": [],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Vedanta",
+        "type": "organisation",
+        "resolution": "org:vedanta_resources"
+      },
+      {
+        "text": "Vedanta Resources",
+        "type": "organisation",
+        "resolution": "org:vedanta_resources"
+      },
+      {
+        "text": "KCM",
+        "type": "organisation",
+        "resolution": "org:kcm"
+      },
+      {
+        "text": "Konkola Copper Mines Plc",
+        "type": "organisation",
+        "resolution": "org:kcm"
+      },
+      {
+        "text": "ZCCM-IH",
+        "type": "organisation",
+        "resolution": "org:zccm_ih"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "ownership_percent",
+        "subject": "Vedanta",
+        "certainty": "reported",
+        "value": "80%",
+        "object": "KCM"
+      },
+      {
+        "predicate": "ownership_percent",
+        "subject": "ZCCM-IH",
+        "certainty": "reported",
+        "value": "20%",
+        "object": "KCM"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

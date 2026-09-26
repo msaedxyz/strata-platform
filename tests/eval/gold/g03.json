@@ -1,0 +1,91 @@
+{
+  "id": "g03",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Mimosa Resources granted large-scale mining licence for Fishtie",
+    "publisher": "Zambia Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g03",
+    "published_at": "2026-09-16T08:00:00Z",
+    "fetched_at": "2026-09-17T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Mimosa Resources granted large-scale mining licence for Fishtie\n\nThe Ministry of Mines and Minerals Development has granted a large-scale mining licence to Mimosa Resources for the Fishtie Copper Project in Mkushi district, Central Province. The licence number is LML-35-2026.\n\nMimosa Resources owns 100 percent of the project. The company said that it will select an EPC contractor for the processing plant in 2027 and that first copper is targeted for 2029.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_mkushi",
+      "prov_central",
+      "zm"
+    ],
+    "themes": [
+      "mining_licence_granted"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [
+      "epc_contract"
+    ],
+    "entities": [
+      {
+        "text": "Ministry of Mines and Minerals Development",
+        "type": "organisation",
+        "resolution": "org:ministry_of_mines"
+      },
+      {
+        "text": "Mimosa Resources",
+        "type": "organisation",
+        "resolution": "org:mimosa_resources"
+      },
+      {
+        "text": "Fishtie Copper Project",
+        "type": "project",
+        "resolution": "new",
+        "accept": [
+          "site:kashime"
+        ]
+      },
+      {
+        "text": "Fishtie",
+        "type": "site",
+        "resolution": "site:kashime"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "licence_number",
+        "subject": "Fishtie Copper Project",
+        "certainty": "stated",
+        "value": "LML-35-2026"
+      },
+      {
+        "predicate": "ownership_percent",
+        "subject": "Mimosa Resources",
+        "certainty": "stated",
+        "value": "100%",
+        "object": "Fishtie Copper Project"
+      },
+      {
+        "predicate": "expected_start",
+        "subject": "Fishtie Copper Project",
+        "certainty": "stated",
+        "value": "2029"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Fishtie Copper Project",
+        "stage": "licence_granted"
+      }
+    ],
+    "deal_expected": true,
+    "expected_tier": 0
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "g07",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Sinomine begins trial production at Kitumba",
+    "publisher": "Central Province News (synthetic)",
+    "url": "https://synthetic.test/gold/g07",
+    "published_at": "2026-09-21T08:00:00Z",
+    "fetched_at": "2026-09-22T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Sinomine begins trial production at Kitumba\n\nSinomine Resource Group said that the Kitumba copper mine in Mumbwa district began full-line trial production on 21 September 2026.\n\nThe concentrator can treat 3.3 million tonnes of ore a year. Sinomine plans to commission a smelter at the site in the first quarter of 2027. The mine employs 1,100 workers.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_mumbwa",
+      "prov_central",
+      "zm"
+    ],
+    "themes": [
+      "commissioning_rampup"
+    ],
+    "directions": [
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Sinomine",
+        "type": "organisation",
+        "resolution": "org:sinomine"
+      },
+      {
+        "text": "Sinomine Resource Group",
+        "type": "organisation",
+        "resolution": "org:sinomine"
+      },
+      {
+        "text": "Kitumba",
+        "type": "site",
+        "resolution": "site:kitumba"
+      },
+      {
+        "text": "Kitumba copper mine",
+        "type": "site",
+        "resolution": "site:kitumba"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Kitumba copper mine",
+        "certainty": "stated",
+        "value": "ramping_up"
+      },
+      {
+        "predicate": "production_target",
+        "subject": "Kitumba copper mine",
+        "certainty": "stated",
+        "value": "3300000 t/y"
+      },
+      {
+        "predicate": "employees",
+        "subject": "Kitumba copper mine",
+        "certainty": "stated",
+        "value": "1100"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "g27",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Trucks queue for 50 kilometres at Kasumbalesa",
+    "publisher": "Corridor Logistics Monitor (synthetic)",
+    "url": "https://synthetic.test/gold/g27",
+    "published_at": "2026-09-17T08:00:00Z",
+    "fetched_at": "2026-09-18T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Trucks queue for 50 kilometres at Kasumbalesa\n\nTruck drivers at the Kasumbalesa border post said that they waited up to five days to cross into the DRC this week. The queue of trucks stretched for 50 kilometres towards Chililabombwe.\n\nTransporters blamed a slow customs system on the Congolese side of the border.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport"
+    ],
+    "geographies": [
+      "dist_chililabombwe",
+      "prov_copperbelt",
+      "corr_kasumbalesa",
+      "cd",
+      "zm"
+    ],
+    "themes": [
+      "border_delay"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Kasumbalesa",
+        "type": "site",
+        "resolution": "site:kasumbalesa_border"
+      },
+      {
+        "text": "Kasumbalesa border post",
+        "type": "site",
+        "resolution": "site:kasumbalesa_border"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

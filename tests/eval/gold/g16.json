@@ -1,0 +1,71 @@
+{
+  "id": "g16",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "Kansanshi Mining Plc invites bids for the supply of diesel",
+    "publisher": "Kansanshi Mining (synthetic)",
+    "url": "https://synthetic.test/gold/g16",
+    "published_at": "2026-09-23T08:00:00Z",
+    "fetched_at": "2026-09-24T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Kansanshi Mining Plc invites bids for the supply of diesel\n\nKansanshi Mining Plc invites sealed bids from licensed oil marketing companies for the supply of diesel to the Kansanshi mine in Solwezi. The contract covers about 12 million litres a month for three years.\n\nBidders must be registered with the Energy Regulation Board. The closing date for bids is 15 October 2026.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "fuel_supply",
+      "mining"
+    ],
+    "geographies": [
+      "dist_solwezi",
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [
+      "tender_notice",
+      "fuel_supply_tender"
+    ],
+    "directions": [
+      "procurement"
+    ],
+    "deal_types": [
+      "fuel_supply_contract",
+      "tender"
+    ],
+    "entities": [
+      {
+        "text": "Kansanshi Mining Plc",
+        "type": "organisation",
+        "resolution": "org:kansanshi_mining_plc",
+        "accept": [
+          "site:kansanshi"
+        ]
+      },
+      {
+        "text": "Kansanshi mine",
+        "type": "site",
+        "resolution": "site:kansanshi"
+      },
+      {
+        "text": "Energy Regulation Board",
+        "type": "organisation",
+        "resolution": "org:erb"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "tender_deadline",
+        "subject": "Kansanshi mine",
+        "certainty": "stated",
+        "value": "2026-10-15"
+      }
+    ],
+    "projects": [],
+    "deal_expected": true,
+    "expected_tier": 0
+  }
+}

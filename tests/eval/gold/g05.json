@@ -1,0 +1,95 @@
+{
+  "id": "g05",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Barrick appoints mining contractor for the Lumwana Super Pit Project",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g05",
+    "published_at": "2026-09-17T08:00:00Z",
+    "fetched_at": "2026-09-18T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Barrick appoints mining contractor for the Lumwana Super Pit Project\n\nBarrick Mining Corporation has appointed Kanyika Mining Services Limited as the mining contractor for the Lumwana Super Pit Project in North-Western Province.\n\nThe five year contract is worth US$410 million. The contractor will operate a fleet of 45 haul trucks and will start to mobilise in November 2026. Barrick said that the expansion will raise copper output to about 240,000 tonnes a year.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "prov_north_western",
+      "zm"
+    ],
+    "themes": [
+      "contractor_award",
+      "contract_mining",
+      "mine_expansion"
+    ],
+    "directions": [
+      "procurement",
+      "project_pipeline"
+    ],
+    "deal_types": [
+      "contract_mining"
+    ],
+    "entities": [
+      {
+        "text": "Barrick",
+        "type": "organisation",
+        "resolution": "org:barrick"
+      },
+      {
+        "text": "Barrick Mining Corporation",
+        "type": "organisation",
+        "resolution": "org:barrick"
+      },
+      {
+        "text": "Kanyika Mining Services Limited",
+        "type": "organisation",
+        "resolution": "new"
+      },
+      {
+        "text": "Lumwana Super Pit Project",
+        "type": "project",
+        "resolution": "new"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "buyer_role_mining_contractor",
+        "subject": "Lumwana Super Pit Project",
+        "certainty": "stated",
+        "object": "Kanyika Mining Services Limited"
+      },
+      {
+        "predicate": "contract_value",
+        "subject": "Lumwana Super Pit Project",
+        "certainty": "stated",
+        "value": "410000000 USD"
+      },
+      {
+        "predicate": "fleet_trucks",
+        "subject": "Lumwana Super Pit Project",
+        "certainty": "stated",
+        "value": "45"
+      },
+      {
+        "predicate": "production_target",
+        "subject": "Lumwana Super Pit Project",
+        "certainty": "stated",
+        "value": "240000 t/y"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Lumwana Super Pit Project",
+        "stage": "contractor_procurement"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

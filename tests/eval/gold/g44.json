@@ -1,0 +1,49 @@
+{
+  "id": "g44",
+  "synthetic": true,
+  "note": "Synthetic Google News item from a google_news_only site: title and description only.",
+  "source": {
+    "type": "google_news",
+    "title": "Kagem emerald output rises 12 percent in first half - Mining Weekly",
+    "publisher": "Mining Weekly",
+    "url": "https://synthetic.test/gold/g44",
+    "published_at": "2026-09-08T08:00:00Z",
+    "fetched_at": "2026-09-09T06:00:00Z",
+    "retention_policy": "link_only",
+    "read_at_source": true,
+    "early_signal": false
+  },
+  "text": "Kagem emerald output rises 12 percent in first half - Mining Weekly\n\nKagem emerald output rises 12 percent in first half  Mining Weekly",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_lufwanyama",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "production_increase"
+    ],
+    "directions": [
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Kagem",
+        "type": "site",
+        "resolution": "site:kagem",
+        "accept": [
+          "org:kagem_mining"
+        ]
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

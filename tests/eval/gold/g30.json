@@ -1,0 +1,74 @@
+{
+  "id": "g30",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Mines Safety Department extends suspension at Mufulira mine",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/gold/g30",
+    "published_at": "2026-09-24T08:00:00Z",
+    "fetched_at": "2026-09-25T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Mines Safety Department extends suspension at Mufulira mine\n\nThe Mines Safety Department has extended the suspension of underground operations at the Mufulira mine of Mopani Copper Mines Plc by 30 days. The department said that Mopani must complete repairs to the ventilation system.\n\nAbout 1,200 workers and contractor employees stay at home during the suspension.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_mufulira",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "suspension"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Mines Safety Department",
+        "type": "organisation",
+        "resolution": "new"
+      },
+      {
+        "text": "Mufulira mine",
+        "type": "site",
+        "resolution": "site:mopani_mufulira"
+      },
+      {
+        "text": "Mopani Copper Mines Plc",
+        "type": "organisation",
+        "resolution": "org:mopani_copper_mines"
+      },
+      {
+        "text": "Mopani",
+        "type": "organisation",
+        "resolution": "org:mopani_copper_mines"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Mufulira mine",
+        "certainty": "stated",
+        "value": "suspended"
+      },
+      {
+        "predicate": "employees",
+        "subject": "Mufulira mine",
+        "certainty": "stated",
+        "value": "1200"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

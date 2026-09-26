@@ -1,0 +1,57 @@
+{
+  "id": "g26",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "ZESCO extends load shedding to 12 hours a day",
+    "publisher": "Lusaka Daily (synthetic)",
+    "url": "https://synthetic.test/gold/g26",
+    "published_at": "2026-09-18T08:00:00Z",
+    "fetched_at": "2026-09-19T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "ZESCO extends load shedding to 12 hours a day\n\nZESCO Limited has extended load shedding to 12 hours a day for domestic customers and mines on the Copperbelt. The company said that low water levels at Lake Kariba cut generation at Kariba North Bank.\n\nMining companies said that they will run diesel generators to keep critical pumps and ventilation fans in operation.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power"
+    ],
+    "geographies": [
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "load_shedding",
+      "drought"
+    ],
+    "directions": [
+      "demand_up",
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "ZESCO",
+        "type": "organisation",
+        "resolution": "org:zesco"
+      },
+      {
+        "text": "ZESCO Limited",
+        "type": "organisation",
+        "resolution": "org:zesco"
+      },
+      {
+        "text": "Kariba North Bank",
+        "type": "site",
+        "resolution": "site:kariba_north_bank"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "g13",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Construction starts on the Maamba Phase II Expansion Project",
+    "publisher": "Southern Province Energy (synthetic)",
+    "url": "https://synthetic.test/gold/g13",
+    "published_at": "2026-09-22T08:00:00Z",
+    "fetched_at": "2026-09-23T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Construction starts on the Maamba Phase II Expansion Project\n\nMaamba Energy Limited said that construction has started on the Maamba Phase II Expansion Project in Sinazongwe district. The project adds 300 MW to the coal-fired power station.\n\nThe EPC contractor mobilised 800 workers to the site in September 2026. The expansion costs US$400 million and will need about 1.5 million tonnes of coal a year.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power"
+    ],
+    "geographies": [
+      "dist_sinazongwe",
+      "prov_southern",
+      "zm"
+    ],
+    "themes": [
+      "power_project",
+      "construction_mobilisation"
+    ],
+    "directions": [
+      "project_pipeline",
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Maamba Energy Limited",
+        "type": "organisation",
+        "resolution": "org:maamba_energy",
+        "accept": [
+          "site:maamba"
+        ]
+      },
+      {
+        "text": "Maamba Phase II Expansion Project",
+        "type": "project",
+        "resolution": "new"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "generation_mw",
+        "subject": "Maamba Phase II Expansion Project",
+        "certainty": "stated",
+        "value": "300"
+      },
+      {
+        "predicate": "employees",
+        "subject": "Maamba Phase II Expansion Project",
+        "certainty": "stated",
+        "value": "800"
+      },
+      {
+        "predicate": "capex",
+        "subject": "Maamba Phase II Expansion Project",
+        "certainty": "stated",
+        "value": "400000000 USD"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Maamba Phase II Expansion Project",
+        "stage": "construction_mobilisation"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

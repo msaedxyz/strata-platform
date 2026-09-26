@@ -1,0 +1,50 @@
+{
+  "id": "g43",
+  "synthetic": true,
+  "note": "Synthetic Google News item: title and description only.",
+  "source": {
+    "type": "google_news",
+    "title": "Diesel shortage grips Solwezi as tankers stuck at Kasumbalesa - Diggers",
+    "publisher": "Diggers",
+    "url": "https://synthetic.test/gold/g43",
+    "published_at": "2026-09-23T08:00:00Z",
+    "fetched_at": "2026-09-24T06:00:00Z",
+    "retention_policy": "link_only",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Diesel shortage grips Solwezi as tankers stuck at Kasumbalesa - Diggers\n\nDiesel shortage grips Solwezi as tankers stuck at Kasumbalesa  Diggers",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "fuel_supply",
+      "transport"
+    ],
+    "geographies": [
+      "dist_solwezi",
+      "prov_north_western",
+      "corr_kasumbalesa",
+      "zm"
+    ],
+    "themes": [
+      "fuel_shortage",
+      "border_delay"
+    ],
+    "directions": [
+      "demand_up",
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Kasumbalesa",
+        "type": "site",
+        "resolution": "site:kasumbalesa_border"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

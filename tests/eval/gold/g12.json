@@ -1,0 +1,76 @@
+{
+  "id": "g12",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "web",
+    "title": "Chilanga Cement board approves the Phoenix Project",
+    "publisher": "African Financials (synthetic)",
+    "url": "https://synthetic.test/gold/g12",
+    "published_at": "2026-09-08T08:00:00Z",
+    "fetched_at": "2026-09-09T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": true
+  },
+  "text": "Chilanga Cement board approves the Phoenix Project\n\nThe board of Chilanga Cement PLC has approved the Phoenix Project, a new kiln line at the Ndola plant. The investment is US$95 million.\n\nThe company will invite bids for the civil works in the first quarter of 2027. The new line will raise clinker capacity to 1.2 million tonnes a year.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "industry"
+    ],
+    "geographies": [
+      "dist_ndola",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "industrial_project",
+      "financing_close"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [
+      "construction_contract",
+      "tender"
+    ],
+    "entities": [
+      {
+        "text": "Chilanga Cement PLC",
+        "type": "organisation",
+        "resolution": "org:chilanga_cement"
+      },
+      {
+        "text": "Phoenix Project",
+        "type": "project",
+        "resolution": "new",
+        "accept": [
+          "site:chilanga_cement_ndola"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "capex",
+        "subject": "Phoenix Project",
+        "certainty": "stated",
+        "value": "95000000 USD"
+      },
+      {
+        "predicate": "production_target",
+        "subject": "Phoenix Project",
+        "certainty": "stated",
+        "value": "1200000 t/y"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Phoenix Project",
+        "stage": "financing_fid"
+      }
+    ],
+    "deal_expected": true,
+    "expected_tier": 0
+  }
+}

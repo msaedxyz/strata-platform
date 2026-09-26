@@ -1,0 +1,49 @@
+{
+  "id": "g23",
+  "synthetic": true,
+  "note": "Synthetic document about a watched site of brief v1. Invented test data.",
+  "source": {
+    "type": "rss",
+    "title": "Long queues as diesel shortage hits Lusaka",
+    "publisher": "Lusaka Daily (synthetic)",
+    "url": "https://synthetic.test/gold/g23",
+    "published_at": "2026-09-22T08:00:00Z",
+    "fetched_at": "2026-09-23T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Long queues as diesel shortage hits Lusaka\n\nMotorists queued for hours in Lusaka on Tuesday as many filling stations ran out of diesel. The Energy Regulation Board said that a delay in fuel imports caused the shortage.\n\nTransporters said that trucks carrying copper to Dar es Salaam waited two days for fuel in Kapiri Mposhi.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "fuel_supply"
+    ],
+    "geographies": [
+      "dist_lusaka",
+      "prov_lusaka",
+      "dist_kapiri_mposhi",
+      "prov_central",
+      "zm",
+      "tz"
+    ],
+    "themes": [
+      "fuel_shortage"
+    ],
+    "directions": [
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Energy Regulation Board",
+        "type": "organisation",
+        "resolution": "org:erb"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

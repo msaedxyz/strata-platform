@@ -1,0 +1,53 @@
+{
+  "id": "g41",
+  "synthetic": true,
+  "note": "Synthetic Google News item: title and description only.",
+  "source": {
+    "type": "google_news",
+    "title": "Mopani Mufulira mine resumes underground operations after safety audit - Lusaka Times",
+    "publisher": "Lusaka Times",
+    "url": "https://synthetic.test/gold/g41",
+    "published_at": "2026-09-27T08:00:00Z",
+    "fetched_at": "2026-09-28T06:00:00Z",
+    "retention_policy": "link_only",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Mopani Mufulira mine resumes underground operations after safety audit - Lusaka Times\n\nMopani Mufulira mine resumes underground operations after safety audit  Lusaka Times",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_mufulira",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "mine_restart"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Mopani Mufulira",
+        "type": "site",
+        "resolution": "site:mopani_mufulira"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Mopani Mufulira",
+        "certainty": "stated",
+        "value": "producing"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}
