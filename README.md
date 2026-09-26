@@ -17,4 +17,8 @@ Read `CLAUDE.md` and the pack in `docs/` for the specification. Read `reports/pr
 9. Optional: run `make fixtures` to load the fixture data.
 10. Run `make test` to run the tests.
 
+## End to end acceptance tests
+
+Run `make e2e`. It builds and starts a separate stack (compose project `strata-e2e`) with the fixture server, runs the scenarios of docs/09 and docs/07 criteria 5 to 7, and writes JUnit results to `test-results/e2e`. See `tests/e2e/README.md`.
+
 More sections follow as the build continues: use, deployment and the parallel run with Argo.

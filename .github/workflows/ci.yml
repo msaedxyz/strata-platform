@@ -146,6 +146,50 @@ jobs:
       - run: pnpm --dir tools/audit exec playwright install --with-deps chromium
       - run: pnpm --dir tools/audit test
 
+  e2e:
+    # docs/09 scenarios 1 to 17 and docs/07 criteria 5 to 7 on the Docker Compose stack. The job starts from a clean
+    # clone with `make setup` and `docker compose up --build`, so it also proves docs/02 criterion 1.
+    name: End to end acceptance tests on the Docker Compose stack
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
+      E2E_BUILD: --build
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}   # scenario 11 scans the whole history
+      - uses: astral-sh/setup-uv@v6
+        with: {python-version: "3.12"}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - run: uv sync --frozen
+      - name: Make .env with random secrets
+        run: make setup
+      - name: Build and start the stack from the clean clone, with the fixture server
+        id: up
+        run: make e2e-up
+      - name: Install the browser suite and Chromium
+        run: |
+          pnpm --dir tests/e2e/browser install --ignore-workspace --frozen-lockfile
+          pnpm --dir tests/e2e/browser exec playwright install --with-deps chromium
+      - name: Start-up log check (no ERROR or Traceback outside the known benign lines)
+        continue-on-error: true
+        run: E2E_COMPOSE="docker compose -p strata-e2e -f docker-compose.yml -f tests/e2e/compose.e2e.yml --profile test" uv run python tests/e2e/check_logs.py
+      - name: Python end to end suite
+        run: make e2e-python
+      - name: Browser end to end suite
+        if: always() && steps.up.outcome == 'success'
+        run: make e2e-browser
+      - name: Write the logs of the stack
+        if: always()
+        run: make e2e-logs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results
+          path: test-results/e2e
+
   gitleaks:
     name: Secret scan (gitleaks)
     runs-on: ubuntu-latest
