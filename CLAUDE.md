@@ -33,17 +33,21 @@ Read all of these files before you write code.
 | docs/07-frontend.md | Infora replica and the Strata content |
 | docs/08-milestones.md | Build sequence and progress reports |
 | docs/09-acceptance.md | End to end acceptance tests and the lead time backtest |
-| config/monitoring-brief/v1.yaml | First Monitoring Brief, from the Argo brief |
+| config/monitoring-brief/v1.yaml | First Monitoring Brief, from the Argo brief (built from public research, see docs/decisions.md) |
+| reports/progress.md | Current state of the build: done, in progress, next, problems |
 | docs/reference/argo-brief-2026-09-19.md | Where to find the live Argo files |
 | docs/assumptions.md | Defaults that you use, for review by Mohamed later |
 | docs/decisions.md | Log of decisions |
 
 ## Working order
 
-1. Do the milestones in the sequence that docs/08-milestones.md gives.
-2. Start a milestone only when the previous milestone meets all its completion criteria.
-3. Do not stop to wait for answers. Use the defaults in this pack and continue.
-4. At the end of each milestone, write a progress report and continue with the next milestone.
+1. Do M0 and M1 first, in that sequence.
+2. After M0 and M1, run two tracks in parallel. Track 1 does M2, M3 and M4 in sequence. Track 2 does M5.
+3. Start M6 when both tracks meet their completion criteria. Then do M7.
+4. In a track, start a milestone only when the previous milestone meets all its completion criteria.
+5. Do not stop to wait for answers. Use the defaults in this pack and continue.
+6. At the end of each milestone, write a progress report and continue with the next milestone.
+7. Keep reports/progress.md current after each task. A new session starts with reports/progress.md.
 
 ## Rules for all work
 
