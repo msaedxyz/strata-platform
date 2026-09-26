@@ -36,7 +36,9 @@ def fold_entity(events: list[dict]) -> dict | None:
                     "watch": p.get("watch") or "none", "status": None, "status_pending": None,
                     "operator_id": None, "district": p.get("district"), "province": p.get("province"),
                     "country": p.get("country"), "attributes": {}, "merged_into": None,
-                    "last_signal_at": None,
+                    "last_signal_at": None, "identity_evidence_ids": list(ev["evidence_ids"]),
+                    "status_event_id": None, "status_evidence_ids": [], "status_certainty": None,
+                    "demand_estimate": None,
                 }
             else:
                 for alias in [p["name"], *(p.get("aliases") or [])]:
@@ -58,6 +60,12 @@ def fold_entity(events: list[dict]) -> dict | None:
         elif t == "SiteStatusChanged":
             state["status"] = p["to_status"]
             state["status_pending"] = None
+            # The provenance of the status (docs/07 rule 1): the event and its evidence.
+            state["status_event_id"] = ev["id"]
+            state["status_evidence_ids"] = list(ev["evidence_ids"])
+            state["status_certainty"] = ev["certainty"]
+        elif t == "DemandEstimated":
+            state["demand_estimate"] = {**p, "event_id": ev["id"], "evidence_ids": list(ev["evidence_ids"])}
         elif t == "EntityMerged" and ev["stream_id"] in p["merged_ids"] and p["into_id"] != ev["stream_id"]:
             state["merged_into"] = p["into_id"]
         elif t == "SignalScored":
@@ -82,7 +90,10 @@ def fold_deal(events: list[dict]) -> dict | None:
                 "organisation_id": p.get("organisation_id"), "has_contact": False,
                 "prequalification_status": None, "next_action": None, "attributes": {},
                 "evidence_ids": list(ev["evidence_ids"]), "created_at": _ts(ev), "touchpoints": 0,
-                "stage_history": [],
+                "stage_history": [], "certainty": ev["certainty"],
+                # The provenance of the stage (docs/07 rule 1). The first stage comes from DealIdentified.
+                "stage_event_id": ev["id"], "stage_evidence_ids": list(ev["evidence_ids"]), "stage_reason": None,
+                "stage_actor_type": ev["actor_type"],
             }
         if state is None:
             continue
@@ -91,6 +102,10 @@ def fold_deal(events: list[dict]) -> dict | None:
             state["stage"] = p["to_stage"]
             state["stage_pending"] = None
             state["pending_proposal_id"] = None
+            state["stage_event_id"] = ev["id"]
+            state["stage_evidence_ids"] = list(ev["evidence_ids"])
+            state["stage_reason"] = p.get("reason")
+            state["stage_actor_type"] = ev["actor_type"]
         elif t == "DealAttributeAsserted":
             state["attributes"][p["predicate"]] = {"value": p["value"], "event_id": ev["id"], "evidence_ids": list(ev["evidence_ids"])}
         elif t == "ContactAdded":
@@ -133,7 +148,7 @@ def fold_project(events: list[dict]) -> dict | None:
                 "stage_evidence_ids": [], "stage_certainty": None, "stage_changed_at": None,
                 "in_engagement_window": False, "first_trace_at": ev.get("occurred_at") or _ts(ev),
                 "forecast_start": None, "forecast_end": None, "forecast_detail": None, "demand_estimate": None,
-                "stage_history": [],
+                "stage_history": [], "stage_event_id": None,
             }
         if state is None:
             continue
@@ -147,14 +162,18 @@ def fold_project(events: list[dict]) -> dict | None:
             state["stage_certainty"] = ev["certainty"]
             state["stage_changed_at"] = ev.get("occurred_at") or _ts(ev)
             state["in_engagement_window"] = in_engagement_window(p["to_stage"])
+            state["stage_event_id"] = ev["id"]
             if p.get("site_id"):
                 state["site_id"] = p["site_id"]
+            # The forecast of the old stage is out of date. The window forecaster writes a fresh forecast for the
+            # new stage (services/enrichment/followups.py), so the calendar never shows a window of an old stage.
+            state["forecast_start"] = state["forecast_end"] = state["forecast_detail"] = None
         elif t == "ProcurementWindowForecast":
             state["forecast_start"] = p.get("start")
             state["forecast_end"] = p.get("end")
             state["forecast_detail"] = {**p, "event_id": ev["id"], "evidence_ids": list(ev["evidence_ids"])}
         elif t == "DemandEstimated":
-            state["demand_estimate"] = {**p, "event_id": ev["id"]}
+            state["demand_estimate"] = {**p, "event_id": ev["id"], "evidence_ids": list(ev["evidence_ids"])}
         state["updated_at"] = _ts(ev)
     return state
 

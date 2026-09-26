@@ -1,0 +1,10 @@
+# Parallel run with Argo (docs/09). Two weeks after M7.
+duration_days: 14
+pass_coverage: 0.95
+match:
+  # An Argo item matches a Strata signal with the same canonical URL, or with a title similarity at or above this value.
+  title_similarity_min: 0.6
+  # The Strata signal must be published or fetched within this many days of the Argo item.
+  max_days_apart: 7
+# Query parameters removed from URLs before comparison.
+strip_query_params: [utm_source, utm_medium, utm_campaign, utm_term, utm_content, oc, ved, usg, fbclid, gclid]

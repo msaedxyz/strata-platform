@@ -21,6 +21,8 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 - The stack enriches the 146 real snapshot items: 128 signals, 27 Tier 0 alerts, 17 demand drivers, 10 projects.
 - M4 done: write API, roles, own-proposal 403, Tier 0 alerts on the live stream before approval, telemetry, personal data encryption and erasure. 310 Python tests pass, 1 expected failure (backtest has 7 of 20 events). Held-out 2: precision 0.818, recall 0.643 (below target). Report: reports/M4.md.
 - Backtest harness: 7 of 7 events found, median 14.8 months. Fails the 20-event minimum. Report: reports/backtest/results.md.
+- M6 done: priority calculator, opportunities from projects, demand estimates, fresh forecasts, evidence ids on every fact, frontend on the real API shapes. Live stream delay 0.004 s on the real API. 335 Python tests, 351 unit tests, 79 e2e tests. Report: reports/M6.md.
+- Tokens are removed from all logs (Python log filter and nginx log format).
 
 ## In progress
 

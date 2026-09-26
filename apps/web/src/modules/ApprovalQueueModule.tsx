@@ -6,13 +6,13 @@ import { Badge, Button, type Column, DataTable, EvidenceQuote, FeedItem, Modal, 
 import type { PanelProps } from "@strata/panel-framework";
 import { useMemo, useState } from "react";
 import type { EvidenceItem } from "../api/types";
-import { approveProposal, editApproveProposal, getProposals, type Proposal, type ProposedEvent, rejectProposal } from "../api/writes";
+import { approveProposal, type EditedEvent, editApproveProposal, getProposals, type Proposal, type ProposedEvent, rejectProposal } from "../api/writes";
 import { useSession } from "../auth/AuthContext";
 import { useCan } from "../auth/RequireRole";
 import { moduleConfig } from "../config/modules";
 import { useResource } from "../data/resource";
 import { ACTIONS, useAction } from "./common/actions";
-import { toEvidence, useApi } from "./common/api";
+import { type EvidenceLike, toEvidence, useApi } from "./common/api";
 import { certaintyStatus, formatDateTime, humanise, shortValue, tierBadge } from "./common/format";
 import { ModuleRoot, resourceState, SectionHeading } from "./common/ui";
 
@@ -54,13 +54,14 @@ export function ApprovalQueueModule(_: PanelProps) {
   );
   const proposals = useMemo(() => r.data ?? [], [r.data]);
 
-  // The evidence of every listed proposal in one request, when M4 does not give it with the proposal.
-  const missing = useMemo(() => [...new Set(proposals.filter((p) => !p.evidence).flatMap((p) => [...p.evidence_ids, ...p.events.flatMap((e) => e.evidence_ids ?? [])]))].sort(), [proposals]);
-  const ev = useResource<{ items: EvidenceItem[] }>(missing.length ? `evidence:${missing.join(",")}` : null, () => reads.evidence(missing));
+  // The proposal gives its evidence items (quote, offsets, source link). GET /api/evidence adds the text around the
+  // span for a source with licence full, so the queue loads the items of every listed proposal in one request.
+  const allIds = useMemo(() => [...new Set(proposals.flatMap((p) => [...p.evidence.map((e) => e.id), ...p.events.flatMap((e) => e.evidence_ids)]))].sort(), [proposals]);
+  const ev = useResource<{ items: EvidenceItem[] }>(allIds.length ? `evidence:${allIds.join(",")}` : null, () => reads.evidence(allIds));
   const evidenceById = useMemo(() => {
-    const m = new Map<string, EvidenceItem>();
+    const m = new Map<string, EvidenceLike>();
+    for (const p of proposals) for (const e of p.evidence) m.set(e.id, e);
     for (const e of ev.data?.items ?? []) m.set(e.id, e);
-    for (const p of proposals) for (const e of p.evidence ?? []) m.set(e.id, e);
     return m;
   }, [ev.data, proposals]);
 
@@ -77,7 +78,8 @@ export function ApprovalQueueModule(_: PanelProps) {
     setDialog({ kind, proposal: p });
     setReason("");
     setFormError(undefined);
-    setEventsText(JSON.stringify(p.events, null, 2));
+    // Edit and approve changes the payload and the certainty of each event. The stream, the type and the evidence stay.
+    setEventsText(JSON.stringify(p.events.map((e) => ({ event_type: e.event_type, payload: e.payload, certainty: e.certainty ?? null })), null, 2));
   };
 
   const submitDialog = () => {
@@ -91,12 +93,13 @@ export function ApprovalQueueModule(_: PanelProps) {
       void decide("reject", p, () => rejectProposal(http, p.id, reason.trim()));
       return;
     }
-    let events: ProposedEvent[];
+    let events: EditedEvent[];
     try {
-      events = JSON.parse(eventsText) as ProposedEvent[];
-      if (!Array.isArray(events) || events.length === 0) throw new Error("not a list");
+      const parsed = JSON.parse(eventsText) as Array<Partial<ProposedEvent>>;
+      if (!Array.isArray(parsed) || parsed.length !== p.events.length) throw new Error("not a list");
+      events = parsed.map((e) => ({ payload: e.payload ?? null, certainty: e.certainty ?? null }));
     } catch {
-      setFormError("Give the events as a JSON list.");
+      setFormError(`Give the events as a JSON list with ${p.events.length} ${p.events.length === 1 ? "entry" : "entries"}.`);
       return;
     }
     void decide("editApprove", p, () => editApproveProposal(http, p.id, events));
@@ -108,8 +111,8 @@ export function ApprovalQueueModule(_: PanelProps) {
       {s.node ?? (
         <ul className="strata-module__fill strata-list" aria-label="Proposals" aria-busy={r.refreshing || undefined}>
           {proposals.map((p) => {
-            const own = p.created_by === session.user.id;
-            const ids = [...new Set([...p.evidence_ids, ...p.events.flatMap((e) => e.evidence_ids ?? [])])];
+            const own = p.created_by_me || p.created_by === session.user.id;
+            const ids = [...new Set([...p.evidence.map((e) => e.id), ...p.events.flatMap((e) => e.evidence_ids)])];
             return (
               <li key={p.id} data-proposal-id={p.id} className="strata-proposal">
                 <FeedItem

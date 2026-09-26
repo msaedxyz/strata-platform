@@ -37,9 +37,12 @@ test("scenario 4 (UI part): a Kanban drag shows Pending approval, after approval
   await addPanel(page, "timeline");
   const t = await moduleReady(page, "timeline");
   await expect(t.locator("[data-timeline-state]")).toHaveAttribute("data-timeline-state", "contact_found");
+  // The stage move of the team carries its reason (docs/03: a reason from a human in place of source evidence).
+  // The DealIdentified event shows the source evidence of the opportunity.
   const event = t.locator('[data-event-type="DealStageChanged"]').first();
   await expect(event).toContainText("Qualified to Contact found");
-  await expect(event.getByRole("button", { name: /Show evidence/ })).toBeVisible();
+  await expect(event).toContainText("Reason: Moved from Qualified to Contact found by an analyst");
+  await expect(t.locator('[data-event-type="DealIdentified"]').getByRole("button", { name: /Show evidence/ })).toBeVisible();
 
   // The "as of" view for the previous day re-queries with as_of and shows the old stage.
   await t.getByLabel("As of").fill(yesterdayUtc());
@@ -166,4 +169,66 @@ test("provenance: a source without licence full shows the quote only, with no te
   const drawer = page.getByRole("dialog", { name: "Evidence" });
   await expect(drawer.locator("mark.sds-evidence__span")).toHaveText(mock.data.evidence[sig.evidence_ids[0]!]!.quote);
   await expect(drawer.locator(".sds-evidence__context")).toHaveCount(0);
+});
+
+test("scenario 17 (UI part): the no contact rule ranks an opportunity first in its group, and a contact lowers its rank", async ({ page, mock }) => {
+  // docs/05 scorer rule 6: a project in the engagement window with no contact found gets the highest rank in its group.
+  const target = mock.priority(500).find((x) => x.no_contact_rule)!;
+  expect(target.group_rank).toBe(1);
+  await openWorkspace(page, "origination");
+  const pl = await moduleReady(page, "priority-list");
+  const row = pl.locator(`[data-row-id="${target.id}"]`);
+  await expect(row.locator("td").first()).toHaveText(String(target.rank));
+  await expect(row).toContainText(`${target.priority_breakdown!.group.name} (1)`);
+  await row.click();
+  const breakdown = page.getByRole("dialog", { name: "Priority breakdown" });
+  await expect(breakdown).toContainText("Yes: first in its group");
+  await breakdown.getByRole("button", { name: "Close" }).click();
+  await page.locator('[data-nav-id="relationships"]').click();
+  const rel = await moduleReady(page, "relationship-panel");
+  await expect(rel.getByLabel("Opportunity")).toHaveValue(target.id);
+  await rel.getByRole("tab", { name: /Contacts/ }).click();
+  await rel.getByRole("button", { name: "Add contact" }).click();
+  const dlg = page.getByRole("dialog", { name: "Add contact" });
+  await dlg.getByLabel("Name").fill("Bwalya Mwansa");
+  await dlg.getByLabel("Role").fill("Contracts manager");
+  await dlg.getByLabel("Found via").fill("Supplier day in Solwezi");
+  await dlg.getByRole("button", { name: "Add contact" }).click();
+  await expect(toast(page, "Contact added")).toBeVisible();
+  const after = mock.priority(500).find((x) => x.id === target.id)!;
+  expect(after.no_contact_rule).toBe(false);
+  expect(after.rank).toBeGreaterThan(target.rank);
+  await openWorkspace(page, "origination");
+  await expect(page.locator(`[data-module="priority-list"] [data-row-id="${target.id}"] td`).first()).toHaveText(String(after.rank));
+});
+
+test("provenance (docs/07 rule 1) of the M6 fields: site status and identity, the parts of the priority score and the deal stage", async ({ page, mock }) => {
+  const site = mock.data.sites.find((s) => s.watch === "daily" && s.status_event_id)!;
+  await openWorkspace(page, "monitoring");
+  const wl = await moduleReady(page, "site-watch-list");
+  const row = wl.locator(`[data-row-id="${site.id}"]`);
+  const status = row.getByRole("button", { name: `Show evidence for Status of ${site.name} (1 source)` });
+  await expect(status).toHaveAttribute("data-evidence-ids", site.status_evidence_ids.join(","));
+  await expect(row.getByRole("button", { name: `Show evidence for Site ${site.name} (1 source)` })).toHaveAttribute("data-evidence-ids", site.identity_evidence_ids.join(","));
+  await status.click();
+  const ev = mock.data.evidence[site.status_evidence_ids[0]!]!;
+  await expect(page.getByRole("dialog", { name: `Evidence: Status of ${site.name}` }).locator("mark.sds-evidence__span")).toHaveText(ev.quote);
+  await page.keyboard.press("Escape");
+
+  // The parts of the priority score show the evidence of their inputs.
+  const item = mock.priority(500).find((x) => x.priority_breakdown!.lead_time.evidence_ids.length > 0 && x.priority_breakdown!.demand.evidence_ids.length > 0)!;
+  await openWorkspace(page, "origination");
+  const pl = await moduleReady(page, "priority-list");
+  await pl.locator(`[data-row-id="${item.id}"]`).click();
+  const drawer = page.getByRole("dialog", { name: "Priority breakdown" });
+  const b = item.priority_breakdown!;
+  await expect(drawer.getByRole("button", { name: /^Show evidence for Lead time/ })).toHaveAttribute("data-evidence-ids", b.lead_time.evidence_ids.join(","));
+  await expect(drawer.getByRole("button", { name: /^Show evidence for Demand estimate/ })).toHaveAttribute("data-evidence-ids", b.demand.evidence_ids.join(","));
+  await expect(drawer.getByRole("button", { name: /^Show evidence for Confidence/ })).toHaveAttribute("data-evidence-ids", b.confidence.evidence_ids.join(","));
+  await drawer.getByRole("button", { name: "Open opportunity" }).click();
+  // A stage that the team moved shows the reason of the move. A first stage shows the evidence of the opportunity.
+  const deal = mock.data.deals.find((d) => d.id === item.id)!;
+  const detail = page.getByRole("dialog", { name: "Opportunity" });
+  if (deal.stage_reason) await expect(detail).toContainText(deal.stage_reason);
+  else await expect(detail.getByRole("button", { name: `Show evidence for Stage of ${deal.title} (1 source)` })).toBeVisible();
 });

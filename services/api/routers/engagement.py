@@ -19,6 +19,7 @@ from services.governance import engagement
 
 from ..auth import User, require_analyst
 from .errors import domain_errors
+from .schemas import EngagementResult, StageMoveResult
 
 router = APIRouter(prefix="/api", tags=["engagement"])
 
@@ -57,7 +58,7 @@ class Prequalification(BaseModel):
     status: Literal["not_started", "submitted", "approved", "rejected"]
 
 
-@router.post("/deals/{deal_id}/stage")
+@router.post("/deals/{deal_id}/stage", response_model=StageMoveResult)
 def move_stage(deal_id: str, body: StageMove, user: User = Depends(require_analyst)) -> dict:
     """A DealStageChanged proposal (policy review). The card shows the pending stage until an approver decides."""
     with connection() as conn, domain_errors(conn):
@@ -66,7 +67,7 @@ def move_stage(deal_id: str, body: StageMove, user: User = Depends(require_analy
     return result
 
 
-@router.post("/deals/{deal_id}/contacts")
+@router.post("/deals/{deal_id}/contacts", response_model=EngagementResult)
 def add_contact(deal_id: str, body: Contact, user: User = Depends(require_analyst)) -> dict:
     """ContactAdded. The name, business email and business phone are encrypted with the key of the person."""
     with connection() as conn, domain_errors(conn):
@@ -77,7 +78,7 @@ def add_contact(deal_id: str, body: Contact, user: User = Depends(require_analys
     return result
 
 
-@router.post("/deals/{deal_id}/touchpoints")
+@router.post("/deals/{deal_id}/touchpoints", response_model=EngagementResult)
 def log_touchpoint(deal_id: str, body: Touchpoint, user: User = Depends(require_analyst)) -> dict:
     with connection() as conn, domain_errors(conn):
         result = engagement.log_touchpoint(conn, deal_id, user.id, kind=body.kind, date=body.date.isoformat(),
@@ -86,7 +87,7 @@ def log_touchpoint(deal_id: str, body: Touchpoint, user: User = Depends(require_
     return result
 
 
-@router.post("/deals/{deal_id}/next-action")
+@router.post("/deals/{deal_id}/next-action", response_model=EngagementResult)
 def set_next_action(deal_id: str, body: NextAction, user: User = Depends(require_analyst)) -> dict:
     with connection() as conn, domain_errors(conn):
         result = engagement.set_next_action(conn, deal_id, user.id, action=body.action,
@@ -95,7 +96,7 @@ def set_next_action(deal_id: str, body: NextAction, user: User = Depends(require
     return result
 
 
-@router.post("/deals/{deal_id}/prequalification")
+@router.post("/deals/{deal_id}/prequalification", response_model=EngagementResult)
 def set_prequalification(deal_id: str, body: Prequalification, user: User = Depends(require_analyst)) -> dict:
     with connection() as conn, domain_errors(conn):
         result = engagement.set_prequalification(conn, deal_id, user.id, buyer_id=body.buyer_id, status=body.status)

@@ -1,10 +1,24 @@
 // A mocked Strata API over a fixture dataset. It answers like services/api/routers/read.py (filters, order, shapes)
-// and like the M4 write endpoints in docs/api-contract.md (roles, 403 for the creator, reasons). A write changes the
-// dataset and gives the live events that the database trigger would send (event_notify).
+// and like the governance endpoints (roles, 403 for the creator, reasons). The response types of the governance,
+// engagement, quarantine and priority endpoints come from the generated OpenAPI schema, so the mock gives the real
+// shapes (M6). A write changes the dataset and gives the live events that the database trigger would send.
 import yaml from "js-yaml";
-import type { Alert, Deal, Engagement, Site } from "../src/api/types";
-import type { Proposal, ProposedEvent, TelemetryAlert } from "../src/api/writes";
-import type { Dataset, StreamEvent } from "./fixtures/dataset";
+import type { Alert, Deal, Engagement, PriorityItem, Site } from "../src/api/types";
+import type {
+  AlertState,
+  ApproveResult,
+  EditedEvent,
+  EngagementResult,
+  Proposal,
+  ProposalsResponse,
+  ProposedEvent,
+  QuarantineResponse,
+  RejectResult,
+  StageMoveResult,
+  TelemetryAlert,
+  TelemetryResponse,
+} from "../src/api/writes";
+import { computePriority, type Dataset, priorityConfig, type StoredProposal, type StreamEvent } from "./fixtures/dataset";
 
 export type Role = "viewer" | "analyst" | "approver" | "admin";
 const ORDER: Role[] = ["viewer", "analyst", "approver", "admin"];
@@ -23,16 +37,14 @@ export interface MockResponse {
 const ok = (json: unknown, live?: LiveOut[]): MockResponse => ({ status: 200, json, live });
 const err = (status: number, detail: unknown): MockResponse => ({ status, json: { detail } });
 const time = (s: string | null | undefined) => (s ? Date.parse(s) : 0);
-const median = (xs: number[]) => {
+/** Linear interpolation between the closest ranks, as services/governance/alerts.percentile. */
+const percentile = (xs: number[], p: number) => {
   if (!xs.length) return null;
   const s = [...xs].sort((a, b) => a - b);
-  const m = Math.floor(s.length / 2);
-  return s.length % 2 ? s[m]! : (s[m - 1]! + s[m]!) / 2;
-};
-const pct = (xs: number[], p: number) => {
-  if (!xs.length) return null;
-  const s = [...xs].sort((a, b) => a - b);
-  return s[Math.min(s.length - 1, Math.ceil(p * s.length) - 1)]!;
+  const k = ((s.length - 1) * p) / 100;
+  const lo = Math.floor(k);
+  const hi = Math.min(lo + 1, s.length - 1);
+  return Math.round((s[lo]! + (s[hi]! - s[lo]!) * (k - lo)) * 1000) / 1000;
 };
 
 /** Differences between two brief contents, like services/collectors/brief.py diff (lists matched by id). */
@@ -203,13 +215,43 @@ export class MockApi {
             geometry_approximate: s.geometry_approximate,
             last_signal_at: s.last_signal_at,
             signals_90d: d.signals.filter((g) => g.entity_ids.includes(s.id) && this.signalTime(g) > now - 90 * 86_400_000).length,
+            identity_evidence_ids: s.identity_evidence_ids,
+            status_event_id: s.status_event_id,
+            status_evidence_ids: s.status_evidence_ids,
+            status_certainty: s.status_certainty,
+            geometry_source: s.lat === null ? null : { dataset: "brief v1 geometry (fixture)", approximate: s.geometry_approximate },
           }));
         const deals = d.deals
           .filter((x2) => x2.site_id && (!stage.length || stage.includes(x2.stage)))
-          .map((x2) => ({ id: x2.id, title: x2.title, stage: x2.stage, stage_pending: x2.stage_pending, deal_type: x2.deal_type, site_id: x2.site_id, priority_score: x2.priority_score }));
+          .map((x2) => ({
+            id: x2.id,
+            title: x2.title,
+            stage: x2.stage,
+            stage_pending: x2.stage_pending,
+            deal_type: x2.deal_type,
+            site_id: x2.site_id,
+            priority_score: x2.priority_score,
+            evidence_ids: x2.evidence_ids,
+            stage_event_id: x2.stage_event_id,
+            stage_evidence_ids: x2.stage_evidence_ids,
+            stage_reason: x2.stage_reason,
+          }));
         const projects = d.projects
           .filter((p) => p.site_id && (!sector.length || sector.includes(p.sector ?? "")))
-          .map((p) => ({ id: p.id, name: p.name, site_id: p.site_id, stage: p.stage, sector: p.sector, in_engagement_window: p.in_engagement_window, forecast_start: p.forecast_start, forecast_end: p.forecast_end }));
+          .map((p) => ({
+            id: p.id,
+            name: p.name,
+            site_id: p.site_id,
+            stage: p.stage,
+            sector: p.sector,
+            in_engagement_window: p.in_engagement_window,
+            forecast_start: p.forecast_start,
+            forecast_end: p.forecast_end,
+            stage_event_id: p.stage_event_id,
+            stage_evidence_ids: p.stage_evidence_ids,
+            forecast_event_id: p.forecast_detail?.event_id ?? null,
+            forecast_evidence_ids: p.forecast_detail?.evidence_ids ?? [],
+          }));
         return ok({ sites, deals, projects });
       }
       if (path === "/api/projects") {
@@ -226,7 +268,22 @@ export class MockApi {
       if (path === "/api/calendar") {
         const items = d.projects
           .filter((p) => p.stage)
-          .map((p) => ({ id: p.id, name: p.name, stage: p.stage, stage_order: p.stage_order, in_engagement_window: p.in_engagement_window, forecast_start: p.forecast_start, forecast_end: p.forecast_end, forecast_detail: p.forecast_detail, site_id: p.site_id, site_name: p.site_name }))
+          .map((p) => ({
+            id: p.id,
+            name: p.name,
+            stage: p.stage,
+            stage_order: p.stage_order,
+            in_engagement_window: p.in_engagement_window,
+            forecast_start: p.forecast_start,
+            forecast_end: p.forecast_end,
+            forecast_detail: p.forecast_detail,
+            site_id: p.site_id,
+            site_name: p.site_name,
+            stage_event_id: p.stage_event_id,
+            stage_evidence_ids: p.stage_evidence_ids,
+            stage_certainty: p.stage_certainty,
+            demand_estimate: p.demand_estimate,
+          }))
           .sort((a, b) => (a.forecast_start ?? "9999").localeCompare(b.forecast_start ?? "9999") || a.name.localeCompare(b.name));
         return ok({ months: Number(q.get("months") ?? 24), items });
       }
@@ -259,31 +316,7 @@ export class MockApi {
           as_of: asOf,
         });
       }
-      if (path === "/api/priority") {
-        const items = d.deals
-          .filter((x2) => !["won", "lost", "parked"].includes(x2.stage))
-          .sort((a, b) => (b.priority_score ?? -1) - (a.priority_score ?? -1) || time(b.updated_at) - time(a.updated_at))
-          .slice(0, Number(q.get("limit") ?? 100))
-          .map((x2) => ({
-            id: x2.id,
-            title: x2.title,
-            deal_type: x2.deal_type,
-            stage: x2.stage,
-            stage_pending: x2.stage_pending,
-            site_id: x2.site_id,
-            site_name: x2.site_name,
-            project_id: x2.project_id,
-            lead_time_days: x2.lead_time_days,
-            demand_litres_month: x2.demand_litres_month,
-            confidence: x2.confidence,
-            buyer_fit: x2.buyer_fit,
-            has_contact: x2.has_contact,
-            priority_score: x2.priority_score,
-            priority_breakdown: x2.priority_breakdown,
-            evidence_ids: x2.evidence_ids,
-          }));
-        return ok({ items });
-      }
+      if (path === "/api/priority") return ok({ items: this.priority(Number(q.get("limit") ?? 100)) });
       if (path === "/api/timeline") {
         const st = q.get("stream_type") ?? "";
         const id = q.get("stream_id") ?? "";
@@ -321,14 +354,22 @@ export class MockApi {
         const b = d.briefs.find((v) => v.version === Number(x![1]));
         return b ? ok(b) : err(404, "brief version not found");
       }
-      if (path === "/api/quarantine") return ok({ items: d.quarantine.slice(0, Number(q.get("limit") ?? 100)) });
+      if (path === "/api/quarantine") {
+        // The list gives no agent output. GET /api/quarantine/{id} gives it (services/api/routers/quarantine.py).
+        const items = [...d.quarantine].sort((a, b) => time(b.created_at) - time(a.created_at));
+        const body: QuarantineResponse = { items: items.slice(0, Number(q.get("limit") ?? 100)).map((x2) => ({ ...x2, output: null })), total: items.length, reason_codes: d.reasonCodes };
+        return ok(body);
+      }
       if ((x = m(/^\/api\/quarantine\/([^/]+)$/))) {
         const item = d.quarantine.find((e) => e.id === x![1]);
         return item ? ok(item) : err(404, "quarantine item not found");
       }
       if (path === "/api/proposals") {
         const st = q.get("status");
-        return ok({ items: d.proposals.filter((p) => !st || p.status === st).sort((a, b) => time(b.created_at) - time(a.created_at)) });
+        const kind = q.get("kind");
+        const hit = d.proposals.filter((p) => (!st || p.status === st) && (!kind || p.kind === kind)).sort((a, b) => time(b.created_at) - time(a.created_at) || (a.id < b.id ? 1 : -1));
+        const body: ProposalsResponse = { total: hit.length, items: hit.map((p) => this.proposalView(p)) };
+        return ok(body);
       }
       if (path === "/api/telemetry/alerts") return ok(this.telemetry());
     }
@@ -359,43 +400,129 @@ export class MockApi {
     return evs.length ? String(evs[evs.length - 1]!.payload.to_status) : (this.data.sites.find((s) => s.id === id)?.status ?? null);
   }
 
-  // ---------- telemetry (docs/06) ----------
+  // ---------- telemetry (docs/06), as services/governance/alerts.telemetry ----------
 
-  telemetry() {
-    const secs = (a: string | null, b: string | null) => (a && b ? (time(b) - time(a)) / 1000 : null);
-    const alerts: TelemetryAlert[] = this.data.alerts.map((a) => ({
-      id: a.id,
-      tier: a.tier,
-      tier_rule: a.tier_rule,
-      title: a.title,
-      status: a.status,
-      published_at: a.published_at,
-      fetched_at: a.fetched_at,
-      raised_at: a.raised_at,
-      deliveries: this.data.deliveries[a.id] ?? [],
-      acknowledged_at: a.acknowledged_at,
-      acknowledged_by: a.acknowledged_by,
-      decided_at: a.decided_at,
-      outcome: a.status === "unconfirmed" ? null : a.status,
-      latency_fetch_to_alert_seconds: secs(a.fetched_at, a.raised_at),
-      time_to_ack_seconds: secs(a.raised_at, a.acknowledged_at),
-    }));
-    const lat = alerts.map((a) => a.latency_fetch_to_alert_seconds).filter((v): v is number => v !== null);
-    const ack = alerts.map((a) => a.time_to_ack_seconds).filter((v): v is number => v !== null);
-    const rules = [...new Set(alerts.map((a) => a.tier_rule))].sort();
+  telemetry(): TelemetryResponse {
+    const secs = (later: string | null, earlier: string | null) => (later && earlier ? Math.round(time(later) - time(earlier)) / 1000 : null);
+    const items: TelemetryAlert[] = [...this.data.alerts]
+      .sort((a, b) => time(b.raised_at) - time(a.raised_at))
+      .map((a) => {
+        const del = this.data.deliveries[a.id] ?? { delivered: { frontend: null, frontend_broadcast: null, email: null }, delivery_status: { frontend: null, email: null } };
+        return {
+          id: a.id,
+          tier: a.tier,
+          tier_rule: a.tier_rule,
+          title: a.title,
+          status: a.status,
+          outcome: a.status === "unconfirmed" ? null : a.status,
+          source_id: a.source_id,
+          signal_id: a.signal_id,
+          published_at: a.published_at,
+          fetched_at: a.fetched_at,
+          raised_at: a.raised_at,
+          delivered: del.delivered,
+          delivery_status: del.delivery_status,
+          acknowledged_at: a.acknowledged_at,
+          acknowledged_by: a.acknowledged_by,
+          decided_at: a.decided_at,
+          decided_by: a.decided_by,
+          decision_reason: a.decision_reason,
+          latency_fetch_to_alert_seconds: secs(a.raised_at, a.fetched_at),
+          latency_publish_to_alert_seconds: secs(a.raised_at, a.published_at),
+          time_to_acknowledgement_seconds: secs(a.acknowledged_at, a.raised_at),
+        };
+      });
+    const lat = items.map((a) => a.latency_fetch_to_alert_seconds).filter((v): v is number => v !== null);
+    const ack = items.map((a) => a.time_to_acknowledgement_seconds).filter((v): v is number => v !== null);
+    const stats = (xs: number[]) => ({ n: xs.length, median: percentile(xs, 50), p90: percentile(xs, 90) });
+    const rules = new Map<string, { tier_rule: string; tier: number; alerts: number; decided: number; confirmed: number; dismissed: number; false_positive: number; false_positive_rate: number | null }>();
+    for (const a of items) {
+      const r = rules.get(a.tier_rule) ?? { tier_rule: a.tier_rule, tier: a.tier, alerts: 0, decided: 0, confirmed: 0, dismissed: 0, false_positive: 0, false_positive_rate: null };
+      r.alerts += 1;
+      if (a.outcome) {
+        r.decided += 1;
+        r[a.outcome] += 1;
+      }
+      rules.set(a.tier_rule, r);
+    }
+    for (const r of rules.values()) r.false_positive_rate = r.decided ? Math.round((r.false_positive / r.decided) * 10_000) / 10_000 : null;
     return {
-      alerts,
+      items,
       metrics: {
-        latency_fetch_to_alert_seconds: { n: lat.length, median: median(lat), p90: pct(lat, 0.9) },
-        time_to_ack_seconds: { n: ack.length, median: median(ack), p90: pct(ack, 0.9) },
-        false_positive_rate_by_rule: rules.map((r) => {
-          const xs = alerts.filter((a) => a.tier_rule === r);
-          const decided = xs.filter((a) => a.outcome);
-          const fp = xs.filter((a) => a.outcome === "false_positive").length;
-          return { tier_rule: r, alerts: xs.length, false_positives: fp, rate: decided.length ? fp / decided.length : null };
-        }),
+        latency_fetch_to_alert_seconds: stats(lat),
+        time_to_acknowledgement_seconds: stats(ack),
+        false_positive_rate_by_tier_rule: [...rules.values()].sort((a, b) => a.tier - b.tier || a.tier_rule.localeCompare(b.tier_rule)),
       },
     };
+  }
+
+  // ---------- priority list (services/projections/priority.py and GET /api/priority) ----------
+
+  /** Recalculate the priority of a deal after a write, as the projector hook does. */
+  reprioritise(deal: Deal, asOf = new Date().toISOString().slice(0, 10)) {
+    const project = deal.project_id ? (this.data.projects.find((p) => p.id === deal.project_id) ?? null) : null;
+    const first = this.data.events.find((e) => e.stream_type === "deal" && e.stream_id === deal.id && e.event_type === "DealIdentified");
+    Object.assign(
+      deal,
+      computePriority({ deal, project, relationships: this.data.relationships, engagement: this.data.engagement, stageCodes: this.data.stages.deal_stages.map((s) => s.code), dealEventId: first?.id ?? "", asOf, cfg: priorityConfig() }),
+    );
+  }
+
+  /** The ranked list: by group, then the "no contact found" rule, then the score, as the SQL of GET /api/priority. */
+  priority(limit: number): PriorityItem[] {
+    const terminal = new Set(this.data.stages.deal_stages.filter((s) => s.terminal).map((s) => s.code));
+    const rows = this.data.deals
+      .filter((x) => !terminal.has(x.stage))
+      .map((x) => ({
+        deal: x,
+        groupOrder: x.priority_breakdown?.group.order ?? 999,
+        rule: x.priority_breakdown?.no_contact_boost.applied ?? false,
+      }))
+      .sort((a, b) => a.groupOrder - b.groupOrder || Number(b.rule) - Number(a.rule) || (b.deal.priority_score ?? -1) - (a.deal.priority_score ?? -1) || time(b.deal.updated_at) - time(a.deal.updated_at) || a.deal.id.localeCompare(b.deal.id));
+    const inGroup = new Map<number, number>();
+    return rows.slice(0, limit).map(({ deal: x, groupOrder, rule }, i) => {
+      const groupRank = (inGroup.get(groupOrder) ?? 0) + 1;
+      inGroup.set(groupOrder, groupRank);
+      return {
+        id: x.id,
+        title: x.title,
+        deal_type: x.deal_type,
+        stage: x.stage,
+        stage_pending: x.stage_pending,
+        site_id: x.site_id,
+        site_name: x.site_name ?? null,
+        project_id: x.project_id,
+        project_name: this.data.projects.find((p) => p.id === x.project_id)?.name ?? null,
+        lead_time_days: x.lead_time_days,
+        demand_litres_month: x.demand_litres_month,
+        confidence: x.confidence,
+        buyer_fit: x.buyer_fit,
+        has_contact: x.has_contact,
+        priority_score: x.priority_score,
+        priority_breakdown: x.priority_breakdown,
+        evidence_ids: x.evidence_ids,
+        stage_event_id: x.stage_event_id,
+        stage_evidence_ids: x.stage_evidence_ids,
+        priority_group: x.priority_breakdown?.group.id ?? null,
+        group_order: groupOrder,
+        group_rank: groupRank,
+        rank: i + 1,
+        no_contact_rule: rule,
+      };
+    });
+  }
+
+  // ---------- approval queue ----------
+
+  proposalView(p: StoredProposal): Proposal {
+    return { ...p, created_by_me: p.created_by === this.userId };
+  }
+
+  private proposalEvidence(ids: string[]) {
+    return ids
+      .map((id) => this.data.evidence[id])
+      .filter((e): e is NonNullable<typeof e> => !!e)
+      .map((e) => ({ id: e.id, source_id: e.source_id, char_start: e.char_start, char_end: e.char_end, quote: e.quote, verified: e.verified, url: e.url, title: e.title, publisher: e.publisher, published_at: e.published_at, retention_policy: e.retention_policy }));
   }
 
   // ---------- writes (M4 contract) ----------
@@ -416,20 +543,28 @@ export class MockApi {
       if (action === "reject") {
         const reason = String(body.reason ?? "").trim();
         if (!reason) return err(422, "a reason is required");
-        p.status = "rejected";
-        p.decision_reason = reason;
+        Object.assign(p, { status: "rejected", decision_reason: reason, decided_by: this.userId, decided_at: new Date().toISOString() } satisfies Partial<StoredProposal>);
         this.clearPending(p);
         const live = this.newEvent({ stream_type: "proposal", stream_id: p.id, event_type: "ProposalRejected", payload: { proposal_id: p.id, reason }, evidence_ids: [], certainty: null, actor_type: "human", actor_id: this.userId, proposal_id: p.id });
-        return ok({ status: "rejected" }, [live]);
+        const result: RejectResult = { status: "rejected", proposal_id: p.id };
+        return ok(result, [live]);
       }
-      const events = action === "edit-approve" ? ((body.events as ProposedEvent[]) ?? p.events) : p.events;
+      let events: ProposedEvent[] = p.events;
+      if (action === "edit-approve") {
+        // Edit and approve: one entry for each proposed event, with a new payload and certainty. The stream, the type
+        // and the evidence of each event stay (services/governance/proposals.edit_and_approve).
+        const edits = (body.events as EditedEvent[] | undefined) ?? [];
+        if (edits.length !== p.events.length) return err(422, "edited_events must have one entry for each proposed event");
+        events = p.events.map((e, i) => ({ ...e, payload: edits[i]!.payload ?? e.payload, certainty: edits[i]!.certainty ?? e.certainty }));
+      }
       p.status = action === "edit-approve" ? "edited_approved" : "approved";
       p.decided_by = this.userId;
       p.decided_at = new Date().toISOString();
       this.clearPending(p);
       const live = events.map((e) => this.apply(e, p));
       live.push(this.newEvent({ stream_type: "proposal", stream_id: p.id, event_type: action === "edit-approve" ? "ProposalEditedApproved" : "ProposalApproved", payload: { proposal_id: p.id }, evidence_ids: [], certainty: null, actor_type: "human", actor_id: this.userId, proposal_id: p.id }));
-      return ok({ status: p.status }, live);
+      const result: ApproveResult = { status: p.status === "edited_approved" ? "edited_approved" : "approved", proposal_id: p.id, event_ids: live.slice(0, -1).map((l) => l.data.id) };
+      return ok(result, live);
     }
 
     if ((x = path.match(/^\/api\/deals\/([^/]+)\/(stage|contacts|touchpoints|next-action|prequalification)$/))) {
@@ -441,8 +576,13 @@ export class MockApi {
       if (kind === "stage") {
         const to = String(body.to_stage ?? "");
         if (!d.stages.deal_stages.some((s) => s.code === to)) return err(422, "unknown stage");
+        if (to === deal.stage) return err(422, `the deal is already at stage ${to}`);
+        if (deal.stage_pending) return err(409, `the deal has a pending stage change to ${deal.stage_pending}`);
         const id = `prop-live-${Date.now()}`;
-        const proposal: Proposal = {
+        const name = (c: string) => d.stages.deal_stages.find((s) => s.code === c)?.name ?? c;
+        // A stage move by the team: a human event with a reason and no source evidence (services/governance/engagement.py).
+        const reason = String(body.reason ?? "").trim() || `Moved from ${name(deal.stage)} to ${name(to)} by an analyst`;
+        const proposal: StoredProposal = {
           id,
           kind: "DealStageChanged",
           status: "pending",
@@ -454,30 +594,45 @@ export class MockApi {
           source_id: null,
           stream_type: "deal",
           stream_id: deal.id,
-          title: `Move "${deal.title}" to ${d.stages.deal_stages.find((s) => s.code === to)!.name}`,
+          title: `${deal.title}: ${name(to)}`,
           summary: null,
-          events: [{ event_type: "DealStageChanged", stream_type: "deal", stream_id: deal.id, payload: { from_stage: deal.stage, to_stage: to }, evidence_ids: deal.evidence_ids, certainty: "stated" }],
-          evidence_ids: deal.evidence_ids,
+          events: [{ event_type: "DealStageChanged", stream_type: "deal", stream_id: deal.id, payload: { from_stage: deal.stage, to_stage: to, reason }, evidence_ids: [], certainty: null, evidence: [] }],
+          evidence: this.proposalEvidence([]),
           tier: null,
           created_at: new Date().toISOString(),
+          decided_by: null,
+          decided_at: null,
+          decision_reason: null,
         };
         d.proposals.push(proposal);
         deal.stage_pending = to;
         deal.pending_proposal_id = id;
         const live = this.newEvent({ stream_type: "proposal", stream_id: id, event_type: "ProposalCreated", payload: { proposal_id: id, kind: "DealStageChanged", policy: "review" }, evidence_ids: [], certainty: null, actor_type: "human", actor_id: this.userId, proposal_id: id });
-        return ok({ proposal_id: id, status: "pending" }, [live]);
+        const result: StageMoveResult = { status: "pending", proposal_id: id, deal_id: deal.id, stage: deal.stage, stage_pending: to };
+        return ok(result, [live]);
       }
       const now = new Date().toISOString();
-      const add = (k: Engagement["kind"], data: Record<string, unknown>, eventType: string) => {
-        const live = this.newEvent({ stream_type: "deal", stream_id: deal.id, event_type: eventType, payload: data, evidence_ids: [], certainty: null, actor_type: "human", actor_id: this.userId, proposal_id: null });
+      const add = (k: Engagement["kind"], data: Record<string, unknown>, eventType: string, contactId?: string) => {
+        const proposalId = `prop-eng-${Date.now()}-${this.seq}`;
+        const live = this.newEvent({ stream_type: "deal", stream_id: deal.id, event_type: eventType, payload: data, evidence_ids: [], certainty: null, actor_type: "human", actor_id: this.userId, proposal_id: proposalId });
         d.engagement.push({ event_id: live.data.id, deal_id: deal.id, kind: k, actor_id: this.userId, data, recorded_at: now });
         deal.updated_at = now;
-        return ok({ event_id: live.data.id }, [live]);
+        this.reprioritise(deal);
+        const result: EngagementResult = { status: "recorded", proposal_id: proposalId, event_type: eventType, event_id: live.data.id, deal_id: deal.id, ...(contactId ? { contact_id: contactId } : {}) };
+        return ok(result, [live]);
       };
       if (kind === "contacts") {
-        if (!body.name || !body.role || !body.found_via) return err(422, "name, role and found_via are required");
+        if (!body.role || !body.found_via) return err(422, "role and found_via are required");
+        if (!body.name && !body.person_id) return err(422, "a new contact needs a name");
         deal.has_contact = true;
-        return add("contact", { contact_id: `person-live-${Date.now()}`, role: body.role, organisation_id: body.organisation_id ?? null, found_via: body.found_via, personal: { name: body.name, email: body.email, phone: body.phone } }, "ContactAdded");
+        const contactId = String(body.person_id ?? `person-live-${Date.now()}`);
+        // The relationship endpoint gives the decrypted personal fields in data (services/api/routers/read.py).
+        return add(
+          "contact",
+          { contact_id: contactId, role: body.role, organisation_id: body.organisation_id ?? null, found_via: body.found_via, name: body.name ?? null, email: body.email ?? null, phone: body.phone ?? null, erased: false },
+          "ContactAdded",
+          contactId,
+        );
       }
       if (kind === "touchpoints") {
         if (!body.kind || !body.date || !body.note) return err(422, "kind, date and note are required");
@@ -502,18 +657,36 @@ export class MockApi {
       const now = new Date().toISOString();
       let type = "AlertAcknowledged";
       if (action === "acknowledge") {
+        if (a.acknowledged_at) type = "";
         a.acknowledged_at ??= now;
         a.acknowledged_by ??= this.userId;
+      } else if (a.status !== "unconfirmed") {
+        return err(409, `alert ${a.id} is ${a.status}`);
       } else if (action === "confirm") {
         Object.assign(a, { status: "confirmed", decided_at: now, decided_by: this.userId, decision_reason: (body.reason as string) || null } satisfies Partial<Alert>);
         type = "AlertConfirmed";
       } else {
+        if (!String(body.reason ?? "").trim()) return err(422, "a dismissal needs a reason");
         Object.assign(a, { status: body.false_positive ? "false_positive" : "dismissed", decided_at: now, decided_by: this.userId, decision_reason: (body.reason as string) || null } satisfies Partial<Alert>);
         type = "AlertDismissed";
       }
       a.updated_at = now;
-      const live = this.newEvent({ stream_type: "alert", stream_id: a.id, event_type: type, payload: body, evidence_ids: [], certainty: null, actor_type: "human", actor_id: this.userId, proposal_id: null });
-      return ok({ status: a.status }, [live]);
+      const state: AlertState = {
+        id: a.id,
+        tier: a.tier,
+        tier_rule: a.tier_rule,
+        title: a.title,
+        status: a.status,
+        acknowledged_at: a.acknowledged_at,
+        acknowledged_by: a.acknowledged_by,
+        decided_at: a.decided_at,
+        decided_by: a.decided_by,
+        decision_reason: a.decision_reason,
+      };
+      // A second acknowledgement writes nothing (services/governance/alerts.acknowledge).
+      if (!type) return ok(state, []);
+      const live = this.newEvent({ stream_type: "alert", stream_id: a.id, event_type: type, payload: body, evidence_ids: type === "AlertAcknowledged" ? [] : a.evidence_ids, certainty: null, actor_type: "human", actor_id: this.userId, proposal_id: null });
+      return ok(state, [live]);
     }
 
     if (path === "/api/briefs") {
@@ -548,7 +721,7 @@ export class MockApi {
     return this.newEvent({ stream_type: "brief", stream_id: "brief", event_type: "BriefVersionActivated", payload: { brief_version_id: `brief-v${version}`, version }, evidence_ids: [], certainty: null, actor_type: "human", actor_id: this.userId, proposal_id: null });
   }
 
-  private clearPending(p: Proposal) {
+  private clearPending(p: StoredProposal) {
     if (p.kind === "DealStageChanged") {
       const deal = this.data.deals.find((x) => x.id === p.stream_id);
       if (deal && deal.pending_proposal_id === p.id) Object.assign(deal, { stage_pending: null, pending_proposal_id: null } satisfies Partial<Deal>);
@@ -560,17 +733,29 @@ export class MockApi {
   }
 
   /** Apply an approved event to the read models and the event store of the fixture. */
-  private apply(e: ProposedEvent, p: Proposal): LiveOut {
+  private apply(e: ProposedEvent, p: StoredProposal): LiveOut {
     const st = e.stream_type ?? p.stream_type ?? "entity";
     const sid = e.stream_id ?? p.stream_id ?? "";
+    // The actor of an approved event is the author of the proposal (services/governance/proposals.approve).
+    const live = this.newEvent({ stream_type: st, stream_id: sid, event_type: e.event_type, payload: e.payload, evidence_ids: e.evidence_ids, certainty: e.certainty ?? null, actor_type: p.created_by_type, actor_id: p.created_by, proposal_id: p.id });
     if (e.event_type === "DealStageChanged") {
       const deal = this.data.deals.find((x) => x.id === sid);
-      if (deal) Object.assign(deal, { stage: String(e.payload.to_stage), updated_at: new Date().toISOString() } satisfies Partial<Deal>);
+      if (deal) {
+        Object.assign(deal, {
+          stage: String(e.payload.to_stage),
+          updated_at: new Date().toISOString(),
+          stage_event_id: live.data.id,
+          stage_evidence_ids: e.evidence_ids,
+          stage_reason: typeof e.payload.reason === "string" ? e.payload.reason : null,
+          stage_actor_type: p.created_by_type,
+        } satisfies Partial<Deal>);
+        this.reprioritise(deal);
+      }
     }
     if (e.event_type === "SiteStatusChanged") {
       const site = this.data.sites.find((x) => x.id === sid);
-      if (site) Object.assign(site, { status: String(e.payload.to_status) } satisfies Partial<Site>);
+      if (site) Object.assign(site, { status: String(e.payload.to_status), status_event_id: live.data.id, status_evidence_ids: e.evidence_ids, status_certainty: e.certainty ?? null } satisfies Partial<Site>);
     }
-    return this.newEvent({ stream_type: st, stream_id: sid, event_type: e.event_type, payload: e.payload, evidence_ids: e.evidence_ids ?? [], certainty: e.certainty ?? null, actor_type: "human", actor_id: this.userId, proposal_id: p.id });
+    return live;
   }
 }

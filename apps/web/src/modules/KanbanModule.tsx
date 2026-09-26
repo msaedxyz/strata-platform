@@ -13,7 +13,7 @@ import { useAction } from "./common/actions";
 import { useApi, useStages, useTaxonomy } from "./common/api";
 import { nameOf } from "./common/format";
 import { useSelection } from "./common/selection";
-import { ModuleRoot, resourceState } from "./common/ui";
+import { FactValue, ModuleRoot, resourceState } from "./common/ui";
 
 /** GET /api/deals. The Kanban board, the next actions, the relationship panel and the timeline share it. */
 export function useDeals() {
@@ -50,7 +50,11 @@ export function KanbanModule(_: PanelProps) {
           status: pending ? "pending_approval" : undefined,
           meta: (
             <>
-              {d.deal_type && <Badge>{nameOf(tax.data?.deal_types, d.deal_type)}</Badge>}
+              {d.deal_type && (
+                <FactValue ids={d.evidence_ids} label={d.title}>
+                  <Badge>{nameOf(tax.data?.deal_types, d.deal_type)}</Badge>
+                </FactValue>
+              )}
               {pending && <span className="strata-muted">{`to ${stageName(pending)}`}</span>}
             </>
           ),

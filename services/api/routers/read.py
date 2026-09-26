@@ -18,6 +18,7 @@ from services.governance.event_store import stream_events
 from services.projections.folds import FOLDS
 
 from ..auth import User, require_viewer
+from .schemas import PriorityList
 
 router = APIRouter(prefix="/api", tags=["read"])
 
@@ -177,7 +178,11 @@ def sites(
     site_class: list[str] | None = Query(None),
     user: User = Depends(require_viewer),
 ) -> dict:
-    """Sites with status, pending status, operator and last signal. watch=all gives the daily and weekly lists."""
+    """Sites with status, pending status, operator and last signal. watch=all gives the daily and weekly lists.
+
+    Each fact has its provenance (docs/07 rule 1): identity_evidence_ids (the first EntityIdentified), status_event_id
+    and status_evidence_ids (the last SiteStatusChanged), operator_event_id and operator_evidence_ids, and
+    last_signal_id and last_signal_evidence_ids."""
     where, args = ["e.type = 'site'", "e.merged_into IS NULL"], []
     if watch in ("daily", "weekly"):
         where.append("e.watch = %s")
@@ -191,12 +196,19 @@ def sites(
         items = conn.execute(
             f"""SELECT e.id, e.name, e.aliases, e.site_class, e.watch, e.status, e.status_pending, e.district, e.province,
                        e.lat, e.lon, e.geometry_approximate, e.last_signal_at, e.attributes,
-                       op.id AS operator_id, op.name AS operator_name
+                       e.identity_evidence_ids, e.status_event_id, e.status_evidence_ids, e.status_certainty,
+                       op.id AS operator_id, op.name AS operator_name, op.event_id AS operator_event_id,
+                       coalesce(op.evidence_ids, '{{}}') AS operator_evidence_ids,
+                       ls.id AS last_signal_id, ls.title AS last_signal_title,
+                       coalesce(ls.evidence_ids, '{{}}') AS last_signal_evidence_ids
                 FROM proj_entity e
                 LEFT JOIN LATERAL (
-                  SELECT o.id, o.name FROM proj_relationship r JOIN proj_entity o ON o.id = r.subject_id
+                  SELECT o.id, o.name, r.event_id, r.evidence_ids FROM proj_relationship r JOIN proj_entity o ON o.id = r.subject_id
                   WHERE r.object_id = e.id AND r.predicate = 'operates' AND r.superseded_by IS NULL
                   ORDER BY r.recorded_at DESC LIMIT 1) op ON true
+                LEFT JOIN LATERAL (
+                  SELECT s.id, s.title, s.evidence_ids FROM proj_signal s WHERE e.id = ANY(s.entity_ids)
+                  ORDER BY coalesce(s.published_at, s.recorded_at) DESC, s.id DESC LIMIT 1) ls ON true
                 WHERE {' AND '.join(where)}
                 ORDER BY CASE e.watch WHEN 'daily' THEN 0 WHEN 'weekly' THEN 1 ELSE 2 END, e.name""",
             args,
@@ -281,7 +293,11 @@ def map_layers(
     sector: list[str] | None = Query(None),
     user: User = Depends(require_viewer),
 ) -> dict:
-    """Sites with coordinates, opportunities at those sites, and counts of recent signals by site."""
+    """Sites with coordinates, opportunities at those sites, and counts of recent signals by site.
+
+    Provenance (docs/07 rule 1): each site has identity_evidence_ids, status_event_id, status_evidence_ids and the
+    geometry_source (the dataset of the coordinates). Each deal has evidence_ids, stage_event_id and
+    stage_evidence_ids. Each project has stage_evidence_ids and the forecast evidence."""
     where, args = ["e.type = 'site'", "e.lat IS NOT NULL", "e.merged_into IS NULL"], []
     if site_class:
         where.append("e.site_class = ANY(%s)")
@@ -289,10 +305,11 @@ def map_layers(
     with connection() as conn:
         site_rows = conn.execute(
             f"""SELECT e.id, e.name, e.site_class, e.watch, e.status, e.status_pending, e.lat, e.lon,
-                       e.geometry_approximate, e.last_signal_at,
+                       e.geometry_approximate, e.last_signal_at, e.identity_evidence_ids, e.status_event_id,
+                       e.status_evidence_ids, e.status_certainty, g.geometry_source,
                        (SELECT count(*) FROM proj_signal s WHERE e.id = ANY(s.entity_ids)
                           AND coalesce(s.published_at, s.recorded_at) > now() - interval '90 days') AS signals_90d
-                FROM proj_entity e WHERE {' AND '.join(where)}""",
+                FROM proj_entity e LEFT JOIN entity g ON g.id = e.id WHERE {' AND '.join(where)}""",
             args,
         ).fetchall()
         dwhere, dargs = ["d.site_id IS NOT NULL"], []
@@ -300,12 +317,16 @@ def map_layers(
             dwhere.append("d.stage = ANY(%s)")
             dargs.append(stage)
         deal_rows = conn.execute(
-            f"SELECT d.id, d.title, d.stage, d.stage_pending, d.deal_type, d.site_id, d.priority_score FROM proj_deal d "
+            f"SELECT d.id, d.title, d.stage, d.stage_pending, d.deal_type, d.site_id, d.priority_score, d.evidence_ids, "
+            f"d.stage_event_id, d.stage_evidence_ids, d.stage_reason FROM proj_deal d "
             f"WHERE {' AND '.join(dwhere)}",
             dargs,
         ).fetchall()
         project_rows = conn.execute(
-            "SELECT id, name, site_id, stage, sector, in_engagement_window, forecast_start, forecast_end FROM proj_project "
+            "SELECT id, name, site_id, stage, sector, in_engagement_window, forecast_start, forecast_end, stage_event_id, "
+            "stage_evidence_ids, forecast_detail->>'event_id' AS forecast_event_id, "
+            "coalesce(ARRAY(SELECT jsonb_array_elements_text(forecast_detail->'evidence_ids')), '{}') AS forecast_evidence_ids "
+            "FROM proj_project "
             "WHERE site_id IS NOT NULL" + (" AND sector = ANY(%s)" if sector else ""),
             [sector] if sector else [],
         ).fetchall()
@@ -347,11 +368,15 @@ def project_detail(project_id: str, as_of: datetime | None = None, user: User = 
 
 @router.get("/calendar")
 def calendar(months: int = Query(24, ge=1, le=60), user: User = Depends(require_viewer)) -> dict:
-    """Forecast procurement windows on a time axis. Projects without a date show their stage only."""
+    """Forecast procurement windows on a time axis. Projects without a date show their stage only.
+
+    Each item has the forecast detail (the intervals, the supporting projects and the evidence ids) and the stage
+    evidence (stage_event_id, stage_evidence_ids)."""
     with connection() as conn:
         items = conn.execute(
             "SELECT p.id, p.name, p.stage, p.stage_order, p.in_engagement_window, p.forecast_start, p.forecast_end, "
-            "p.forecast_detail, p.site_id, s.name AS site_name FROM proj_project p LEFT JOIN proj_entity s ON s.id = p.site_id "
+            "p.forecast_detail, p.site_id, s.name AS site_name, p.stage_event_id, p.stage_evidence_ids, p.stage_certainty, "
+            "p.demand_estimate FROM proj_project p LEFT JOIN proj_entity s ON s.id = p.site_id "
             "WHERE p.stage IS NOT NULL ORDER BY p.forecast_start NULLS LAST, p.name"
         ).fetchall()
     return {"months": months, "items": _rows(items)}
@@ -385,16 +410,32 @@ def deal_detail(deal_id: str, as_of: datetime | None = None, user: User = Depend
     return {"deal": _jsonable(state), "as_of": as_of.isoformat() if as_of else None}
 
 
-@router.get("/priority")
+@router.get("/priority", response_model=PriorityList)
 def priority(limit: int = Query(100, le=500), user: User = Depends(require_viewer)) -> dict:
-    """Opportunities ranked by lead time, demand estimate, confidence and buyer fit, with the breakdown."""
+    """Opportunities ranked by lead time, demand estimate, confidence and buyer fit, with the breakdown.
+
+    The list shows the groups of config/priority.yaml in order. In each group, a deal whose project is in the
+    engagement window and has no contact found comes first (docs/05 scorer rule 6), then the other deals by score.
+    Each part of priority_breakdown has its value, score, weight, contribution, event_ids and evidence_ids.
+    """
     with connection() as conn:
         items = conn.execute(
-            "SELECT d.id, d.title, d.deal_type, d.stage, d.stage_pending, d.site_id, s.name AS site_name, d.project_id, "
-            "d.lead_time_days, d.demand_litres_month, d.confidence, d.buyer_fit, d.has_contact, d.priority_score, "
-            "d.priority_breakdown, d.evidence_ids FROM proj_deal d LEFT JOIN proj_entity s ON s.id = d.site_id "
-            "WHERE d.stage NOT IN ('won', 'lost', 'parked') ORDER BY d.priority_score DESC NULLS LAST, d.updated_at DESC LIMIT %s",
-            (limit,),
+            """WITH ranked AS (
+                 SELECT d.id, d.title, d.deal_type, d.stage, d.stage_pending, d.site_id, s.name AS site_name, d.project_id,
+                        p.name AS project_name, d.lead_time_days, d.demand_litres_month, d.confidence, d.buyer_fit,
+                        d.has_contact, d.priority_score, d.priority_breakdown, d.evidence_ids, d.stage_event_id,
+                        d.stage_evidence_ids, d.updated_at,
+                        d.priority_breakdown->'group'->>'id' AS priority_group,
+                        coalesce((d.priority_breakdown->'group'->>'order')::int, 999) AS group_order,
+                        coalesce((d.priority_breakdown->'no_contact_boost'->>'applied')::boolean, false) AS no_contact_rule
+                   FROM proj_deal d LEFT JOIN proj_entity s ON s.id = d.site_id LEFT JOIN proj_project p ON p.id = d.project_id
+                  WHERE NOT (d.stage = ANY(%s)))
+               SELECT *, row_number() OVER (ORDER BY group_order, no_contact_rule DESC, priority_score DESC NULLS LAST,
+                                                     updated_at DESC, id) AS rank,
+                         row_number() OVER (PARTITION BY group_order ORDER BY no_contact_rule DESC,
+                                            priority_score DESC NULLS LAST, updated_at DESC, id) AS group_rank
+                 FROM ranked ORDER BY rank LIMIT %s""",
+            ([s["code"] for s in config.stages() if s.get("terminal")], limit),
         ).fetchall()
     return {"items": _rows(items)}
 

@@ -1,5 +1,6 @@
 // The fixture dataset for the end to end tests. It has the shapes of the read endpoints (services/api/routers/read.py)
-// and of the M4 endpoints in docs/api-contract.md.
+// and of the governance endpoints. The types of the governance, quarantine and priority shapes come from the
+// generated OpenAPI schema (packages/api-client), so the fixture follows the real API (M6).
 //
 // Sites, organisations, sources and known gaps come from the Monitoring Brief (config/monitoring-brief/v1.yaml).
 // Stages and taxonomies come from config/. The articles, quotes, projects and opportunities are fictional test data.
@@ -21,8 +22,8 @@ import type {
   EvidenceItem,
   ForecastDetail,
   KnownGap,
+  PriorityBreakdown,
   Project,
-  QuarantineItem,
   Relationship,
   Signal,
   Site,
@@ -31,7 +32,12 @@ import type {
   Taxonomy,
   TimelineEvent,
 } from "../../src/api/types";
-import type { Proposal } from "../../src/api/writes";
+import type { Proposal, QuarantineItem, TelemetryAlert } from "../../src/api/writes";
+
+/** A proposal as the store keeps it. The API adds created_by_me for the user who reads it. */
+export type StoredProposal = Omit<Proposal, "created_by_me">;
+/** The delivery times of an alert for each channel (GET /api/telemetry/alerts "delivered" and "delivery_status"). */
+export type AlertDeliveries = Pick<TelemetryAlert, "delivered" | "delivery_status">;
 
 export const FIXTURE_NOW = "2026-09-26T09:00:00Z";
 const NOW = Date.parse(FIXTURE_NOW);
@@ -54,20 +60,22 @@ export interface Dataset {
   sites: Site[];
   signals: Signal[];
   alerts: Alert[];
-  deliveries: Record<string, Array<{ channel: string; delivered_at: string | null }>>;
+  deliveries: Record<string, AlertDeliveries>;
   drivers: DemandDriver[];
   projects: Project[];
   deals: Deal[];
   relationships: Relationship[];
   engagement: Engagement[];
   events: StreamEvent[];
-  proposals: Proposal[];
+  proposals: StoredProposal[];
   evidence: Record<string, EvidenceItem>;
   sources: SourceHealth[];
   briefVersion: number;
   knownGaps: KnownGap[];
   briefs: BriefVersion[];
   quarantine: QuarantineItem[];
+  /** The reason codes of config/agent-schemas.yaml with their descriptions (GET /api/quarantine reason_codes). */
+  reasonCodes: Record<string, string>;
 }
 
 /** A small deterministic random number generator (mulberry32), so each build gives the same data. */
@@ -186,6 +194,164 @@ const DEAL_TITLES: Record<string, string> = {
   equipment_rental: "Plant hire fuel at {name}",
 };
 
+// ---------- priority list (a copy of services/projections/priority.py for the fixture) ----------
+
+interface Points {
+  points: Array<[number, number]>;
+  unknown_score: number;
+}
+export interface PriorityConfig {
+  version: string;
+  weights: Record<"lead_time" | "demand" | "confidence" | "buyer_fit", number>;
+  lead_time: Points & { horizon_days: number };
+  demand: Points;
+  confidence: { certainty_scores: Record<string, number>; unknown_score: number };
+  buyer_fit: { role_scores: Record<string, number>; owner_direct_buyer_score: number; organisation_only_score: number; unknown_score: number };
+  groups: Array<{ id: string; name: string; stages: string[] }>;
+  no_contact_rule: { contact_found_from_stage: string; boost: number };
+}
+
+export const priorityConfig = () => readYaml("priority.yaml") as unknown as PriorityConfig;
+
+function interpolate(points: Array<[number, number]>, x: number): number {
+  const pts = [...points].sort((a, b) => a[0] - b[0]);
+  if (x <= pts[0]![0]) return pts[0]![1];
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1]!;
+    const [x1, y1] = pts[i]!;
+    if (x <= x1) return x1 === x0 ? y1 : y0 + ((y1 - y0) * (x - x0)) / (x1 - x0);
+  }
+  return pts[pts.length - 1]![1];
+}
+
+const r6 = (n: number) => Math.round(n * 1e6) / 1e6;
+const uniqSorted = (xs: Array<string | null | undefined>) => [...new Set(xs.filter((x): x is string => !!x))].sort();
+
+export interface PriorityInput {
+  deal: Deal;
+  project: Project | null;
+  relationships: Relationship[];
+  engagement: Engagement[];
+  stageCodes: string[];
+  /** The event id of the DealIdentified event. */
+  dealEventId: string;
+  /** The "as of" date of the calculation (YYYY-MM-DD). */
+  asOf: string;
+  cfg: PriorityConfig;
+}
+
+/** The derived columns of a deal and its breakdown, as the priority calculator of the API gives them. */
+export function computePriority(x: PriorityInput): Pick<Deal, "priority_score" | "priority_breakdown" | "lead_time_days" | "demand_litres_month" | "confidence" | "buyer_fit"> {
+  const { deal, project, cfg } = x;
+  const w = cfg.weights;
+  const part = (value: unknown, score: number, weight: number, eventIds: Array<string | null | undefined>, evidenceIds: string[], extra: Record<string, unknown> = {}) => ({
+    value,
+    score: r6(score),
+    weight,
+    contribution: r6(score * weight),
+    event_ids: uniqSorted(eventIds),
+    evidence_ids: uniqSorted(evidenceIds),
+    ...extra,
+  });
+  // Lead time
+  const fd = project?.forecast_detail ?? null;
+  let days = project?.forecast_start ? Math.round((Date.parse(project.forecast_start) - Date.parse(x.asOf)) / DAY) : null;
+  if (days !== null && Math.abs(days) > cfg.lead_time.horizon_days) days = null;
+  const lead = part(days, days === null ? cfg.lead_time.unknown_score : interpolate(cfg.lead_time.points, days), w.lead_time, [fd?.event_id], fd?.evidence_ids ?? [], {
+    unit: "days",
+    forecast_start: project?.forecast_start ?? null,
+    forecast_end: project?.forecast_end ?? null,
+    project_stage: project?.stage ?? null,
+    as_of: x.asOf,
+  });
+  // Demand estimate
+  const est = project?.demand_estimate ?? null;
+  const litres = est && est.unit === "litres_per_month" ? est.value : null;
+  const inputs = est?.inputs ?? {};
+  const demand = part(
+    litres,
+    litres === null ? cfg.demand.unknown_score : interpolate(cfg.demand.points, litres),
+    w.demand,
+    [est?.event_id, ...Object.values(inputs).map((i) => i.fact_event_id)],
+    Object.values(inputs).flatMap((i) => i.evidence_ids),
+    {
+      unit: "litres_per_month",
+      label: litres === null ? null : "estimate",
+      formula_id: est?.formula_id ?? null,
+      estimate_of: est ? "project" : null,
+      inputs: Object.fromEntries(Object.entries(inputs).map(([k, i]) => [k, { value: i.value, evidence_ids: [...i.evidence_ids].sort(), fact_event_id: i.fact_event_id ?? null }])),
+    },
+  );
+  // Confidence
+  const certaintyScore = deal.certainty ? (cfg.confidence.certainty_scores[deal.certainty] ?? cfg.confidence.unknown_score) : cfg.confidence.unknown_score;
+  const conf = part(deal.certainty, certaintyScore, w.confidence, [x.dealEventId], deal.evidence_ids);
+  // Buyer fit
+  const subjects = [deal.project_id, deal.site_id].filter(Boolean);
+  const roles = x.relationships.filter((r) => subjects.includes(r.subject_id) && r.predicate.startsWith("buyer_role_") && !r.superseded_by);
+  const contractors = Object.keys(cfg.buyer_fit.role_scores).filter((k) => k !== "buyer_role_owner" && k !== "buyer_role_fuel_supplier");
+  const hasContractor = roles.some((r) => contractors.includes(r.predicate));
+  const scored = roles
+    .map((r) => {
+      let score = cfg.buyer_fit.role_scores[r.predicate] ?? 0;
+      let basis = r.predicate;
+      if (r.predicate === "buyer_role_owner" && (r.object_id === deal.organisation_id || !hasContractor)) {
+        score = cfg.buyer_fit.owner_direct_buyer_score;
+        basis = "owner_direct_buyer";
+      }
+      return { role: r.predicate, organisation_id: r.object_id, organisation_name: r.organisation_name ?? null, score, basis, event_id: r.event_id, evidence_ids: r.evidence_ids };
+    })
+    .sort((a, b) => b.score - a.score || a.event_id.localeCompare(b.event_id));
+  let buyer;
+  let fit: number;
+  if (scored.length) {
+    fit = scored[0]!.score;
+    const best = scored.filter((r) => r.score === fit);
+    buyer = part(scored[0]!.basis, fit, w.buyer_fit, best.map((r) => r.event_id), best.flatMap((r) => r.evidence_ids), { roles: scored.map(({ evidence_ids: _e, ...rest }) => rest) });
+  } else {
+    fit = deal.organisation_id ? cfg.buyer_fit.organisation_only_score : cfg.buyer_fit.unknown_score;
+    buyer = part(deal.organisation_id ? "organisation_only" : "unknown", fit, w.buyer_fit, [], [], { roles: [] });
+  }
+  // docs/05 scorer rule 6
+  const contacts = x.engagement.filter((e) => e.deal_id === deal.id && (e.kind === "contact" || (e.kind === "touchpoint" && !!e.data.contact_id)));
+  const fromIdx = x.stageCodes.indexOf(cfg.no_contact_rule.contact_found_from_stage);
+  const stageIdx = x.stageCodes.indexOf(deal.stage);
+  const byStage = fromIdx >= 0 && stageIdx >= fromIdx;
+  const contactFound = deal.has_contact || contacts.length > 0 || byStage;
+  const inWindow = !!project?.in_engagement_window;
+  const applied = inWindow && !contactFound;
+  const rule = {
+    value: applied,
+    applied,
+    in_engagement_window: inWindow,
+    contact_found: contactFound,
+    contact_found_by: byStage && !(deal.has_contact || contacts.length) ? ("stage" as const) : contactFound ? ("engagement" as const) : null,
+    project_stage: project?.stage ?? null,
+    contribution: applied ? cfg.no_contact_rule.boost : 0,
+    weight: null,
+    event_ids: uniqSorted([project?.stage_event_id, ...contacts.map((c) => c.event_id)]),
+    evidence_ids: uniqSorted(project?.stage_evidence_ids ?? []),
+  };
+  const weighted = r6(lead.contribution + demand.contribution + conf.contribution + buyer.contribution);
+  const total = r6(weighted + rule.contribution);
+  const gi = cfg.groups.findIndex((g) => g.stages.includes(deal.stage));
+  const group = gi >= 0 ? { id: cfg.groups[gi]!.id, name: cfg.groups[gi]!.name, order: gi + 1 } : { id: "other", name: "Other", order: 999 };
+  const breakdown: PriorityBreakdown = {
+    version: cfg.version,
+    as_of: x.asOf,
+    parts: ["lead_time", "demand", "confidence", "buyer_fit", "no_contact_boost"],
+    lead_time: lead,
+    demand,
+    confidence: conf,
+    buyer_fit: buyer,
+    no_contact_boost: rule,
+    weighted_score: weighted,
+    total,
+    group,
+    project_id: deal.project_id,
+  };
+  return { priority_score: total, priority_breakdown: breakdown, lead_time_days: days, demand_litres_month: litres, confidence: r6(certaintyScore), buyer_fit: r6(fit) };
+}
+
 export interface BuildOptions {
   signals: number;
   deals: number;
@@ -262,6 +428,8 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
   const sites: Site[] = briefSites.map((s): Site => {
     const opId = s.operator ?? null;
     const opEv = opId ? addEvidence(`ev-op-${s.id}`, `${organisations[opId] ?? opId} operates ${s.name}`, { title: `${s.name}: operations`, published: NOW - 200 * DAY }) : null;
+    // The identity of a site comes from the span of the brief that names it (services/governance/bootstrap.py).
+    const idEv = addEvidence(`ev-id-${s.id}`, `name: ${s.name}`, { title: "Monitoring Brief v1", publisher: "Strata brief (fixture)", published: NOW - 300 * DAY });
     return {
       id: s.id,
       name: s.name,
@@ -279,6 +447,15 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       attributes: (opId && opEv ? { operator: { value: opId, event_id: `evt-op-${s.id}`, certainty: "stated", evidence_ids: [opEv] } } : {}) as Site["attributes"],
       operator_id: opId,
       operator_name: opId ? (organisations[opId] ?? null) : null,
+      identity_evidence_ids: [idEv],
+      status_event_id: null,
+      status_evidence_ids: [],
+      status_certainty: null,
+      operator_event_id: opId ? `evt-op-${s.id}` : null,
+      operator_evidence_ids: opEv ? [opEv] : [],
+      last_signal_id: null,
+      last_signal_title: null,
+      last_signal_evidence_ids: [],
     };
   });
   const siteById = new Map(sites.map((s) => [s.id, s]));
@@ -299,7 +476,7 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       stream_id: s.id,
       event_type: "EntityIdentified",
       payload: { entity_type: "site", name: s.name, site_class: s.site_class, watch: s.watch },
-      evidence_ids: s.attributes.operator ? s.attributes.operator.evidence_ids : [],
+      evidence_ids: s.identity_evidence_ids,
       certainty: "stated",
       actor_type: "system",
       actor_id: "brief-bootstrap",
@@ -308,6 +485,25 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       occurred_at: null,
       recorded_at: iso(NOW - 300 * DAY),
     });
+    // A site with a known status has the SiteStatusChanged event that gives it (docs/07 rule 1).
+    if (s.status) {
+      const stEv = addEvidence(`ev-status-${s.id}`, `${s.name} is ${s.status.replace(/_/g, " ")}`, { title: `${s.name}: status`, published: NOW - 60 * DAY });
+      const ev = addEvent({
+        stream_type: "entity",
+        stream_id: s.id,
+        event_type: "SiteStatusChanged",
+        payload: { from_status: null, to_status: s.status },
+        evidence_ids: [stEv],
+        certainty: "stated",
+        actor_type: "agent",
+        actor_id: "enrichment.extractor",
+        proposal_id: `prop-status-${s.id}`,
+        supersedes_event_id: null,
+        occurred_at: iso(NOW - 60 * DAY),
+        recorded_at: iso(NOW - 60 * DAY + HOUR),
+      });
+      Object.assign(s, { status_event_id: ev.id, status_evidence_ids: [stEv], status_certainty: "stated" } satisfies Partial<Site>);
+    }
   }
 
   // ---------- signals ----------
@@ -349,7 +545,9 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       event_id: `evt-sig-${i}`,
       recorded_at: iso(published + 25 * 60_000),
     });
-    if (!site.last_signal_at || site.last_signal_at < iso(published)) site.last_signal_at = iso(published);
+    if (!site.last_signal_at || site.last_signal_at < iso(published)) {
+      Object.assign(site, { last_signal_at: iso(published), last_signal_id: signals[signals.length - 1]!.id, last_signal_title: fill(t.title), last_signal_evidence_ids: [evId] } satisfies Partial<Site>);
+    }
   }
 
   // ---------- alerts (Tier 0) ----------
@@ -362,10 +560,10 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
     const decided = status === "unconfirmed" ? null : iso(raised + (40 + i * 7) * 60_000);
     const acked = status !== "unconfirmed" || i === 3 ? iso(raised + (12 + i * 3) * 60_000) : null;
     const id = `alert-${String(i + 1).padStart(3, "0")}`;
-    deliveries[id] = [
-      { channel: "frontend", delivered_at: iso(raised + 800) },
-      { channel: "email", delivered_at: iso(raised + 45_000) },
-    ];
+    deliveries[id] = {
+      delivered: { frontend: iso(raised + 800), frontend_broadcast: iso(raised + 10), email: iso(raised + 45_000) },
+      delivery_status: { frontend: "delivered", email: "delivered" },
+    };
     return {
       id,
       tier: 0,
@@ -415,10 +613,10 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
     url: evidence[nkanaEv]!.url,
     publisher: evidence[nkanaEv]!.publisher,
   });
-  deliveries["alert-000"] = [
-    { channel: "frontend", delivered_at: iso(NOW - 4.7 * HOUR + 600) },
-    { channel: "email", delivered_at: iso(NOW - 4.7 * HOUR + 30_000) },
-  ];
+  deliveries["alert-000"] = {
+    delivered: { frontend: iso(NOW - 4.7 * HOUR + 600), frontend_broadcast: iso(NOW - 4.7 * HOUR + 5), email: null },
+    delivery_status: { frontend: "delivered", email: "failed" },
+  };
 
   // ---------- demand drivers ----------
   const drivers: DemandDriver[] = DRIVER_TEMPLATES.map((d, i) => {
@@ -443,6 +641,8 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
   });
 
   // ---------- projects ----------
+  const demandModel = readYaml("demand-model.yaml") as { unit: string; formulas: Array<{ id: string; name: string; expression: string; factors: Record<string, number> }> };
+  const haulFleet = demandModel.formulas.find((f) => f.id === "haul_fleet")!;
   const projects: Project[] = PROJECT_SEEDS.filter((p) => siteById.has(p.site)).map((p, pi) => {
     const site = siteById.get(p.site)!;
     const order = lifecycleOrder(p.stage);
@@ -450,27 +650,40 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       title: `${p.name}: stage`,
       published: NOW - (20 + pi * 5) * DAY,
     });
+    // The forecast of the window forecaster: one interval from the current stage to contractor procurement, with the
+    // projects that support it, and the evidence of the stage change (services/enrichment/forecaster.py).
+    const procOrder = lifecycleOrder(stages.procurement_stage)!;
+    const stageEventId = `evt-stage-${p.id}`;
     let forecast: ForecastDetail | null = null;
     if (p.forecast && order !== null) {
-      const procOrder = lifecycleOrder(stages.procurement_stage)!;
-      const intervals = stages.lifecycle_stages
-        .filter((s) => s.order >= order && s.order < procOrder)
-        .map((s) => {
-          const next = stages.lifecycle_stages.find((x) => x.order === s.order + 1)!;
-          const median = 90 + ((s.order * 37) % 120);
-          return { from: s.code, to: next.code, median_days: median, min_days: Math.round(median * 0.6), max_days: Math.round(median * 1.7), n_projects: 5 + ((s.order * 3) % 7), projects: ["Kansanshi", "Sentinel", "Lumwana", "Trident", "Enterprise"] };
-        });
-      const days = intervals.reduce((a, b) => a + b.median_days, 0);
-      const start = NOW + days * DAY * 0.8;
-      const end = NOW + days * DAY * 1.25;
-      const fEv = addEvidence(`ev-fc-${p.id}`, `the ${p.name} timeline puts contractor procurement after the investment decision`, { title: `${p.name}: timeline`, published: NOW - 10 * DAY });
-      forecast = { current_stage: p.stage, start: isoDate(start), end: isoDate(end), intervals, shift_months_nearer: pi === 4 ? 6 : null, event_id: `evt-fc-${p.id}`, evidence_ids: [fEv, stageEv] };
+      const median = 180 + ((order * 37) % 240);
+      const projectsOfInterval = ["lumwana_super_pit", "khoemacau_zone5", "motheo_t3", "otjikoto", "nyanzaga"];
+      const intervals = [{ from: p.stage, to: stages.procurement_stage, median_days: median, min_days: Math.round(median * 0.6), max_days: Math.round(median * 1.7), n_projects: projectsOfInterval.length, projects: projectsOfInterval }];
+      const base = NOW - (20 + pi * 5) * DAY;
+      forecast = {
+        current_stage: p.stage,
+        base_date: isoDate(base),
+        start: isoDate(base + intervals[0]!.min_days! * DAY),
+        end: isoDate(base + intervals[0]!.max_days! * DAY),
+        median: isoDate(base + median * DAY),
+        intervals,
+        supporting_projects: projectsOfInterval,
+        stage_only: false,
+        procurement_reached: false,
+        shift_months_nearer: pi === 4 ? 6 : null,
+        stage_event_id: stageEventId,
+        event_id: `evt-fc-${p.id}`,
+        evidence_ids: [stageEv],
+      };
+    } else if (order !== null && order >= procOrder && p.stage !== "care_maintenance_suspension_closure") {
+      forecast = { current_stage: p.stage, start: null, end: null, intervals: [], stage_only: true, procurement_reached: true, shift_months_nearer: null, stage_event_id: stageEventId, event_id: `evt-fc-${p.id}`, evidence_ids: [stageEv] };
     }
     const demandEv = addEvidence(`ev-dem-${p.id}`, `the fleet at ${site.name} will have 60 haul trucks`, { title: `${p.name}: fleet`, published: NOW - 30 * DAY });
     const firstTrace = NOW - (400 + pi * 30) * DAY;
     const history = stages.lifecycle_stages.filter((s) => order !== null && s.order <= order && s.order >= Math.max(1, (order ?? 1) - 2));
     history.forEach((s, hi) =>
       addEvent({
+        ...(hi === history.length - 1 ? { id: stageEventId } : {}),
         stream_type: "project",
         stream_id: p.id,
         event_type: "ProjectStageChanged",
@@ -504,15 +717,19 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       demand_estimate:
         pi % 3 === 0
           ? {
-              formula_id: "fleet_trucks",
-              expression: "trucks * litres_per_truck_hour * hours_per_month",
-              inputs: { trucks: { value: 60, evidence_ids: [demandEv] } },
-              value: 60 * 45 * 500,
-              unit: "litres per month",
+              formula_id: haulFleet.id,
+              formula_name: haulFleet.name,
+              expression: haulFleet.expression,
+              inputs: { trucks: { value: 60, value_text: "60", predicate: "fleet_trucks", fact_event_id: `evt-fact-trucks-${p.id}`, evidence_ids: [demandEv], subject_type: "project", subject_id: p.id } },
+              factors: haulFleet.factors,
+              value: 60 * haulFleet.factors.litres_per_truck_hour! * haulFleet.factors.operating_hours_per_month!,
+              unit: demandModel.unit,
               label: "estimate",
               event_id: `evt-dem-${p.id}`,
+              evidence_ids: [demandEv],
             }
           : null,
+      stage_event_id: stageEventId,
       updated_at: iso(NOW - (20 + pi * 5) * DAY),
       site_name: site.name,
       site_class: site.site_class,
@@ -558,18 +775,7 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
     const created = NOW - (120 + (i % 90)) * DAY;
     const evId = addEvidence(`ev-deal-${i}`, `${site.name} will need fuel for ${type.replace(/_/g, " ")} work`, { title: `${name}: opportunity`, published: created - DAY });
     const hasContact = i % 4 === 1 || i % 4 === 2;
-    const leadDays = project?.forecast_start ? Math.max(0, Math.round((Date.parse(project.forecast_start) - NOW) / DAY)) : null;
-    const demand = project?.demand_estimate?.value ?? (i % 2 === 0 ? 50_000 + ((i * 7919) % 400_000) : null);
-    const confidence = round(0.4 + ((i * 13) % 55) / 100);
-    const fit = round(0.3 + ((i * 17) % 65) / 100);
-    const parts = {
-      lead_time: round(leadDays === null ? 0.05 : Math.min(0.4, leadDays / 1500)),
-      demand: round(demand === null ? 0 : Math.min(0.3, demand / 1_500_000)),
-      confidence: round(confidence * 0.2),
-      buyer_fit: round(fit * 0.15),
-      no_contact_boost: !hasContact && project?.in_engagement_window ? 0.1 : 0,
-    };
-    const score = round(Object.values(parts).reduce((a, b) => a + b, 0), 3);
+    const certainty: Certainty = i % 7 === 3 ? "reported" : i % 11 === 5 ? "speculative" : "stated";
     const nextAction =
       i % 3 !== 2 && openStages.includes(stage)
         ? { action: ["Call the procurement manager", "Send the supplier registration form", "Visit the site office", "Ask for the tender calendar"][i % 4]!, owner_user_id: i % 2 ? "analyst-1" : "e2e-analyst", due_date: isoDate(NOW + ((i % 21) - 6) * DAY), event_id: `evt-na-${i}` }
@@ -584,16 +790,22 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       site_id: site.id,
       project_id: project?.id ?? null,
       organisation_id: site.operator_id,
-      buyer_fit: fit,
-      confidence,
-      lead_time_days: leadDays,
-      demand_litres_month: demand,
+      // The priority columns come from computePriority after the loop (services/projections/priority.py).
+      buyer_fit: null,
+      confidence: null,
+      lead_time_days: null,
+      demand_litres_month: null,
       has_contact: hasContact,
       prequalification_status: i % 6 === 0 ? "submitted" : null,
       next_action: nextAction,
-      priority_score: score,
-      priority_breakdown: parts,
+      priority_score: null,
+      priority_breakdown: null,
       evidence_ids: [evId],
+      stage_event_id: `evt-deal-${i}`,
+      stage_evidence_ids: [evId],
+      stage_reason: null,
+      stage_actor_type: "agent",
+      certainty,
       created_at: iso(created),
       updated_at: iso(created + 30 * DAY),
       site_name: site.name,
@@ -601,12 +813,13 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
     };
     deals.push(deal);
     addEvent({
+      id: `evt-deal-${i}`,
       stream_type: "deal",
       stream_id: deal.id,
       event_type: "DealIdentified",
       payload: { title, deal_type: type, stage: "signal", site_id: site.id, project_id: project?.id ?? null },
       evidence_ids: [evId],
-      certainty: "stated",
+      certainty,
       actor_type: "agent",
       actor_id: "classifier",
       proposal_id: `prop-deal-${i}`,
@@ -616,29 +829,35 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
     });
     const reach = dealStages.indexOf(stage);
     const path = stage === "won" || stage === "lost" || stage === "parked" ? [...openStages.slice(1, 4), stage] : openStages.slice(1, reach + 1);
-    path.forEach((to, k) =>
-      addEvent({
+    // A stage move by the team is a human event with a reason and no source evidence (docs/03, M4).
+    const stageName = (c: string) => stages.deal_stages.find((x) => x.code === c)?.name ?? c;
+    path.forEach((to, k) => {
+      const from = k === 0 ? "signal" : path[k - 1]!;
+      const reason = `Moved from ${stageName(from)} to ${stageName(to)} by an analyst`;
+      const ev = addEvent({
         stream_type: "deal",
         stream_id: deal.id,
         event_type: "DealStageChanged",
-        payload: { from_stage: k === 0 ? "signal" : path[k - 1]!, to_stage: to },
-        evidence_ids: [evId],
-        certainty: "stated",
+        payload: { from_stage: from, to_stage: to, reason },
+        evidence_ids: [],
+        certainty: null,
         actor_type: "human",
-        actor_id: "approver-1",
+        actor_id: "analyst-1",
         proposal_id: `prop-stage-${i}-${k}`,
         supersedes_event_id: null,
         occurred_at: null,
         recorded_at: iso(created + (k + 1) * 10 * DAY),
-      }),
-    );
+      });
+      Object.assign(deal, { stage_event_id: ev.id, stage_evidence_ids: [], stage_reason: reason, stage_actor_type: "human" } satisfies Partial<Deal>);
+    });
     if (i < 12 && hasContact) {
       engagement.push({
         event_id: `evt-contact-${i}`,
         deal_id: deal.id,
         kind: "contact",
         actor_id: "analyst-1",
-        data: { contact_id: `person-${i}`, role: "Procurement manager", organisation_id: site.operator_id, found_via: "Supplier day in Kitwe", personal: { name: ["Mwila Banda", "Chanda Phiri", "Natasha Mulenga", "Joseph Tembo"][i % 4], email: `procurement${i}@example.com` } },
+        // The API decrypts the personal fields of a contact for the reader (services/api/routers/read.py).
+        data: { contact_id: `person-${i}`, role: "Procurement manager", organisation_id: site.operator_id, found_via: "Supplier day in Kitwe", name: ["Mwila Banda", "Chanda Phiri", "Natasha Mulenga", "Joseph Tembo"][i % 4], email: `procurement${i}@example.com`, phone: null, erased: false },
         recorded_at: iso(created + 5 * DAY),
       });
       engagement.push({
@@ -657,8 +876,26 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
     }
   }
 
+  // ---------- priority list ----------
+  const cfg = priorityConfig();
+  const stageCodes = stages.deal_stages.map((s) => s.code);
+  const projectById = new Map(projects.map((p) => [p.id, p]));
+  for (const deal of deals) {
+    Object.assign(
+      deal,
+      computePriority({ deal, project: deal.project_id ? (projectById.get(deal.project_id) ?? null) : null, relationships, engagement, stageCodes, dealEventId: `evt-deal-${Number(deal.id.slice(5)) - 1}`, asOf: isoDate(NOW), cfg }),
+    );
+  }
+
   // ---------- proposals ----------
-  const proposals: Proposal[] = [];
+  const proposals: StoredProposal[] = [];
+  const proposalEvidence = (ids: string[]) =>
+    ids.map((id) => {
+      const e = evidence[id]!;
+      return { id: e.id, source_id: e.source_id, char_start: e.char_start, char_end: e.char_end, quote: e.quote, verified: e.verified, url: e.url, title: e.title, publisher: e.publisher, published_at: e.published_at, retention_policy: e.retention_policy };
+    });
+  const proposed = (e: { event_type: string; stream_type: string; stream_id: string; payload: Record<string, unknown>; evidence_ids: string[]; certainty: Certainty | null }) => ({ ...e, evidence: proposalEvidence(e.evidence_ids) });
+  const decisionNone = { decided_by: null, decided_at: null, decision_reason: null };
   const pendingDeal = deals.find((d) => d.stage === "qualified") ?? deals[0]!;
   pendingDeal.stage_pending = "contact_found";
   pendingDeal.pending_proposal_id = "prop-001";
@@ -680,8 +917,9 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       stream_id: pendingDeal.id,
       title: `Move "${pendingDeal.title}" to ${stages.deal_stages.find((s) => s.code === "contact_found")!.name}`,
       summary: "The analyst found the procurement manager of the mining contractor.",
-      events: [{ event_type: "DealStageChanged", stream_type: "deal", stream_id: pendingDeal.id, payload: { from_stage: pendingDeal.stage, to_stage: "contact_found" }, evidence_ids: pendingDeal.evidence_ids, certainty: "stated" }],
-      evidence_ids: pendingDeal.evidence_ids,
+      events: [proposed({ event_type: "DealStageChanged", stream_type: "deal", stream_id: pendingDeal.id, payload: { from_stage: pendingDeal.stage, to_stage: "contact_found", reason: "The analyst found the procurement manager of the mining contractor." }, evidence_ids: [], certainty: null })],
+      evidence: proposalEvidence([]),
+      ...decisionNone,
       tier: null,
       created_at: iso(NOW - 3 * HOUR),
     },
@@ -699,8 +937,9 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       stream_id: "mopani_nkana",
       title: "Mopani Nkana mine: status producing to suspended",
       summary: "The article reports a suspension of underground operations after a safety review.",
-      events: [{ event_type: "SiteStatusChanged", stream_type: "entity", stream_id: "mopani_nkana", payload: { from_status: "producing", to_status: "suspended" }, evidence_ids: [nkanaEv], certainty: "reported" }],
-      evidence_ids: [nkanaEv],
+      events: [proposed({ event_type: "SiteStatusChanged", stream_type: "entity", stream_id: "mopani_nkana", payload: { from_status: "producing", to_status: "suspended" }, evidence_ids: [nkanaEv], certainty: "reported" })],
+      evidence: proposalEvidence([nkanaEv]),
+      ...decisionNone,
       tier: 0,
       created_at: iso(NOW - 4.6 * HOUR),
     },
@@ -718,8 +957,9 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       stream_id: "kansanshi_mining_plc",
       title: "Merge \"Kansanshi Mining Plc\" and \"KMP\"",
       summary: "Two articles name one company in two ways.",
-      events: [{ event_type: "EntityMerged", stream_type: "entity", stream_id: "kansanshi_mining_plc", payload: { merged_ids: ["kmp"], into_id: "kansanshi_mining_plc" }, evidence_ids: [mergeEv], certainty: "stated" }],
-      evidence_ids: [mergeEv],
+      events: [proposed({ event_type: "EntityMerged", stream_type: "entity", stream_id: "kansanshi_mining_plc", payload: { merged_ids: ["kmp"], into_id: "kansanshi_mining_plc" }, evidence_ids: [mergeEv], certainty: "stated" })],
+      evidence: proposalEvidence([mergeEv]),
+      ...decisionNone,
       tier: null,
       created_at: iso(NOW - 26 * HOUR),
     },
@@ -737,8 +977,9 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       stream_id: "prj-kalengwa",
       title: "Kalengwa: mining contractor Mota-Engil",
       summary: null,
-      events: [{ event_type: "RelationshipAsserted", stream_type: "project", stream_id: "prj-kalengwa", payload: { subject_id: "prj-kalengwa", predicate: "buyer_role_mining_contractor", object_id: "mota_engil" }, evidence_ids: [relEv], certainty: "reported" }],
-      evidence_ids: [relEv],
+      events: [proposed({ event_type: "RelationshipAsserted", stream_type: "project", stream_id: "prj-kalengwa", payload: { subject_id: "prj-kalengwa", predicate: "buyer_role_mining_contractor", object_id: "mota_engil" }, evidence_ids: [relEv], certainty: "reported" })],
+      evidence: proposalEvidence([relEv]),
+      ...decisionNone,
       tier: 1,
       created_at: iso(NOW - 20 * HOUR),
     },
@@ -756,8 +997,9 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       stream_id: "prj-kashime",
       title: "Kashime: stage Environmental assessment filed",
       summary: "The approver created this proposal. Another approver must decide.",
-      events: [{ event_type: "ProjectStageChanged", stream_type: "project", stream_id: "prj-kashime", payload: { from_stage: "feasibility", to_stage: "eia_filed" }, evidence_ids: [prjEv], certainty: "stated" }],
-      evidence_ids: [prjEv],
+      events: [proposed({ event_type: "ProjectStageChanged", stream_type: "project", stream_id: "prj-kashime", payload: { from_stage: "feasibility", to_stage: "eia_filed" }, evidence_ids: [prjEv], certainty: "stated" })],
+      evidence: proposalEvidence([prjEv]),
+      ...decisionNone,
       tier: 0,
       created_at: iso(NOW - 5 * HOUR),
     },
@@ -797,23 +1039,30 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
     { id: "brief-v1", version: 1, name: "Zambia mining and industrials", created_by: "bootstrap", created_at: iso(NOW - 10 * DAY), parent_version_id: null, change_note: "Built from the Argo brief", content_hash: "hash-v1", active: false, content: {}, yaml: briefYaml },
     { id: "brief-v2", version: 2, name: "Zambia mining and industrials (weekly sites daily)", created_by: "admin-1", created_at: iso(NOW - 2 * DAY), parent_version_id: "brief-v1", change_note: "Rename", content_hash: "hash-v2", active: true, content: {}, yaml: v2Yaml },
   ];
+  const reasonCodes = Object.fromEntries(
+    ((readYaml("agent-schemas.yaml") as { quarantine_reason_codes: Array<{ code: string; description: string }> }).quarantine_reason_codes ?? []).map((r) => [r.code, r.description]),
+  );
   const quarantine: QuarantineItem[] = [
-    ["classifier", "taxonomy_code_unknown", { field: "sector", value: "oil_and_gas" }],
-    ["extractor", "quote_not_in_source", { quote: "the mine will close in 2027" }],
-    ["extractor", "evidence_span_mismatch", { char_start: 120, char_end: 180 }],
+    ["classifier", "unknown_taxonomy_code", { unknown: { sectors: ["oil_and_gas"] } }],
+    ["extractor", "value_not_in_quote", { value_text: "the mine will close in 2027" }],
+    ["extractor", "span_mismatch", { char_start: 120, char_end: 180 }],
     ["summariser", "schema_invalid", { error: "summary must be a list" }],
-    ["classifier", "instruction_in_document", { note: "The document text asked the model to ignore its rules. The output was quarantined." }],
-    ["resolver", "merge_without_evidence", { candidates: ["zccm_ih", "zccm"] }],
+    ["summariser", "no_evidence", { sentence: "The mine will double its output." }],
+    ["resolver", "unknown_entity", { candidates: ["zccm_ih", "zccm"] }],
   ].map(([agent, code, detail], i) => ({
     id: `q-${i + 1}`,
     source_id: `src-${i + 3}`,
     agent: agent as string,
     reason_code: code as string,
+    reason: reasonCodes[code as string] ?? null,
     detail: detail as Record<string, unknown>,
     output: { proposed: "fixture output", index: i },
     model_id: "fixture-model",
-    prompt_version: `${agent as string}-v1`,
+    prompt_version: `${agent as string}/v1`,
+    run_id: `run-${i + 1}`,
     created_at: iso(NOW - (i + 1) * 7 * HOUR),
+    source_title: evidence[`ev-sig-${i + 3}`]?.title ?? null,
+    source_url: evidence[`ev-sig-${i + 3}`]?.url ?? null,
   }));
 
   return {
@@ -838,6 +1087,7 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
     knownGaps: brief.known_gaps,
     briefs,
     quarantine,
+    reasonCodes,
   };
 }
 

@@ -3,8 +3,7 @@
 import { Badge, type Column, DataTable, Drawer, Select, TextArea } from "@strata/design-system";
 import type { PanelProps } from "@strata/panel-framework";
 import { useMemo, useState } from "react";
-import type { QuarantineItem, QuarantineResponse } from "../api/types";
-import { getQuarantine, getQuarantineItem } from "../api/writes";
+import { getQuarantine, getQuarantineItem, type QuarantineItem, type QuarantineResponse } from "../api/writes";
 import { moduleConfig } from "../config/modules";
 import { useResource } from "../data/resource";
 import { useApi } from "./common/api";
@@ -25,10 +24,11 @@ function QuarantineDetail({ id }: { id: string }) {
         label="Quarantine item"
         rows={[
           { id: "reason", label: "Reason code", value: <Badge tone="negative">{q.reason_code}</Badge> },
+          { id: "reason-text", label: "Reason", value: q.reason ?? "" },
           { id: "agent", label: "Agent", value: humanise(q.agent) },
           { id: "model", label: "Model", value: q.model_id ?? "" },
           { id: "prompt", label: "Prompt version", value: q.prompt_version ?? "" },
-          { id: "source", label: "Source", value: q.source_id ?? "" },
+          { id: "source", label: "Source", value: q.source_title ?? q.source_id ?? "" },
           { id: "time", label: "Time", value: formatDateTime(q.created_at) },
         ]}
       />
@@ -51,6 +51,7 @@ export function QuarantineModule(_: PanelProps) {
     { id: "time", header: "Time", value: (q) => q.created_at, cell: (q) => formatDateTime(q.created_at), width: 150 },
     { id: "reason", header: "Reason code", value: (q) => q.reason_code, cell: (q) => <Badge tone="negative">{q.reason_code}</Badge> },
     { id: "agent", header: "Agent", value: (q) => humanise(q.agent) },
+    { id: "why", header: "Reason", value: (q) => q.reason ?? r.data?.reason_codes[q.reason_code] ?? "" },
     { id: "model", header: "Model", value: (q) => q.model_id ?? "" },
   ];
 

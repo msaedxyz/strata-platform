@@ -20,6 +20,7 @@ from services.governance import proposals as proposal_service
 
 from ..auth import User, require_admin, require_analyst, require_approver, require_viewer
 from .errors import domain_errors
+from .schemas import AlertState, ApproveResult, Proposal, ProposalList, RejectResult, Telemetry
 
 router = APIRouter(prefix="/api", tags=["governance"])
 
@@ -74,7 +75,7 @@ def _proposal_views(conn, rows: list[dict], user: User) -> list[dict]:
     return [_proposal_view(r, evidence, user) for r in rows]
 
 
-@router.get("/proposals")
+@router.get("/proposals", response_model=ProposalList)
 def list_proposals(
     status: list[ProposalStatus] | None = Query(None),
     kind: list[str] | None = Query(None),
@@ -100,7 +101,7 @@ def list_proposals(
     return {"total": total, "items": items}
 
 
-@router.get("/proposals/{proposal_id}")
+@router.get("/proposals/{proposal_id}", response_model=Proposal)
 def get_proposal(proposal_id: str, user: User = Depends(require_viewer)) -> dict:
     with connection() as conn:
         row = conn.execute("SELECT * FROM proposal WHERE id = %s", (proposal_id,)).fetchone()
@@ -137,7 +138,7 @@ class EditApprove(BaseModel):
     reason: str | None = Field(None, max_length=2000)
 
 
-@router.post("/proposals/{proposal_id}/approve")
+@router.post("/proposals/{proposal_id}/approve", response_model=ApproveResult)
 def approve_proposal(proposal_id: str, body: Decision | None = None, user: User = Depends(require_approver)) -> dict:
     """Approve: the governance service writes the proposed events. 403 for the creator of the proposal."""
     with connection() as conn, domain_errors(conn):
@@ -147,7 +148,7 @@ def approve_proposal(proposal_id: str, body: Decision | None = None, user: User 
     return {"status": "approved", "proposal_id": proposal_id, "event_ids": [w["id"] for w in written]}
 
 
-@router.post("/proposals/{proposal_id}/reject")
+@router.post("/proposals/{proposal_id}/reject", response_model=RejectResult)
 def reject_proposal(proposal_id: str, body: Rejection, user: User = Depends(require_approver)) -> dict:
     """Reject with a reason (422 without). No event goes to the record."""
     with connection() as conn, domain_errors(conn):
@@ -157,7 +158,7 @@ def reject_proposal(proposal_id: str, body: Rejection, user: User = Depends(requ
     return {"status": "rejected", "proposal_id": proposal_id}
 
 
-@router.post("/proposals/{proposal_id}/edit-approve")
+@router.post("/proposals/{proposal_id}/edit-approve", response_model=ApproveResult)
 def edit_approve_proposal(proposal_id: str, body: EditApprove, user: User = Depends(require_approver)) -> dict:
     """Edit and approve: human events that keep the original evidence. 403 for the creator of the proposal."""
     edits = [e.model_dump(exclude_none=True) for e in body.events]
@@ -185,7 +186,7 @@ def _alert_view(row: dict) -> dict:
                                           "acknowledged_by", "decided_at", "decided_by", "decision_reason")})
 
 
-@router.post("/alerts/{alert_id}/acknowledge")
+@router.post("/alerts/{alert_id}/acknowledge", response_model=AlertState)
 def acknowledge_alert(alert_id: str, user: User = Depends(require_analyst)) -> dict:
     """AlertAcknowledged with the user as the actor. A second acknowledgement writes nothing."""
     with connection() as conn, domain_errors(conn):
@@ -194,7 +195,7 @@ def acknowledge_alert(alert_id: str, user: User = Depends(require_analyst)) -> d
     return _alert_view(row)
 
 
-@router.post("/alerts/{alert_id}/confirm")
+@router.post("/alerts/{alert_id}/confirm", response_model=AlertState)
 def confirm_alert(alert_id: str, body: AlertConfirm | None = None, user: User = Depends(require_approver)) -> dict:
     """AlertConfirmed. 409 when the alert is already decided."""
     with connection() as conn, domain_errors(conn):
@@ -203,7 +204,7 @@ def confirm_alert(alert_id: str, body: AlertConfirm | None = None, user: User = 
     return _alert_view(row)
 
 
-@router.post("/alerts/{alert_id}/dismiss")
+@router.post("/alerts/{alert_id}/dismiss", response_model=AlertState)
 def dismiss_alert(alert_id: str, body: AlertDismiss, user: User = Depends(require_approver)) -> dict:
     """AlertDismissed with a reason. false_positive marks a wrong alert (telemetry: rate for each tier rule)."""
     with connection() as conn, domain_errors(conn):
@@ -212,7 +213,7 @@ def dismiss_alert(alert_id: str, body: AlertDismiss, user: User = Depends(requir
     return _alert_view(row)
 
 
-@router.get("/telemetry/alerts")
+@router.get("/telemetry/alerts", response_model=Telemetry)
 def alert_telemetry(limit: int = Query(1000, ge=1, le=5000), user: User = Depends(require_viewer)) -> dict:
     """For each alert: the published, fetched and raised timestamps, the delivery time for each channel, the
     acknowledgement time and user, and the outcome with the tier rule. Metrics: latency from fetch to alert
