@@ -42,6 +42,26 @@ Claude Code does not wait for answers. It uses each default below and continues.
 | 36 | Watch level of a site that leaves the brief | The start-up step sets watch none for a site that the active brief does not list |
 | 37 | Health window | Error rate and documents for each run from the last 20 runs of a source |
 | 38 | Snapshot enrichment | Each new snapshot source gets an enrich_source job, like any other source |
+| 39 | Deterministic backend | Rules in config/enrichment-rules.yaml, version rules-v1, model id deterministic-v1 |
+| 40 | Resolver thresholds | Exact normalised name: confidence 0.97. Trigram match at similarity 0.72 or more with a margin of 0.12. New entity below 0.45, with confidence 0.9 when a name pattern finds it. Only projects and organisations are created. Persons are never created |
+| 41 | Vector search | Not used. No embedding model is available without the API. The resolver uses trigram candidates only |
+| 42 | Scorer judgement | The deterministic backend gives no judgement. A model judgement adds to the score with weight 1.0 and never sets the tier |
+| 43 | Forecast range | Base date: published_at, else fetched_at. Start = base + shortest interval, end = base + longest interval, and the median. Only the direct interval from the current stage to contractor_procurement. No forecast at or after contractor procurement, except care and maintenance (stage only) |
+| 44 | Forecast of a reviewed stage | The forecast waits for the approval of the ProjectStageChanged. `approve()` writes it with the policy automatic |
+| 45 | New project with its stage | One proposal with EntityIdentified and ProjectStageChanged. The strictest policy of the two applies |
+| 46 | Claims about a new entity that waits for review | The claim proposals go to review too |
+| 47 | Summary | Extractive, up to three sentences that other agents found evidence in. Each sentence is its own evidence. With no evidence sentence, the title only |
+| 48 | Out of scope document | No proposal and no quarantine row. The enrichment_run row records out_of_scope |
+| 49 | Rumour document | Two or more rumour cues, or a cue in the title, make each claim at most reported |
+| 50 | Idempotency | Key = source id and fact key. A second run returns already_enriched. A forced run gives no new proposal or alert |
+| 51 | Alert channels | One alert for each source and tier rule. Email only when STRATA_SMTP_HOST and STRATA_ALERT_EMAIL_TO are set |
+| 52 | Site status proposals | Only for watched sites (daily or weekly). No proposal when the status equals the recorded or the pending status |
+| 53 | Canonical fact | An event whose type needs evidence (the SQL function event_needs_evidence). The text check runs only where the text is still stored |
+| 54 | Evaluation metrics | Macro F1 over in_scope, each sector and each direction. Resolution precision over match and new decisions, with a decision on an unlabelled mention counted as wrong |
+| 55 | Targeted sources | Google News and snapshot items need no geography word, because their brief queries name Zambian places and sites |
+| 56 | Temperature for Claude Haiku 4.5 | Sent through `extra_body`, because the SDK 1.8 method has no temperature argument |
+| 57 | Enrichment sweep | Every 10 minutes, at most 200 sources |
+| 58 | The brief document | Not enriched (metadata kind monitoring_brief) |
 | 80 | Audit output directory | `<repository>/audit`, ignored by git. AUDIT_OUT_DIR can change it |
 | 81 | Sensitive pages | A URL or page text that suggests credentials, API keys, billing, users, team, profile, account or admin. A password field. Three or more e-mail addresses on the page |
 | 82 | Personal data in screenshots | Masks on password and e-mail fields, on the user name and on text that looks like an e-mail address |

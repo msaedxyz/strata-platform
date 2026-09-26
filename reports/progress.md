@@ -16,15 +16,15 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 - M5 done: design system (33 components, 168 stories), panel framework, shell with OIDC login. 311 unit tests and 39 e2e tests pass. Criteria 1 and 2 are blocked by the missing audit. Report: reports/M5.md.
 - Read API for the modules and docs/api-contract.md.
 - The Compose stack starts in the sandbox. A login through Keycloak works and the API answers through nginx. The sandbox uses a local override because Docker Hub rate limits the SeaweedFS image.
+- M3 done: seven agents, deterministic and Anthropic backends, guardrails, quarantine, proposals, Tier 0 alerts, gold set of 50 documents and a held-out set of 12, eval job in CI. 205 Python tests pass. Held-out extraction precision 0.727 and recall 0.667 are below target. Report: reports/M3.md.
 
 ## In progress
 
-- Track 1 (M3): enrichment agents subagent.
+- Track 1 (M4): governance API, roles, alerts, telemetry, personal data.
 - Track 2: frontend part of M6 (the 18 modules).
 
 ## Next
 
-- Track 1: M4 governance after M3.
 - M6 modules, then M7 acceptance tests, backtest and the final report.
 
 ## Problems and workarounds
