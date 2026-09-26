@@ -1,0 +1,1348 @@
+# Monitoring Brief v1: Zambia mining and industrials
+#
+# Origin: the Argo snapshot files were not in the repository and not on this host.
+# This brief comes from public research with WebSearch on 2026-09-26.
+# The research notes are in reports/notes/research-brief.md.
+#
+# Rules for this file:
+# 1. Every URL comes from a WebSearch result. A "derived" URL is the root or the section
+#    of a domain that appeared in a result. Its verification text says so.
+# 2. Every coordinate comes from a search result that showed it. Where no result showed a
+#    coordinate, geometry is null. Nobody estimated a coordinate.
+# 3. The build environment blocks direct fetches. No source is verified as reachable.
+#    The collector must confirm each source on its first run.
+# 4. No terms of use were read. Every source other than Google News has the licence code
+#    verify_then_purge until Mohamed sets it (docs/assumptions.md, row 5).
+# 5. A site entry can have two optional fields: "corridor" (a corridor code from
+#    config/taxonomy/geographies.yaml) and "note" (research context for a reviewer).
+# 6. status_hint "producing" means "in operation" for power, industrial, transport,
+#    border and fuel_supply sites.
+
+version: 1
+name: "Zambia mining and industrials"
+status: active
+created_at: "2026-09-26"
+origin: "Built from public research because the Argo snapshot was not in the repository. See docs/decisions.md."
+timezone: Africa/Lusaka
+contact_email_env: STRATA_CONTACT_EMAIL   # User-Agent contact comes from this env var
+taxonomy_ref: config/taxonomy/
+tiers_ref: config/tiers.yaml
+
+sectors: [mining, agriculture, power, industry, transport, fuel_supply]
+
+geographies:
+  - zm
+  - cd
+  - ao
+  - tz
+  - zw
+  - bw
+  - mw
+  - na
+  - prov_central
+  - prov_copperbelt
+  - prov_eastern
+  - prov_luapula
+  - prov_lusaka
+  - prov_muchinga
+  - prov_northern
+  - prov_north_western
+  - prov_southern
+  - prov_western
+  - dist_solwezi
+  - dist_kalumbila
+  - dist_mufumbwe
+  - dist_mwinilunga
+  - dist_ikelenge
+  - dist_chingola
+  - dist_chililabombwe
+  - dist_mufulira
+  - dist_kitwe
+  - dist_kalulushi
+  - dist_luanshya
+  - dist_lufwanyama
+  - dist_ndola
+  - dist_masaiti
+  - dist_mpongwe
+  - dist_mumbwa
+  - dist_mkushi
+  - dist_kabwe
+  - dist_kapiri_mposhi
+  - dist_chisamba
+  - dist_serenje
+  - dist_shibuyunji
+  - dist_sinazongwe
+  - dist_chikankata
+  - dist_mazabuka
+  - dist_siavonga
+  - dist_kazungula
+  - dist_chirundu
+  - dist_kafue
+  - dist_lusaka
+  - dist_chilanga
+  - dist_chipata
+  - dist_sesheke
+  - dist_nakonde
+  - corr_kasumbalesa
+  - corr_lobito
+  - corr_dar_es_salaam
+  - corr_chirundu_beitbridge
+  - corr_trans_caprivi
+
+deal_types:
+  - fuel_supply_contract
+  - haulage_contract
+  - contract_mining
+  - epc_contract
+  - construction_contract
+  - tender
+  - eoi
+  - prequalification
+  - fleet_purchase
+  - power_supply
+  - equipment_rental
+  - other
+
+licences:            # licence code -> retention policy
+  gn_link_only: link_only
+  verify_then_purge: verify_then_purge
+  full: full
+
+# ---------------------------------------------------------------------------
+# Watch lists
+# ---------------------------------------------------------------------------
+watch:
+  daily:
+    - id: kansanshi
+      name: "Kansanshi mine"
+      aliases: ["Kansanshi Mining Plc", "Kansanshi copper-gold mine"]
+      site_class: mine
+      operator: kansanshi_mining_plc
+      owners: [first_quantum, zccm_ih]
+      district: dist_solwezi
+      province: prov_north_western
+      commodity: [copper, gold]
+      status_hint: producing
+      geometry: {lat: -12.14333, lon: 26.38583, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Kansanshi_mine", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.first-quantum.com/operations/kansanshi/"
+      note: "FQM 80 percent, ZCCM-IH 20 percent (Wikipedia). S3 expansion of USD 1.25 billion reported on track: https://www.miningnewszambia.com/kansanshi-us1-25-billion-s3-expansion-on-track-says-first-quantum/"
+
+    - id: sentinel
+      name: "Sentinel mine"
+      aliases: ["Kalumbila mine", "Trident project", "Sentinel copper mine"]
+      site_class: mine
+      operator: first_quantum
+      owners: [first_quantum]
+      district: dist_kalumbila
+      province: prov_north_western
+      commodity: [copper]
+      status_hint: producing
+      geometry: {lat: -12.26000, lon: 25.30250, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Sentinel_mine", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.first-quantum.com/operations/sentinel/"
+      note: "Wikidata item: https://www.wikidata.org/wiki/Q16969255"
+
+    - id: lumwana
+      name: "Lumwana mine"
+      aliases: ["Lumwana copper mine", "Lumwana expansion"]
+      site_class: mine
+      operator: barrick
+      owners: [barrick]
+      district: null
+      province: prov_north_western
+      commodity: [copper]
+      status_hint: producing
+      geometry: {lat: -12.2242, lon: 25.8186, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Lumwana_mine", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.barrick.com/English/operations/lumwana/default.aspx"
+      note: "District not confirmed by research. Expansion under construction, first production from expansion targeted 2028: https://www.mining.com/barrick-accelerates-zambian-copper-mine-expansion-eyes-2028-first-production/ and https://www.barrick.com/English/news/news-details/2025/lumwana-expansion-in-full-swing-as-barrick-builds-tier-one-copper-mine/default.aspx"
+
+    - id: mopani_mufulira
+      name: "Mopani Mufulira mine"
+      aliases: ["Mufulira mine", "Mopani Mufulira", "Mufulira smelter", "Mufulira refinery"]
+      site_class: mine
+      operator: mopani_copper_mines
+      owners: [irh, zccm_ih]
+      district: dist_mufulira
+      province: prov_copperbelt
+      commodity: [copper]
+      status_hint: suspended
+      geometry: {lat: -12.534722, lon: 28.232222, approximate: false, dataset: "Wikidata", dataset_url: "https://www.wikidata.org/wiki/Q19951143", licence: "CC0"}
+      evidence_url: "https://mopani.com.zm/"
+      note: "Wikidata gives 12 32 5 S, 28 13 56 E. Mining regulator suspended the mine on 13 February 2026: https://www.miningnewszambia.com/mopanis-mufulira-mine-suspended-amid-compliance-review/ . Current status not confirmed. IRH 51 percent, ZCCM-IH 49 percent: https://www.irh.ae/assets/"
+
+    - id: mopani_nkana
+      name: "Mopani Nkana mine"
+      aliases: ["Nkana mine", "Mopani Nkana", "Nkana cobalt plant", "Nkana concentrator"]
+      site_class: mine
+      operator: mopani_copper_mines
+      owners: [irh, zccm_ih]
+      district: dist_kitwe
+      province: prov_copperbelt
+      commodity: [copper, cobalt]
+      status_hint: producing
+      geometry: {lat: -12.833, lon: 28.200, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Nkana", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://mopani.com.zm/"
+      note: "Coordinates are for the Nkana section of Kitwe, not the mine. IRH plans USD 300 million to raise output to about 200,000 t per year (Wikipedia Mopani_Copper_Mines)."
+
+    - id: kcm_nchanga
+      name: "KCM Nchanga mine and smelter"
+      aliases: ["Nchanga mine", "Nchanga Copper mine", "Nchanga open pit", "Nchanga smelter", "KCM Nchanga"]
+      site_class: mine
+      operator: kcm
+      owners: [vedanta_resources, zccm_ih]
+      district: dist_chingola
+      province: prov_copperbelt
+      commodity: [copper, cobalt]
+      status_hint: producing
+      geometry: {lat: -12.51, lon: 27.85, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Nchanga_Copper_mine", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://en.wikipedia.org/wiki/Konkola_Copper_Mines"
+      note: "Coordinates have two decimals only. Nchanga smelter restarted after a 106-day shutdown, confirmed 21 September 2026: https://www.riotimesonline.com/nchanga-smelter-restart-zambia-kcm-vedanta-2026/ . Vedanta smelter plan: https://www.billionaires.africa/2026/09/23/indian-billionaire-anil-agarwal-is-building-what-would-be-africas-largest-copper-smelter/"
+
+    - id: kcm_konkola
+      name: "KCM Konkola mine"
+      aliases: ["Konkola mine", "KCM Konkola"]
+      site_class: mine
+      operator: kcm
+      owners: [vedanta_resources, zccm_ih]
+      district: dist_chililabombwe
+      province: prov_copperbelt
+      commodity: [copper]
+      status_hint: producing
+      geometry: {lat: -12.2997525, lon: 27.7665824, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Konkola", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://en.wikipedia.org/wiki/Konkola"
+      note: "Coordinates are for the Konkola area, not the shaft."
+
+    - id: mingomba
+      name: "Mingomba copper project"
+      aliases: ["Mingomba mine", "Mingomba", "KoBold Mingomba"]
+      site_class: mine
+      operator: kobold_metals
+      owners: [kobold_metals, zccm_ih]
+      district: dist_chililabombwe
+      province: prov_copperbelt
+      commodity: [copper]
+      status_hint: development
+      geometry: null
+      evidence_url: "https://koboldmetals.com/mingomba/"
+      note: "No coordinates found. Shaft groundbreaking April-May 2026: https://koboldmetals.com/2026/05/21/breaking-ground-at-mingomba-a-new-chapter-for-the-copperbelt/ and https://www.sh.gov.zm/president-launches-2-2-billion-mingomba-mine-project/ . Engineering study reported for early 2027."
+
+    - id: luanshya
+      name: "CNMC Luanshya Copper Mines (Baluba and Muliashi)"
+      aliases: ["Luanshya Copper Mines", "CNMC Luanshya", "Baluba Centre Mine", "Muliashi", "Muliashi Leach Plant", "Roan Antelope", "28 Shaft", "China Luanshya Mine"]
+      site_class: mine
+      operator: cnmc_luanshya
+      owners: [cnmc, zccm_ih]
+      district: dist_luanshya
+      province: prov_copperbelt
+      commodity: [copper]
+      status_hint: ramping up
+      geometry: null
+      evidence_url: "https://www.zccm-ih.com.zm/investments/mining-assets/cnmc-luanshya-copper-mines-plc/"
+      note: "No coordinates found. Upper section restart planned August 2026, lower section 2029: https://www.mining-technology.com/news/luanshya-mine-to-restart-production-august/ and https://www.cnbcafrica.com/2026/zambias-luanshya-copper-mine-to-restart-in-august-after-two-decade-halt"
+
+    - id: kitumba
+      name: "Kitumba copper mine"
+      aliases: ["Kitumba copper project", "Kitumba", "Sinomine Kitumba"]
+      site_class: mine
+      operator: sinomine
+      owners: [sinomine]
+      district: dist_mumbwa
+      province: prov_central
+      commodity: [copper]
+      status_hint: ramping up
+      geometry: null
+      evidence_url: "https://www.mining.com/web/sinomine-targets-2026-production-at-kitumba-copper-mine-in-zambia/"
+      note: "Mindat has a locality page (https://www.mindat.org/loc-427441.html) but no search result showed its coordinates. Full-line trial production began 21 September 2026, smelter commissioning planned Q1 2027: https://news.metal.com/newscontent/104131671-sinomines-kitumba-copper-mine-in-zambia-begins-full-line-trial-production"
+
+    - id: lubambe
+      name: "Lubambe copper mine"
+      aliases: ["Lubambe mine", "Lubambe Copper Mines", "Konkola North"]
+      site_class: mine
+      operator: lubambe_copper_mines
+      owners: [jchx, zccm_ih]
+      district: dist_chililabombwe
+      province: prov_copperbelt
+      commodity: [copper]
+      status_hint: unknown
+      geometry: null
+      evidence_url: "https://www.zccm-ih.com.zm/investments/mining-assets/lubambe-copper-mines-plc/"
+      note: "JCHX 70 percent, ZCCM-IH 30 percent. JCHX plans about USD 300 million including a new shaft over two to five years (Wikipedia JCHX)."
+
+    - id: chambishi
+      name: "Chambishi mine (NFC Africa Mining)"
+      aliases: ["Chambishi Main Mine", "Chambishi West Mine", "Chambishi South-East Mine", "NFCA", "NFC Africa Mining"]
+      site_class: mine
+      operator: nfca
+      owners: [cnmc, zccm_ih]
+      district: dist_kalulushi
+      province: prov_copperbelt
+      commodity: [copper, cobalt]
+      status_hint: producing
+      geometry: {lat: -12.71667, lon: 28.06667, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Chambishi", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.zccm-ih.com.zm/investments/mining-assets/nfc-africa-plc/"
+      note: "Coordinates are for Chambishi town."
+
+    - id: maamba
+      name: "Maamba coal mine and power station"
+      aliases: ["Maamba Energy", "Maamba Coal Power Station", "Maamba expansion"]
+      site_class: power
+      operator: maamba_energy
+      owners: []
+      district: dist_sinazongwe
+      province: prov_southern
+      commodity: [coal]
+      status_hint: producing
+      geometry: {lat: -17.35306, lon: 27.18639, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Maamba_Coal_Power_Station", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.lsk.gov.zm/?p=3271"
+      note: "Owners not researched. 300 MW expansion to 600 MW under construction, financed by NAPSA and Indo Bank Zambia among others. ZDA page: https://zda.org.zm/izic/projects/maamba-energy-ground-breaking/"
+
+    - id: kasumbalesa_border
+      name: "Kasumbalesa border post"
+      aliases: ["Kasumbalesa", "Kasumbulesa"]
+      site_class: border
+      operator: null
+      owners: []
+      district: dist_chililabombwe
+      province: prov_copperbelt
+      corridor: corr_kasumbalesa
+      status_hint: producing
+      geometry: {lat: -12.26806, lon: 27.79444, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Kasumbalesa,_Zambia", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://en.wikipedia.org/wiki/Kasumbalesa,_Zambia"
+      note: "Coordinates are for Kasumbalesa town. More than 500 long-haul trucks each day in each direction (Wikipedia). Border agency operator not researched. Logistics assessment: https://lca.logcluster.org/232-zambia-border-crossing-kasumbulesa"
+
+    - id: chirundu_border
+      name: "Chirundu one-stop border post"
+      aliases: ["Chirundu border", "Chirundu OSBP", "Chirundu Bridge"]
+      site_class: border
+      operator: null
+      owners: []
+      district: dist_chirundu
+      province: prov_lusaka
+      corridor: corr_chirundu_beitbridge
+      status_hint: producing
+      geometry: {lat: -16.03833, lon: 28.85222, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Chirundu_Bridge", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.mcti.gov.zm/zbpup/?p=2004"
+      note: "Coordinates are for the Chirundu Bridge. Province of Chirundu District not confirmed."
+
+    - id: nakonde_border
+      name: "Nakonde-Tunduma border post"
+      aliases: ["Nakonde border", "Tunduma border", "Tunduma-Nakonde"]
+      site_class: border
+      operator: null
+      owners: []
+      district: dist_nakonde
+      province: prov_muchinga
+      corridor: corr_dar_es_salaam
+      status_hint: producing
+      geometry: {lat: -9.331444, lon: 32.754778, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Nakonde", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.icafrica.org/en/knowledge-hub/article/tunduma-nakonde-border-post-101/"
+      note: "Coordinates are for Nakonde town."
+
+    - id: tazama_pipeline
+      name: "TAZAMA pipeline"
+      aliases: ["TAZAMA", "Tazama Pipelines Limited"]
+      site_class: fuel_supply
+      operator: tazama_pipelines
+      owners: [grz, got]
+      district: dist_ndola
+      province: prov_copperbelt
+      corridor: corr_dar_es_salaam
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://tazama.co.zm/"
+      note: "Linear asset from Dar es Salaam to Ndola, 1,710 km. It has carried finished diesel (low sulphur gas oil) since 16 March 2023. Two thirds Government of Zambia, one third Government of Tanzania (https://en.wikipedia.org/wiki/Tazama_Pipeline)."
+
+    - id: indeni
+      name: "Indeni refinery and storage terminal"
+      aliases: ["Indeni", "Indeni Petroleum Refinery", "Indeni Energy Company"]
+      site_class: fuel_supply
+      operator: indeni_energy
+      owners: [idc]
+      district: dist_ndola
+      province: prov_copperbelt
+      corridor: corr_dar_es_salaam
+      status_hint: producing
+      geometry: {lat: -13.039167, lon: 28.680000, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Indeni_Petroleum_Refinery", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.indeni.com.zm/"
+      note: "Now acts as a storage terminal for diesel from TAZAMA: https://lca.logcluster.org/31-zambia-fuel . IDC page: https://www.idc.co.zm/industry-sectors/energy-2/indeni-petroleum-refinery/"
+
+    - id: zambia_lobito_rail
+      name: "Zambia-Lobito greenfield rail line"
+      aliases: ["Zambia Lobito Rail Project", "Lobito rail Zambia", "Chingola-Jimbe railway"]
+      site_class: transport
+      operator: africa_finance_corporation
+      owners: [africa_finance_corporation]
+      district: dist_chingola
+      province: prov_copperbelt
+      corridor: corr_lobito
+      status_hint: development
+      geometry: null
+      evidence_url: "https://www.africafc.org/news-and-insights/news/afc-led-zambia-lobito-rail-project-receives-boost-from-biden-visit-to-angola"
+      note: "Linear asset. About 830 km from Chingola to the Benguela line at Lucano in Angola. Debt and equity fundraising from Q3 2026, financial close targeted late 2027: https://tb.africa/afc-to-launch-fundraising-for-5-billion-zambia-lobito-rail-corridor/ . The alias 'Chingola-Jimbe railway' is descriptive only."
+
+    - id: lusaka_ndola_dual_carriageway
+      name: "Lusaka-Ndola dual carriageway (T2 and T3)"
+      aliases: ["Lusaka-Ndola road", "Lusaka Ndola dual carriageway", "T3 road", "T2 road", "MOIC road PPP"]
+      site_class: transport
+      operator: macro_ocean_consortium
+      owners: [macro_ocean_consortium]
+      district: null
+      province: prov_central
+      corridor: corr_kasumbalesa
+      status_hint: unknown
+      geometry: null
+      evidence_url: "https://en.wikipedia.org/wiki/T3_road_(Zambia)"
+      note: "Linear asset, 327 km, USD 650 million 25-year PPP signed 28 February 2023. Contractors AVIC International, Zhenjiang Communications Construction Group, China Railway Seventh Group. NRFA and RDA published a statement on progress and a transition plan: https://nrfa.org.zm/joint-press-statement-by-the-national-road-fund-agency-nrfa-and-the-road-development-agency-rda-on-the-recorded-progress-and-transition-plan-on-the-lusaka-ndola-dual-carriageway-ppp-project/ . Current status not confirmed."
+
+  weekly:
+    - id: enterprise
+      name: "Enterprise nickel mine"
+      aliases: ["Enterprise nickel project", "Enterprise mine"]
+      site_class: mine
+      operator: first_quantum
+      owners: [first_quantum]
+      district: dist_kalumbila
+      province: prov_north_western
+      commodity: [nickel]
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://www.first-quantum.com/operations/enterprise/"
+      note: "12 km from Sentinel. Commercial production declared June 2024."
+
+    - id: mimbula
+      name: "Mimbula copper mine"
+      aliases: ["Mimbula copper project", "Mimbula Minerals"]
+      site_class: mine
+      operator: mimbula_minerals
+      owners: [moxico_resources]
+      district: dist_chingola
+      province: prov_copperbelt
+      commodity: [copper]
+      status_hint: unknown
+      geometry: null
+      evidence_url: "https://www.mining-technology.com/news/moxico-zambia-copper-mine/"
+      note: "Moxico considered a USD 100 million expansion. Moxico holds 85 percent of the licence company."
+
+    - id: kalengwa
+      name: "Kalengwa copper mine"
+      aliases: ["Kalengwa", "Euro Africa Kalengwa Mines"]
+      site_class: mine
+      operator: euro_africa_kalengwa
+      owners: [euro_africa_kalengwa]
+      district: dist_mufumbwe
+      province: prov_north_western
+      commodity: [copper]
+      status_hint: under construction
+      geometry: null
+      evidence_url: "https://zambianbusinesstimes.com/euro-africa-resumes-operations-at-135m-kalengwa-copper-mines/"
+      note: "Processing plant construction reported. Initial production 15,000 t copper per year planned."
+
+    - id: kashime
+      name: "Kashime copper mine (Fishtie project)"
+      aliases: ["Kashime", "Fishtie copper project", "Mkushi copper"]
+      site_class: mine
+      operator: mimosa_resources
+      owners: [mimosa_resources]
+      district: dist_mkushi
+      province: prov_central
+      commodity: [copper]
+      status_hint: development
+      geometry: null
+      evidence_url: "https://www.miningweekly.com/article/zambias-kashime-copper-mine-approved-to-start-operations-2025-04-17"
+      note: "First Quantum finances further exploration under a development agreement: https://www.miningweekly.com/article/first-quantum-mimosa-sign-updated-development-agreement-for-zambia-project-2023-12-04"
+
+    - id: kabwe_tailings
+      name: "Kabwe mine tailings reprocessing"
+      aliases: ["Kabwe mine", "Broken Hill mine", "Kabwe tailings", "Enviro Processing"]
+      site_class: mine
+      operator: enviro_processing
+      owners: [jubilee_metals]
+      district: dist_kabwe
+      province: prov_central
+      commodity: [lead, zinc]
+      status_hint: unknown
+      geometry: {lat: -14.46000, lon: 28.43500, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Kabwe_mine", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.mining-technology.com/projects/kabwe-mine/"
+      note: "Jubilee Metals and BMR Group develop the tailings project. The link between EPL and Jubilee is not confirmed. Human Rights Watch report: https://www.hrw.org/news/2025/09/04/zambia-south-african-firm-transferring-toxic-lead"
+
+    - id: kagem
+      name: "Kagem emerald mine"
+      aliases: ["Kagem", "Kagem Mining", "Fwaya-Fwaya"]
+      site_class: mine
+      operator: kagem_mining
+      owners: [gemfields]
+      district: dist_lufwanyama
+      province: prov_copperbelt
+      commodity: [emerald]
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://gemfields.com/about/our-mines-and-brands/kagem-emerald-mine/"
+      note: "Mindat gives about 13 5 21 S, 28 8 19 E (https://www.mindat.org/loc-31526.html). Mindat is not an approved dataset, so geometry is null. Gemfields holds 75 percent."
+
+    - id: muntanga
+      name: "Muntanga uranium project"
+      aliases: ["Muntanga", "Mutanga", "Dibbwi", "Njame", "Gwabi"]
+      site_class: mine
+      operator: goviex
+      owners: [goviex]
+      district: dist_siavonga
+      province: prov_southern
+      commodity: [uranium]
+      status_hint: development
+      geometry: null
+      evidence_url: "https://goviex.com/projects/muntanga/"
+      note: "Licences in Siavonga and Chirundu districts. Feasibility study done. Production forecast 2028."
+
+    - id: munali
+      name: "Munali nickel mine"
+      aliases: ["Munali", "Mabiza Resources"]
+      site_class: mine
+      operator: mabiza_resources
+      owners: [mabiza_resources]
+      district: dist_mazabuka
+      province: prov_southern
+      commodity: [nickel]
+      status_hint: unknown
+      geometry: null
+      evidence_url: "https://mines.org.zm/munali-nickel-mine-re-opens/"
+      note: "Reopened April 2019. No 2026 status found."
+
+    - id: kasenseli
+      name: "Kasenseli gold mine"
+      aliases: ["Kasenseli", "Kamushinshi Mineral Resources"]
+      site_class: mine
+      operator: kamushinshi_mineral_resources
+      owners: [zambia_gold]
+      district: dist_mwinilunga
+      province: prov_north_western
+      commodity: [gold]
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://www.zccm-ih.com.zm/2024/11/17/kasenseli-gold-mine-re-opened/"
+      note: "Reopened November 2024. Zambia Gold Company holds 95 percent."
+
+    - id: arc_minerals_nw
+      name: "Arc Minerals North-Western copper licences"
+      aliases: ["Cheyeza East", "Muswema North", "West Lunga", "Arc Minerals Zambia"]
+      site_class: exploration
+      operator: arc_minerals
+      owners: [arc_minerals]
+      district: null
+      province: prov_north_western
+      commodity: [copper]
+      status_hint: unknown
+      geometry: null
+      evidence_url: "https://www.marketscreener.com/news/arc-minerals-anglo-american-end-zambia-copper-joint-venture-ce7d5ad2df80f020"
+      note: "Anglo American JV ended in October 2025 and rights went back to Arc. Drilling from August 2024: https://www.mining-journal.com/copper/news/4139441/arc-begins-drilling-zambia-anglo-american-backing"
+
+    - id: kafue_gorge_lower
+      name: "Kafue Gorge Lower power station"
+      aliases: ["KGL", "Kafue Gorge Lower", "Kafue Gorge Lower Hydropower Station"]
+      site_class: power
+      operator: zesco
+      owners: [zesco]
+      district: dist_chikankata
+      province: prov_southern
+      status_hint: producing
+      geometry: {lat: -15.89611, lon: 28.55917, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Kafue_Gorge_Lower_Power_Station", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://en.wikipedia.org/wiki/Kafue_Gorge_Lower_Power_Station"
+      note: "Operator and owner not confirmed by a search result. PowerChina page: https://en.powerchina.cn/2023-10/20/c_828534.htm"
+
+    - id: kariba_north_bank
+      name: "Kariba North Bank power station and extension"
+      aliases: ["Kariba North Bank", "KNB", "KNBE", "Kariba North Bank Extension"]
+      site_class: power
+      operator: zesco
+      owners: [zesco]
+      district: dist_siavonga
+      province: prov_southern
+      status_hint: producing
+      geometry: {lat: -16.52222, lon: 28.76167, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Kariba_Dam", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.nsenergybusiness.com/projects/kariba-north-hydroelectric-power-station/"
+      note: "Coordinates are for Kariba Dam. District not confirmed by research. KNB 720 MW, KNBE 360 MW. Low Kariba water levels drive load shedding."
+
+    - id: batoka_gorge
+      name: "Batoka Gorge hydro-electric scheme"
+      aliases: ["Batoka Gorge", "Batoka HES"]
+      site_class: power
+      operator: zambezi_river_authority
+      owners: [zambezi_river_authority]
+      district: null
+      province: prov_southern
+      status_hint: development
+      geometry: null
+      evidence_url: "https://www.zambezira.org/hydro-electric-schemes/batoka-hes-project"
+      note: "2,400 MW. Each country put USD 220 million in its 2026 budget. Market sounding 17 June 2026. EPC call expected: https://www.africa-energy.com/news-centre/article/zambia-and-zimbabwe-issue-batoka-hydro-epc-call and https://energy-news-network.com/industry-news/batoka-gorge-procurement-state-equity/"
+
+    - id: chisamba_solar
+      name: "Chisamba solar power plant"
+      aliases: ["Chisamba solar", "Chisamba Phase II"]
+      site_class: power
+      operator: knbepc
+      owners: [zesco]
+      district: dist_chisamba
+      province: prov_central
+      status_hint: producing
+      geometry: {lat: -14.60992772, lon: 28.59003929, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Chisamba_Solar_Power_Plant", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://www.pv-magazine.com/2026/07/28/zambia-doubles-capacity-of-chisamba-solar-project/"
+      note: "200 MW after phase II. PowerChina was the EPC contractor. Wikidata item: https://www.wikidata.org/wiki/Q135197824"
+
+    - id: nakambala
+      name: "Zambia Sugar Nakambala estate"
+      aliases: ["Nakambala", "Nakambala Sugar Estate", "Zambia Sugar"]
+      site_class: farm
+      operator: zambia_sugar
+      owners: [zambia_sugar]
+      district: dist_mazabuka
+      province: prov_southern
+      commodity: [sugar cane]
+      status_hint: producing
+      geometry: {lat: -15.832778, lon: 27.781389, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Zambia_Sugar", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://en.wikipedia.org/wiki/Zambia_Sugar"
+      note: "The search summary gave these coordinates for Nakambala but did not name the page. Confirm that the Zambia Sugar article carries them."
+
+    - id: kafue_sugar
+      name: "Kafue Sugar estate"
+      aliases: ["Kafue Sugar", "Consolidated Farming", "CFL Kafue Sugar"]
+      site_class: farm
+      operator: consolidated_farming
+      owners: [consolidated_farming]
+      district: dist_shibuyunji
+      province: prov_central
+      commodity: [sugar cane]
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://sabletransport.com/kafue-sugar-1"
+      note: "10,000 ha. A 15 MW biomass project and an ethanol plant are reported. Province of Shibuyunji District not confirmed."
+
+    - id: zambeef_mpongwe
+      name: "Zambeef Mpongwe farm"
+      aliases: ["Mpongwe Farms", "Zambeef farming", "Mpongwe wheat flour mill"]
+      site_class: farm
+      operator: zambeef
+      owners: [zambeef]
+      district: dist_mpongwe
+      province: prov_copperbelt
+      commodity: [wheat, maize, soya beans]
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://zambeefplc.com/our-story/"
+      note: "Zambeef also farms at Huntley and Chiawa (locations not researched). Mpongwe wheat flour mill commissioned 2025."
+
+    - id: amatheon_mumbwa
+      name: "Amatheon Agri Mumbwa farm"
+      aliases: ["Amatheon Agri Zambia", "Amatheon Mumbwa"]
+      site_class: farm
+      operator: amatheon_agri
+      owners: [amatheon_agri]
+      district: dist_mumbwa
+      province: prov_central
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://amatheon-agri.com/what-we-do/farming/zambia/"
+      note: "Expansion of USD 50 million to 10,000 ha, half irrigated: https://amatheon-agri.com/zambian-president-visits-amatheon-agri-as-it-announces-expansion-plans-and-a-further-us50-million-investment-in-the-country/"
+
+    - id: mkushi_farm_block
+      name: "Mkushi farm block"
+      aliases: ["Mkushi farming block", "Mkushi Estates"]
+      site_class: farm
+      operator: null
+      owners: []
+      district: dist_mkushi
+      province: prov_central
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://proagri.co.za/worlds-largest-pivot-marks-a-new-chapter-in-african-agriculture/"
+      note: "Cluster of large commercial farms (maize, wheat, soya, bananas) with centre-pivot irrigation."
+
+    - id: nansanga_farm_block
+      name: "Nansanga farm block"
+      aliases: ["Nansanga", "Nansanga Commodity Value Chain Transformation Project"]
+      site_class: farm
+      operator: ministry_of_agriculture
+      owners: [grz]
+      district: dist_serenje
+      province: prov_central
+      status_hint: development
+      geometry: null
+      evidence_url: "https://www.agriculture.gov.zm/disclosure-meeting-for-the-nansanga-commodity-value-chain-transformation-project-in-serenje-central-province/"
+      note: "AfDB and World Bank funding. Works include 80 km road, dam rehabilitation and a canal. ESIA: https://www.agriculture.gov.zm/wp-content/uploads/2024/02/REV.-FINAL-ESIA-REPORT-NANSANGA-COMMODITY-VALUE-CHAIN-TRANSFORMATION-PROJECT-1.pdf"
+
+    - id: ncz_kafue
+      name: "Nitrogen Chemicals of Zambia plant"
+      aliases: ["NCZ", "NCZ Kafue", "Nitrogen Chemicals of Zambia"]
+      site_class: industrial
+      operator: ncz
+      owners: []
+      district: dist_kafue
+      province: prov_lusaka
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://www.lusakatimes.com/2026/08/28/ncz-targets-to-produce-50000-metric-tonnes-of-compound-d-fertiliser/"
+      note: "Owner not researched. Blending plant ESIA at ZEMA: https://www.zema.org.zm/docs/proposed-construction-and-operation-of-a-fertilizer-blending-plant-at-the-nitrogen-chemicals-of-zambia-plantplot-no-subdivision-c-of-stand-319-president-avenue-industrial-site-in-kafue-district/"
+
+    - id: chilanga_cement_ndola
+      name: "Chilanga Cement Ndola plant"
+      aliases: ["Chilanga Cement Ndola", "Phoenix Project", "Ndola kiln"]
+      site_class: industrial
+      operator: chilanga_cement
+      owners: [huaxin_cement]
+      district: dist_ndola
+      province: prov_copperbelt
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://www.globalcement.com/news/18129-chilanga-cement-to-double-production-at-ndola-plant-with-kiln-upgrade"
+      note: "Capacity 1 Mt per year after the kiln upgrade. Huaxin holds 81.19 percent (https://en.wikipedia.org/wiki/Chilanga_Cement)."
+
+    - id: chilanga_cement_chilanga
+      name: "Chilanga Cement Chilanga plant"
+      aliases: ["Chilanga Cement plant", "Chilanga Cement Lusaka"]
+      site_class: industrial
+      operator: chilanga_cement
+      owners: [huaxin_cement]
+      district: dist_chilanga
+      province: prov_lusaka
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://www.gem.wiki/Chilanga_Cement_PLC_Chilanga_Cement_Plant"
+
+    - id: dangote_masaiti
+      name: "Dangote Cement Masaiti plant"
+      aliases: ["Dangote Cement Zambia", "Masaiti cement plant", "Masati Cement Plant"]
+      site_class: industrial
+      operator: dangote_cement_zambia
+      owners: [dangote_cement_zambia]
+      district: dist_masaiti
+      province: prov_copperbelt
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://cement.dangote.com/zambia/"
+      note: "1.5 Mt per year. Has its own 30 MW coal-fired power plant (https://www.gem.wiki/Masati_Cement_Plant)."
+
+    - id: ndola_lime
+      name: "Ndola Lime cement and lime plant"
+      aliases: ["Ndola Lime", "Ndola Lime Company"]
+      site_class: industrial
+      operator: ndola_lime_company
+      owners: [zccm_ih, wonderful_group]
+      district: dist_ndola
+      province: prov_copperbelt
+      status_hint: care and maintenance
+      geometry: null
+      evidence_url: "https://www.globalcement.com/news/analysis/21111-update-on-south-east-africa-august-2026"
+      note: "ZCCM-IH and Wonderful Group formed a 45:55 JV at the end of May 2026 to restart the plant. Restart is a project to track."
+
+    - id: lusaka_south_mfez
+      name: "Lusaka South Multi-Facility Economic Zone"
+      aliases: ["LS-MFEZ", "Lusaka South MFEZ"]
+      site_class: industrial
+      operator: null
+      owners: []
+      district: dist_lusaka
+      province: prov_lusaka
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://www.africaeconomiczones.com/fz_sez/lusaka-south-multi-facility-economic-zone-ls-mfez/"
+      note: "About 20 companies and USD 1.4 billion invested, per a search summary. Zone operator not researched."
+
+    - id: chambishi_mfez
+      name: "Chambishi Multi-Facility Economic Zone"
+      aliases: ["Chambishi MFEZ"]
+      site_class: industrial
+      operator: null
+      owners: []
+      district: dist_kalulushi
+      province: prov_copperbelt
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://investment.unido.org/ACP/industrialPark/?id=24"
+      note: "More than USD 800 million invested, per a search summary."
+
+    - id: lumwana_mfez
+      name: "Lumwana Multi-Facility Economic Zone"
+      aliases: ["Lumwana MFEZ"]
+      site_class: industrial
+      operator: null
+      owners: []
+      district: null
+      province: prov_north_western
+      status_hint: development
+      geometry: null
+      evidence_url: "https://mjconsultants.co.zm/investing-in-zambia-a-comprehensive-guide-to-the-major-multi-facility-economic-zones-in-zambia/"
+      note: "Not yet developed. About USD 1.2 billion earmarked. The search summary did not say which result gave these figures."
+
+    - id: ndola_fuel_terminal
+      name: "Ndola fuel terminal"
+      aliases: ["Ndola Fuel Terminal"]
+      site_class: fuel_supply
+      operator: null
+      owners: [grz]
+      district: dist_ndola
+      province: prov_copperbelt
+      corridor: corr_dar_es_salaam
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://lca.logcluster.org/31-zambia-fuel"
+      note: "Government-owned. Rehabilitation with Indeni and TAZAMA reported by the Ministry of Energy: https://www.moe.gov.zm/?p=6402 ."
+
+    - id: tz_zm_products_pipeline
+      name: "Tanzania-Zambia petroleum products pipeline (new)"
+      aliases: ["Tanzania-Zambia Petroleum Products Pipeline", "TAZAMA new pipeline"]
+      site_class: fuel_supply
+      operator: tazama_pipelines
+      owners: []
+      district: dist_ndola
+      province: prov_copperbelt
+      corridor: corr_dar_es_salaam
+      status_hint: development
+      geometry: null
+      evidence_url: "https://tazama.co.zm/wp-content/uploads/2025/08/Advert_New-Pipeline-RFP_12082025-1.pdf"
+      note: "RFP advert dated 12 August 2025. Wikipedia: https://en.wikipedia.org/wiki/Tanzania%E2%80%93Zambia_Petroleum_Products_Pipeline . Owners not researched."
+
+    - id: lobito_lusaka_pipeline
+      name: "Lobito-Lusaka oil products pipeline"
+      aliases: ["Angola-Zambia Oil Pipeline", "AZOP", "Lobito-Lusaka pipeline"]
+      site_class: fuel_supply
+      operator: null
+      owners: []
+      district: dist_lusaka
+      province: prov_lusaka
+      corridor: corr_lobito
+      status_hint: development
+      geometry: null
+      evidence_url: "https://en.wikipedia.org/wiki/Lobito%E2%80%93Lusaka_Oil_Products_Pipeline"
+      note: "Proposed, about 1,400 km. MOUs in 2012 and 2021, feasibility studies ongoing in 2022."
+
+    - id: tazara
+      name: "TAZARA railway"
+      aliases: ["TAZARA", "Tanzania-Zambia Railway", "TAZARA revitalisation"]
+      site_class: transport
+      operator: tazara
+      owners: []
+      district: dist_kapiri_mposhi
+      province: prov_central
+      corridor: corr_dar_es_salaam
+      status_hint: under construction
+      geometry: null
+      evidence_url: "https://tazarasite.com/press-release-ccecc-invest-usd-14-billion-tazara-revitalisation"
+      note: "CCECC 30-year concession signed 29 September 2025. USD 1.4 billion: USD 1.0 billion track, USD 0.4 billion for 32 locomotives and 762 wagons. Owners not researched."
+
+    - id: mwinilunga_jimbe_t5
+      name: "Mwinilunga-Jimbe road (T5) upgrade"
+      aliases: ["T5 road", "Mwinilunga-Jimbe road", "Lobito Integrated Economic Corridor Development Project"]
+      site_class: transport
+      operator: null
+      owners: [grz]
+      district: dist_mwinilunga
+      province: prov_north_western
+      corridor: corr_lobito
+      status_hint: development
+      geometry: null
+      evidence_url: "https://www.afdb.org/en/documents/gpn-zambia-lobito-integrated-corridor-development-project-upgrading-mwinilunga-jimbe-t5-road"
+      note: "105 km upgrade. AfDB approved a USD 255 million loan and a USD 10 million grant: https://www.afdb.org/en/news-and-events/zambia-african-development-bank-group-approves-255m-loan-and-10m-grant-advance-lobito-economic-corridor-96069 . Supervision EOI: https://www.afdb.org/en/documents/eoi-zambia-construction-supervision-upgrading-bituminous-standard-63km-mwinilunga-jimbe-road-t5-lot-2-lobito-integrated-economic-corridor-development-project"
+
+    - id: jimbe_border
+      name: "Jimbe border post"
+      aliases: ["Jimbe", "Jimbe OSBP"]
+      site_class: border
+      operator: null
+      owners: []
+      district: dist_ikelenge
+      province: prov_north_western
+      corridor: corr_lobito
+      status_hint: producing
+      geometry: null
+      evidence_url: "https://www.motl.gov.zm/?p=8176"
+      note: "Planned one-stop border post. Environmental brief: https://www.afdb.org/sites/default/files/final_revised_environmental_social_project_brief_jimbe_osbp_170226.pdf"
+
+    - id: kazungula_border
+      name: "Kazungula one-stop border post"
+      aliases: ["Kazungula Bridge", "Kazungula OSBP", "Kazungula border"]
+      site_class: border
+      operator: null
+      owners: []
+      district: dist_kazungula
+      province: prov_southern
+      status_hint: producing
+      geometry: {lat: -17.79111, lon: 25.26250, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Kazungula_Bridge", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://en.wikipedia.org/wiki/Kazungula_Bridge"
+      note: "Coordinates are for the bridge. Opened 10 May 2021."
+
+    - id: mwami_border
+      name: "Mwami-Mchinji one-stop border post"
+      aliases: ["Mwami border", "Mchinji border", "Mwami OSBP"]
+      site_class: border
+      operator: null
+      owners: []
+      district: dist_chipata
+      province: prov_eastern
+      status_hint: producing
+      geometry: {lat: -13.7506500, lon: 32.7958944, approximate: false, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Mwami,_Zambia", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://en.wikipedia.org/wiki/Mwami,_Zambia"
+
+    - id: katima_mulilo_border
+      name: "Katima Mulilo-Sesheke border post"
+      aliases: ["Wenela border", "Sesheke border", "Katima Mulilo border", "Katima Mulilo Bridge"]
+      site_class: border
+      operator: null
+      owners: []
+      district: dist_sesheke
+      province: prov_western
+      corridor: corr_trans_caprivi
+      status_hint: producing
+      geometry: {lat: -17.47167, lon: 24.2499250, approximate: true, dataset: "Wikipedia", dataset_url: "https://en.wikipedia.org/wiki/Katima_Mulilo_Bridge", licence: "CC BY-SA 4.0"}
+      evidence_url: "https://en.wikipedia.org/wiki/Katima_Mulilo_Bridge"
+      note: "Coordinates are for the bridge. Open 24 hours since August 2023."
+
+# ---------------------------------------------------------------------------
+# Organisations
+# external_ids: no PACRA, LEI, ISIN or SEDAR number was found in research.
+# ---------------------------------------------------------------------------
+organisations:
+  - {id: first_quantum, name: "First Quantum Minerals", aliases: ["FQM", "First Quantum"], role: operator, country: ca, external_ids: {}, evidence_url: "https://www.first-quantum.com/operations/kansanshi/"}
+  - {id: kansanshi_mining_plc, name: "Kansanshi Mining Plc", aliases: [], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.zccm-ih.com.zm/investments/mining-assets/kansanshi-mining-plc/"}
+  - {id: zccm_ih, name: "ZCCM Investments Holdings Plc", aliases: ["ZCCM-IH", "ZCCM"], role: government, country: zm, external_ids: {}, evidence_url: "https://www.zccm-ih.com.zm/investments/mining-assets/kansanshi-mining-plc/"}
+  - {id: barrick, name: "Barrick Mining Corporation", aliases: ["Barrick", "Barrick Gold"], role: operator, country: ca, external_ids: {}, evidence_url: "https://www.barrick.com/English/operations/lumwana/default.aspx"}
+  - {id: mopani_copper_mines, name: "Mopani Copper Mines Plc", aliases: ["Mopani", "MCM"], role: operator, country: zm, external_ids: {}, evidence_url: "https://mopani.com.zm/"}
+  - {id: irh, name: "International Resources Holding", aliases: ["IRH"], role: operator, country: ae, external_ids: {}, evidence_url: "https://www.irh.ae/assets/"}
+  - {id: kcm, name: "Konkola Copper Mines Plc", aliases: ["KCM", "Konkola Copper Mines"], role: operator, country: zm, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/Konkola_Copper_Mines"}
+  - {id: vedanta_resources, name: "Vedanta Resources", aliases: ["Vedanta", "CopperTech Metals"], role: operator, country: null, external_ids: {}, evidence_url: "https://www.vedantaresources.com/uploads/media_pdf/press_release/vrl/2024/vedanta-regains-control-of-zambias-konkola-copper-mines.pdf"}
+  - {id: kobold_metals, name: "KoBold Metals", aliases: ["KoBold"], role: operator, country: us, external_ids: {}, evidence_url: "https://koboldmetals.com/mingomba/"}
+  - {id: cnmc, name: "China Nonferrous Metal Mining Group", aliases: ["CNMC", "China Nonferrous Mining Corporation", "China Non-ferrous Metals Company"], role: operator, country: cn, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/China_Nonferrous_Metal_Mining_Group"}
+  - {id: cnmc_luanshya, name: "CNMC Luanshya Copper Mines Plc", aliases: ["CNMC-LCM", "Luanshya Copper Mines", "China Luanshya Mine"], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.zccm-ih.com.zm/investments/mining-assets/cnmc-luanshya-copper-mines-plc/"}
+  - {id: nfca, name: "NFC Africa Mining Plc", aliases: ["NFCA", "NFC Africa"], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.zccm-ih.com.zm/investments/mining-assets/nfc-africa-plc/"}
+  - {id: sinomine, name: "Sinomine Resource Group", aliases: ["Sinomine", "Sinomine Resources", "China Mining Resources Group"], role: operator, country: cn, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/Sinomine_Resources"}
+  - {id: jchx, name: "JCHX", aliases: ["Sundimo Mining Investments"], role: contractor, country: cn, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/JCHX"}
+  - {id: lubambe_copper_mines, name: "Lubambe Copper Mines Plc", aliases: ["Lubambe"], role: operator, country: zm, external_ids: {}, evidence_url: "https://lubambe.com/"}
+  - {id: moxico_resources, name: "Moxico Resources PLC", aliases: ["Moxico"], role: operator, country: gb, external_ids: {}, evidence_url: "https://www.nsenergybusiness.com/news/moxico-resources-mimbula-copper-mine-expansion/"}
+  - {id: mimbula_minerals, name: "Mimbula Minerals Limited", aliases: ["Mimbula Minerals"], role: operator, country: zm, external_ids: {}, evidence_url: "https://excelmagazinezambia.com/news/mimbula-minerals-limited"}
+  - {id: euro_africa_kalengwa, name: "Euro Africa Kalengwa Mines Limited", aliases: ["Euro Africa"], role: operator, country: zm, external_ids: {}, evidence_url: "https://zambianbusinesstimes.com/euro-africa-resumes-operations-at-135m-kalengwa-copper-mines/"}
+  - {id: mimosa_resources, name: "Mimosa Resources", aliases: ["Mimosa"], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.miningweekly.com/article/first-quantum-mimosa-sign-updated-development-agreement-for-zambia-project-2023-12-04"}
+  - {id: jubilee_metals, name: "Jubilee Metals Group PLC", aliases: ["Jubilee Metals", "Jubilee"], role: operator, country: null, external_ids: {}, evidence_url: "https://jubileemetalsgroup.com/copper/"}
+  - {id: enviro_processing, name: "Enviro Processing Limited", aliases: ["EPL"], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.hrw.org/news/2025/09/04/zambia-south-african-firm-transferring-toxic-lead"}
+  - {id: gemfields, name: "Gemfields", aliases: ["Gemfields Group"], role: operator, country: null, external_ids: {}, evidence_url: "https://www.gemfieldsgroup.com/assets/kagem-mining-limited-emerald-mines/"}
+  - {id: kagem_mining, name: "Kagem Mining Limited", aliases: ["Kagem"], role: operator, country: zm, external_ids: {}, evidence_url: "https://gemfields.com/about/our-mines-and-brands/kagem-emerald-mine/"}
+  - {id: goviex, name: "GoviEx Uranium Inc.", aliases: ["GoviEx"], role: operator, country: null, external_ids: {}, evidence_url: "https://goviex.com/projects/muntanga/"}
+  - {id: mabiza_resources, name: "Mabiza Resources Ltd", aliases: ["Mabiza"], role: operator, country: zm, external_ids: {}, evidence_url: "https://mines.org.zm/munali-nickel-mine-re-opens/"}
+  - {id: zambia_gold, name: "Zambia Gold Company Limited", aliases: ["Zambia Gold"], role: government, country: zm, external_ids: {}, evidence_url: "https://www.zambiagold.com.zm/mining-and-processing/"}
+  - {id: kamushinshi_mineral_resources, name: "Kamushinshi Mineral Resources", aliases: [], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.zccm-ih.com.zm/2024/11/17/kasenseli-gold-mine-re-opened/"}
+  - {id: arc_minerals, name: "Arc Minerals", aliases: ["Arc"], role: operator, country: null, external_ids: {}, evidence_url: "https://www.mining-journal.com/copper/news/4139441/arc-begins-drilling-zambia-anglo-american-backing"}
+  - {id: anglo_american, name: "Anglo American", aliases: ["Anglo"], role: operator, country: gb, external_ids: {}, evidence_url: "https://www.mining.com/web/anglo-american-explores-for-copper-cobalt-in-zambia/"}
+  - {id: maamba_energy, name: "Maamba Energy Limited", aliases: ["Maamba Energy"], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.lsk.gov.zm/?p=3271"}
+  - {id: zesco, name: "ZESCO Limited", aliases: ["ZESCO", "Zambia Electricity Supply Corporation"], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.pv-magazine.com/2026/07/28/zambia-doubles-capacity-of-chisamba-solar-project/"}
+  - {id: knbepc, name: "Kariba North Bank Extension Power Corporation Limited", aliases: ["KNBEPC", "KNBEPCL"], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.nsenergybusiness.com/projects/kariba-north-hydroelectric-power-station/"}
+  - {id: zambezi_river_authority, name: "Zambezi River Authority", aliases: [], role: government, country: null, external_ids: {}, evidence_url: "https://www.zambezira.org/hydro-electric-schemes/batoka-hes-project"}
+  - {id: cec, name: "Copperbelt Energy Corporation", aliases: ["CEC"], role: operator, country: zm, external_ids: {}, evidence_url: "https://energy-news-network.com/industry-news/itimpi-ii-cec-green-bond-zambia/"}
+  - {id: enersynk_group, name: "EnerSynk Group", aliases: ["EnerSynk"], role: operator, country: hu, external_ids: {}, evidence_url: "http://www.pv-magazine.com/2026/09/16/zambia-inks-ppa-for-500-mw-solar-project/"}
+  - {id: powerchina, name: "PowerChina", aliases: [], role: contractor, country: cn, external_ids: {}, evidence_url: "https://www.pv-magazine.com/2026/07/28/zambia-doubles-capacity-of-chisamba-solar-project/"}
+  - {id: zambia_sugar, name: "Zambia Sugar Plc", aliases: ["Zambia Sugar", "Nakambala"], role: buyer, country: zm, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/Zambia_Sugar"}
+  - {id: consolidated_farming, name: "Consolidated Farming Limited (Kafue Sugar)", aliases: ["Kafue Sugar", "CFL"], role: buyer, country: zm, external_ids: {}, evidence_url: "https://sabletransport.com/kafue-sugar-1"}
+  - {id: zambeef, name: "Zambeef Products Plc", aliases: ["Zambeef"], role: buyer, country: zm, external_ids: {}, evidence_url: "https://zambeefplc.com/our-story/"}
+  - {id: amatheon_agri, name: "Amatheon Agri Zambia Ltd", aliases: ["Amatheon Agri", "Amatheon"], role: buyer, country: zm, external_ids: {}, evidence_url: "https://amatheon-agri.com/what-we-do/farming/zambia/"}
+  - {id: ncz, name: "Nitrogen Chemicals of Zambia Limited", aliases: ["NCZ"], role: buyer, country: zm, external_ids: {}, evidence_url: "https://eprocure.zppa.org.zm/epps/prepareViewCAOrganisation.do?id=23698"}
+  - {id: chilanga_cement, name: "Chilanga Cement PLC", aliases: ["Chilanga Cement", "Lafarge Zambia"], role: buyer, country: zm, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/Chilanga_Cement"}
+  - {id: huaxin_cement, name: "Huaxin Cement", aliases: ["Huaxin Investment Limited", "Huaxin"], role: operator, country: cn, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/Chilanga_Cement"}
+  - {id: dangote_cement_zambia, name: "Dangote Cement Zambia", aliases: ["Dangote Industries (Zambia) Ltd", "Dangote Zambia"], role: buyer, country: zm, external_ids: {}, evidence_url: "https://cement.dangote.com/zambia/"}
+  - {id: ndola_lime_company, name: "Ndola Lime", aliases: ["Ndola Lime Company"], role: operator, country: zm, external_ids: {}, evidence_url: "https://www.globalcement.com/news/analysis/21111-update-on-south-east-africa-august-2026"}
+  - {id: wonderful_group, name: "Wonderful Group", aliases: [], role: operator, country: cn, external_ids: {}, evidence_url: "https://www.globalcement.com/news/analysis/21111-update-on-south-east-africa-august-2026"}
+  - {id: indeni_energy, name: "Indeni Energy Company", aliases: ["Indeni", "Indeni Petroleum Refinery"], role: fuel_supplier, country: zm, external_ids: {}, evidence_url: "https://www.indeni.com.zm/index.php/about-us/"}
+  - {id: idc, name: "Industrial Development Corporation Zambia Limited", aliases: ["IDC"], role: government, country: zm, external_ids: {}, evidence_url: "https://www.idc.co.zm/industry-sectors/energy-2/indeni-petroleum-refinery/"}
+  - {id: tazama_pipelines, name: "TAZAMA Pipelines Limited", aliases: ["TAZAMA"], role: fuel_supplier, country: zm, external_ids: {}, evidence_url: "https://tazama.co.zm/pipeline-services/"}
+  - {id: puma_energy_zambia, name: "Puma Energy Zambia Plc", aliases: ["Puma Energy Zambia", "Puma Zambia"], role: fuel_supplier, country: zm, external_ids: {}, evidence_url: "https://pumaenergy.com/country/zambia/"}
+  - {id: mount_meru_petroleum_zambia, name: "Mount Meru Petroleum Zambia Limited", aliases: ["Mount Meru", "Mt Meru"], role: fuel_supplier, country: zm, external_ids: {}, evidence_url: "https://zambianbusinesstimes.com/mt-meru-now-zambias-biggest-omc/"}
+  - {id: totalenergies_zambia, name: "TotalEnergies Zambia Limited", aliases: ["TotalEnergies Zambia", "Total Zambia"], role: fuel_supplier, country: zm, external_ids: {}, evidence_url: "https://zambianbusinesstimes.com/mt-meru-now-zambias-biggest-omc/"}
+  - {id: tazara, name: "TAZARA", aliases: ["Tanzania-Zambia Railway"], role: operator, country: null, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/TAZARA_Railway"}
+  - {id: ccecc, name: "China Civil Engineering Construction Corporation", aliases: ["CCECC"], role: contractor, country: cn, external_ids: {}, evidence_url: "https://tazarasite.com/press-release-ccecc-invest-usd-14-billion-tazara-revitalisation"}
+  - {id: macro_ocean_consortium, name: "Macro Ocean Investment Consortium", aliases: ["MOIC", "Macro Oceans Investment Consortium"], role: contractor, country: null, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/T3_road_(Zambia)"}
+  - {id: avic_international, name: "AVIC International Project Engineering", aliases: ["AVIC International"], role: contractor, country: cn, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/T3_road_(Zambia)"}
+  - {id: africa_finance_corporation, name: "Africa Finance Corporation", aliases: ["AFC"], role: dfi, country: null, external_ids: {}, evidence_url: "https://www.africafc.org/news-and-insights/news/afc-led-zambia-lobito-rail-project-receives-boost-from-biden-visit-to-angola"}
+  - {id: afdb, name: "African Development Bank", aliases: ["AfDB"], role: dfi, country: null, external_ids: {}, evidence_url: "https://www.afdb.org/en/news-and-events/zambia-african-development-bank-group-approves-255m-loan-and-10m-grant-advance-lobito-economic-corridor-96069"}
+  - {id: grz, name: "Government of the Republic of Zambia", aliases: ["GRZ", "Government of Zambia"], role: government, country: zm, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/Tazama_Pipeline"}
+  - {id: got, name: "Government of Tanzania", aliases: ["Government of the United Republic of Tanzania"], role: government, country: tz, external_ids: {}, evidence_url: "https://en.wikipedia.org/wiki/Tazama_Pipeline"}
+  - {id: erb, name: "Energy Regulation Board", aliases: ["ERB"], role: regulator, country: zm, external_ids: {}, evidence_url: "https://www.erb.org.zm/"}
+  - {id: zema, name: "Zambia Environmental Management Agency", aliases: ["ZEMA"], role: regulator, country: zm, external_ids: {}, evidence_url: "https://www.zema.org.zm/docs/proposed-construction-and-operation-of-a-fertilizer-blending-plant-at-the-nitrogen-chemicals-of-zambia-plantplot-no-subdivision-c-of-stand-319-president-avenue-industrial-site-in-kafue-district/"}
+  - {id: zppa, name: "Zambia Public Procurement Authority", aliases: ["ZPPA"], role: regulator, country: zm, external_ids: {}, evidence_url: "https://eprocure.zppa.org.zm/epps/prepareViewCAOrganisation.do?id=23698"}
+  - {id: zda, name: "Zambia Development Agency", aliases: ["ZDA"], role: government, country: zm, external_ids: {}, evidence_url: "https://zda.org.zm/izic/projects/maamba-energy-ground-breaking/"}
+  - {id: ministry_of_energy, name: "Ministry of Energy", aliases: ["MoE"], role: government, country: zm, external_ids: {}, evidence_url: "https://www.moe.gov.zm/?page_id=2522"}
+  - {id: ministry_of_mines, name: "Ministry of Mines and Minerals Development", aliases: ["Mines Ministry"], role: government, country: zm, external_ids: {}, evidence_url: "https://www.mining-technology.com/news/luanshya-mine-to-restart-production-august/"}
+  - {id: ministry_of_agriculture, name: "Ministry of Agriculture", aliases: ["MoA"], role: government, country: zm, external_ids: {}, evidence_url: "https://www.agriculture.gov.zm/disclosure-meeting-for-the-nansanga-commodity-value-chain-transformation-project-in-serenje-central-province/"}
+  - {id: motl, name: "Ministry of Transport and Logistics", aliases: ["MOTL"], role: government, country: zm, external_ids: {}, evidence_url: "https://www.motl.gov.zm/?p=8176"}
+  - {id: mcti, name: "Ministry of Commerce, Trade and Industry", aliases: ["MCTI"], role: government, country: zm, external_ids: {}, evidence_url: "https://www.mcti.gov.zm/zbpup/?p=2004"}
+  - {id: rda, name: "Road Development Agency", aliases: ["RDA"], role: buyer, country: zm, external_ids: {}, evidence_url: "https://nrfa.org.zm/joint-press-statement-by-the-national-road-fund-agency-nrfa-and-the-road-development-agency-rda-on-the-recorded-progress-and-transition-plan-on-the-lusaka-ndola-dual-carriageway-ppp-project/"}
+  - {id: nrfa, name: "National Road Fund Agency", aliases: ["NRFA"], role: government, country: zm, external_ids: {}, evidence_url: "https://nrfa.org.zm/joint-press-statement-by-the-national-road-fund-agency-nrfa-and-the-road-development-agency-rda-on-the-recorded-progress-and-transition-plan-on-the-lusaka-ndola-dual-carriageway-ppp-project/"}
+
+# ---------------------------------------------------------------------------
+# Themes. Each keyword is a hint for the Classifier (docs/05-enrichment.md).
+# config/taxonomy/activity-types.yaml has one entry for each keyword.
+# ---------------------------------------------------------------------------
+themes:
+  # project_pipeline
+  - code: new_mine_project
+    name: "New mine project"
+    direction: project_pipeline
+    keywords: ["new mine", "greenfield mine", "mine development", "groundbreaking", "ground-breaking ceremony"]
+  - code: mine_expansion
+    name: "Mine expansion"
+    direction: project_pipeline
+    keywords: ["mine expansion", "expansion project", "new shaft", "shaft sinking", "super pit"]
+  - code: mine_restart
+    name: "Mine restart"
+    direction: project_pipeline
+    keywords: ["restart", "reopen", "resume production", "dewatering", "recapitalisation"]
+  - code: exploration_drilling
+    name: "Exploration and resource definition"
+    direction: project_pipeline
+    keywords: ["exploration licence", "drilling programme", "drill results", "mineral resource estimate", "JORC", "NI 43-101"]
+  - code: feasibility_study
+    name: "Feasibility study"
+    direction: project_pipeline
+    keywords: ["feasibility study", "pre-feasibility study", "scoping study", "definitive feasibility study", "bankable feasibility study", "engineering study"]
+  - code: eia_filed
+    name: "Environmental assessment filed"
+    direction: project_pipeline
+    keywords: ["environmental impact assessment", "environmental impact statement", "ESIA", "environmental project brief", "public disclosure meeting", "public consultation meeting"]
+  - code: eia_approved
+    name: "Environmental approval"
+    direction: project_pipeline
+    keywords: ["ZEMA approval", "environmental approval", "decision letter", "environmental authorisation"]
+  - code: mining_licence_granted
+    name: "Mining licence granted or transferred"
+    direction: project_pipeline
+    keywords: ["mining licence granted", "large-scale mining licence", "mining right", "licence renewal", "licence transfer"]
+  - code: financing_close
+    name: "Financing close or investment decision"
+    direction: project_pipeline
+    keywords: ["financial close", "final investment decision", "FID", "loan approved", "project financing", "equity raise"]
+  - code: power_project
+    name: "Power project"
+    direction: project_pipeline
+    keywords: ["power plant construction", "solar plant", "hydropower project", "power purchase agreement", "PPA signed", "megawatt project"]
+  - code: transport_infrastructure_project
+    name: "Transport infrastructure project"
+    direction: project_pipeline
+    keywords: ["road upgrade", "dual carriageway", "railway rehabilitation", "greenfield rail", "concession agreement", "one-stop border post"]
+  - code: industrial_project
+    name: "Industrial project"
+    direction: project_pipeline
+    keywords: ["new factory", "processing plant", "smelter project", "refinery upgrade", "investment licence", "economic zone investment"]
+  - code: agri_expansion
+    name: "Agricultural expansion"
+    direction: project_pipeline
+    keywords: ["irrigation project", "farm block", "commercial farm expansion", "centre pivot", "hectares under irrigation"]
+
+  # procurement
+  - code: tender_notice
+    name: "Tender notice"
+    direction: procurement
+    keywords: ["tender", "invitation to bid", "request for proposals", "RFP", "bid notice", "invitation for bids"]
+  - code: eoi_notice
+    name: "Expression of interest"
+    direction: procurement
+    keywords: ["expression of interest", "EOI", "request for information", "general procurement notice"]
+  - code: prequalification_notice
+    name: "Prequalification"
+    direction: procurement
+    keywords: ["prequalification", "pre-qualification", "supplier registration", "vendor registration", "approved supplier list"]
+  - code: contractor_award
+    name: "Contractor award"
+    direction: procurement
+    keywords: ["contract awarded", "awarded the contract", "EPC contract", "preferred bidder", "selected contractor"]
+  - code: contract_mining
+    name: "Contract mining"
+    direction: procurement
+    keywords: ["contract mining", "mining contractor", "load and haul", "drill and blast", "waste stripping"]
+  - code: haulage_contract
+    name: "Haulage contract"
+    direction: procurement
+    keywords: ["haulage contract", "transport contract", "trucking contract", "ore haulage", "concentrate haulage"]
+  - code: fleet_purchase
+    name: "Fleet purchase"
+    direction: procurement
+    keywords: ["fleet purchase", "haul trucks", "mining fleet", "new locomotives", "new wagons", "equipment order"]
+  - code: fuel_supply_tender
+    name: "Fuel supply tender"
+    direction: procurement
+    keywords: ["fuel supply contract", "diesel supply", "bulk fuel tender", "fuel tender", "supply of diesel"]
+
+  # demand_up
+  - code: load_shedding
+    name: "Load shedding"
+    direction: demand_up
+    keywords: ["load shedding", "load-shedding", "power outage", "power rationing", "electricity deficit", "diesel generators"]
+  - code: fuel_shortage
+    name: "Fuel shortage"
+    direction: demand_up
+    keywords: ["fuel shortage", "diesel shortage", "fuel scarcity", "fuel queues", "dry pumps"]
+  - code: pipeline_outage
+    name: "Pipeline outage"
+    direction: demand_up
+    keywords: ["pipeline outage", "pipeline shutdown", "pipeline leak", "TAZAMA shutdown", "pipeline vandalism"]
+  - code: construction_mobilisation
+    name: "Construction or mobilisation"
+    direction: demand_up
+    keywords: ["mobilisation", "site establishment", "construction begins", "commence construction", "earthworks"]
+  - code: commissioning_rampup
+    name: "Commissioning and ramp up"
+    direction: demand_up
+    keywords: ["commissioning", "first production", "trial production", "first ore", "ramp-up", "commercial production"]
+  - code: production_increase
+    name: "Production increase"
+    direction: demand_up
+    keywords: ["record production", "increased output", "production guidance raised", "higher throughput"]
+  - code: harvest_marketing
+    name: "Harvest and crop marketing"
+    direction: demand_up
+    keywords: ["bumper harvest", "crop marketing season", "maize marketing", "FRA purchases", "harvest season"]
+
+  # demand_down
+  - code: suspension
+    name: "Suspension"
+    direction: demand_down
+    keywords: ["suspended operations", "suspension", "stop order", "operations halted", "production halt"]
+  - code: care_and_maintenance
+    name: "Care and maintenance"
+    direction: demand_down
+    keywords: ["care and maintenance", "mothballed", "placed on care"]
+  - code: closure
+    name: "Closure"
+    direction: demand_down
+    keywords: ["mine closure", "plant closure", "shut down", "shutdown", "decommissioning"]
+  - code: retrenchment
+    name: "Retrenchment"
+    direction: demand_down
+    keywords: ["retrenchment", "layoffs", "job cuts", "redundancies"]
+  - code: border_delay
+    name: "Border delay or closure"
+    direction: demand_down
+    keywords: ["border delays", "truck queue", "border congestion", "border closure", "border closed"]
+  - code: erb_price_change
+    name: "ERB fuel price change"
+    direction: demand_down
+    keywords: ["fuel price increase", "pump price", "ERB fuel price", "price review", "fuel price adjustment"]
+  - code: drought
+    name: "Drought and crop failure"
+    direction: demand_down
+    keywords: ["drought", "low rainfall", "crop failure", "El Nino", "Kariba water levels"]
+  - code: road_disruption
+    name: "Road or rail disruption"
+    direction: demand_down
+    keywords: ["road closed", "bridge collapse", "washaway", "derailment", "road blocked"]
+
+exclusions:
+  - "football"
+  - "soccer"
+  - "Super Division"
+  - "Nkana FC"
+  - "Mufulira Wanderers"
+  - "Kansanshi Dynamos"
+  - "Challenge Cup"
+  - "Konkola Mine Police F.C."
+  - "lottery"
+  - "betting"
+  - "jackpot"
+  - "beauty pageant"
+  - "celebrity"
+  - "music awards"
+  - "horoscope"
+  - "obituary"
+  - "recipe"
+
+# ---------------------------------------------------------------------------
+# Google News. The collector builds one RSS search feed per query with the edition below.
+# Items use licence code gn_link_only.
+# ---------------------------------------------------------------------------
+google_news:
+  edition: {hl: en-ZM, gl: ZM, ceid: "ZM:en"}
+  licence_code: gn_link_only
+  queries:
+    # daily watch sites
+    - {id: gn_kansanshi, q: "Kansanshi mine", schedule: daily}
+    - {id: gn_sentinel, q: "Sentinel mine Kalumbila", schedule: daily}
+    - {id: gn_lumwana, q: "Lumwana mine", schedule: daily}
+    - {id: gn_mopani, q: "Mopani Copper Mines", schedule: daily}
+    - {id: gn_mufulira_mine, q: "Mufulira mine", schedule: daily}
+    - {id: gn_nkana_mine, q: "Nkana mine Kitwe", schedule: daily}
+    - {id: gn_kcm, q: "Konkola Copper Mines", schedule: daily}
+    - {id: gn_nchanga, q: "Nchanga mine OR Nchanga smelter", schedule: daily}
+    - {id: gn_mingomba, q: "Mingomba KoBold", schedule: daily}
+    - {id: gn_luanshya, q: "Luanshya copper mine", schedule: daily}
+    - {id: gn_kitumba, q: "Kitumba copper", schedule: daily}
+    - {id: gn_lubambe, q: "Lubambe copper mine", schedule: daily}
+    - {id: gn_chambishi, q: "Chambishi mine OR NFC Africa Mining", schedule: daily}
+    - {id: gn_maamba, q: "Maamba Energy", schedule: daily}
+    - {id: gn_kasumbalesa, q: "Kasumbalesa border", schedule: daily}
+    - {id: gn_chirundu, q: "Chirundu border", schedule: daily}
+    - {id: gn_nakonde, q: "Nakonde border", schedule: daily}
+    - {id: gn_tazama, q: "TAZAMA pipeline", schedule: daily}
+    - {id: gn_indeni, q: "Indeni Ndola fuel", schedule: daily}
+    - {id: gn_lobito_rail, q: "Zambia Lobito rail", schedule: daily}
+    - {id: gn_lusaka_ndola_road, q: "Lusaka Ndola dual carriageway", schedule: daily}
+    # weekly watch sites
+    - {id: gn_enterprise, q: "Enterprise nickel mine Zambia", schedule: weekly}
+    - {id: gn_mimbula, q: "Mimbula copper mine", schedule: weekly}
+    - {id: gn_kalengwa, q: "Kalengwa mine", schedule: weekly}
+    - {id: gn_kashime, q: "Kashime copper Mkushi", schedule: weekly}
+    - {id: gn_kabwe_tailings, q: "Kabwe mine tailings", schedule: weekly}
+    - {id: gn_kagem, q: "Kagem emerald", schedule: weekly}
+    - {id: gn_muntanga, q: "Muntanga uranium", schedule: weekly}
+    - {id: gn_kasenseli, q: "Kasenseli gold mine", schedule: weekly}
+    - {id: gn_kafue_gorge, q: "Kafue Gorge Lower", schedule: weekly}
+    - {id: gn_batoka, q: "Batoka Gorge hydro", schedule: weekly}
+    - {id: gn_chisamba_solar, q: "Chisamba solar", schedule: weekly}
+    - {id: gn_zambia_sugar, q: "Zambia Sugar Nakambala", schedule: weekly}
+    - {id: gn_zambeef, q: "Zambeef", schedule: weekly}
+    - {id: gn_ncz, q: "Nitrogen Chemicals of Zambia", schedule: weekly}
+    - {id: gn_chilanga_cement, q: "Chilanga Cement", schedule: weekly}
+    - {id: gn_dangote_zambia, q: "Dangote Cement Zambia", schedule: weekly}
+    - {id: gn_ndola_lime, q: "Ndola Lime", schedule: weekly}
+    - {id: gn_tazara, q: "TAZARA railway", schedule: weekly}
+    - {id: gn_jimbe, q: "Jimbe border Mwinilunga", schedule: weekly}
+    - {id: gn_mfez, q: "multi-facility economic zone Zambia", schedule: weekly}
+    # operators, contractors and fuel suppliers
+    - {id: gn_first_quantum_zambia, q: "First Quantum Zambia", schedule: daily}
+    - {id: gn_barrick_zambia, q: "Barrick Zambia", schedule: daily}
+    - {id: gn_zccm, q: "ZCCM-IH", schedule: daily}
+    - {id: gn_cnmc_zambia, q: "CNMC Zambia", schedule: weekly}
+    - {id: gn_zesco, q: "ZESCO", schedule: daily}
+    - {id: gn_mount_meru, q: "Mount Meru Petroleum Zambia", schedule: weekly}
+    - {id: gn_puma_zambia, q: "Puma Energy Zambia", schedule: weekly}
+    - {id: gn_ccecc_tazara, q: "CCECC TAZARA", schedule: weekly}
+    # themes and demand drivers
+    - {id: gn_fuel_shortage, q: "fuel shortage Zambia", schedule: daily}
+    - {id: gn_diesel_shortage, q: "diesel shortage Zambia", schedule: daily}
+    - {id: gn_load_shedding, q: "load shedding Zambia", schedule: daily}
+    - {id: gn_erb_fuel_price, q: "ERB fuel price", schedule: daily}
+    - {id: gn_border_delays, q: "Kasumbalesa border delays", schedule: daily}
+    - {id: gn_fuel_imports, q: "fuel imports Zambia", schedule: weekly}
+    - {id: gn_zppa_tender_mining, q: "ZPPA tender mining", schedule: daily}
+    - {id: gn_contract_mining, q: "contract mining Zambia", schedule: daily}
+    - {id: gn_haulage_contract, q: "haulage contract Zambia copper", schedule: weekly}
+    - {id: gn_epc_zambia, q: "EPC contract Zambia", schedule: weekly}
+    - {id: gn_zema_eia_mine, q: "ZEMA environmental impact assessment mine", schedule: daily}
+    - {id: gn_mining_licence, q: "mining licence Zambia", schedule: daily}
+    - {id: gn_feasibility_study, q: "feasibility study Zambia copper", schedule: weekly}
+    - {id: gn_copper_exploration, q: "copper exploration Zambia", schedule: weekly}
+    - {id: gn_lobito_corridor, q: "Lobito Corridor Zambia", schedule: weekly}
+    - {id: gn_power_plant, q: "power plant Zambia construction", schedule: weekly}
+    - {id: gn_solar_ppa, q: "solar PPA ZESCO", schedule: weekly}
+    - {id: gn_mine_suspended, q: "mine suspended Zambia", schedule: daily}
+    - {id: gn_mine_retrenchment, q: "mine retrenchment Zambia", schedule: weekly}
+    - {id: gn_drought_harvest, q: "drought Zambia harvest", schedule: weekly}
+
+# Domains that the collectors never fetch directly (docs/04-ingestion.md, web rule 5).
+# Research did not test access. These entries are a conservative default: e-paper,
+# subscription database or known paywalled publishers. Review them.
+google_news_only:
+  - enews.daily-mail.co.zm
+  - daily-mail.co.zm
+  - miningweekly.com
+  - africa-energy.com
+  - reuters.com
+  - bloomberg.com
+  - ft.com
+  - pitchbook.com
+  - woodmac.com
+  - miningdataonline.com
+
+# ---------------------------------------------------------------------------
+# Sources
+# ---------------------------------------------------------------------------
+sources:
+  news:
+    - {id: news_lusaka_times, name: "Lusaka Times", type: rss, url: "http://www.lusakatimes.com/other-news/feed", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: &vf_feed "The feed URL appeared in the text of a WebSearch result summary on 2026-09-26, not as a result link. Direct fetch blocked in build environment. Confirm on first run."}
+    - {id: news_times_of_zambia, name: "Times of Zambia", type: web, url: "http://www.times.co.zm/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: &vf_derived "Root or section of a domain that appeared in WebSearch results on 2026-09-26. This exact path did not appear. Direct fetch blocked in build environment. Confirm the path and reachability on first run."}
+    - {id: news_diggers, name: "News Diggers! (local news)", type: web, url: "https://diggers.news/local/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_znbc, name: "ZNBC News", type: web, url: "https://www.znbc.co.zm/news/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_zambian_mining_news, name: "Zambian Mining News", type: web, url: "https://www.miningnewszambia.com/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_zambian_business_times, name: "Zambian Business Times", type: web, url: "https://zambianbusinesstimes.com/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_zambia_chamber_of_mines, name: "Zambia Chamber of Mines", type: web, url: "https://mines.org.zm/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, verification: &vf_found "Found in WebSearch results on 2026-09-26. Direct fetch blocked in build environment. Confirm reachability on first run."}
+    - {id: news_mwebantu, name: "Mwebantu", type: web, url: "https://www.mwebantu.com/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_daily_nation, name: "Daily Nation Zambia", type: web, url: "https://dailynationzambia.com/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_mining_technology, name: "Mining Technology (news)", type: web, url: "https://www.mining-technology.com/news/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_mining_com, name: "MINING.COM", type: web, url: "https://www.mining.com/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_global_cement, name: "Global Cement (news)", type: web, url: "https://www.globalcement.com/news", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+    - {id: news_railways_africa, name: "Railways Africa (news)", type: web, url: "https://www.railwaysafrica.com/news/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived}
+
+  early_signal:
+    # 1. ZEMA notices and assessment reports
+    - {id: es_zema_docs, source_type: zema_eia, name: "ZEMA environmental assessment documents", type: web, url: "https://www.zema.org.zm/docs/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Environmental project briefs and impact statements filed for public review, before approval and before contractor procurement. Example found: NCZ fertiliser blending plant ESIA.", terms: &terms_unchecked "Terms not checked: direct fetch blocked", verification: *vf_derived}
+    - {id: es_zema_uploads_example, source_type: zema_eia, name: "ZEMA ESIA PDF (example upload)", type: pdf, url: "https://www.zema.org.zm/wp-content/uploads/2024/01/Proposed-Construction-and-Operation-of-a-Fertilizer-Blending-Plant-by-NCZ.pdf", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Full ESIA text with project description, schedule and contractor details. Use as a PDF fixture pattern for ZEMA uploads.", terms: *terms_unchecked, verification: *vf_found}
+
+    # 3. Stock exchange filings of the watched operators
+    - {id: es_fqm_news, source_type: exchange_filings, name: "First Quantum Minerals news releases", type: web, url: "https://www.first-quantum.com/news/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Production guidance, capital expenditure and project timelines for Kansanshi S3, Sentinel and Enterprise. Example found: 2025 production and 2026-2028 guidance.", terms: *terms_unchecked, verification: *vf_derived}
+    - {id: es_cnmc_news, source_type: exchange_filings, name: "China Nonferrous Mining Corporation group and company news", type: web, url: "https://www.cnmcl.net/en/news-center/group-company-news/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Capital spending and project plans at Chambishi and Luanshya (Baluba, Muliashi, Mashiba).", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_luse_zambeef, source_type: exchange_filings, name: "Zambeef Products Plc on African Financials (LuSE)", type: web, url: "https://africanfinancials.com/company/zm-zamb/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Results and announcements of a LuSE-listed agribusiness with farms, mills and fleets.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_luse_chilanga, source_type: exchange_filings, name: "Chilanga Cement PLC on African Financials (LuSE)", type: web, url: "https://africanfinancials.com/company/zm-chil/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Results and announcements of a LuSE-listed cement producer, including plant upgrades.", terms: *terms_unchecked, verification: *vf_found}
+
+    # 4. Investor presentations and annual reports
+    - {id: es_barrick_lumwana, source_type: investor_reports, name: "Barrick Lumwana operation page", type: web, url: "https://www.barrick.com/English/operations/lumwana/default.aspx", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Lumwana expansion schedule, fleet and mining plan.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_kobold_mingomba, source_type: investor_reports, name: "KoBold Metals Mingomba project page", type: web, url: "https://koboldmetals.com/mingomba/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Mingomba shaft construction, engineering study and schedule.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_goviex_muntanga, source_type: investor_reports, name: "GoviEx Muntanga project page", type: web, url: "https://goviex.com/projects/muntanga/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Feasibility results, financing and production timeline for Muntanga.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_jubilee_copper, source_type: investor_reports, name: "Jubilee Metals Group copper operations page", type: web, url: "https://jubileemetalsgroup.com/copper/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Zambian tailings projects and plant builds.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_mopani_home, source_type: investor_reports, name: "Mopani Copper Mines website", type: web, url: "https://mopani.com.zm/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Mopani investment programme, operational notices and supplier notices.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_lubambe_home, source_type: investor_reports, name: "Lubambe website", type: web, url: "https://lubambe.com/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Lubambe revitalisation and new shaft plans.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_zccm_ih, source_type: investor_reports, name: "ZCCM Investments Holdings website", type: web, url: "https://www.zccm-ih.com.zm/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "News on state-held mining assets and new joint ventures, such as Kasenseli and Ndola Lime.", terms: *terms_unchecked, verification: *vf_derived}
+    - {id: es_zambeef_annual_report, source_type: investor_reports, name: "Zambeef Annual Report 2024", type: pdf, url: "https://zambeefplc.com/wp-content/uploads/2024/12/Zambeef-Products-Plc-Annual-Report-2024.pdf", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 5, early_signal: "Capital projects, farm expansion and fleet plans.", terms: *terms_unchecked, verification: *vf_found}
+
+    # 5. Development finance institutions
+    - {id: es_afdb_lobito_t5, source_type: dfi_projects, name: "AfDB Lobito corridor T5 general procurement notice", type: web, url: "https://www.afdb.org/en/documents/gpn-zambia-lobito-integrated-corridor-development-project-upgrading-mwinilunga-jimbe-t5-road", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Procurement plan for the Mwinilunga-Jimbe road works and supervision.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_afdb_lobito_loan, source_type: dfi_projects, name: "AfDB Lobito Economic Corridor loan approval", type: web, url: "https://www.afdb.org/en/news-and-events/zambia-african-development-bank-group-approves-255m-loan-and-10m-grant-advance-lobito-economic-corridor-96069", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Financing approval that starts road and border post procurement.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_afc_news, source_type: dfi_projects, name: "Africa Finance Corporation news", type: web, url: "https://www.africafc.org/news-and-insights/news/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Fundraising and financial close for the Zambia-Lobito rail line.", terms: *terms_unchecked, verification: *vf_derived}
+    - {id: es_eu_lobito, source_type: dfi_projects, name: "EU International Partnerships: Lobito Corridor", type: web, url: "https://international-partnerships.ec.europa.eu/lobito-corridor-building-future-together_en", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Global Gateway funding for Lobito corridor projects.", terms: *terms_unchecked, verification: *vf_found}
+
+    # 6. Zambia Development Agency and the economic zones
+    - {id: es_zda_izic_projects, source_type: zda_mfez, name: "ZDA Invest in Zambia Conference projects", type: web, url: "https://zda.org.zm/izic/projects/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Investment projects and groundbreakings, such as the Maamba expansion.", terms: *terms_unchecked, verification: *vf_derived}
+
+    # 7. ZPPA and procuring entities
+    - {id: es_zppa_egp, source_type: procurement_notices, name: "ZPPA e-Government Procurement system", type: web, url: "https://eprocure.zppa.org.zm/epps/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Tenders, expressions of interest and procurement plans of public bodies, including state firms such as NCZ.", terms: *terms_unchecked, verification: *vf_derived}
+    - {id: es_tazama_home, source_type: procurement_notices, name: "TAZAMA Pipelines website", type: web, url: "https://tazama.co.zm/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Procurement adverts, such as the RFP for the new products pipeline (August 2025), and pipeline operation notices.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_zambezira_batoka, source_type: procurement_notices, name: "Zambezi River Authority Batoka project page", type: web, url: "https://www.zambezira.org/hydro-electric-schemes/batoka-hes-project", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Batoka Gorge EPC procurement and developer selection.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_tazara_news, source_type: procurement_notices, name: "TAZARA website", type: web, url: "https://www.tazarasite.com/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Revitalisation progress, concession news and procurement by the concessionaire.", terms: *terms_unchecked, verification: *vf_derived}
+
+    # 8. National budget and parliament statements
+    - {id: es_parliament, source_type: budget_parliament, name: "National Assembly of Zambia", type: web, url: "https://www.parliament.gov.zm/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Ministerial statements and committee reports on public projects, such as the Lusaka-Ndola road and Kasenseli.", terms: *terms_unchecked, verification: *vf_derived}
+    - {id: es_state_house, source_type: budget_parliament, name: "State House Zambia", type: web, url: "https://www.sh.gov.zm/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Presidential launches and groundbreakings, such as Mingomba.", terms: *terms_unchecked, verification: *vf_derived}
+    - {id: es_pdu_blog, source_type: budget_parliament, name: "Presidential Delivery Unit blog", type: web, url: "https://www.pdu.gov.zm/blog/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Government tracking of priority investments, such as Kitumba.", terms: *terms_unchecked, verification: *vf_derived}
+    - {id: es_motl, source_type: budget_parliament, name: "Ministry of Transport and Logistics", type: web, url: "https://www.motl.gov.zm/", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Corridor, border post and rail programme statements.", terms: *terms_unchecked, verification: *vf_derived}
+
+    # Market demand drivers (extra source type, not one of the nine)
+    - {id: es_erb_home, source_type: market_regulator, name: "Energy Regulation Board", type: web, url: "https://www.erb.org.zm/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Monthly fuel pump price decisions and price build-ups. Example: September 2026 prices kept unchanged.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_erb_petroleum, source_type: market_regulator, name: "Energy Regulation Board petroleum page", type: web, url: "https://www.erb.org.zm/petroleum", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Petroleum regulation notices and market data.", terms: *terms_unchecked, verification: *vf_found}
+    - {id: es_moe_petroleum, source_type: market_regulator, name: "Ministry of Energy petroleum page", type: web, url: "https://www.moe.gov.zm/?page_id=2522", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, early_signal: "Fuel supply security statements and infrastructure rehabilitation.", terms: *terms_unchecked, verification: *vf_found}
+
+  proposed:
+    - {id: prop_copperbelt_katanga_mining, name: "Copperbelt Katanga Mining", type: web, url: "https://copperbeltkatangamining.com/", schedule: daily, licence_code: verify_then_purge, rate_limit_seconds: 5, verification: *vf_derived, reason: "Covers mining news on both sides of the Kasumbalesa corridor. It reported Kitumba and NFC Africa. It partly fills the DRC side gap."}
+    - {id: prop_logcluster_zambia_fuel, name: "Logistics Cluster capacity assessment: Zambia fuel", type: web, url: "https://lca.logcluster.org/31-zambia-fuel", schedule: weekly, licence_code: verify_then_purge, rate_limit_seconds: 10, verification: *vf_found, reason: "Describes fuel supply infrastructure (TAZAMA, Indeni, Ndola terminal) and has pages for the Kasumbalesa, Mwami and Jimbe border crossings. Useful for reference data on fuel supply sites."}
+
+known_gaps:
+  - {name: "Zambia Mining Cadastre", reason: "Research found no official URL for the cadastre portal. The web search budget of the session ended before a second search. Licence applications, grants and transfers are therefore not collected.", workaround: "manual upload"}
+  - {name: "Government Gazette of Zambia", reason: "Research found no official online source for gazette notices.", workaround: "manual upload"}
+  - {name: "PACRA company register", reason: "Research found no public feed and no terms for collection. Company numbers are therefore not in external_ids.", workaround: "manual upload"}
+  - {name: "SEDAR+ filings", reason: "Research found no issuer filing URL for First Quantum, Barrick or GoviEx. The First Quantum news page is used instead.", workaround: "manual upload"}
+  - {name: "LSE RNS filings", reason: "Research found only one RNS story (Bezant Resources, Kalengwa) and no RNS feed for Arc Minerals, Jubilee Metals or Gemfields.", workaround: "manual upload"}
+  - {name: "JSE SENS announcements", reason: "Research found no JSE SENS source for the watched operators.", workaround: "manual upload"}
+  - {name: "Lusaka Securities Exchange announcements", reason: "Research found no official LuSE announcements page. Two issuer pages on African Financials are used instead.", workaround: "manual upload"}
+  - {name: "IFC project pages", reason: "Research found no IFC project page for a watched site.", workaround: "manual upload"}
+  - {name: "DFC project pages", reason: "Research found no DFC project page for a watched site or the Lobito corridor.", workaround: "manual upload"}
+  - {name: "ZESCO procurement notices", reason: "Research found no ZESCO procurement page. ZPPA e-GP can carry some ZESCO notices.", workaround: "manual upload"}
+  - {name: "Road Development Agency procurement notices", reason: "Research found no RDA procurement page. ZPPA e-GP and AfDB notices cover part of it.", workaround: "manual upload"}
+  - {name: "ZCCM-IH procurement notices", reason: "Research found no ZCCM-IH procurement page.", workaround: "manual upload"}
+  - {name: "Ministry of Finance national budget documents", reason: "Research found no official budget speech or estimates page. Parliament and State House pages cover part of it.", workaround: "manual upload"}
+  - {name: "Zambia Development Agency investment licences and MFEZ tenant lists", reason: "Research found only the ZDA conference project pages. No licence register or tenant list was found.", workaround: "manual upload"}
+  - {name: "Job postings for watched sites and contractors", reason: "Research found no job board or careers page for the watched sites and contractors.", workaround: "manual upload"}
+  - {name: "Zambia Monitor, Mining Review Africa and Zambia Daily Mail feeds", reason: "The web search budget ended before these feeds were found. Google News queries cover these publishers in part.", workaround: "manual upload"}
+  - {name: "Paid sources (Wood Mackenzie, PitchBook, African Energy database, Mining Data Online)", reason: "Paid or subscription services appeared in results. Strata has no licence for them.", workaround: "manual upload"}
+  - {name: "DRC side of the corridor", reason: "Brief v1 covers Zambia. Research did not cover Katanga mines, DRC customs at Kasumbalesa or DRC sources.", workaround: "manual upload"}
+
+scoring:
+  weights:
+    watch_daily: 3.0
+    watch_weekly: 1.5
+    theme_direction_procurement: 3.0
+    theme_direction_project_pipeline: 2.5
+    theme_direction_demand_up: 2.0
+    theme_direction_demand_down: 2.0
+    early_signal_source: 2.0
+    certainty_stated: 1.0
+    certainty_reported: 0.5
+    certainty_speculative: 0.2
+    recency_days_half_life: 14
