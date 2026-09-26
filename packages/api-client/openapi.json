@@ -1,11 +1,12 @@
 {
   "components": {
     "schemas": {
-      "Decision": {
+      "AlertConfirm": {
         "properties": {
           "reason": {
             "anyOf": [
               {
+                "maxLength": 2000,
                 "type": "string"
               },
               {
@@ -15,7 +16,190 @@
             "title": "Reason"
           }
         },
-        "title": "Decision",
+        "title": "AlertConfirm",
+        "type": "object"
+      },
+      "AlertDismiss": {
+        "properties": {
+          "false_positive": {
+            "default": false,
+            "title": "False Positive",
+            "type": "boolean"
+          },
+          "reason": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "AlertDismiss",
+        "type": "object"
+      },
+      "Contact": {
+        "properties": {
+          "email": {
+            "anyOf": [
+              {
+                "maxLength": 320,
+                "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "found_via": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Found Via",
+            "type": "string"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "organisation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Organisation Id"
+          },
+          "person_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "An existing person entity. Without it, the business email (or the name and the organisation) finds or creates the person.",
+            "title": "Person Id"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "pattern": "^[+0-9 ()./-]{5,40}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "role": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "found_via"
+        ],
+        "title": "Contact",
+        "type": "object"
+      },
+      "EditApprove": {
+        "properties": {
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/EditedEvent"
+            },
+            "minItems": 1,
+            "title": "Events",
+            "type": "array"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "required": [
+          "events"
+        ],
+        "title": "EditApprove",
+        "type": "object"
+      },
+      "EditedEvent": {
+        "properties": {
+          "certainty": {
+            "anyOf": [
+              {
+                "enum": [
+                  "stated",
+                  "reported",
+                  "speculative"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certainty"
+          },
+          "payload": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payload"
+          }
+        },
+        "title": "EditedEvent",
+        "type": "object"
+      },
+      "Erasure": {
+        "properties": {
+          "reason": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "Erasure",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -59,6 +243,58 @@
           "yaml"
         ],
         "title": "NewBrief",
+        "type": "object"
+      },
+      "NextAction": {
+        "properties": {
+          "action": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Action",
+            "type": "string"
+          },
+          "due_date": {
+            "format": "date",
+            "title": "Due Date",
+            "type": "string"
+          },
+          "owner_user_id": {
+            "minLength": 1,
+            "title": "Owner User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "action",
+          "owner_user_id",
+          "due_date"
+        ],
+        "title": "NextAction",
+        "type": "object"
+      },
+      "Prequalification": {
+        "properties": {
+          "buyer_id": {
+            "minLength": 1,
+            "title": "Buyer Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "not_started",
+              "submitted",
+              "approved",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "buyer_id",
+          "status"
+        ],
+        "title": "Prequalification",
         "type": "object"
       },
       "QuarantineList": {
@@ -216,6 +452,90 @@
         "title": "QuarantineRecord",
         "type": "object"
       },
+      "Rejection": {
+        "properties": {
+          "reason": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "Rejection",
+        "type": "object"
+      },
+      "StageMove": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "to_stage": {
+            "minLength": 1,
+            "title": "To Stage",
+            "type": "string"
+          }
+        },
+        "required": [
+          "to_stage"
+        ],
+        "title": "StageMove",
+        "type": "object"
+      },
+      "Touchpoint": {
+        "properties": {
+          "contact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Id"
+          },
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "call",
+              "meeting",
+              "email",
+              "site_visit"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "note": {
+            "maxLength": 2000,
+            "title": "Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "date",
+          "note"
+        ],
+        "title": "Touchpoint",
+        "type": "object"
+      },
       "ValidationError": {
         "properties": {
           "ctx": {
@@ -254,6 +574,41 @@
           "type"
         ],
         "title": "ValidationError",
+        "type": "object"
+      },
+      "services__api__routers__governance__Decision": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "title": "Decision",
+        "type": "object"
+      },
+      "services__api__routers__sources__Decision": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "title": "Decision",
         "type": "object"
       }
     }
@@ -343,6 +698,168 @@
         "summary": "Alerts",
         "tags": [
           "read"
+        ]
+      }
+    },
+    "/api/alerts/{alert_id}/acknowledge": {
+      "post": {
+        "description": "AlertAcknowledged with the user as the actor. A second acknowledgement writes nothing.",
+        "operationId": "acknowledge_alert_api_alerts__alert_id__acknowledge_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alert_id",
+            "required": true,
+            "schema": {
+              "title": "Alert Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Acknowledge Alert Api Alerts  Alert Id  Acknowledge Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Acknowledge Alert",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/alerts/{alert_id}/confirm": {
+      "post": {
+        "description": "AlertConfirmed. 409 when the alert is already decided.",
+        "operationId": "confirm_alert_api_alerts__alert_id__confirm_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alert_id",
+            "required": true,
+            "schema": {
+              "title": "Alert Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AlertConfirm"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Confirm Alert Api Alerts  Alert Id  Confirm Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Confirm Alert",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/alerts/{alert_id}/dismiss": {
+      "post": {
+        "description": "AlertDismissed with a reason. false_positive marks a wrong alert (telemetry: rate for each tier rule).",
+        "operationId": "dismiss_alert_api_alerts__alert_id__dismiss_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alert_id",
+            "required": true,
+            "schema": {
+              "title": "Alert Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertDismiss"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Dismiss Alert Api Alerts  Alert Id  Dismiss Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Dismiss Alert",
+        "tags": [
+          "governance"
         ]
       }
     },
@@ -763,6 +1280,169 @@
         ]
       }
     },
+    "/api/deals/{deal_id}/contacts": {
+      "post": {
+        "description": "ContactAdded. The name, business email and business phone are encrypted with the key of the person.",
+        "operationId": "add_contact_api_deals__deal_id__contacts_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deal_id",
+            "required": true,
+            "schema": {
+              "title": "Deal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Add Contact Api Deals  Deal Id  Contacts Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Contact",
+        "tags": [
+          "engagement"
+        ]
+      }
+    },
+    "/api/deals/{deal_id}/next-action": {
+      "post": {
+        "operationId": "set_next_action_api_deals__deal_id__next_action_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deal_id",
+            "required": true,
+            "schema": {
+              "title": "Deal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NextAction"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Set Next Action Api Deals  Deal Id  Next Action Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Next Action",
+        "tags": [
+          "engagement"
+        ]
+      }
+    },
+    "/api/deals/{deal_id}/prequalification": {
+      "post": {
+        "operationId": "set_prequalification_api_deals__deal_id__prequalification_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deal_id",
+            "required": true,
+            "schema": {
+              "title": "Deal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Prequalification"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Set Prequalification Api Deals  Deal Id  Prequalification Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Prequalification",
+        "tags": [
+          "engagement"
+        ]
+      }
+    },
     "/api/deals/{deal_id}/relationship": {
       "get": {
         "description": "Buyer roles, contacts, touchpoints, next action and prequalification status for one opportunity.",
@@ -805,6 +1485,115 @@
         "summary": "Deal Relationship",
         "tags": [
           "read"
+        ]
+      }
+    },
+    "/api/deals/{deal_id}/stage": {
+      "post": {
+        "description": "A DealStageChanged proposal (policy review). The card shows the pending stage until an approver decides.",
+        "operationId": "move_stage_api_deals__deal_id__stage_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deal_id",
+            "required": true,
+            "schema": {
+              "title": "Deal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StageMove"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Move Stage Api Deals  Deal Id  Stage Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Move Stage",
+        "tags": [
+          "engagement"
+        ]
+      }
+    },
+    "/api/deals/{deal_id}/touchpoints": {
+      "post": {
+        "operationId": "log_touchpoint_api_deals__deal_id__touchpoints_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "deal_id",
+            "required": true,
+            "schema": {
+              "title": "Deal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Touchpoint"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Log Touchpoint Api Deals  Deal Id  Touchpoints Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Log Touchpoint",
+        "tags": [
+          "engagement"
         ]
       }
     },
@@ -1202,6 +1991,106 @@
         ]
       }
     },
+    "/api/persons/{person_id}": {
+      "get": {
+        "description": "A person entity with its business contact data. After erasure the personal fields are empty.",
+        "operationId": "get_person_api_persons__person_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "person_id",
+            "required": true,
+            "schema": {
+              "title": "Person Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Get Person Api Persons  Person Id  Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Person",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/persons/{person_id}/erase": {
+      "post": {
+        "description": "Delete the key of the person. The history stays intact. The personal fields become unreadable.",
+        "operationId": "erase_person_api_persons__person_id__erase_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "person_id",
+            "required": true,
+            "schema": {
+              "title": "Person Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Erasure"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Erase Person Api Persons  Person Id  Erase Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Erase Person",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
     "/api/priority": {
       "get": {
         "description": "Opportunities ranked by lead time, demand estimate, confidence and buyer fit, with the breakdown.",
@@ -1365,6 +2254,216 @@
         ]
       }
     },
+    "/api/proposals": {
+      "get": {
+        "description": "The approval queue: each proposal with its proposed events and its evidence items (quote, span offsets,\nsource url, title and publisher). status=pending gives the open queue.",
+        "operationId": "list_proposals_api_proposals_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "enum": [
+                      "pending",
+                      "approved",
+                      "rejected",
+                      "edited_approved",
+                      "auto_approved"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response List Proposals Api Proposals Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Proposals",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/proposals/{proposal_id}": {
+      "get": {
+        "operationId": "get_proposal_api_proposals__proposal_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "proposal_id",
+            "required": true,
+            "schema": {
+              "title": "Proposal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Get Proposal Api Proposals  Proposal Id  Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Proposal",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/proposals/{proposal_id}/approve": {
+      "post": {
+        "description": "Approve: the governance service writes the proposed events. 403 for the creator of the proposal.",
+        "operationId": "approve_proposal_api_proposals__proposal_id__approve_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "proposal_id",
+            "required": true,
+            "schema": {
+              "title": "Proposal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/services__api__routers__governance__Decision"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Approve Proposal Api Proposals  Proposal Id  Approve Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Approve Proposal",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
     "/api/proposals/{proposal_id}/approve-source": {
       "post": {
         "description": "Approve a SourceProposed proposal: a new brief version with the source, active at once.",
@@ -1386,7 +2485,7 @@
               "schema": {
                 "anyOf": [
                   {
-                    "$ref": "#/components/schemas/Decision"
+                    "$ref": "#/components/schemas/services__api__routers__sources__Decision"
                   },
                   {
                     "type": "null"
@@ -1424,6 +2523,116 @@
         "summary": "Approve Source",
         "tags": [
           "sources"
+        ]
+      }
+    },
+    "/api/proposals/{proposal_id}/edit-approve": {
+      "post": {
+        "description": "Edit and approve: human events that keep the original evidence. 403 for the creator of the proposal.",
+        "operationId": "edit_approve_proposal_api_proposals__proposal_id__edit_approve_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "proposal_id",
+            "required": true,
+            "schema": {
+              "title": "Proposal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditApprove"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Edit Approve Proposal Api Proposals  Proposal Id  Edit Approve Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Edit Approve Proposal",
+        "tags": [
+          "governance"
+        ]
+      }
+    },
+    "/api/proposals/{proposal_id}/reject": {
+      "post": {
+        "description": "Reject with a reason (422 without). No event goes to the record.",
+        "operationId": "reject_proposal_api_proposals__proposal_id__reject_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "proposal_id",
+            "required": true,
+            "schema": {
+              "title": "Proposal Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rejection"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Reject Proposal Api Proposals  Proposal Id  Reject Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reject Proposal",
+        "tags": [
+          "governance"
         ]
       }
     },
@@ -2042,6 +3251,54 @@
         "summary": "Get Source",
         "tags": [
           "sources"
+        ]
+      }
+    },
+    "/api/telemetry/alerts": {
+      "get": {
+        "description": "For each alert: the published, fetched and raised timestamps, the delivery time for each channel, the\nacknowledgement time and user, and the outcome with the tier rule. Metrics: latency from fetch to alert\n(median, p90), time to acknowledgement (median, p90) and the false positive rate for each tier rule.",
+        "operationId": "alert_telemetry_api_telemetry_alerts_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 1000,
+              "maximum": 5000,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Alert Telemetry Api Telemetry Alerts Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Alert Telemetry",
+        "tags": [
+          "governance"
         ]
       }
     },

@@ -24,6 +24,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/alerts/{alert_id}/acknowledge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Acknowledge Alert
+         * @description AlertAcknowledged with the user as the actor. A second acknowledgement writes nothing.
+         */
+        post: operations["acknowledge_alert_api_alerts__alert_id__acknowledge_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/alerts/{alert_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Confirm Alert
+         * @description AlertConfirmed. 409 when the alert is already decided.
+         */
+        post: operations["confirm_alert_api_alerts__alert_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/alerts/{alert_id}/dismiss": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Dismiss Alert
+         * @description AlertDismissed with a reason. false_positive marks a wrong alert (telemetry: rate for each tier rule).
+         */
+        post: operations["dismiss_alert_api_alerts__alert_id__dismiss_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/briefs": {
         parameters: {
             query?: never;
@@ -190,6 +250,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/deals/{deal_id}/contacts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add Contact
+         * @description ContactAdded. The name, business email and business phone are encrypted with the key of the person.
+         */
+        post: operations["add_contact_api_deals__deal_id__contacts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/deals/{deal_id}/next-action": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Set Next Action */
+        post: operations["set_next_action_api_deals__deal_id__next_action_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/deals/{deal_id}/prequalification": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Set Prequalification */
+        post: operations["set_prequalification_api_deals__deal_id__prequalification_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/deals/{deal_id}/relationship": {
         parameters: {
             query?: never;
@@ -204,6 +318,43 @@ export interface paths {
         get: operations["deal_relationship_api_deals__deal_id__relationship_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/deals/{deal_id}/stage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Move Stage
+         * @description A DealStageChanged proposal (policy review). The card shows the pending stage until an approver decides.
+         */
+        post: operations["move_stage_api_deals__deal_id__stage_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/deals/{deal_id}/touchpoints": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Log Touchpoint */
+        post: operations["log_touchpoint_api_deals__deal_id__touchpoints_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -364,6 +515,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/persons/{person_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Person
+         * @description A person entity with its business contact data. After erasure the personal fields are empty.
+         */
+        get: operations["get_person_api_persons__person_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/persons/{person_id}/erase": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Erase Person
+         * @description Delete the key of the person. The history stays intact. The personal fields become unreadable.
+         */
+        post: operations["erase_person_api_persons__person_id__erase_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/priority": {
         parameters: {
             query?: never;
@@ -421,6 +612,64 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/proposals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Proposals
+         * @description The approval queue: each proposal with its proposed events and its evidence items (quote, span offsets,
+         *     source url, title and publisher). status=pending gives the open queue.
+         */
+        get: operations["list_proposals_api_proposals_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/proposals/{proposal_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Proposal */
+        get: operations["get_proposal_api_proposals__proposal_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/proposals/{proposal_id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Approve Proposal
+         * @description Approve: the governance service writes the proposed events. 403 for the creator of the proposal.
+         */
+        post: operations["approve_proposal_api_proposals__proposal_id__approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/proposals/{proposal_id}/approve-source": {
         parameters: {
             query?: never;
@@ -435,6 +684,46 @@ export interface paths {
          * @description Approve a SourceProposed proposal: a new brief version with the source, active at once.
          */
         post: operations["approve_source_api_proposals__proposal_id__approve_source_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/proposals/{proposal_id}/edit-approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Edit Approve Proposal
+         * @description Edit and approve: human events that keep the original evidence. 403 for the creator of the proposal.
+         */
+        post: operations["edit_approve_proposal_api_proposals__proposal_id__edit_approve_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/proposals/{proposal_id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reject Proposal
+         * @description Reject with a reason (422 without). No event goes to the record.
+         */
+        post: operations["reject_proposal_api_proposals__proposal_id__reject_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -623,6 +912,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/telemetry/alerts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Alert Telemetry
+         * @description For each alert: the published, fetched and raised timestamps, the delivery time for each channel, the
+         *     acknowledgement time and user, and the outcome with the tier rule. Metrics: latency from fetch to alert
+         *     (median, p90), time to acknowledgement (median, p90) and the false positive rate for each tier rule.
+         */
+        get: operations["alert_telemetry_api_telemetry_alerts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/ticker": {
         parameters: {
             query?: never;
@@ -667,10 +978,61 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** Decision */
-        Decision: {
+        /** AlertConfirm */
+        AlertConfirm: {
             /** Reason */
             reason?: string | null;
+        };
+        /** AlertDismiss */
+        AlertDismiss: {
+            /**
+             * False Positive
+             * @default false
+             */
+            false_positive: boolean;
+            /** Reason */
+            reason: string;
+        };
+        /** Contact */
+        Contact: {
+            /** Email */
+            email?: string | null;
+            /** Found Via */
+            found_via: string;
+            /** Name */
+            name?: string | null;
+            /** Organisation Id */
+            organisation_id?: string | null;
+            /**
+             * Person Id
+             * @description An existing person entity. Without it, the business email (or the name and the organisation) finds or creates the person.
+             */
+            person_id?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Role */
+            role: string;
+        };
+        /** EditApprove */
+        EditApprove: {
+            /** Events */
+            events: components["schemas"]["EditedEvent"][];
+            /** Reason */
+            reason?: string | null;
+        };
+        /** EditedEvent */
+        EditedEvent: {
+            /** Certainty */
+            certainty?: ("stated" | "reported" | "speculative") | null;
+            /** Payload */
+            payload?: {
+                [key: string]: unknown;
+            } | null;
+        };
+        /** Erasure */
+        Erasure: {
+            /** Reason */
+            reason: string;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -688,6 +1050,28 @@ export interface components {
             change_note?: string | null;
             /** Yaml */
             yaml: string;
+        };
+        /** NextAction */
+        NextAction: {
+            /** Action */
+            action: string;
+            /**
+             * Due Date
+             * Format: date
+             */
+            due_date: string;
+            /** Owner User Id */
+            owner_user_id: string;
+        };
+        /** Prequalification */
+        Prequalification: {
+            /** Buyer Id */
+            buyer_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "not_started" | "submitted" | "approved" | "rejected";
         };
         /** QuarantineList */
         QuarantineList: {
@@ -734,6 +1118,35 @@ export interface components {
             /** Source Url */
             source_url?: string | null;
         };
+        /** Rejection */
+        Rejection: {
+            /** Reason */
+            reason: string;
+        };
+        /** StageMove */
+        StageMove: {
+            /** Reason */
+            reason?: string | null;
+            /** To Stage */
+            to_stage: string;
+        };
+        /** Touchpoint */
+        Touchpoint: {
+            /** Contact Id */
+            contact_id?: string | null;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "call" | "meeting" | "email" | "site_visit";
+            /** Note */
+            note: string;
+        };
         /** ValidationError */
         ValidationError: {
             /** Context */
@@ -746,6 +1159,16 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** Decision */
+        services__api__routers__governance__Decision: {
+            /** Reason */
+            reason?: string | null;
+        };
+        /** Decision */
+        services__api__routers__sources__Decision: {
+            /** Reason */
+            reason?: string | null;
         };
     };
     responses: never;
@@ -768,6 +1191,113 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    acknowledge_alert_api_alerts__alert_id__acknowledge_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                alert_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    confirm_alert_api_alerts__alert_id__confirm_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                alert_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["AlertConfirm"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    dismiss_alert_api_alerts__alert_id__dismiss_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                alert_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AlertDismiss"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -1093,6 +1623,117 @@ export interface operations {
             };
         };
     };
+    add_contact_api_deals__deal_id__contacts_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                deal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Contact"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_next_action_api_deals__deal_id__next_action_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                deal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NextAction"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_prequalification_api_deals__deal_id__prequalification_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                deal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Prequalification"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     deal_relationship_api_deals__deal_id__relationship_get: {
         parameters: {
             query?: never;
@@ -1103,6 +1744,80 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    move_stage_api_deals__deal_id__stage_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                deal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StageMove"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    log_touchpoint_api_deals__deal_id__touchpoints_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                deal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Touchpoint"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -1361,6 +2076,76 @@ export interface operations {
             };
         };
     };
+    get_person_api_persons__person_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                person_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    erase_person_api_persons__person_id__erase_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                person_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Erasure"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     priority_api_priority_get: {
         parameters: {
             query?: {
@@ -1462,6 +2247,112 @@ export interface operations {
             };
         };
     };
+    list_proposals_api_proposals_get: {
+        parameters: {
+            query?: {
+                status?: ("pending" | "approved" | "rejected" | "edited_approved" | "auto_approved")[] | null;
+                kind?: string[] | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_proposal_api_proposals__proposal_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                proposal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    approve_proposal_api_proposals__proposal_id__approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                proposal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["services__api__routers__governance__Decision"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     approve_source_api_proposals__proposal_id__approve_source_post: {
         parameters: {
             query?: never;
@@ -1473,7 +2364,81 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["Decision"] | null;
+                "application/json": components["schemas"]["services__api__routers__sources__Decision"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    edit_approve_proposal_api_proposals__proposal_id__edit_approve_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                proposal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EditApprove"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reject_proposal_api_proposals__proposal_id__reject_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                proposal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Rejection"];
             };
         };
         responses: {
@@ -1777,6 +2742,39 @@ export interface operations {
             path: {
                 source_id: string;
             };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    alert_telemetry_api_telemetry_alerts_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
