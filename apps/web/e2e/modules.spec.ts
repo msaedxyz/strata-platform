@@ -150,10 +150,13 @@ test.describe("criterion 8: modules with fixture data", () => {
   test("priority list: ranked opportunities, and a row opens the breakdown of the score", async ({ page, mock }) => {
     await openWorkspace(page, "origination");
     const m = await moduleReady(page, "priority-list");
-    const open = mock.data.deals.filter((d) => !["won", "lost", "parked"].includes(d.stage)).sort((a, b) => b.priority_score! - a.priority_score!);
+    // The API ranks by group, then the "no contact found" rule, then the score (docs/05 scorer rules 5 and 6).
+    const open = mock.priority(500);
+    expect(open.length).toBe(mock.data.deals.filter((d) => !["won", "lost", "parked"].includes(d.stage)).length);
     await expect(m.getByRole("table")).toHaveAttribute("aria-rowcount", String(open.length));
     const rows = m.locator("tbody tr[data-row-id]");
     await expect(rows.first()).toHaveAttribute("data-row-id", open[0]!.id);
+    await expect(rows.nth(1)).toHaveAttribute("data-row-id", open[1]!.id);
     await expect(m.getByText("No contact found").first()).toBeVisible();
     await rows.first().click();
     const drawer = page.getByRole("dialog", { name: "Priority breakdown" });
@@ -212,7 +215,7 @@ test.describe("criterion 8: modules with fixture data", () => {
 
   test.describe("approval queue as an approver", () => {
     test.use({ role: "approver" });
-    test("approve, reject with a required reason, edit and approve, and no Approve on an own proposal", async ({ page, api }) => {
+    test("approve, reject with a required reason, edit and approve, and no Approve on an own proposal", async ({ page, api, mock }) => {
       await openWorkspace(page, "review");
       const m = await moduleReady(page, "approval-queue");
       // prop-005 was created by this approver (docs/06: a user never approves an own proposal).
@@ -240,9 +243,14 @@ test.describe("criterion 8: modules with fixture data", () => {
       await text.fill((await text.inputValue()).replace('"to_status": "suspended"', '"to_status": "care_and_maintenance"'));
       await edit.getByRole("button", { name: "Edit and approve" }).click();
       await expect(toast(page, "Edited and approved")).toBeVisible();
-      const body = api.writes.find((w) => w.path === "/api/proposals/prop-002/edit-approve")?.body as { events: Array<{ payload: { to_status: string }; evidence_ids: string[] }> };
+      // The body is the EditApprove schema of the API: a payload and a certainty for each event. The evidence stays.
+      const body = api.writes.find((w) => w.path === "/api/proposals/prop-002/edit-approve")?.body as { events: Array<{ payload: { to_status: string }; certainty: string | null }> };
+      expect(body.events).toHaveLength(1);
       expect(body.events[0]!.payload.to_status).toBe("care_and_maintenance");
-      expect(body.events[0]!.evidence_ids).toEqual(["ev-nkana-suspension"]);
+      expect(body.events[0]!.certainty).toBe("reported");
+      const written = mock.data.events.filter((e) => e.stream_id === "mopani_nkana" && e.event_type === "SiteStatusChanged").at(-1)!;
+      expect(written.evidence_ids).toEqual(["ev-nkana-suspension"]);
+      expect(written.payload.to_status).toBe("care_and_maintenance");
     });
   });
 
@@ -250,11 +258,13 @@ test.describe("criterion 8: modules with fixture data", () => {
     await openWorkspace(page, "review");
     const m = await moduleReady(page, "quarantine");
     await expect(m.getByRole("table")).toHaveAttribute("aria-rowcount", String(mock.data.quarantine.length));
-    await m.getByRole("combobox", { name: "Reason code" }).selectOption("quote_not_in_source");
+    await m.getByRole("combobox", { name: "Reason code" }).selectOption("value_not_in_quote");
     await expect(m.getByRole("table")).toHaveAttribute("aria-rowcount", "1");
+    // The reason text comes from config/agent-schemas.yaml, as GET /api/quarantine gives it.
+    await expect(m.locator("tbody")).toContainText(mock.data.reasonCodes["value_not_in_quote"]!);
     await m.locator("tbody tr[data-row-id]").first().click();
     const drawer = page.getByRole("dialog", { name: "Quarantined output" });
-    await expect(drawer.locator("[data-quarantine-id]")).toContainText("quote_not_in_source");
+    await expect(drawer.locator("[data-quarantine-id]")).toContainText("value_not_in_quote");
     await expect(drawer.getByLabel("Agent output")).toHaveValue(/fixture output/);
   });
 

@@ -19,7 +19,17 @@ const ApiContext = createContext<ApiValue | null>(null);
 /** Text around the span for the evidence drawer. The API gives the context only for a source with licence full. */
 const CONTEXT_CHARS = 240;
 
-export function toEvidence(item: EvidenceItem): Evidence {
+/** An evidence item of GET /api/evidence, or of a proposal in GET /api/proposals (no context). */
+export type EvidenceLike = Pick<EvidenceItem, "id" | "quote"> & {
+  url?: string | null;
+  title?: string | null;
+  publisher?: string | null;
+  published_at?: string | null;
+  retention_policy?: string | null;
+  context?: string | null;
+};
+
+export function toEvidence(item: EvidenceLike): Evidence {
   let before: string | undefined;
   let after: string | undefined;
   if (item.context) {
@@ -34,7 +44,7 @@ export function toEvidence(item: EvidenceItem): Evidence {
     quote: item.quote,
     before,
     after,
-    sourceUrl: item.url,
+    sourceUrl: item.url ?? "",
     sourceTitle: item.title ?? undefined,
     publisher: item.publisher ?? undefined,
     publishedAt: item.published_at ? formatDate(item.published_at) : undefined,

@@ -113,13 +113,30 @@ describe("formats and module helpers", () => {
     expect(certaintyStatus("stated")).toBeUndefined();
   });
 
-  it("reads the priority breakdown as numbers or as parts with a score", () => {
-    const bars = breakdownBars({ lead_time: 0.3, demand: { score: 0.2, weight: 0.3 }, total: 0.9, buyer_fit: { contribution: 0.1 } });
+  it("reads the parts of the priority breakdown in the order of parts, as the contribution of each part", () => {
+    const part = (score: number, weight: number) => ({ value: null, score, weight, contribution: score * weight, event_ids: [], evidence_ids: ["ev-1"] });
+    const bars = breakdownBars({
+      version: "priority-v1",
+      as_of: "2026-09-26",
+      parts: ["lead_time", "demand", "confidence", "buyer_fit", "no_contact_boost"],
+      lead_time: part(1, 0.35),
+      demand: part(0.4, 0.25),
+      confidence: part(1, 0.2),
+      buyer_fit: part(0.5, 0.2),
+      no_contact_boost: { value: true, applied: true, in_engagement_window: true, contact_found: false, contact_found_by: null, project_stage: "feasibility", contribution: 1, event_ids: [], evidence_ids: [] },
+      weighted_score: 0.75,
+      total: 1.75,
+      group: { id: "early", name: "Signal to approach", order: 1 },
+      project_id: "p1",
+    });
     expect(bars.map((b) => [b.label, b.value])).toEqual([
-      ["Lead time", 0.3],
-      ["Demand estimate", 0.2],
+      ["Lead time", 0.35],
+      ["Demand estimate", 0.1],
+      ["Confidence", 0.2],
       ["Buyer fit", 0.1],
+      ["No contact found", 1],
     ]);
+    expect(breakdownBars(null)).toEqual([]);
   });
 
   it("finds the engagement window stages from the configuration", () => {

@@ -41,7 +41,6 @@
         "type": "object"
       },
       "AlertState": {
-        "additionalProperties": true,
         "description": "The alert after an acknowledgement or a decision.",
         "properties": {
           "acknowledged_at": {
@@ -142,7 +141,6 @@
         "type": "object"
       },
       "ApproveResult": {
-        "additionalProperties": true,
         "properties": {
           "event_ids": {
             "items": {
@@ -256,7 +254,6 @@
         "type": "object"
       },
       "DeliveryStatus": {
-        "additionalProperties": true,
         "properties": {
           "email": {
             "anyOf": [
@@ -289,7 +286,6 @@
         "type": "object"
       },
       "DeliveryTimes": {
-        "additionalProperties": true,
         "properties": {
           "email": {
             "anyOf": [
@@ -334,7 +330,6 @@
         "type": "object"
       },
       "DurationStats": {
-        "additionalProperties": true,
         "properties": {
           "median": {
             "anyOf": [
@@ -435,7 +430,6 @@
         "type": "object"
       },
       "EngagementResult": {
-        "additionalProperties": true,
         "properties": {
           "contact_id": {
             "anyOf": [
@@ -573,7 +567,6 @@
         "type": "object"
       },
       "NoContactRule": {
-        "additionalProperties": true,
         "description": "docs/05 scorer rule 6: a project in the engagement window with no contact found.",
         "properties": {
           "applied": {
@@ -681,7 +674,6 @@
         "type": "object"
       },
       "PriorityBreakdown": {
-        "additionalProperties": true,
         "properties": {
           "as_of": {
             "title": "As Of",
@@ -761,7 +753,6 @@
         "type": "object"
       },
       "PriorityGroup": {
-        "additionalProperties": true,
         "properties": {
           "id": {
             "title": "Id",
@@ -785,7 +776,6 @@
         "type": "object"
       },
       "PriorityItem": {
-        "additionalProperties": true,
         "properties": {
           "buyer_fit": {
             "anyOf": [
@@ -1017,7 +1007,6 @@
         "type": "object"
       },
       "PriorityList": {
-        "additionalProperties": true,
         "properties": {
           "items": {
             "items": {
@@ -1034,7 +1023,6 @@
         "type": "object"
       },
       "PriorityPart": {
-        "additionalProperties": true,
         "description": "One part of the score: the value, the score (0 to 1), the weight, the contribution (score x weight), and the\nevent ids and the evidence ids that it uses (docs/07 rule 1).",
         "properties": {
           "contribution": {
@@ -1078,7 +1066,6 @@
         "type": "object"
       },
       "Proposal": {
-        "additionalProperties": true,
         "properties": {
           "created_at": {
             "title": "Created At",
@@ -1285,7 +1272,6 @@
         "type": "object"
       },
       "ProposalEvidence": {
-        "additionalProperties": true,
         "description": "An evidence item of a proposal: the quote, the span offsets and the source link.",
         "properties": {
           "char_end": {
@@ -1380,7 +1366,6 @@
         "type": "object"
       },
       "ProposalList": {
-        "additionalProperties": true,
         "properties": {
           "items": {
             "items": {
@@ -1402,7 +1387,6 @@
         "type": "object"
       },
       "ProposedEvent": {
-        "additionalProperties": true,
         "properties": {
           "certainty": {
             "anyOf": [
@@ -1630,7 +1614,6 @@
         "type": "object"
       },
       "RejectResult": {
-        "additionalProperties": true,
         "properties": {
           "proposal_id": {
             "title": "Proposal Id",
@@ -1666,7 +1649,6 @@
         "type": "object"
       },
       "RuleRate": {
-        "additionalProperties": true,
         "properties": {
           "alerts": {
             "title": "Alerts",
@@ -1748,7 +1730,6 @@
         "type": "object"
       },
       "StageMoveResult": {
-        "additionalProperties": true,
         "properties": {
           "deal_id": {
             "title": "Deal Id",
@@ -1793,7 +1774,6 @@
         "type": "object"
       },
       "Telemetry": {
-        "additionalProperties": true,
         "properties": {
           "items": {
             "items": {
@@ -1814,7 +1794,6 @@
         "type": "object"
       },
       "TelemetryAlert": {
-        "additionalProperties": true,
         "properties": {
           "acknowledged_at": {
             "anyOf": [
@@ -2028,7 +2007,6 @@
         "type": "object"
       },
       "TelemetryMetrics": {
-        "additionalProperties": true,
         "properties": {
           "false_positive_rate_by_tier_rule": {
             "items": {

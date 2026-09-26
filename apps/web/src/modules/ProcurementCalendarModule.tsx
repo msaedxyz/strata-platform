@@ -1,6 +1,7 @@
 // Procurement calendar: the forecast procurement window of each project on a 24 month axis (GET /api/calendar).
 // A bar is a forecast window. A click opens its intervals and evidence. Projects without a date show the stage only,
-// because fewer than five historical projects support an interval (docs/05). Live.
+// because fewer than five historical projects support an interval, or because contractor procurement has started
+// (docs/05). Each stage shows the evidence of its ProjectStageChanged event (docs/07 rule 1). Live.
 import { Badge, type Column, DataTable, Drawer, TimelineAxis, type TimelineRow } from "@strata/design-system";
 import type { PanelProps } from "@strata/panel-framework";
 import { useMemo, useState } from "react";
@@ -11,7 +12,7 @@ import { useApi, useStages } from "./common/api";
 import { ForecastDetails } from "./common/drawers";
 import { formatDate, nameOf, todayIso } from "./common/format";
 import { useSelection } from "./common/selection";
-import { ModuleRoot, resourceState, SectionHeading } from "./common/ui";
+import { FactValue, ModuleRoot, resourceState, SectionHeading } from "./common/ui";
 
 const cfg = moduleConfig["procurement-calendar"];
 type Item = CalendarResponse["items"][number];
@@ -47,7 +48,16 @@ export function ProcurementCalendarModule(_: PanelProps) {
 
   const undatedColumns: Column<Item>[] = [
     { id: "name", header: "Project", value: (p) => p.name },
-    { id: "stage", header: "Stage", value: (p) => p.stage_order ?? 0, cell: (p) => stageName(p.stage) },
+    {
+      id: "stage",
+      header: "Stage",
+      value: (p) => p.stage_order ?? 0,
+      cell: (p) => (
+        <FactValue ids={p.stage_evidence_ids} label={`Stage of ${p.name}`}>
+          {stageName(p.stage)}
+        </FactValue>
+      ),
+    },
     { id: "window", header: "Engagement window", value: (p) => (p.in_engagement_window ? 1 : 0), cell: (p) => (p.in_engagement_window ? <Badge tone="accent">In window</Badge> : "") },
   ];
 
@@ -81,7 +91,11 @@ export function ProcurementCalendarModule(_: PanelProps) {
       <Drawer open={open !== null} onClose={() => setOpen(null)} title="Forecast window">
         {open?.forecast_detail ? (
           <div className="strata-stack" data-forecast-for={open.id}>
-            <h3 className="strata-drawer-title">{open.name}</h3>
+            <h3 className="strata-drawer-title">
+              <FactValue ids={open.stage_evidence_ids} label={`Stage of ${open.name}`}>
+                {`${open.name} · ${stageName(open.stage)}`}
+              </FactValue>
+            </h3>
             <ForecastDetails detail={open.forecast_detail} lifecycle={(c) => stageName(c)} />
           </div>
         ) : (

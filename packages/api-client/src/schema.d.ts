@@ -1036,8 +1036,6 @@ export interface components {
             tier_rule: string;
             /** Title */
             title: string;
-        } & {
-            [key: string]: unknown;
         };
         /** ApproveResult */
         ApproveResult: {
@@ -1050,8 +1048,6 @@ export interface components {
              * @enum {string}
              */
             status: "approved" | "edited_approved";
-        } & {
-            [key: string]: unknown;
         };
         /** Contact */
         Contact: {
@@ -1079,8 +1075,6 @@ export interface components {
             email: string | null;
             /** Frontend */
             frontend: string | null;
-        } & {
-            [key: string]: unknown;
         };
         /** DeliveryTimes */
         DeliveryTimes: {
@@ -1090,8 +1084,6 @@ export interface components {
             frontend: string | null;
             /** Frontend Broadcast */
             frontend_broadcast: string | null;
-        } & {
-            [key: string]: unknown;
         };
         /** DurationStats */
         DurationStats: {
@@ -1101,8 +1093,6 @@ export interface components {
             n: number;
             /** P90 */
             p90: number | null;
-        } & {
-            [key: string]: unknown;
         };
         /** EditApprove */
         EditApprove: {
@@ -1134,8 +1124,6 @@ export interface components {
             proposal_id: string;
             /** Status */
             status: string;
-        } & {
-            [key: string]: unknown;
         };
         /** Erasure */
         Erasure: {
@@ -1196,8 +1184,6 @@ export interface components {
             value: boolean;
             /** Weight */
             weight?: null;
-        } & {
-            [key: string]: unknown;
         };
         /** Prequalification */
         Prequalification: {
@@ -1229,8 +1215,6 @@ export interface components {
             version: string | null;
             /** Weighted Score */
             weighted_score: number;
-        } & {
-            [key: string]: unknown;
         };
         /** PriorityGroup */
         PriorityGroup: {
@@ -1240,8 +1224,6 @@ export interface components {
             name: string;
             /** Order */
             order: number;
-        } & {
-            [key: string]: unknown;
         };
         /** PriorityItem */
         PriorityItem: {
@@ -1292,15 +1274,11 @@ export interface components {
             stage_pending: string | null;
             /** Title */
             title: string;
-        } & {
-            [key: string]: unknown;
         };
         /** PriorityList */
         PriorityList: {
             /** Items */
             items: components["schemas"]["PriorityItem"][];
-        } & {
-            [key: string]: unknown;
         };
         /**
          * PriorityPart
@@ -1320,8 +1298,6 @@ export interface components {
             value?: unknown;
             /** Weight */
             weight: number;
-        } & {
-            [key: string]: unknown;
         };
         /** Proposal */
         Proposal: {
@@ -1376,8 +1352,6 @@ export interface components {
             tier: number | null;
             /** Title */
             title: string;
-        } & {
-            [key: string]: unknown;
         };
         /**
          * ProposalEvidence
@@ -1406,8 +1380,6 @@ export interface components {
             url?: string | null;
             /** Verified */
             verified: boolean;
-        } & {
-            [key: string]: unknown;
         };
         /** ProposalList */
         ProposalList: {
@@ -1415,8 +1387,6 @@ export interface components {
             items: components["schemas"]["Proposal"][];
             /** Total */
             total: number;
-        } & {
-            [key: string]: unknown;
         };
         /** ProposedEvent */
         ProposedEvent: {
@@ -1444,8 +1414,6 @@ export interface components {
             stream_id: string;
             /** Stream Type */
             stream_type: string;
-        } & {
-            [key: string]: unknown;
         };
         /** QuarantineList */
         QuarantineList: {
@@ -1501,8 +1469,6 @@ export interface components {
              * @constant
              */
             status: "rejected";
-        } & {
-            [key: string]: unknown;
         };
         /** Rejection */
         Rejection: {
@@ -1527,8 +1493,6 @@ export interface components {
             tier: number;
             /** Tier Rule */
             tier_rule: string;
-        } & {
-            [key: string]: unknown;
         };
         /** StageMove */
         StageMove: {
@@ -1552,16 +1516,12 @@ export interface components {
              * @enum {string}
              */
             status: "pending" | "approved";
-        } & {
-            [key: string]: unknown;
         };
         /** Telemetry */
         Telemetry: {
             /** Items */
             items: components["schemas"]["TelemetryAlert"][];
             metrics: components["schemas"]["TelemetryMetrics"];
-        } & {
-            [key: string]: unknown;
         };
         /** TelemetryAlert */
         TelemetryAlert: {
@@ -1608,8 +1568,6 @@ export interface components {
             time_to_acknowledgement_seconds: number | null;
             /** Title */
             title: string;
-        } & {
-            [key: string]: unknown;
         };
         /** TelemetryMetrics */
         TelemetryMetrics: {
@@ -1617,8 +1575,6 @@ export interface components {
             false_positive_rate_by_tier_rule: components["schemas"]["RuleRate"][];
             latency_fetch_to_alert_seconds: components["schemas"]["DurationStats"];
             time_to_acknowledgement_seconds: components["schemas"]["DurationStats"];
-        } & {
-            [key: string]: unknown;
         };
         /** Touchpoint */
         Touchpoint: {

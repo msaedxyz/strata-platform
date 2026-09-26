@@ -12,8 +12,14 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict
 
 
+def _closed_schema(schema: dict[str, Any]) -> None:
+    # The response keeps extra fields at run time, but the schema lists the known fields only, so the generated
+    # TypeScript types stay exact (no index signature).
+    schema.pop("additionalProperties", None)
+
+
 class _Open(BaseModel):
-    model_config = ConfigDict(extra="allow")
+    model_config = ConfigDict(extra="allow", json_schema_extra=_closed_schema)
 
 
 # ---------- approval queue ----------

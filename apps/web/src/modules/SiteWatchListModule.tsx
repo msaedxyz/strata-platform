@@ -25,13 +25,29 @@ export function SiteWatchListModule(_: PanelProps) {
 
   const columns: Column<Site>[] = useMemo(
     () => [
-      { id: "name", header: "Site", value: (x) => x.name, width: 200 },
+      {
+        id: "name",
+        header: "Site",
+        value: (x) => x.name,
+        cell: (x) => (
+          <FactValue ids={x.identity_evidence_ids} label={`Site ${x.name}`}>
+            {x.name}
+          </FactValue>
+        ),
+        width: 200,
+      },
       { id: "class", header: "Class", value: (x) => nameOf(tax.data?.site_classes, x.site_class) },
       {
         id: "status",
         header: "Status",
         value: (x) => `${x.status ?? ""} ${x.status_pending ?? ""}`,
-        cell: (x) => <SiteStatus status={x.status} pending={x.status_pending} />,
+        // The status shows the evidence of the last SiteStatusChanged (docs/07 rule 1). A status from the brief hint
+        // has no event yet, and the pending status waits for approval.
+        cell: (x) => (
+          <FactValue ids={x.status_evidence_ids} label={`Status of ${x.name}`}>
+            <SiteStatus status={x.status} pending={x.status_pending} />
+          </FactValue>
+        ),
         width: 220,
       },
       {
@@ -40,8 +56,9 @@ export function SiteWatchListModule(_: PanelProps) {
         value: (x) => x.operator_name ?? "",
         cell: (x) => {
           const attr = x.attributes?.operator ?? x.attributes?.operates;
+          const ids = x.operator_evidence_ids.length ? x.operator_evidence_ids : attr?.evidence_ids;
           return x.operator_name ? (
-            <FactValue ids={attr?.evidence_ids} label={`Operator of ${x.name}`}>
+            <FactValue ids={ids} label={`Operator of ${x.name}`}>
               {x.operator_name}
             </FactValue>
           ) : (
@@ -50,7 +67,16 @@ export function SiteWatchListModule(_: PanelProps) {
         },
       },
       { id: "province", header: "Province", value: (x) => geo(x.province) },
-      { id: "last", header: "Last signal", value: (x) => x.last_signal_at ?? "", cell: (x) => formatDateTime(x.last_signal_at) },
+      {
+        id: "last",
+        header: "Last signal",
+        value: (x) => x.last_signal_at ?? "",
+        cell: (x) => (
+          <FactValue ids={x.last_signal_evidence_ids} label={x.last_signal_title ?? `Last signal of ${x.name}`}>
+            {formatDateTime(x.last_signal_at)}
+          </FactValue>
+        ),
+      },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [tax.data],

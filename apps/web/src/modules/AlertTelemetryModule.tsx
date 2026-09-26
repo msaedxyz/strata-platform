@@ -31,11 +31,17 @@ const alertColumns: Column<TelemetryAlert>[] = [
   {
     id: "delivered",
     header: "Delivered",
-    value: (a) => a.deliveries.map((d) => `${d.channel} ${d.delivered_at ?? ""}`).join(", "),
-    cell: (a) => a.deliveries.map((d) => `${humanise(d.channel)} ${formatDateTime(d.delivered_at)}`).join(", "),
+    value: (a) => a.delivered.frontend ?? a.delivered.email ?? "",
+    cell: (a) =>
+      [
+        a.delivered.frontend ? `Frontend ${formatDateTime(a.delivered.frontend)}` : a.delivered.frontend_broadcast ? `Frontend broadcast ${formatDateTime(a.delivered.frontend_broadcast)}` : null,
+        a.delivered.email ? `Email ${formatDateTime(a.delivered.email)}` : a.delivery_status.email ? `Email ${humanise(a.delivery_status.email)}` : null,
+      ]
+        .filter(Boolean)
+        .join(", "),
   },
   { id: "ack", header: "Acknowledged", value: (a) => a.acknowledged_at ?? "", cell: (a) => (a.acknowledged_at ? `${formatDateTime(a.acknowledged_at)} by ${a.acknowledged_by ?? ""}` : "") },
-  { id: "decided", header: "Decided", value: (a) => a.decided_at ?? "", cell: (a) => formatDateTime(a.decided_at) },
+  { id: "decided", header: "Decided", value: (a) => a.decided_at ?? "", cell: (a) => (a.decided_at ? `${formatDateTime(a.decided_at)}${a.decided_by ? ` by ${a.decided_by}` : ""}` : "") },
 ];
 
 export function AlertTelemetryModule(_: PanelProps) {
@@ -43,10 +49,15 @@ export function AlertTelemetryModule(_: PanelProps) {
   const r = useResource<TelemetryResponse>("telemetry:alerts", () => getTelemetry(http), { live: cfg.live.events, batchMs: cfg.live.batchMs });
   const m = r.data?.metrics;
   const fp = useMemo(
-    () => (m?.false_positive_rate_by_rule ?? []).map((x) => ({ label: `${x.tier_rule} (${x.false_positives} of ${x.alerts})`, value: x.rate ?? 0, tone: (x.rate ?? 0) > 0 ? ("negative" as const) : ("positive" as const) })),
+    () =>
+      (m?.false_positive_rate_by_tier_rule ?? []).map((x) => ({
+        label: `${x.tier_rule} (${x.false_positive} of ${x.decided} decided)`,
+        value: x.false_positive_rate ?? 0,
+        tone: (x.false_positive_rate ?? 0) > 0 ? ("negative" as const) : ("positive" as const),
+      })),
     [m],
   );
-  const s = resourceState(r, { label: "alert telemetry", empty: (r.data?.alerts.length ?? 0) === 0, emptyTitle: "No alerts yet", emptyDescription: "The metrics show after the first alert." });
+  const s = resourceState(r, { label: "alert telemetry", empty: (r.data?.items.length ?? 0) === 0, emptyTitle: "No alerts yet", emptyDescription: "The metrics show after the first alert." });
   return (
     <ModuleRoot id="alert-telemetry" state={s.state}>
       {s.node ??
@@ -65,9 +76,9 @@ export function AlertTelemetryModule(_: PanelProps) {
                       rows={[
                         { id: "lat-med", label: "Latency fetch to alert, median", value: formatDuration(m.latency_fetch_to_alert_seconds.median) },
                         { id: "lat-p90", label: "Latency fetch to alert, 90th percentile", value: formatDuration(m.latency_fetch_to_alert_seconds.p90) },
-                        { id: "ack-med", label: "Time to acknowledgement, median", value: formatDuration(m.time_to_ack_seconds.median) },
-                        { id: "ack-p90", label: "Time to acknowledgement, 90th percentile", value: formatDuration(m.time_to_ack_seconds.p90) },
-                        { id: "ack-n", label: "Acknowledged alerts", value: `${m.time_to_ack_seconds.n} of ${r.data?.alerts.length ?? 0}` },
+                        { id: "ack-med", label: "Time to acknowledgement, median", value: formatDuration(m.time_to_acknowledgement_seconds.median) },
+                        { id: "ack-p90", label: "Time to acknowledgement, 90th percentile", value: formatDuration(m.time_to_acknowledgement_seconds.p90) },
+                        { id: "ack-n", label: "Acknowledged alerts", value: `${m.time_to_acknowledgement_seconds.n} of ${r.data?.items.length ?? 0}` },
                       ]}
                     />
                     <SectionHeading>False positive rate by tier rule</SectionHeading>
@@ -78,8 +89,8 @@ export function AlertTelemetryModule(_: PanelProps) {
               {
                 id: "alerts",
                 label: "Alerts",
-                count: r.data?.alerts.length,
-                content: <DataTable label="Alert timestamps" columns={alertColumns} rows={r.data?.alerts ?? []} getRowId={(a) => a.id} defaultSort={{ columnId: "raised", direction: "desc" }} />,
+                count: r.data?.items.length,
+                content: <DataTable label="Alert timestamps" columns={alertColumns} rows={r.data?.items ?? []} getRowId={(a) => a.id} defaultSort={{ columnId: "raised", direction: "desc" }} />,
               },
             ]}
           />
