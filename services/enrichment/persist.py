@@ -22,7 +22,9 @@ from .analysis import Analysis, Fact
 from .runner import AgentRunner
 from .spans import Span
 
-_KIND_ORDER = {"EntityIdentified": 0, "ProjectStageChanged": 1, "ProcurementWindowForecast": 2, "SignalScored": 9}
+# M6: a deal of the document comes before the new project, so that the opportunity of the project
+# (services/enrichment/opportunities.py) sees the deal and does not propose a second fuel supply deal.
+_KIND_ORDER = {"DealIdentified": -1, "EntityIdentified": 0, "ProjectStageChanged": 1, "ProcurementWindowForecast": 2, "SignalScored": 9}
 
 
 def ensure_evidence(conn: psycopg.Connection, source_id: str, span: Span, text: str) -> str:

@@ -105,6 +105,9 @@ export function TimelineModule(_: PanelProps) {
               dateTime={e.occurred_at ?? e.recorded_at}
               status={certaintyStatus(e.certainty)}
               evidenceIds={evidenceIds(e.evidence_ids) ?? undefined}
+              // A change by the team has a reason and no source evidence (docs/03: DealStageChanged needs evidence or
+              // a reason from a human). The reason is its provenance.
+              summary={typeof e.payload.reason === "string" && e.payload.reason ? `Reason: ${e.payload.reason}` : undefined}
               tags={e.proposal_id ? [`Approved proposal ${e.proposal_id}`] : undefined}
             />
           ))}

@@ -126,13 +126,13 @@ def _write_events(conn: psycopg.Connection, proposal: dict, events: list[dict], 
     return written
 
 
-def _after_human_write(conn: psycopg.Connection, written: list[dict]) -> None:
-    """The window forecaster follows each approved stage change (docs/05, window forecaster)."""
-    from services.enrichment.forecaster import forecast_after_stage
+def _after_write(conn: psycopg.Connection, written: list[dict]) -> None:
+    """The follow-up steps after each write to the record (automatic, approved, edited and approved): the window
+    forecaster for each stage change (docs/05), the opportunity of a project and the demand estimate (M6).
+    The steps write proposals only (services/enrichment/followups.py)."""
+    from services.enrichment.followups import after_write
 
-    for row in written:
-        if row["event_type"] == "ProjectStageChanged":
-            forecast_after_stage(conn, row)
+    after_write(conn, written)
 
 
 def find_by_key(conn: psycopg.Connection, key: str) -> dict | None:
@@ -190,9 +190,10 @@ def create_proposal(
         actor_type=created_by_type, actor_id=created_by, model_id=model_id, prompt_version=prompt_version,
         proposal_id=proposal_id, brief_version_id=brief_version_id,
     )
+    written: list[dict] = []
     if policy == "automatic":
-        _write_events(conn, row, clean, actor_type=created_by_type, actor_id=created_by, model_id=model_id,
-                      prompt_version=prompt_version)
+        written = _write_events(conn, row, clean, actor_type=created_by_type, actor_id=created_by, model_id=model_id,
+                                prompt_version=prompt_version)
         row = conn.execute(
             "UPDATE proposal SET status = 'auto_approved', decided_by = %s, decided_at = clock_timestamp() "
             "WHERE id = %s RETURNING *", (SYSTEM_ACTOR, proposal_id),
@@ -202,6 +203,7 @@ def create_proposal(
             payload={"proposal_id": proposal_id, "kind": kind, "policy": policy, "automatic": True},
             actor_type="system", actor_id=SYSTEM_ACTOR, proposal_id=proposal_id, brief_version_id=brief_version_id,
         )
+        _after_write(conn, written)
     log(logger, logging.INFO, "proposal created", proposal_id=proposal_id, kind=kind, policy=policy,
         status=row["status"])
     return row, True
@@ -247,7 +249,7 @@ def approve(conn: psycopg.Connection, proposal_id: str, user_id: str, reason: st
                  "event_ids": [w["id"] for w in written]},
         actor_type="human", actor_id=user_id, proposal_id=proposal_id, brief_version_id=proposal["brief_version_id"],
     )
-    _after_human_write(conn, written)
+    _after_write(conn, written)
     log(logger, logging.INFO, "proposal approved", proposal_id=proposal_id, user=user_id)
     return written
 
@@ -304,6 +306,6 @@ def edit_and_approve(conn: psycopg.Connection, proposal_id: str, user_id: str, e
                  "event_ids": [w["id"] for w in written], "edited_events": final},
         actor_type="human", actor_id=user_id, proposal_id=proposal_id, brief_version_id=proposal["brief_version_id"],
     )
-    _after_human_write(conn, written)
+    _after_write(conn, written)
     log(logger, logging.INFO, "proposal edited and approved", proposal_id=proposal_id, user=user_id)
     return written

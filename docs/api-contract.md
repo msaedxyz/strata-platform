@@ -69,3 +69,15 @@ Use one name for each action through the whole flow (docs/07 rule 5).
 | Log touchpoint | Touchpoint logged |
 | Set next action | Next action set |
 | Activate | Activated |
+
+## M6 additions
+
+These additions do not break the contract. Each adds fields only.
+
+1. The governance, engagement and priority endpoints have response models in services/api/routers/schemas.py. The typed client (packages/api-client) gives their shapes. A response can have more fields than its model lists.
+2. GET /api/sites: identity_evidence_ids, status_event_id, status_evidence_ids, status_certainty, operator_event_id, operator_evidence_ids, last_signal_id, last_signal_title and last_signal_evidence_ids.
+3. GET /api/deals and GET /api/deals/{id}: stage_event_id, stage_evidence_ids, stage_reason, stage_actor_type and certainty. A stage that the team moved has a reason and no source evidence.
+4. GET /api/map: each site has identity_evidence_ids, status_event_id, status_evidence_ids, status_certainty and geometry_source. Each deal has evidence_ids, stage_event_id, stage_evidence_ids and stage_reason. Each project has stage_event_id, stage_evidence_ids, forecast_event_id and forecast_evidence_ids.
+5. GET /api/calendar: stage_event_id, stage_evidence_ids, stage_certainty and demand_estimate. The forecast_detail of a stage at or after contractor procurement has procurement_reached true and no dates.
+6. GET /api/priority: the items come in the order of the groups of config/priority.yaml. In a group, a deal whose project is in the engagement window and has no contact found comes first, then the other deals by score. Each item has rank, group_rank, group_order, priority_group, no_contact_rule, project_name, stage_event_id and stage_evidence_ids. priority_breakdown has the parts lead_time, demand, confidence, buyer_fit and no_contact_boost. Each part has its value, score, weight, contribution, event_ids and evidence_ids.
+7. The demand estimate of a project (demand_estimate) gives the formula, the factors and each input with its fact event id and evidence ids.

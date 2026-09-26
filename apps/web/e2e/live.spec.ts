@@ -76,7 +76,7 @@ test.describe("criterion 5 (mocked API): live updates in 2 seconds or less", () 
     await expect(q.locator('[data-proposal-id="prop-004"]')).toHaveCount(0, { timeout: 5000 });
     expect(Date.now() - start).toBeLessThanOrEqual(LIMIT_MS);
 
-    const before = mock.telemetry().metrics.time_to_ack_seconds.n;
+    const before = mock.telemetry().metrics.time_to_acknowledgement_seconds.n;
     mock.role = "analyst";
     const ack = mock.handle("POST", "/api/alerts/alert-000/acknowledge", new URLSearchParams(), {});
     const t = page.locator('[data-module="alert-telemetry"]').getByRole("table", { name: "Alert metrics" });

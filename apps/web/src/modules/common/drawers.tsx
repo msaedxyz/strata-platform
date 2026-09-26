@@ -108,14 +108,24 @@ function SiteBody({ id, deals, onDeal }: { id: string; deals?: MapDeal[]; onDeal
   return (
     <>
       <h3 className="strata-drawer-title" data-entity-id={e.id}>
-        {e.name}
+        <FactValue ids={e.identity_evidence_ids} label={e.name}>
+          {e.name}
+        </FactValue>
       </h3>
       <KeyValues
         label="Site details"
         rows={[
           { id: "class", label: "Site class", value: nameOf(tax.data?.site_classes, e.site_class) },
           { id: "watch", label: "Watch list", value: humanise(e.watch) },
-          { id: "status", label: "Status", value: <SiteStatus status={e.status} pending={e.status_pending} /> },
+          {
+            id: "status",
+            label: "Status",
+            value: (
+              <FactValue ids={e.status_evidence_ids} label={`Status of ${e.name}`}>
+                <SiteStatus status={e.status} pending={e.status_pending} />
+              </FactValue>
+            ),
+          },
           { id: "district", label: "District", value: geo(e.district) },
           { id: "province", label: "Province", value: geo(e.province) },
           ...Object.entries(e.attributes ?? {}).map(([k, a]) => ({
@@ -143,8 +153,26 @@ function SiteBody({ id, deals, onDeal }: { id: string; deals?: MapDeal[]; onDeal
             getRowId={(d) => d.id}
             onRowClick={(d) => onDeal(d.id)}
             columns={[
-              { id: "title", header: "Opportunity", value: (d) => d.title },
-              { id: "stage", header: "Stage", value: (d) => stageName(d.stage), cell: (d) => <DealStageText stage={d.stage} pending={d.stage_pending} names={stageName} /> },
+              {
+                id: "title",
+                header: "Opportunity",
+                value: (d) => d.title,
+                cell: (d) => (
+                  <FactValue ids={d.evidence_ids} label={d.title}>
+                    {d.title}
+                  </FactValue>
+                ),
+              },
+              {
+                id: "stage",
+                header: "Stage",
+                value: (d) => stageName(d.stage),
+                cell: (d) => (
+                  <FactValue ids={d.stage_evidence_ids} label={`Stage of ${d.title}`}>
+                    <DealStageText stage={d.stage} pending={d.stage_pending} names={stageName} />
+                  </FactValue>
+                ),
+              },
             ]}
           />
         </>
@@ -192,7 +220,17 @@ function DealBody({ id, onClose }: { id: string; onClose: () => void }) {
       <KeyValues
         label="Opportunity details"
         rows={[
-          { id: "stage", label: "Stage", value: <DealStageText stage={d.stage} pending={d.stage_pending} names={stageName} /> },
+          {
+            id: "stage",
+            label: "Stage",
+            value: (
+              <FactValue ids={d.stage_evidence_ids} label={`Stage of ${d.title}`}>
+                <DealStageText stage={d.stage} pending={d.stage_pending} names={stageName} />
+              </FactValue>
+            ),
+          },
+          // A stage that an approver moved has the reason of the move (the team is the source, docs/03).
+          ...(d.stage_reason ? [{ id: "reason", label: "Stage reason", value: d.stage_reason }] : []),
           { id: "type", label: "Deal type", value: nameOf(tax.data?.deal_types, d.deal_type) },
           { id: "prequal", label: "Prequalification", value: humanise(d.prequalification_status) || "Not started" },
           { id: "contact", label: "Contact found", value: d.has_contact ? "Yes" : "No" },
@@ -261,12 +299,17 @@ export function ForecastDetails({ detail, lifecycle }: { detail: NonNullable<Pro
                 <FactValue ids={detail.evidence_ids} label="Forecast procurement window">
                   {`${formatDate(detail.start)} to ${formatDate(detail.end)}`}
                 </FactValue>
+              ) : detail.procurement_reached ? (
+                <FactValue ids={detail.evidence_ids} label="Procurement stage">
+                  No window: contractor procurement has started
+                </FactValue>
               ) : (
                 "No date: too few historical projects support an interval"
               ),
           },
           { id: "from", label: "From stage", value: lifecycle(detail.current_stage) },
           ...(detail.shift_months_nearer ? [{ id: "shift", label: "Moved nearer", value: `${detail.shift_months_nearer} months` }] : []),
+          ...(detail.supporting_projects?.length ? [{ id: "support", label: "Supporting projects", value: detail.supporting_projects.join(", ") }] : []),
         ]}
       />
       <SectionHeading>Intervals</SectionHeading>
@@ -310,7 +353,11 @@ function ProjectBody({ id }: { id: string }) {
                 {
                   id: "demand",
                   label: "Demand (estimate)",
-                  value: `${formatNumber(est.value)} ${est.unit}, estimate. Formula ${est.formula_id}: ${est.expression}`,
+                  value: (
+                    <FactValue ids={est.evidence_ids ?? Object.values(est.inputs).flatMap((i) => i.evidence_ids)} label="Demand estimate">
+                      {`${formatNumber(est.value)} ${humanise(est.unit)}, estimate. Formula ${est.formula_name ?? est.formula_id}: ${est.expression}`}
+                    </FactValue>
+                  ),
                 },
                 ...Object.entries(est.inputs).map(([k, inp]) => ({
                   id: `input-${k}`,

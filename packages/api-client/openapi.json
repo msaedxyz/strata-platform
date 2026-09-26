@@ -40,6 +40,136 @@
         "title": "AlertDismiss",
         "type": "object"
       },
+      "AlertState": {
+        "description": "The alert after an acknowledgement or a decision.",
+        "properties": {
+          "acknowledged_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledged At"
+          },
+          "acknowledged_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledged By"
+          },
+          "decided_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided At"
+          },
+          "decided_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided By"
+          },
+          "decision_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Reason"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "unconfirmed",
+              "confirmed",
+              "dismissed",
+              "false_positive"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tier": {
+            "title": "Tier",
+            "type": "integer"
+          },
+          "tier_rule": {
+            "title": "Tier Rule",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tier",
+          "tier_rule",
+          "title",
+          "status",
+          "acknowledged_at",
+          "acknowledged_by",
+          "decided_at",
+          "decided_by",
+          "decision_reason"
+        ],
+        "title": "AlertState",
+        "type": "object"
+      },
+      "ApproveResult": {
+        "properties": {
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "proposal_id": {
+            "title": "Proposal Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "approved",
+              "edited_approved"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "proposal_id",
+          "event_ids"
+        ],
+        "title": "ApproveResult",
+        "type": "object"
+      },
       "Contact": {
         "properties": {
           "email": {
@@ -123,6 +253,119 @@
         "title": "Contact",
         "type": "object"
       },
+      "DeliveryStatus": {
+        "properties": {
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "frontend": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frontend"
+          }
+        },
+        "required": [
+          "frontend",
+          "email"
+        ],
+        "title": "DeliveryStatus",
+        "type": "object"
+      },
+      "DeliveryTimes": {
+        "properties": {
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "frontend": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frontend"
+          },
+          "frontend_broadcast": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frontend Broadcast"
+          }
+        },
+        "required": [
+          "frontend",
+          "frontend_broadcast",
+          "email"
+        ],
+        "title": "DeliveryTimes",
+        "type": "object"
+      },
+      "DurationStats": {
+        "properties": {
+          "median": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median"
+          },
+          "n": {
+            "title": "N",
+            "type": "integer"
+          },
+          "p90": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P90"
+          }
+        },
+        "required": [
+          "n",
+          "median",
+          "p90"
+        ],
+        "title": "DurationStats",
+        "type": "object"
+      },
       "EditApprove": {
         "properties": {
           "events": {
@@ -184,6 +427,57 @@
           }
         },
         "title": "EditedEvent",
+        "type": "object"
+      },
+      "EngagementResult": {
+        "properties": {
+          "contact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Id"
+          },
+          "deal_id": {
+            "title": "Deal Id",
+            "type": "string"
+          },
+          "event_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Event Id"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "proposal_id": {
+            "title": "Proposal Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "proposal_id",
+          "event_type",
+          "event_id",
+          "deal_id"
+        ],
+        "title": "EngagementResult",
         "type": "object"
       },
       "Erasure": {
@@ -272,6 +566,88 @@
         "title": "NextAction",
         "type": "object"
       },
+      "NoContactRule": {
+        "description": "docs/05 scorer rule 6: a project in the engagement window with no contact found.",
+        "properties": {
+          "applied": {
+            "title": "Applied",
+            "type": "boolean"
+          },
+          "contact_found": {
+            "title": "Contact Found",
+            "type": "boolean"
+          },
+          "contact_found_by": {
+            "anyOf": [
+              {
+                "enum": [
+                  "stage",
+                  "engagement"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Found By"
+          },
+          "contribution": {
+            "title": "Contribution",
+            "type": "number"
+          },
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "in_engagement_window": {
+            "title": "In Engagement Window",
+            "type": "boolean"
+          },
+          "project_stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Stage"
+          },
+          "value": {
+            "title": "Value",
+            "type": "boolean"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "null"
+          }
+        },
+        "required": [
+          "value",
+          "applied",
+          "in_engagement_window",
+          "contact_found",
+          "contact_found_by",
+          "project_stage",
+          "contribution",
+          "event_ids",
+          "evidence_ids"
+        ],
+        "title": "NoContactRule",
+        "type": "object"
+      },
       "Prequalification": {
         "properties": {
           "buyer_id": {
@@ -295,6 +671,791 @@
           "status"
         ],
         "title": "Prequalification",
+        "type": "object"
+      },
+      "PriorityBreakdown": {
+        "properties": {
+          "as_of": {
+            "title": "As Of",
+            "type": "string"
+          },
+          "buyer_fit": {
+            "$ref": "#/components/schemas/PriorityPart"
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/PriorityPart"
+          },
+          "demand": {
+            "$ref": "#/components/schemas/PriorityPart"
+          },
+          "group": {
+            "$ref": "#/components/schemas/PriorityGroup"
+          },
+          "lead_time": {
+            "$ref": "#/components/schemas/PriorityPart"
+          },
+          "no_contact_boost": {
+            "$ref": "#/components/schemas/NoContactRule"
+          },
+          "parts": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Parts",
+            "type": "array"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          },
+          "total": {
+            "title": "Total",
+            "type": "number"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          },
+          "weighted_score": {
+            "title": "Weighted Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "version",
+          "as_of",
+          "parts",
+          "lead_time",
+          "demand",
+          "confidence",
+          "buyer_fit",
+          "no_contact_boost",
+          "weighted_score",
+          "total",
+          "group",
+          "project_id"
+        ],
+        "title": "PriorityBreakdown",
+        "type": "object"
+      },
+      "PriorityGroup": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "order": {
+            "title": "Order",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "order"
+        ],
+        "title": "PriorityGroup",
+        "type": "object"
+      },
+      "PriorityItem": {
+        "properties": {
+          "buyer_fit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer Fit"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "deal_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deal Type"
+          },
+          "demand_litres_month": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Demand Litres Month"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "group_order": {
+            "title": "Group Order",
+            "type": "integer"
+          },
+          "group_rank": {
+            "title": "Group Rank",
+            "type": "integer"
+          },
+          "has_contact": {
+            "title": "Has Contact",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "lead_time_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lead Time Days"
+          },
+          "no_contact_rule": {
+            "title": "No Contact Rule",
+            "type": "boolean"
+          },
+          "priority_breakdown": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PriorityBreakdown"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "priority_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority Group"
+          },
+          "priority_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority Score"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          },
+          "project_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Name"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "integer"
+          },
+          "site_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site Id"
+          },
+          "site_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site Name"
+          },
+          "stage": {
+            "title": "Stage",
+            "type": "string"
+          },
+          "stage_event_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage Event Id"
+          },
+          "stage_evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Stage Evidence Ids",
+            "type": "array"
+          },
+          "stage_pending": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage Pending"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "deal_type",
+          "stage",
+          "stage_pending",
+          "site_id",
+          "site_name",
+          "project_id",
+          "project_name",
+          "lead_time_days",
+          "demand_litres_month",
+          "confidence",
+          "buyer_fit",
+          "has_contact",
+          "priority_score",
+          "priority_breakdown",
+          "evidence_ids",
+          "stage_event_id",
+          "stage_evidence_ids",
+          "priority_group",
+          "group_order",
+          "group_rank",
+          "rank",
+          "no_contact_rule"
+        ],
+        "title": "PriorityItem",
+        "type": "object"
+      },
+      "PriorityList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PriorityItem"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "PriorityList",
+        "type": "object"
+      },
+      "PriorityPart": {
+        "description": "One part of the score: the value, the score (0 to 1), the weight, the contribution (score x weight), and the\nevent ids and the evidence ids that it uses (docs/07 rule 1).",
+        "properties": {
+          "contribution": {
+            "title": "Contribution",
+            "type": "number"
+          },
+          "event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Event Ids",
+            "type": "array"
+          },
+          "evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "number"
+          }
+        },
+        "required": [
+          "score",
+          "weight",
+          "contribution",
+          "event_ids",
+          "evidence_ids"
+        ],
+        "title": "PriorityPart",
+        "type": "object"
+      },
+      "Proposal": {
+        "properties": {
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "created_by_me": {
+            "title": "Created By Me",
+            "type": "boolean"
+          },
+          "created_by_type": {
+            "enum": [
+              "agent",
+              "human",
+              "system"
+            ],
+            "title": "Created By Type",
+            "type": "string"
+          },
+          "decided_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided At"
+          },
+          "decided_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided By"
+          },
+          "decision_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Reason"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/ProposedEvent"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalEvidence"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "model_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Id"
+          },
+          "policy": {
+            "enum": [
+              "automatic",
+              "review",
+              "admin_review"
+            ],
+            "title": "Policy",
+            "type": "string"
+          },
+          "prompt_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt Version"
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Id"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved",
+              "rejected",
+              "edited_approved",
+              "auto_approved"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "stream_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stream Id"
+          },
+          "stream_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stream Type"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "tier": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tier"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "policy",
+          "title",
+          "summary",
+          "tier",
+          "created_by_type",
+          "created_by",
+          "created_by_me",
+          "model_id",
+          "prompt_version",
+          "source_id",
+          "stream_type",
+          "stream_id",
+          "created_at",
+          "decided_by",
+          "decided_at",
+          "decision_reason",
+          "events",
+          "evidence"
+        ],
+        "title": "Proposal",
+        "type": "object"
+      },
+      "ProposalEvidence": {
+        "description": "An evidence item of a proposal: the quote, the span offsets and the source link.",
+        "properties": {
+          "char_end": {
+            "title": "Char End",
+            "type": "integer"
+          },
+          "char_start": {
+            "title": "Char Start",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "publisher": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "retention_policy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retention Policy"
+          },
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "verified": {
+            "title": "Verified",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "source_id",
+          "char_start",
+          "char_end",
+          "quote",
+          "verified"
+        ],
+        "title": "ProposalEvidence",
+        "type": "object"
+      },
+      "ProposalList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Proposal"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ],
+        "title": "ProposalList",
+        "type": "object"
+      },
+      "ProposedEvent": {
+        "properties": {
+          "certainty": {
+            "anyOf": [
+              {
+                "enum": [
+                  "stated",
+                  "reported",
+                  "speculative"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certainty"
+          },
+          "event_type": {
+            "title": "Event Type",
+            "type": "string"
+          },
+          "evidence": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ProposalEvidence"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "evidence_ids": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "occurred_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Occurred At"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "title": "Payload",
+            "type": "object"
+          },
+          "stream_id": {
+            "title": "Stream Id",
+            "type": "string"
+          },
+          "stream_type": {
+            "title": "Stream Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "stream_type",
+          "stream_id",
+          "event_type",
+          "payload"
+        ],
+        "title": "ProposedEvent",
         "type": "object"
       },
       "QuarantineList": {
@@ -452,6 +1613,25 @@
         "title": "QuarantineRecord",
         "type": "object"
       },
+      "RejectResult": {
+        "properties": {
+          "proposal_id": {
+            "title": "Proposal Id",
+            "type": "string"
+          },
+          "status": {
+            "const": "rejected",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "proposal_id"
+        ],
+        "title": "RejectResult",
+        "type": "object"
+      },
       "Rejection": {
         "properties": {
           "reason": {
@@ -466,6 +1646,61 @@
           "reason"
         ],
         "title": "Rejection",
+        "type": "object"
+      },
+      "RuleRate": {
+        "properties": {
+          "alerts": {
+            "title": "Alerts",
+            "type": "integer"
+          },
+          "confirmed": {
+            "title": "Confirmed",
+            "type": "integer"
+          },
+          "decided": {
+            "title": "Decided",
+            "type": "integer"
+          },
+          "dismissed": {
+            "title": "Dismissed",
+            "type": "integer"
+          },
+          "false_positive": {
+            "title": "False Positive",
+            "type": "integer"
+          },
+          "false_positive_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "False Positive Rate"
+          },
+          "tier": {
+            "title": "Tier",
+            "type": "integer"
+          },
+          "tier_rule": {
+            "title": "Tier Rule",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tier_rule",
+          "tier",
+          "alerts",
+          "decided",
+          "confirmed",
+          "dismissed",
+          "false_positive",
+          "false_positive_rate"
+        ],
+        "title": "RuleRate",
         "type": "object"
       },
       "StageMove": {
@@ -492,6 +1727,307 @@
           "to_stage"
         ],
         "title": "StageMove",
+        "type": "object"
+      },
+      "StageMoveResult": {
+        "properties": {
+          "deal_id": {
+            "title": "Deal Id",
+            "type": "string"
+          },
+          "proposal_id": {
+            "title": "Proposal Id",
+            "type": "string"
+          },
+          "stage": {
+            "title": "Stage",
+            "type": "string"
+          },
+          "stage_pending": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage Pending"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "approved"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "proposal_id",
+          "deal_id",
+          "stage",
+          "stage_pending"
+        ],
+        "title": "StageMoveResult",
+        "type": "object"
+      },
+      "Telemetry": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TelemetryAlert"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/TelemetryMetrics"
+          }
+        },
+        "required": [
+          "items",
+          "metrics"
+        ],
+        "title": "Telemetry",
+        "type": "object"
+      },
+      "TelemetryAlert": {
+        "properties": {
+          "acknowledged_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledged At"
+          },
+          "acknowledged_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledged By"
+          },
+          "decided_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided At"
+          },
+          "decided_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided By"
+          },
+          "decision_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Reason"
+          },
+          "delivered": {
+            "$ref": "#/components/schemas/DeliveryTimes"
+          },
+          "delivery_status": {
+            "$ref": "#/components/schemas/DeliveryStatus"
+          },
+          "fetched_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fetched At"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "latency_fetch_to_alert_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency Fetch To Alert Seconds"
+          },
+          "latency_publish_to_alert_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency Publish To Alert Seconds"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "enum": [
+                  "confirmed",
+                  "dismissed",
+                  "false_positive"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "raised_at": {
+            "title": "Raised At",
+            "type": "string"
+          },
+          "signal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Id"
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Id"
+          },
+          "status": {
+            "enum": [
+              "unconfirmed",
+              "confirmed",
+              "dismissed",
+              "false_positive"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tier": {
+            "title": "Tier",
+            "type": "integer"
+          },
+          "tier_rule": {
+            "title": "Tier Rule",
+            "type": "string"
+          },
+          "time_to_acknowledgement_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time To Acknowledgement Seconds"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tier",
+          "tier_rule",
+          "title",
+          "status",
+          "outcome",
+          "source_id",
+          "signal_id",
+          "published_at",
+          "fetched_at",
+          "raised_at",
+          "delivered",
+          "delivery_status",
+          "acknowledged_at",
+          "acknowledged_by",
+          "decided_at",
+          "decided_by",
+          "decision_reason",
+          "latency_fetch_to_alert_seconds",
+          "latency_publish_to_alert_seconds",
+          "time_to_acknowledgement_seconds"
+        ],
+        "title": "TelemetryAlert",
+        "type": "object"
+      },
+      "TelemetryMetrics": {
+        "properties": {
+          "false_positive_rate_by_tier_rule": {
+            "items": {
+              "$ref": "#/components/schemas/RuleRate"
+            },
+            "title": "False Positive Rate By Tier Rule",
+            "type": "array"
+          },
+          "latency_fetch_to_alert_seconds": {
+            "$ref": "#/components/schemas/DurationStats"
+          },
+          "time_to_acknowledgement_seconds": {
+            "$ref": "#/components/schemas/DurationStats"
+          }
+        },
+        "required": [
+          "latency_fetch_to_alert_seconds",
+          "time_to_acknowledgement_seconds",
+          "false_positive_rate_by_tier_rule"
+        ],
+        "title": "TelemetryMetrics",
         "type": "object"
       },
       "Touchpoint": {
@@ -721,9 +2257,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Acknowledge Alert Api Alerts  Alert Id  Acknowledge Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/AlertState"
                 }
               }
             },
@@ -783,9 +2317,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Confirm Alert Api Alerts  Alert Id  Confirm Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/AlertState"
                 }
               }
             },
@@ -838,9 +2370,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Dismiss Alert Api Alerts  Alert Id  Dismiss Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/AlertState"
                 }
               }
             },
@@ -1070,7 +2600,7 @@
     },
     "/api/calendar": {
       "get": {
-        "description": "Forecast procurement windows on a time axis. Projects without a date show their stage only.",
+        "description": "Forecast procurement windows on a time axis. Projects without a date show their stage only.\n\nEach item has the forecast detail (the intervals, the supporting projects and the evidence ids) and the stage\nevidence (stage_event_id, stage_evidence_ids).",
         "operationId": "calendar_api_calendar_get",
         "parameters": [
           {
@@ -1310,9 +2840,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Add Contact Api Deals  Deal Id  Contacts Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/EngagementResult"
                 }
               }
             },
@@ -1364,9 +2892,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Set Next Action Api Deals  Deal Id  Next Action Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/EngagementResult"
                 }
               }
             },
@@ -1418,9 +2944,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Set Prequalification Api Deals  Deal Id  Prequalification Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/EngagementResult"
                 }
               }
             },
@@ -1518,9 +3042,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Move Stage Api Deals  Deal Id  Stage Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/StageMoveResult"
                 }
               }
             },
@@ -1572,9 +3094,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Log Touchpoint Api Deals  Deal Id  Touchpoints Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/EngagementResult"
                 }
               }
             },
@@ -1877,7 +3397,7 @@
     },
     "/api/map": {
       "get": {
-        "description": "Sites with coordinates, opportunities at those sites, and counts of recent signals by site.",
+        "description": "Sites with coordinates, opportunities at those sites, and counts of recent signals by site.\n\nProvenance (docs/07 rule 1): each site has identity_evidence_ids, status_event_id, status_evidence_ids and the\ngeometry_source (the dataset of the coordinates). Each deal has evidence_ids, stage_event_id and\nstage_evidence_ids. Each project has stage_evidence_ids and the forecast evidence.",
         "operationId": "map_layers_api_map_get",
         "parameters": [
           {
@@ -2093,7 +3613,7 @@
     },
     "/api/priority": {
       "get": {
-        "description": "Opportunities ranked by lead time, demand estimate, confidence and buyer fit, with the breakdown.",
+        "description": "Opportunities ranked by lead time, demand estimate, confidence and buyer fit, with the breakdown.\n\nThe list shows the groups of config/priority.yaml in order. In each group, a deal whose project is in the\nengagement window and has no contact found comes first (docs/05 scorer rule 6), then the other deals by score.\nEach part of priority_breakdown has its value, score, weight, contribution, event_ids and evidence_ids.",
         "operationId": "priority_api_priority_get",
         "parameters": [
           {
@@ -2113,9 +3633,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Priority Api Priority Get",
-                  "type": "object"
+                  "$ref": "#/components/schemas/PriorityList"
                 }
               }
             },
@@ -2333,9 +3851,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response List Proposals Api Proposals Get",
-                  "type": "object"
+                  "$ref": "#/components/schemas/ProposalList"
                 }
               }
             },
@@ -2377,9 +3893,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Get Proposal Api Proposals  Proposal Id  Get",
-                  "type": "object"
+                  "$ref": "#/components/schemas/Proposal"
                 }
               }
             },
@@ -2439,9 +3953,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Approve Proposal Api Proposals  Proposal Id  Approve Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/ApproveResult"
                 }
               }
             },
@@ -2556,9 +4068,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Edit Approve Proposal Api Proposals  Proposal Id  Edit Approve Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/ApproveResult"
                 }
               }
             },
@@ -2611,9 +4121,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Reject Proposal Api Proposals  Proposal Id  Reject Post",
-                  "type": "object"
+                  "$ref": "#/components/schemas/RejectResult"
                 }
               }
             },
@@ -2995,7 +4503,7 @@
     },
     "/api/sites": {
       "get": {
-        "description": "Sites with status, pending status, operator and last signal. watch=all gives the daily and weekly lists.",
+        "description": "Sites with status, pending status, operator and last signal. watch=all gives the daily and weekly lists.\n\nEach fact has its provenance (docs/07 rule 1): identity_evidence_ids (the first EntityIdentified), status_event_id\nand status_evidence_ids (the last SiteStatusChanged), operator_event_id and operator_evidence_ids, and\nlast_signal_id and last_signal_evidence_ids.",
         "operationId": "sites_api_sites_get",
         "parameters": [
           {
@@ -3277,9 +4785,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Alert Telemetry Api Telemetry Alerts Get",
-                  "type": "object"
+                  "$ref": "#/components/schemas/Telemetry"
                 }
               }
             },

@@ -1,6 +1,8 @@
 // Response types of the read endpoints in services/api/routers/read.py and services/api/routers/sources.py.
-// The generated schema (packages/api-client) types these responses as plain objects, so the shapes are here.
-// Keep them the same as the SQL columns in db/migrations/0002_projections.sql and the dicts in the routers.
+// The generated schema (packages/api-client) types most of these responses as plain objects, so the shapes are here.
+// Keep them the same as the SQL columns in db/migrations/0002_projections.sql and 0400_m6.sql and the dicts in the
+// routers. GET /api/priority has a response model, so its item type comes from the generated schema.
+import type { components } from "@strata/api-client";
 
 export type Iso = string;
 export type Certainty = "stated" | "reported" | "speculative";
@@ -157,6 +159,17 @@ export interface Site {
   attributes: Record<string, Attribute>;
   operator_id: string | null;
   operator_name: string | null;
+  /** Provenance (docs/07 rule 1): the first EntityIdentified of the site. */
+  identity_evidence_ids: string[];
+  /** Provenance of the status: the last SiteStatusChanged event and its evidence. */
+  status_event_id: string | null;
+  status_evidence_ids: string[];
+  status_certainty: Certainty | null;
+  operator_event_id: string | null;
+  operator_evidence_ids: string[];
+  last_signal_id: string | null;
+  last_signal_title: string | null;
+  last_signal_evidence_ids: string[];
 }
 
 export interface MapSite {
@@ -171,6 +184,12 @@ export interface MapSite {
   geometry_approximate: boolean | null;
   last_signal_at: Iso | null;
   signals_90d: number;
+  identity_evidence_ids: string[];
+  status_event_id: string | null;
+  status_evidence_ids: string[];
+  status_certainty: Certainty | null;
+  /** The dataset and licence of the coordinates (docs/03 site locations). */
+  geometry_source: Record<string, unknown> | null;
 }
 
 export interface MapDeal {
@@ -181,6 +200,10 @@ export interface MapDeal {
   deal_type: string | null;
   site_id: string;
   priority_score: number | null;
+  evidence_ids: string[];
+  stage_event_id: string | null;
+  stage_evidence_ids: string[];
+  stage_reason: string | null;
 }
 
 export interface MapProject {
@@ -192,6 +215,10 @@ export interface MapProject {
   in_engagement_window: boolean;
   forecast_start: string | null;
   forecast_end: string | null;
+  stage_event_id: string | null;
+  stage_evidence_ids: string[];
+  forecast_event_id: string | null;
+  forecast_evidence_ids: string[];
 }
 
 /** GET /api/map */
@@ -216,20 +243,43 @@ export interface ForecastDetail {
   current_stage: string;
   start: string | null;
   end: string | null;
+  median?: string | null;
+  base_date?: string;
   intervals: ForecastInterval[];
+  /** The projects that support the interval of the dated window. */
+  supporting_projects?: string[];
+  /** No dated window: too few projects support the interval, or procurement has started (procurement_reached). */
+  stage_only?: boolean;
+  procurement_reached?: boolean;
   shift_months_nearer?: number | null;
+  /** The ProjectStageChanged event that the forecast follows. */
+  stage_event_id?: string;
   event_id: string;
   evidence_ids: string[];
 }
 
+/** One input of a demand estimate: the value from a fact with evidence (docs/03 demand estimate). */
+export interface DemandInput {
+  value: unknown;
+  evidence_ids: string[];
+  value_text?: string;
+  predicate?: string;
+  fact_event_id?: string;
+  subject_type?: string;
+  subject_id?: string;
+}
+
 export interface DemandEstimate {
   formula_id: string;
+  formula_name?: string;
   expression: string;
-  inputs: Record<string, { value: unknown; evidence_ids: string[] }>;
+  inputs: Record<string, DemandInput>;
+  factors?: Record<string, number>;
   value: number;
   unit: string;
   label: "estimate";
   event_id: string;
+  evidence_ids?: string[];
 }
 
 /** proj_project with the site. GET /api/projects */
@@ -250,6 +300,8 @@ export interface Project {
   forecast_end: string | null;
   forecast_detail: ForecastDetail | null;
   demand_estimate: DemandEstimate | null;
+  /** The ProjectStageChanged event of the current stage. */
+  stage_event_id: string | null;
   updated_at: Iso;
   site_name: string | null;
   site_class: string | null;
@@ -259,7 +311,23 @@ export interface Project {
 export interface CalendarResponse {
   months: number;
   items: Array<
-    Pick<Project, "id" | "name" | "stage" | "stage_order" | "in_engagement_window" | "forecast_start" | "forecast_end" | "forecast_detail" | "site_id" | "site_name">
+    Pick<
+      Project,
+      | "id"
+      | "name"
+      | "stage"
+      | "stage_order"
+      | "in_engagement_window"
+      | "forecast_start"
+      | "forecast_end"
+      | "forecast_detail"
+      | "site_id"
+      | "site_name"
+      | "stage_event_id"
+      | "stage_evidence_ids"
+      | "stage_certainty"
+      | "demand_estimate"
+    >
   >;
 }
 
@@ -289,33 +357,28 @@ export interface Deal {
   prequalification_status: string | null;
   next_action: NextAction | null;
   priority_score: number | null;
-  priority_breakdown: Record<string, unknown> | null;
+  priority_breakdown: PriorityBreakdown | null;
   evidence_ids: string[];
+  /** Provenance of the stage: the DealIdentified event, else the last DealStageChanged, with its evidence and reason. */
+  stage_event_id: string | null;
+  stage_evidence_ids: string[];
+  stage_reason: string | null;
+  stage_actor_type: "agent" | "human" | "system" | null;
+  /** The certainty of the evidence of the deal (DealIdentified). */
+  certainty: Certainty | null;
   created_at: Iso;
   updated_at: Iso;
   site_name?: string | null;
   organisation_name?: string | null;
 }
 
-/** GET /api/priority */
-export type PriorityItem = Pick<
-  Deal,
-  | "id"
-  | "title"
-  | "deal_type"
-  | "stage"
-  | "stage_pending"
-  | "site_id"
-  | "project_id"
-  | "lead_time_days"
-  | "demand_litres_month"
-  | "confidence"
-  | "buyer_fit"
-  | "has_contact"
-  | "priority_score"
-  | "priority_breakdown"
-  | "evidence_ids"
-> & { site_name: string | null };
+/** priority_breakdown (services/projections/priority.py, config/priority.yaml). */
+export type PriorityBreakdown = components["schemas"]["PriorityBreakdown"];
+export type PriorityPart = components["schemas"]["PriorityPart"];
+export type NoContactRule = components["schemas"]["NoContactRule"];
+
+/** GET /api/priority: ranked by group, then the "no contact found" rule, then the score. */
+export type PriorityItem = components["schemas"]["PriorityItem"];
 
 /** proj_relationship */
 export interface Relationship {
@@ -389,6 +452,11 @@ export interface EntityDetail {
     district: string | null;
     province: string | null;
     attributes: Record<string, Attribute>;
+    identity_evidence_ids?: string[];
+    status_event_id?: string | null;
+    status_evidence_ids?: string[];
+    status_certainty?: Certainty | null;
+    demand_estimate?: DemandEstimate | null;
   };
   registry: { geometry_source: unknown; external_ids: Record<string, unknown> } | null;
   facts: Fact[];
@@ -528,22 +596,8 @@ export interface BriefDiff {
   changes: BriefChange[];
 }
 
-/** One row of the quarantine table (db/migrations/0001_core.sql). GET /api/quarantine (M3). */
-export interface QuarantineItem {
-  id: string;
-  source_id: string | null;
-  agent: string;
-  reason_code: string;
-  detail: Record<string, unknown>;
-  output: unknown;
-  model_id: string | null;
-  prompt_version: string | null;
-  created_at: Iso;
-}
-
-export interface QuarantineResponse {
-  items: QuarantineItem[];
-}
+/** GET /api/quarantine (M3). The shapes come from the generated schema. */
+export type { QuarantineItem, QuarantineResponse } from "./writes";
 
 /** A live message: one event insert (db trigger event_notify). */
 export interface LiveMessage {

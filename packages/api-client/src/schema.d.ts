@@ -163,6 +163,9 @@ export interface paths {
         /**
          * Calendar
          * @description Forecast procurement windows on a time axis. Projects without a date show their stage only.
+         *
+         *     Each item has the forecast detail (the intervals, the supporting projects and the evidence ids) and the stage
+         *     evidence (stage_event_id, stage_evidence_ids).
          */
         get: operations["calendar_api_calendar_get"];
         put?: never;
@@ -488,6 +491,10 @@ export interface paths {
         /**
          * Map Layers
          * @description Sites with coordinates, opportunities at those sites, and counts of recent signals by site.
+         *
+         *     Provenance (docs/07 rule 1): each site has identity_evidence_ids, status_event_id, status_evidence_ids and the
+         *     geometry_source (the dataset of the coordinates). Each deal has evidence_ids, stage_event_id and
+         *     stage_evidence_ids. Each project has stage_evidence_ids and the forecast evidence.
          */
         get: operations["map_layers_api_map_get"];
         put?: never;
@@ -565,6 +572,10 @@ export interface paths {
         /**
          * Priority
          * @description Opportunities ranked by lead time, demand estimate, confidence and buyer fit, with the breakdown.
+         *
+         *     The list shows the groups of config/priority.yaml in order. In each group, a deal whose project is in the
+         *     engagement window and has no contact found comes first (docs/05 scorer rule 6), then the other deals by score.
+         *     Each part of priority_breakdown has its value, score, weight, contribution, event_ids and evidence_ids.
          */
         get: operations["priority_api_priority_get"];
         put?: never;
@@ -828,6 +839,10 @@ export interface paths {
         /**
          * Sites
          * @description Sites with status, pending status, operator and last signal. watch=all gives the daily and weekly lists.
+         *
+         *     Each fact has its provenance (docs/07 rule 1): identity_evidence_ids (the first EntityIdentified), status_event_id
+         *     and status_evidence_ids (the last SiteStatusChanged), operator_event_id and operator_evidence_ids, and
+         *     last_signal_id and last_signal_evidence_ids.
          */
         get: operations["sites_api_sites_get"];
         put?: never;
@@ -993,6 +1008,47 @@ export interface components {
             /** Reason */
             reason: string;
         };
+        /**
+         * AlertState
+         * @description The alert after an acknowledgement or a decision.
+         */
+        AlertState: {
+            /** Acknowledged At */
+            acknowledged_at: string | null;
+            /** Acknowledged By */
+            acknowledged_by: string | null;
+            /** Decided At */
+            decided_at: string | null;
+            /** Decided By */
+            decided_by: string | null;
+            /** Decision Reason */
+            decision_reason: string | null;
+            /** Id */
+            id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "unconfirmed" | "confirmed" | "dismissed" | "false_positive";
+            /** Tier */
+            tier: number;
+            /** Tier Rule */
+            tier_rule: string;
+            /** Title */
+            title: string;
+        };
+        /** ApproveResult */
+        ApproveResult: {
+            /** Event Ids */
+            event_ids: string[];
+            /** Proposal Id */
+            proposal_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "approved" | "edited_approved";
+        };
         /** Contact */
         Contact: {
             /** Email */
@@ -1013,6 +1069,31 @@ export interface components {
             /** Role */
             role: string;
         };
+        /** DeliveryStatus */
+        DeliveryStatus: {
+            /** Email */
+            email: string | null;
+            /** Frontend */
+            frontend: string | null;
+        };
+        /** DeliveryTimes */
+        DeliveryTimes: {
+            /** Email */
+            email: string | null;
+            /** Frontend */
+            frontend: string | null;
+            /** Frontend Broadcast */
+            frontend_broadcast: string | null;
+        };
+        /** DurationStats */
+        DurationStats: {
+            /** Median */
+            median: number | null;
+            /** N */
+            n: number;
+            /** P90 */
+            p90: number | null;
+        };
         /** EditApprove */
         EditApprove: {
             /** Events */
@@ -1028,6 +1109,21 @@ export interface components {
             payload?: {
                 [key: string]: unknown;
             } | null;
+        };
+        /** EngagementResult */
+        EngagementResult: {
+            /** Contact Id */
+            contact_id?: string | null;
+            /** Deal Id */
+            deal_id: string;
+            /** Event Id */
+            event_id: string | null;
+            /** Event Type */
+            event_type: string;
+            /** Proposal Id */
+            proposal_id: string;
+            /** Status */
+            status: string;
         };
         /** Erasure */
         Erasure: {
@@ -1063,6 +1159,32 @@ export interface components {
             /** Owner User Id */
             owner_user_id: string;
         };
+        /**
+         * NoContactRule
+         * @description docs/05 scorer rule 6: a project in the engagement window with no contact found.
+         */
+        NoContactRule: {
+            /** Applied */
+            applied: boolean;
+            /** Contact Found */
+            contact_found: boolean;
+            /** Contact Found By */
+            contact_found_by: ("stage" | "engagement") | null;
+            /** Contribution */
+            contribution: number;
+            /** Event Ids */
+            event_ids: string[];
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** In Engagement Window */
+            in_engagement_window: boolean;
+            /** Project Stage */
+            project_stage: string | null;
+            /** Value */
+            value: boolean;
+            /** Weight */
+            weight?: null;
+        };
         /** Prequalification */
         Prequalification: {
             /** Buyer Id */
@@ -1072,6 +1194,226 @@ export interface components {
              * @enum {string}
              */
             status: "not_started" | "submitted" | "approved" | "rejected";
+        };
+        /** PriorityBreakdown */
+        PriorityBreakdown: {
+            /** As Of */
+            as_of: string;
+            buyer_fit: components["schemas"]["PriorityPart"];
+            confidence: components["schemas"]["PriorityPart"];
+            demand: components["schemas"]["PriorityPart"];
+            group: components["schemas"]["PriorityGroup"];
+            lead_time: components["schemas"]["PriorityPart"];
+            no_contact_boost: components["schemas"]["NoContactRule"];
+            /** Parts */
+            parts: string[];
+            /** Project Id */
+            project_id: string | null;
+            /** Total */
+            total: number;
+            /** Version */
+            version: string | null;
+            /** Weighted Score */
+            weighted_score: number;
+        };
+        /** PriorityGroup */
+        PriorityGroup: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Order */
+            order: number;
+        };
+        /** PriorityItem */
+        PriorityItem: {
+            /** Buyer Fit */
+            buyer_fit: number | null;
+            /** Confidence */
+            confidence: number | null;
+            /** Deal Type */
+            deal_type: string | null;
+            /** Demand Litres Month */
+            demand_litres_month: number | null;
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Group Order */
+            group_order: number;
+            /** Group Rank */
+            group_rank: number;
+            /** Has Contact */
+            has_contact: boolean;
+            /** Id */
+            id: string;
+            /** Lead Time Days */
+            lead_time_days: number | null;
+            /** No Contact Rule */
+            no_contact_rule: boolean;
+            priority_breakdown: components["schemas"]["PriorityBreakdown"] | null;
+            /** Priority Group */
+            priority_group: string | null;
+            /** Priority Score */
+            priority_score: number | null;
+            /** Project Id */
+            project_id: string | null;
+            /** Project Name */
+            project_name: string | null;
+            /** Rank */
+            rank: number;
+            /** Site Id */
+            site_id: string | null;
+            /** Site Name */
+            site_name: string | null;
+            /** Stage */
+            stage: string;
+            /** Stage Event Id */
+            stage_event_id: string | null;
+            /** Stage Evidence Ids */
+            stage_evidence_ids: string[];
+            /** Stage Pending */
+            stage_pending: string | null;
+            /** Title */
+            title: string;
+        };
+        /** PriorityList */
+        PriorityList: {
+            /** Items */
+            items: components["schemas"]["PriorityItem"][];
+        };
+        /**
+         * PriorityPart
+         * @description One part of the score: the value, the score (0 to 1), the weight, the contribution (score x weight), and the
+         *     event ids and the evidence ids that it uses (docs/07 rule 1).
+         */
+        PriorityPart: {
+            /** Contribution */
+            contribution: number;
+            /** Event Ids */
+            event_ids: string[];
+            /** Evidence Ids */
+            evidence_ids: string[];
+            /** Score */
+            score: number;
+            /** Value */
+            value?: unknown;
+            /** Weight */
+            weight: number;
+        };
+        /** Proposal */
+        Proposal: {
+            /** Created At */
+            created_at: string;
+            /** Created By */
+            created_by: string;
+            /** Created By Me */
+            created_by_me: boolean;
+            /**
+             * Created By Type
+             * @enum {string}
+             */
+            created_by_type: "agent" | "human" | "system";
+            /** Decided At */
+            decided_at: string | null;
+            /** Decided By */
+            decided_by: string | null;
+            /** Decision Reason */
+            decision_reason: string | null;
+            /** Events */
+            events: components["schemas"]["ProposedEvent"][];
+            /** Evidence */
+            evidence: components["schemas"]["ProposalEvidence"][];
+            /** Id */
+            id: string;
+            /** Kind */
+            kind: string;
+            /** Model Id */
+            model_id: string | null;
+            /**
+             * Policy
+             * @enum {string}
+             */
+            policy: "automatic" | "review" | "admin_review";
+            /** Prompt Version */
+            prompt_version: string | null;
+            /** Source Id */
+            source_id: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "pending" | "approved" | "rejected" | "edited_approved" | "auto_approved";
+            /** Stream Id */
+            stream_id: string | null;
+            /** Stream Type */
+            stream_type: string | null;
+            /** Summary */
+            summary: string | null;
+            /** Tier */
+            tier: number | null;
+            /** Title */
+            title: string;
+        };
+        /**
+         * ProposalEvidence
+         * @description An evidence item of a proposal: the quote, the span offsets and the source link.
+         */
+        ProposalEvidence: {
+            /** Char End */
+            char_end: number;
+            /** Char Start */
+            char_start: number;
+            /** Id */
+            id: string;
+            /** Published At */
+            published_at?: string | null;
+            /** Publisher */
+            publisher?: string | null;
+            /** Quote */
+            quote: string;
+            /** Retention Policy */
+            retention_policy?: string | null;
+            /** Source Id */
+            source_id: string;
+            /** Title */
+            title?: string | null;
+            /** Url */
+            url?: string | null;
+            /** Verified */
+            verified: boolean;
+        };
+        /** ProposalList */
+        ProposalList: {
+            /** Items */
+            items: components["schemas"]["Proposal"][];
+            /** Total */
+            total: number;
+        };
+        /** ProposedEvent */
+        ProposedEvent: {
+            /** Certainty */
+            certainty?: ("stated" | "reported" | "speculative") | null;
+            /** Event Type */
+            event_type: string;
+            /**
+             * Evidence
+             * @default []
+             */
+            evidence: components["schemas"]["ProposalEvidence"][];
+            /**
+             * Evidence Ids
+             * @default []
+             */
+            evidence_ids: string[];
+            /** Occurred At */
+            occurred_at?: string | null;
+            /** Payload */
+            payload: {
+                [key: string]: unknown;
+            };
+            /** Stream Id */
+            stream_id: string;
+            /** Stream Type */
+            stream_type: string;
         };
         /** QuarantineList */
         QuarantineList: {
@@ -1118,10 +1460,39 @@ export interface components {
             /** Source Url */
             source_url?: string | null;
         };
+        /** RejectResult */
+        RejectResult: {
+            /** Proposal Id */
+            proposal_id: string;
+            /**
+             * Status
+             * @constant
+             */
+            status: "rejected";
+        };
         /** Rejection */
         Rejection: {
             /** Reason */
             reason: string;
+        };
+        /** RuleRate */
+        RuleRate: {
+            /** Alerts */
+            alerts: number;
+            /** Confirmed */
+            confirmed: number;
+            /** Decided */
+            decided: number;
+            /** Dismissed */
+            dismissed: number;
+            /** False Positive */
+            false_positive: number;
+            /** False Positive Rate */
+            false_positive_rate: number | null;
+            /** Tier */
+            tier: number;
+            /** Tier Rule */
+            tier_rule: string;
         };
         /** StageMove */
         StageMove: {
@@ -1129,6 +1500,81 @@ export interface components {
             reason?: string | null;
             /** To Stage */
             to_stage: string;
+        };
+        /** StageMoveResult */
+        StageMoveResult: {
+            /** Deal Id */
+            deal_id: string;
+            /** Proposal Id */
+            proposal_id: string;
+            /** Stage */
+            stage: string;
+            /** Stage Pending */
+            stage_pending: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "pending" | "approved";
+        };
+        /** Telemetry */
+        Telemetry: {
+            /** Items */
+            items: components["schemas"]["TelemetryAlert"][];
+            metrics: components["schemas"]["TelemetryMetrics"];
+        };
+        /** TelemetryAlert */
+        TelemetryAlert: {
+            /** Acknowledged At */
+            acknowledged_at: string | null;
+            /** Acknowledged By */
+            acknowledged_by: string | null;
+            /** Decided At */
+            decided_at: string | null;
+            /** Decided By */
+            decided_by: string | null;
+            /** Decision Reason */
+            decision_reason: string | null;
+            delivered: components["schemas"]["DeliveryTimes"];
+            delivery_status: components["schemas"]["DeliveryStatus"];
+            /** Fetched At */
+            fetched_at: string | null;
+            /** Id */
+            id: string;
+            /** Latency Fetch To Alert Seconds */
+            latency_fetch_to_alert_seconds: number | null;
+            /** Latency Publish To Alert Seconds */
+            latency_publish_to_alert_seconds: number | null;
+            /** Outcome */
+            outcome: ("confirmed" | "dismissed" | "false_positive") | null;
+            /** Published At */
+            published_at: string | null;
+            /** Raised At */
+            raised_at: string;
+            /** Signal Id */
+            signal_id: string | null;
+            /** Source Id */
+            source_id: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "unconfirmed" | "confirmed" | "dismissed" | "false_positive";
+            /** Tier */
+            tier: number;
+            /** Tier Rule */
+            tier_rule: string;
+            /** Time To Acknowledgement Seconds */
+            time_to_acknowledgement_seconds: number | null;
+            /** Title */
+            title: string;
+        };
+        /** TelemetryMetrics */
+        TelemetryMetrics: {
+            /** False Positive Rate By Tier Rule */
+            false_positive_rate_by_tier_rule: components["schemas"]["RuleRate"][];
+            latency_fetch_to_alert_seconds: components["schemas"]["DurationStats"];
+            time_to_acknowledgement_seconds: components["schemas"]["DurationStats"];
         };
         /** Touchpoint */
         Touchpoint: {
@@ -1231,9 +1677,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["AlertState"];
                 };
             };
             /** @description Validation Error */
@@ -1268,9 +1712,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["AlertState"];
                 };
             };
             /** @description Validation Error */
@@ -1305,9 +1747,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["AlertState"];
                 };
             };
             /** @description Validation Error */
@@ -1644,9 +2084,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["EngagementResult"];
                 };
             };
             /** @description Validation Error */
@@ -1681,9 +2119,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["EngagementResult"];
                 };
             };
             /** @description Validation Error */
@@ -1718,9 +2154,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["EngagementResult"];
                 };
             };
             /** @description Validation Error */
@@ -1788,9 +2222,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["StageMoveResult"];
                 };
             };
             /** @description Validation Error */
@@ -1825,9 +2257,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["EngagementResult"];
                 };
             };
             /** @description Validation Error */
@@ -2163,9 +2593,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["PriorityList"];
                 };
             };
             /** @description Validation Error */
@@ -2267,9 +2695,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["ProposalList"];
                 };
             };
             /** @description Validation Error */
@@ -2300,9 +2726,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["Proposal"];
                 };
             };
             /** @description Validation Error */
@@ -2337,9 +2761,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["ApproveResult"];
                 };
             };
             /** @description Validation Error */
@@ -2411,9 +2833,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["ApproveResult"];
                 };
             };
             /** @description Validation Error */
@@ -2448,9 +2868,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["RejectResult"];
                 };
             };
             /** @description Validation Error */
@@ -2785,9 +3203,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["Telemetry"];
                 };
             };
             /** @description Validation Error */

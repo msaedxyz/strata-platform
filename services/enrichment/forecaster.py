@@ -105,20 +105,63 @@ def calculate(stage: str, base_date: date | datetime | str | None, previous_star
     return payload
 
 
+def no_window(stage: str, base_date: date | datetime | str | None) -> dict:
+    """The forecast payload for a stage that has no procurement window to forecast: contractor procurement has
+    started or passed, or the stage has no interval (for example a restart stage). The forecast shows the stage
+    only, so that the calendar never keeps the window of an old stage (M6)."""
+    lc = common_config.lifecycle()
+    target = lc["procurement_stage"]
+    base = _as_date(base_date) or date.today()
+    main = [s["code"] for s in lc["stages"]]
+    restart = [s["code"] for s in lc.get("restart_path") or []]
+    if stage in main and target in main and stage != "care_maintenance_suspension_closure":
+        reached = main.index(stage) >= main.index(target)
+    else:
+        reached = stage in restart and target in restart and restart.index(stage) >= restart.index(target)
+    return {
+        "current_stage": stage, "procurement_stage": target, "base_date": base.isoformat(),
+        "min_projects_per_interval": int(lc.get("min_projects_per_interval", 5)), "intervals": [],
+        "intervals_source": lc.get("intervals_file"), "start": None, "end": None, "median": None, "stage_only": True,
+        "supporting_projects": [], "shift_months_nearer": None, "procurement_reached": reached,
+    }
+
+
+def previous_start(conn: psycopg.Connection, project_id: str) -> date | None:
+    """The start of the last forecast of a project. The stage change clears the forecast of the projection
+    (services/projections/folds.py), so the forecaster reads the last ProcurementWindowForecast event."""
+    row = conn.execute(
+        "SELECT payload->>'start' AS start FROM event WHERE stream_type = 'project' AND stream_id = %s "
+        "AND event_type = 'ProcurementWindowForecast' AND payload->>'start' IS NOT NULL ORDER BY sequence DESC LIMIT 1",
+        (project_id,),
+    ).fetchone()
+    return _as_date(row["start"]) if row else None
+
+
+def shift_threshold_months() -> float | None:
+    """The threshold of the Tier 0 rule "a forecast procurement start that moves six months nearer or more"."""
+    rule = (common_config.tiers().get("feature_thresholds") or {}).get("forecast_shift_months_nearer_gte_6") or {}
+    return float(rule["min"]) if "min" in rule else None
+
+
 def forecast_after_stage(conn: psycopg.Connection, stage_event: dict) -> dict | None:
-    """After a ProjectStageChanged event is written by an approval: write the forecast (policy automatic)."""
+    """After a ProjectStageChanged event is written (automatic or approved): write a fresh forecast (policy automatic).
+
+    Every stage change gets a forecast. A stage without a window gets a forecast that shows the stage only. When the
+    new start moves nearer by the threshold of config/tiers.yaml or more, the forecast raises the Tier 0 alert
+    "forecast moves nearer" for the source of the stage evidence (one alert for each source and rule).
+    """
     from services.governance.proposals import create_proposal
 
     project_id = stage_event["stream_id"]
-    project = conn.execute("SELECT forecast_start, forecast_detail FROM proj_project WHERE id = %s", (project_id,)).fetchone()
-    previous = project["forecast_start"] if project else None
+    project = conn.execute("SELECT name FROM proj_project WHERE id = %s", (project_id,)).fetchone()
+    name = project["name"] if project else project_id
+    previous = previous_start(conn, project_id)
     base = stage_event.get("occurred_at") or stage_event["recorded_at"]
-    payload = calculate(stage_event["payload"]["to_stage"], base, previous)
-    if payload is None:
-        return None
+    stage = stage_event["payload"]["to_stage"]
+    payload = calculate(stage, base, previous) or no_window(stage, base)
     payload["stage_event_id"] = stage_event["id"]
     row, created = create_proposal(
-        conn, kind="ProcurementWindowForecast", title=f"Procurement window: {project_id}",
+        conn, kind="ProcurementWindowForecast", title=f"Procurement window: {name}",
         events=[{"stream_type": "project", "stream_id": project_id, "event_type": "ProcurementWindowForecast",
                  "payload": payload, "evidence_ids": list(stage_event["evidence_ids"]), "certainty": stage_event["certainty"],
                  "occurred_at": base}],
@@ -126,5 +169,30 @@ def forecast_after_stage(conn: psycopg.Connection, stage_event: dict) -> dict | 
         brief_version_id=stage_event.get("brief_version_id"), idempotency_key=f"forecast:{stage_event['id']}",
     )
     if created:
-        log(logger, logging.INFO, "forecast after approved stage", project_id=project_id, stage=payload["current_stage"])
+        log(logger, logging.INFO, "forecast after stage change", project_id=project_id, stage=payload["current_stage"],
+            start=payload["start"], shift_months_nearer=payload["shift_months_nearer"])
+        _alert_on_shift(conn, stage_event, payload, name)
     return row
+
+
+def _alert_on_shift(conn: psycopg.Connection, stage_event: dict, payload: dict, name: str) -> None:
+    threshold = shift_threshold_months()
+    shift = payload.get("shift_months_nearer")
+    if threshold is None or shift is None or shift < threshold or not stage_event["evidence_ids"]:
+        return
+    from services.governance.alerts import raise_alert
+
+    source = conn.execute(
+        "SELECT s.* FROM evidence v JOIN source s ON s.id = v.source_id WHERE v.id = ANY(%s) ORDER BY v.id LIMIT 1",
+        (list(stage_event["evidence_ids"]),),
+    ).fetchone()
+    if source is None:
+        return
+    rule = next((r["id"] for t in common_config.tiers()["tiers"] if t["tier"] == 0 for r in t["rules"]
+                 if "forecast_shift_months_nearer_gte_6" in (r.get("all") or {})), None)
+    if rule is None:
+        return
+    raise_alert(conn, source=source, tier=0, tier_rule=rule,
+                title=f"{name}: procurement forecast moved {shift} months nearer", evidence_ids=list(stage_event["evidence_ids"]),
+                signal_id=source["id"], related_stream_type="project", related_stream_id=stage_event["stream_id"],
+                brief_version_id=stage_event.get("brief_version_id"))

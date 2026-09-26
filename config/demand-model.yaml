@@ -2,12 +2,16 @@
 # Every input must have evidence. If an input has no evidence, Strata shows no estimate.
 # Factors are planning defaults for review by Mohamed. See docs/assumptions.md.
 unit: litres_per_month
+# The demand estimator (services/enrichment/demand.py) takes each input from a fact (EntityAttributeAsserted)
+# of the project, else of its site, with the predicate of config/taxonomy/predicates.yaml. "units" lists the
+# units that the normal form of the value can have ("" = a plain number). The first formula in this list whose
+# inputs all have evidence gives the estimate. The estimate goes to review (config/approval-policy.yaml).
 formulas:
   - id: haul_fleet
     name: "Haul fleet"
     expression: "trucks * litres_per_truck_hour * operating_hours_per_month"
     inputs:
-      trucks: {evidence_required: true, description: "Number of haul trucks"}
+      trucks: {evidence_required: true, predicate: fleet_trucks, units: [""], description: "Number of haul trucks"}
     factors:
       litres_per_truck_hour: 90
       operating_hours_per_month: 500
@@ -15,14 +19,14 @@ formulas:
     name: "Ore and waste movement"
     expression: "tonnes_moved_per_year * litres_per_tonne / 12"
     inputs:
-      tonnes_moved_per_year: {evidence_required: true, description: "Total material moved per year, tonnes"}
+      tonnes_moved_per_year: {evidence_required: true, predicate: tonnes_moved_per_year, units: ["t/y"], description: "Total material moved per year, tonnes"}
     factors:
       litres_per_tonne: 0.9
   - id: generator_capacity
     name: "Diesel generation"
     expression: "megawatts * litres_per_mwh * hours_per_month * load_factor"
     inputs:
-      megawatts: {evidence_required: true, description: "Installed diesel generation, MW"}
+      megawatts: {evidence_required: true, predicate: generation_mw, units: [""], description: "Installed diesel generation, MW"}
     factors:
       litres_per_mwh: 270
       hours_per_month: 730

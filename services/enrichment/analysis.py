@@ -663,15 +663,9 @@ def _plan(c: _Ctx, a: Analysis, res: dict) -> None:
         p["stage_proposed"] = bool(stage_events)
         p["stage_auto"] = bool(stage_events) and p["stage_certainty"] == "stated" and (not p["new"] or p["id"] in auto_new)
 
-    for f in a.forecasts:
-        p = next(x for x in a.projects if x["id"] == f["project_id"])
-        if not p.get("stage_auto"):
-            continue  # the forecast follows when the stage is approved (services/governance/proposals.py)
-        a.facts.append(Fact(
-            kind="ProcurementWindowForecast", agent="window_forecaster",
-            title=f"Procurement window: {p['name']}", key=f"ProcurementWindowForecast:{p['id']}:{f['payload']['current_stage']}",
-            events=[PlannedEvent("project", p["id"], "ProcurementWindowForecast", f["payload"], f["spans"], f["certainty"],
-                                 doc.published_at or doc.fetched_at)]))
+    # The forecast of each written stage change comes from the governance follow-up step (M6,
+    # services/enrichment/followups.py): at once for an automatic stage, after the approval for a reviewed stage.
+    # a.forecasts stays for the scorer features (forecast moves six months nearer).
 
     # Claims: status changes, attributes, relationships.
     for claim in a.claims:

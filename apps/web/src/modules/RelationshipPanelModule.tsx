@@ -28,10 +28,11 @@ type FormKind = "addContact" | "logTouchpoint" | "setNextAction" | "prequalifica
 
 const str = (v: unknown) => (typeof v === "string" ? v : v === null || v === undefined ? "" : String(v));
 
-/** The personal fields of a contact. After an erasure they are gone and the row shows "Erased" (docs/06). */
+/** The name of a contact. The API decrypts the personal fields into data. After an erasure the fields are empty,
+ * erased is true and the row shows "Erased" (docs/06). */
 function contactName(e: Engagement): string {
-  const p = (e.data.personal ?? {}) as Record<string, unknown>;
-  return str(p.name ?? e.data.name) || "Erased";
+  if (e.data.erased === true) return "Erased";
+  return str(e.data.name) || "Erased";
 }
 
 export function RelationshipPanelModule(_: PanelProps) {
