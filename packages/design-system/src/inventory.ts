@@ -20,6 +20,7 @@ export type ComponentState =
   | "reported"
   | "confirmed"
   | "dismissed"
+  | "false-positive"
   | "pending-approval"
   | "checked"
   | "indeterminate"
@@ -37,7 +38,9 @@ export const componentInventory: Record<string, ComponentState[]> = {
   PanelFrame: ["default", "focus", "collapsed", "maximised", "loading", "empty", "error"],
   FeedItem: ["default", "hover", "focus", "selected", "fresh", "unconfirmed", "reported", "loading"],
   DataTable: ["default", "selected", "loading", "empty", "error"],
-  Badge: ["default", "unconfirmed", "reported", "confirmed", "dismissed", "pending-approval"],
+  // Added in M6. Needs audit confirmation (reports/M6-frontend.md). It has no visual style of its own.
+  VirtualList: ["default", "loading", "empty", "error"],
+  Badge: ["default", "unconfirmed", "reported", "confirmed", "dismissed", "false-positive", "pending-approval"],
   Toast: ["default", "error"],
   Modal: ["default"],
   Drawer: ["default", "loading"],
@@ -45,6 +48,8 @@ export const componentInventory: Record<string, ComponentState[]> = {
   Button: ["default", "hover", "focus", "active", "disabled", "loading"],
   IconButton: ["default", "hover", "focus", "active", "disabled", "loading"],
   TextInput: ["default", "hover", "focus", "disabled", "loading", "error"],
+  // Added in M6. Needs audit confirmation (reports/M6-frontend.md).
+  TextArea: ["default", "hover", "focus", "disabled", "loading", "error"],
   Select: ["default", "hover", "focus", "disabled", "error"],
   Checkbox: ["default", "checked", "indeterminate", "focus", "disabled", "error"],
   DatePicker: ["default", "empty", "hover", "focus", "disabled", "error"],

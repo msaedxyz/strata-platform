@@ -1,5 +1,7 @@
-import { type KeyboardEvent, type PointerEvent, type ReactNode, useMemo, useRef, useState } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { type KeyboardEvent, type PointerEvent, type ReactNode, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "../icons";
+import { tokenValues } from "../tokens";
 import { cx, nextListIndex } from "../lib/utils";
 import { IconButton } from "./Button";
 import { Select } from "./Form";
@@ -55,9 +57,23 @@ export interface DataTableProps<T> {
   onRetry?: () => void;
   emptyTitle?: string;
   className?: string;
+  /**
+   * Render only the rows in view (and a few more). Use it for long tables, for example 500 opportunities.
+   * The table keeps its semantics: spacer rows stand in for the rows out of view.
+   */
+  virtualize?: boolean;
+  /** Rows to render above and below the view when virtualize is on. */
+  overscan?: number;
 }
 
 const DEFAULT_MIN_WIDTH = 40;
+const INTERACTIVE = "button, a[href], input, select, textarea, [role='button']";
+
+/** The row height of a density in pixels, from the size.row tokens. The virtualizer uses it as the first estimate. */
+function rowEstimate(density: Density): number {
+  const n = Number.parseFloat(tokenValues.size.row[density]);
+  return Number.isNaN(n) ? 1 : n;
+}
 
 function compare(a: string | number | null | undefined, b: string | number | null | undefined): number {
   if (a === b) return 0;
@@ -90,6 +106,8 @@ export function DataTable<T>({
   onRetry,
   emptyTitle = "No rows",
   className,
+  virtualize = false,
+  overscan = 12,
 }: DataTableProps<T>) {
   const [innerDensity, setInnerDensity] = useState<Density>(defaultDensity);
   const [innerSort, setInnerSort] = useState<SortState | null>(defaultSort);
@@ -102,6 +120,15 @@ export function DataTable<T>({
   const headerRefs = useRef<Record<string, HTMLTableCellElement | null>>({});
   const rowRefs = useRef<Array<HTMLTableRowElement | null>>([]);
   const drag = useRef<{ id: string; startX: number; startWidth: number; min: number } | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  // The rendered width of each column. A focusable separator needs aria-valuenow, also before a resize.
+  const [rendered0, setRendered0] = useState<Record<string, number>>({});
+  const columnKey = columns.map((c) => c.id).join(",");
+  useLayoutEffect(() => {
+    const next: Record<string, number> = {};
+    for (const [id, el] of Object.entries(headerRefs.current)) if (el) next[id] = Math.round(el.getBoundingClientRect().width);
+    setRendered0(next);
+  }, [columnKey]);
 
   const currentDensity = density ?? innerDensity;
   const currentSort = sort === undefined ? innerSort : sort;
@@ -146,6 +173,14 @@ export function DataTable<T>({
     return out;
   }, [rows, columns, filters, currentSort]);
 
+  const virtualizer = useVirtualizer({
+    count: virtualize ? visible.length : 0,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: () => rowEstimate(currentDensity),
+    overscan,
+    getItemKey: (i) => getRowId(visible[i]!),
+  });
+
   const setWidth = (id: string, w: number, min: number) => {
     const width = Math.max(min, Math.round(w));
     setWidths((prev) => ({ ...prev, [id]: width }));
@@ -188,14 +223,23 @@ export function DataTable<T>({
     if (next !== null) {
       e.preventDefault();
       setActiveRow(next);
-      rowRefs.current[next]?.focus();
-    } else if (e.key === "Enter" && onRowClick) {
+      if (virtualize) {
+        virtualizer.scrollToIndex(next);
+        requestAnimationFrame(() => rowRefs.current[next]?.focus());
+      } else rowRefs.current[next]?.focus();
+    } else if (e.key === "Enter" && onRowClick && e.target === e.currentTarget) {
       e.preventDefault();
       onRowClick(row);
     }
   };
 
   const hasWidths = Object.keys(widths).length > 0;
+  const virtualItems = virtualize ? virtualizer.getVirtualItems() : [];
+  const rendered = virtualize
+    ? virtualItems.map((v) => ({ row: visible[v.index]!, i: v.index }))
+    : visible.map((row, i) => ({ row, i }));
+  const paddingTop = virtualItems.length > 0 ? virtualItems[0]!.start : 0;
+  const paddingBottom = virtualItems.length > 0 ? virtualizer.getTotalSize() - virtualItems[virtualItems.length - 1]!.end : 0;
   const rowFocus = Math.min(activeRow, Math.max(visible.length - 1, 0));
 
   let status: ReactNode = null;
@@ -231,7 +275,7 @@ export function DataTable<T>({
           />
         </div>
       )}
-      <div className="sds-table__scroll">
+      <div ref={scrollRef} className="sds-table__scroll">
         <table className={cx("sds-table__table", hasWidths && "sds-table__table--fixed")} aria-label={label} aria-rowcount={visible.length}>
           {hasWidths && (
             <colgroup>
@@ -268,7 +312,7 @@ export function DataTable<T>({
                       role="separator"
                       aria-orientation="vertical"
                       aria-label={`Resize column ${c.header}`}
-                      aria-valuenow={widths[c.id]}
+                      aria-valuenow={widths[c.id] ?? rendered0[c.id] ?? c.width ?? c.minWidth ?? DEFAULT_MIN_WIDTH}
                       aria-valuemin={c.minWidth ?? DEFAULT_MIN_WIDTH}
                       tabIndex={0}
                       className="sds-table__resize"
@@ -302,19 +346,30 @@ export function DataTable<T>({
           </thead>
           {!status && (
             <tbody>
-              {visible.map((row, i) => {
+              {virtualize && paddingTop > 0 && (
+                <tr className="sds-table__spacer" aria-hidden="true">
+                  <td colSpan={columns.length} style={{ height: paddingTop }} />
+                </tr>
+              )}
+              {rendered.map(({ row, i }) => {
                 const id = getRowId(row);
                 return (
                   <tr
                     key={id}
                     ref={(el) => {
                       rowRefs.current[i] = el;
+                      if (virtualize && el) virtualizer.measureElement(el);
                     }}
+                    data-index={virtualize ? i : undefined}
+                    aria-rowindex={virtualize ? i + 1 : undefined}
                     className={cx("sds-table__row", selectedRowId === id && "sds-table__row--selected", onRowClick && "sds-table__row--clickable")}
                     tabIndex={i === rowFocus ? 0 : -1}
                     aria-selected={selectedRowId !== undefined ? selectedRowId === id : undefined}
-                    onClick={() => {
+                    onClick={(e) => {
                       setActiveRow(i);
+                      // A control in a cell (for example a provenance control or a button) does not also select the row.
+                      const control = (e.target as HTMLElement).closest(INTERACTIVE);
+                      if (control && e.currentTarget.contains(control)) return;
                       onRowClick?.(row);
                     }}
                     onKeyDown={(e) => onRowKey(e, row, i)}
@@ -328,6 +383,11 @@ export function DataTable<T>({
                   </tr>
                 );
               })}
+              {virtualize && paddingBottom > 0 && (
+                <tr className="sds-table__spacer" aria-hidden="true">
+                  <td colSpan={columns.length} style={{ height: paddingBottom }} />
+                </tr>
+              )}
             </tbody>
           )}
         </table>

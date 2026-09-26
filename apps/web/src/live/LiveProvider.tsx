@@ -157,6 +157,55 @@ export function useLive(type: string, handler: LiveHandler) {
   }, [connection, type]);
 }
 
+/** One live message: an event insert (db trigger event_notify), with the SSE event name as `type`. */
+export interface LiveEvent {
+  type: string;
+  id?: string;
+  stream_type?: string;
+  stream_id?: string;
+  event_type?: string;
+}
+
+/**
+ * Subscribe to several live event types with one handler. The events of a batch window come in one call,
+ * so that a burst of events gives one reload (docs/07 criterion 7). It uses the same connection as useLive.
+ */
+export function useLiveEvents(types: readonly string[], handler: (events: LiveEvent[]) => void, batchMs = 0) {
+  const { connection } = useContext(LiveContext);
+  const saved = useRef(handler);
+  useLayoutEffect(() => {
+    saved.current = handler;
+  });
+  const key = types.join(",");
+  useEffect(() => {
+    if (!connection || !key) return undefined;
+    let buffer: LiveEvent[] = [];
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const flush = () => {
+      timer = null;
+      const events = buffer;
+      buffer = [];
+      if (events.length) saved.current(events);
+    };
+    const onEvent = (data: unknown, type: string) => {
+      const d = data && typeof data === "object" ? (data as Record<string, unknown>) : {};
+      buffer.push({
+        type,
+        id: typeof d.id === "string" ? d.id : undefined,
+        stream_type: typeof d.stream_type === "string" ? d.stream_type : undefined,
+        stream_id: typeof d.stream_id === "string" ? d.stream_id : undefined,
+        event_type: typeof d.event_type === "string" ? d.event_type : type,
+      });
+      if (timer === null) timer = setTimeout(flush, batchMs);
+    };
+    const offs = key.split(",").map((t) => connection.subscribe(t, onEvent));
+    return () => {
+      offs.forEach((off) => off());
+      if (timer !== null) clearTimeout(timer);
+    };
+  }, [connection, key, batchMs]);
+}
+
 export function useLiveStatus(): LiveStatus {
   return useContext(LiveContext).status;
 }

@@ -73,3 +73,26 @@ Claude Code does not wait for answers. It uses each default below and continues.
 | 92 | Live reconnect | 1 s, then double each time, 30 s at most (apps/web/src/config/app.config.ts) |
 | 93 | Shortcut sequence time | 1200 ms for the second key of "g 1" |
 | 94 | Map style | Empty style until VITE_MAP_STYLE_URL gives a style with a licence for commercial use |
+| 100 | Shape of GET /api/proposals (M4) | `{"items": [proposal row of db/migrations/0001_core.sql with "events": [{event_type, stream_type, stream_id, payload, evidence_ids, certainty}], and "evidence" optional]}`. Without "evidence", the queue calls GET /api/evidence for all ids |
+| 101 | Shape of GET /api/telemetry/alerts (M4) | `{"alerts": [{id, tier, tier_rule, title, status, published_at, fetched_at, raised_at, deliveries: [{channel, delivered_at}], acknowledged_at, acknowledged_by, decided_at, outcome}], "metrics": {latency_fetch_to_alert_seconds: {n, median, p90}, time_to_ack_seconds: {n, median, p90}, false_positive_rate_by_rule: [{tier_rule, alerts, false_positives, rate}]}}` |
+| 102 | Shape of GET /api/quarantine (M3) | `{"items": [quarantine row]}`, and GET /api/quarantine/{id} gives one row |
+| 103 | Result of POST /api/deals/{id}/stage | `{"proposal_id", "status": "pending"}`. The card shows "Pending approval" from stage_pending of GET /api/deals. Until the reload, the card uses the move that the user sent |
+| 104 | Shape of priority_breakdown | An object of parts. A part is a number or an object with contribution, score or value. The key "total" is not a part. Known keys: lead_time, demand, confidence, buyer_fit, no_contact_boost |
+| 105 | Certainty as a status | reported gives the status Reported, speculative gives Unconfirmed, stated gives no badge. Both use the one unverified style (docs/07 rule 4) |
+| 106 | Pending site status | status_pending shows as "<status>, pending" in the unverified style next to the current status |
+| 107 | "As of" date | The end of the chosen day in UTC (YYYY-MM-DDT23:59:59Z) |
+| 108 | Time zone and formats | Africa/Lusaka (the brief time zone), locale en-GB. VITE_TIME_ZONE can change the time zone |
+| 109 | Ticker counts | The counts show the Tier 0, Tier 1 and Tier 2 signals of the last 24 hours |
+| 110 | Live event batch window | 200 ms for each module |
+| 111 | Signal feed pages | 200 signals for each page, 50 for each live patch, 300 ms wait for the text filter |
+| 112 | Tables that render only the rows in view | More than 100 rows |
+| 113 | Source health refresh | Every 60 s, because collector runs are not events. The module also listens to BriefVersionActivated and to "collector_run" live messages |
+| 114 | Engagement rows | Contacts, touchpoints, next actions and prequalification rows show the actor and the date, and no provenance control. The team is the source (docs/03) |
+| 115 | Owner of a next action | The form gives the user id of the current user. The user can change it |
+| 116 | Selection | A click on an opportunity in the Kanban board, the priority list or the next actions selects it for the relationship panel and the timeline. A click on a project or a site selects it for the timeline. The selection is not stored |
+| 117 | Map start view | Zambia and its neighbours (21.5 W to 34 E, 18.5 S to 8 S). Zambia is filled. The countries are Zambia, DR Congo, Angola, Tanzania, Zimbabwe, Botswana, Malawi, Namibia and Mozambique |
+| 120 | Backtest replay | One source per distinct URL. Type snapshot, licence gn_link_only, read_at_source true. published_at and fetched_at are the trace date at 00:00 UTC |
+| 121 | Backtest signal | A SignalScored event with tier 0, 1 or 2, dated strictly before the procurement event |
+| 122 | Backtest match order | Project, site, title words, company. Only the site operator counts at company level |
+| 123 | Backtest median | Over detected events only, with 30.44 days for each month |
+| 124 | Backtest window | 2023-10-01 to 2026-09-26, not strict. EV-007 stays in with a flag |

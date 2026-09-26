@@ -148,3 +148,20 @@ docs/07 asks to record the Infora components that each module uses. The list use
 | 2026-09-26 | The quarantine routes need the viewer role | 05 criterion 5 asks for the reason code in the API. Reading needs no more than viewer | 05, 06 |
 | 2026-09-26 | Migration 0200 adds a unique index on AlertRaised for (source_id, tier_rule) | One alert for each source and rule, also for two workers at the same time | 06 |
 | 2026-09-26 | Prompt versions are "<agent>/v1" from prompts/<agent>/v1.md | Each call log row names the prompt file | 05 |
+| 2026-09-26 | The modules read through one shared cache. A live event reloads the data in the background and keeps the old data on screen | Two modules share one request. No empty flash on each update | 07 |
+| 2026-09-26 | Live modules collect events for 200 ms, then reload once (LIVE_BATCH_MS in apps/web/src/config/modules.ts) | A burst of events gives one reload. It keeps each task short (criterion 7) and the delay far below 2 s (criterion 5) | 07 |
+| 2026-09-26 | `useLiveEvents` subscribes to several event types through the same connection as `useLive` | A module listens to several event types. One hook call keeps the hook order fixed | 07 |
+| 2026-09-26 | The signal feed loads pages of 200 and patches live: it reads the 50 newest signals and adds the new ones at the top | The API gives 1000 items at most in one call. A full reload of a long list is slow | 07 |
+| 2026-09-26 | The design system gets VirtualList, TextArea, DataTable virtualize, the false positive status and MapView boundaries. Each needs audit confirmation | No existing component or variant covered them | 07 |
+| 2026-09-26 | The map base layer is world-atlas countries-50m (Natural Earth, public domain, ISC package), converted with topojson-client. It loads only with the map | No network tiles. The build network allows no tile server | 07 |
+| 2026-09-26 | The map shows no corridor lines | GET /api/map gives no corridor geometry, and the geography taxonomy has none | 07 |
+| 2026-09-26 | The breakdown of the priority score shows in a drawer when the user clicks a row | DataTable has no row expansion. The Drawer is an existing Infora pattern | 07 |
+| 2026-09-26 | The project pipeline marks the engagement window with the accent tone in a bar chart of the lifecycle stages and with a badge in the table | BarChart and Badge have tones. No new pattern | 07 |
+| 2026-09-26 | Projects without a forecast date show in a table under the calendar with their stage only | TimelineAxis rows show ranges only | 05, 07 |
+| 2026-09-26 | The approval queue hides Approve and Edit and approve on a proposal that the user created. Reject stays | docs/06: a user never approves an own proposal. The API enforces it | 06 |
+| 2026-09-26 | The panels of feeds, tables, tabs, the map and the ticker have no body padding (flush) | FeedItem and DataTable have their own spacing | 07 |
+| 2026-09-26 | The perf tests run on a production build with the test-only auth (dist-e2e/) and `vite preview`, after the other tests | The dev server and the React development build are slower than the product. Other tests must not compete for the CPU | 07 |
+| 2026-09-26 | The e2e fixture uses the brief sites and organisations with fictional articles, fictional publishers and the domain fixtures.strata.test | Realistic data with no text attributed to a real outlet | 09 |
+| 2026-09-26 | The M4 endpoints are typed by hand in apps/web/src/api/writes.ts | The generated client has no M4 endpoints yet. The lead regenerates it after M4 | 07 |
+| 2026-09-26 | The 20-event minimum of the backtest is a third reported condition. The backtest passes only when all three conditions pass | 09 needs at least 20 events. The dataset has 7 because the search budget ended | 09 |
+| 2026-09-26 | The backtest report shows the sensitivity to the matching rules | Most hits come from title words or the operator company, not from entity links | 09 |

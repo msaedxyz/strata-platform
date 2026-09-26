@@ -166,3 +166,28 @@
 .sds-checkbox .sds-field__error {
   flex-basis: 100%;
 }
+
+.sds-textarea {
+  align-items: stretch;
+  height: auto;
+  min-height: var(--size-control-lg);
+  padding: var(--space-2) var(--space-3);
+}
+
+.sds-textarea__control {
+  min-height: var(--size-control-lg);
+  resize: vertical;
+  line-height: var(--font-line-height-normal);
+}
+
+.sds-textarea__control--code {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  white-space: pre;
+}
+
+.sds-textarea__spinner {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-3);
+}

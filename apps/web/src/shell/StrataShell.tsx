@@ -6,18 +6,17 @@ import {
   IconButton,
   NavRail,
   SearchInput,
-  TickerStrip,
   TopBar,
   UserMenu,
 } from "@strata/design-system";
 import { LocalStorageLayoutStore, PanelGrid, useWorkspace } from "@strata/panel-framework";
 import { useMemo, useState } from "react";
 import { useSession } from "../auth/AuthContext";
-import { appConfig } from "../config/app.config";
 import { shortcutById, WORKSPACE_SHORTCUTS } from "../config/shortcuts";
 import { workspaceById, workspaces } from "../config/workspaces";
 import { useLiveStatus } from "../live/LiveProvider";
 import { moduleRegistry } from "../modules/registry";
+import { TickerContent } from "../modules/TickerModule";
 import { ShortcutHelp } from "./ShortcutHelp";
 import { useWorkspaceRoute } from "./useRoute";
 import { useShortcuts } from "./useShortcuts";
@@ -130,7 +129,7 @@ export function StrataShell() {
             }
           />
         }
-        ticker={<TickerStrip items={[]} counts={[]} speed={appConfig.ticker.speedPxPerSecond} emptyText="No Tier 0 or Tier 1 signals yet" />}
+        ticker={<TickerContent />}
       >
         <PanelGrid controller={controller} registry={moduleRegistry} role={role} />
       </AppShell>

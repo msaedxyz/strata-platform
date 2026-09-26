@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import type { Map as MapLibreMap, Marker as MapLibreMarker, StyleSpecification } from "maplibre-gl";
+import type { FeatureCollection } from "geojson";
+import type { LngLatBoundsLike, Map as MapLibreMap, Marker as MapLibreMarker, StyleSpecification } from "maplibre-gl";
 import { cx } from "../lib/utils";
+import { tokenValues } from "../tokens";
 import { ErrorState, LoadingState } from "./States";
 import "./MapView.css";
 
@@ -19,6 +21,14 @@ export interface MapViewProps {
   styleUrl?: string;
   /** Longitude and latitude. */
   center: [number, number];
+  /** Start view as a box, west south and east north. It wins over center and zoom. */
+  bounds?: [[number, number], [number, number]];
+  /**
+   * A base layer of boundaries, for example country outlines from a public domain dataset. The map draws them
+   * with the border and surface tokens, so it needs no tile server. A feature with the id in highlightId is filled.
+   */
+  boundaries?: FeatureCollection;
+  highlightId?: string | number;
   zoom?: number;
   markers?: MapMarker[];
   onMarkerSelect?: (id: string) => void;
@@ -32,12 +42,38 @@ export interface MapViewProps {
 /** An empty style: no sources and no layers. The map works with no network access. */
 export const EMPTY_MAP_STYLE: StyleSpecification = { version: 8, sources: {}, layers: [] };
 
+/** A style with only the boundary layers. The colours come from the tokens (MapLibre needs resolved values). */
+export function boundaryStyle(boundaries: FeatureCollection, highlightId?: string | number): StyleSpecification {
+  return {
+    version: 8,
+    sources: { boundaries: { type: "geojson", data: boundaries } },
+    layers: [
+      {
+        id: "boundaries-fill",
+        type: "fill",
+        source: "boundaries",
+        filter: ["==", ["id"], highlightId ?? ""],
+        paint: { "fill-color": tokenValues.color.bg["surface-3"] },
+      },
+      {
+        id: "boundaries-line",
+        type: "line",
+        source: "boundaries",
+        paint: { "line-color": tokenValues.color.border.strong, "line-width": Number.parseFloat(tokenValues.border.width.hairline) || 1 },
+      },
+    ],
+  };
+}
+
 type Status = { kind: "loading" } | { kind: "ready" } | { kind: "error"; message: string };
 
 /** A MapLibre GL map. MapLibre loads on demand, so the map code is not in the main bundle. */
 export function MapView({
   styleUrl,
   center,
+  bounds,
+  boundaries,
+  highlightId,
   zoom = 5,
   markers = [],
   onMarkerSelect,
@@ -76,9 +112,10 @@ export function MapView({
         lib.current = mod;
         const instance = new mod.Map({
           container: el,
-          style: styleUrl ?? EMPTY_MAP_STYLE,
+          style: styleUrl ?? (boundaries ? boundaryStyle(boundaries, highlightId) : EMPTY_MAP_STYLE),
           center: [centerLng, centerLat],
           zoom,
+          ...(bounds ? { bounds: bounds as LngLatBoundsLike } : {}),
           attributionControl: { compact: true },
         });
         map.current = instance;
@@ -99,7 +136,7 @@ export function MapView({
     };
     // The center and zoom are start values. Later changes do not rebuild the map.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [styleUrl, loading, error]);
+  }, [styleUrl, boundaries, loading, error]);
 
   useEffect(() => {
     const m = map.current;
