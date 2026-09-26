@@ -31,7 +31,8 @@ export default defineConfig({
     ...devices["Desktop Chrome"],
     baseURL: WEB_URL,
     viewport: { width: 1920, height: 1080 },
-    trace: "retain-on-failure",
+    // No trace: a trace holds the login form and the bearer tokens (CLAUDE.md rule 5).
+    trace: "off",
     screenshot: "only-on-failure",
     // The stack is on localhost. A proxy of the host must not see these requests.
     launchOptions: { args: ["--no-proxy-server"] },
