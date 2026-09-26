@@ -1,5 +1,5 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { type KeyboardEvent, type PointerEvent, type ReactNode, useMemo, useRef, useState } from "react";
+import { type KeyboardEvent, type PointerEvent, type ReactNode, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Icon } from "../icons";
 import { tokenValues } from "../tokens";
 import { cx, nextListIndex } from "../lib/utils";
@@ -120,6 +120,14 @@ export function DataTable<T>({
   const rowRefs = useRef<Array<HTMLTableRowElement | null>>([]);
   const drag = useRef<{ id: string; startX: number; startWidth: number; min: number } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  // The rendered width of each column. A focusable separator needs aria-valuenow, also before a resize.
+  const [rendered0, setRendered0] = useState<Record<string, number>>({});
+  const columnKey = columns.map((c) => c.id).join(",");
+  useLayoutEffect(() => {
+    const next: Record<string, number> = {};
+    for (const [id, el] of Object.entries(headerRefs.current)) if (el) next[id] = Math.round(el.getBoundingClientRect().width);
+    setRendered0(next);
+  }, [columnKey]);
 
   const currentDensity = density ?? innerDensity;
   const currentSort = sort === undefined ? innerSort : sort;
@@ -303,7 +311,7 @@ export function DataTable<T>({
                       role="separator"
                       aria-orientation="vertical"
                       aria-label={`Resize column ${c.header}`}
-                      aria-valuenow={widths[c.id]}
+                      aria-valuenow={widths[c.id] ?? rendered0[c.id] ?? c.width ?? c.minWidth ?? DEFAULT_MIN_WIDTH}
                       aria-valuemin={c.minWidth ?? DEFAULT_MIN_WIDTH}
                       tabIndex={0}
                       className="sds-table__resize"

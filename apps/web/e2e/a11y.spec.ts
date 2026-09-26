@@ -27,6 +27,9 @@ test.describe("quality floor: accessibility of the shell (axe)", () => {
   for (const ws of ["origination", "relationships", "monitoring", "review"]) {
     test(`axe: the ${ws} workspace has no violations`, async ({ page }) => {
       await openWorkspace(page, ws);
+      // M6: scan the modules with their fixture data, not the loading state.
+      await expect(page.locator('[data-module-state="loading"]')).toHaveCount(0, { timeout: 15_000 });
+      await expect(page.locator("[data-module]").first()).toBeVisible();
       const s = await scan(page, `workspace-${ws}`);
       expect(s.violations, JSON.stringify(s.violations, null, 2)).toEqual([]);
     });

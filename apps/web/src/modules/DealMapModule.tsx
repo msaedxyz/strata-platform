@@ -99,7 +99,7 @@ export function DealMapModule(_: PanelProps) {
       <div className="strata-module__fill">
         {s.node ?? (
           <MapView
-            label="Geographic deal map"
+            label="Map of sites and opportunities"
             styleUrl={appConfig.map.styleUrl || undefined}
             center={cfg.center}
             zoom={cfg.zoom}

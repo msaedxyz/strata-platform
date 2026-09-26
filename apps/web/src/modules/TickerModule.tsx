@@ -56,7 +56,7 @@ export function TickerModule(_: PanelProps) {
   const state = r.error ? "error" : r.loading ? "loading" : r.data && r.data.items.length === 0 ? "empty" : "ready";
   return (
     <ModuleRoot id="ticker" state={state}>
-      <TickerContent label="Ticker strip" />
+      <TickerContent label="Latest signals" />
     </ModuleRoot>
   );
 }
