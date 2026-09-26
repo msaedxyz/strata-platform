@@ -1,0 +1,16 @@
+{
+  "$comment": "PROVISIONAL grid settings until audit/layout-system.md gives the Infora values. Sizes refer to design tokens by name.",
+  "cols": 12,
+  "rowHeightToken": "size.panel-header",
+  "marginToken": "space.2",
+  "containerPaddingToken": "space.2",
+  "collapsedRows": 1,
+  "dragThresholdPx": 3,
+  "resizeHandles": ["se", "e", "s"],
+  "compaction": "vertical",
+  "storage": {
+    "method": "localStorage",
+    "keyPrefix": "strata.layout",
+    "schemaVersion": 1
+  }
+}

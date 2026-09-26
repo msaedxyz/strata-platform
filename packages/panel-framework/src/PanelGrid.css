@@ -1,0 +1,175 @@
+/* Panel grid styles. The react-grid-layout base styles are here with token values, so no raw value comes in. */
+.spf-workspace {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.spf-toolbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+}
+
+.spf-toolbar__title {
+  flex: 1;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--font-letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.spf-grid-area {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.spf-maximised {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-sticky);
+  padding: var(--space-2);
+  background: var(--color-bg-base);
+}
+
+.spf-item > .sds-panel {
+  height: 100%;
+}
+
+.spf-grid .react-grid-layout {
+  position: relative;
+  transition: height var(--motion-duration-normal) var(--motion-easing-standard);
+}
+
+.spf-grid .react-grid-item {
+  transition: all var(--motion-duration-normal) var(--motion-easing-standard);
+  transition-property: left, top, width, height;
+}
+
+.spf-grid .react-grid-item.cssTransforms {
+  transition-property: transform, width, height;
+}
+
+.spf-grid .react-grid-item.resizing,
+.spf-grid .react-grid-item.react-draggable-dragging {
+  z-index: var(--z-dropdown);
+  transition: none;
+}
+
+.spf-grid .react-grid-item.react-draggable-dragging > .sds-panel {
+  box-shadow: var(--shadow-lg);
+}
+
+.spf-grid .react-grid-item.react-grid-placeholder {
+  z-index: var(--z-panel);
+  border: var(--border-width-hairline) dashed var(--color-state-accent);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface-2);
+  transition-duration: var(--motion-duration-fast);
+  user-select: none;
+}
+
+.spf-grid .react-grid-item > .react-resizable-handle {
+  position: absolute;
+  z-index: var(--z-panel);
+}
+
+.spf-grid .react-grid-item > .react-resizable-handle-se {
+  right: 0;
+  bottom: 0;
+  width: var(--space-6);
+  height: var(--space-6);
+  cursor: se-resize;
+}
+
+.spf-grid .react-grid-item > .react-resizable-handle-se::after {
+  position: absolute;
+  right: var(--space-1);
+  bottom: var(--space-1);
+  width: var(--space-3);
+  height: var(--space-3);
+  border-right: var(--border-width-focus) solid var(--color-border-strong);
+  border-bottom: var(--border-width-focus) solid var(--color-border-strong);
+  content: "";
+}
+
+.spf-grid .react-grid-item > .react-resizable-handle-e {
+  top: 0;
+  right: 0;
+  bottom: var(--space-6);
+  width: var(--space-2);
+  cursor: ew-resize;
+}
+
+.spf-grid .react-grid-item > .react-resizable-handle-s {
+  right: var(--space-6);
+  bottom: 0;
+  left: 0;
+  height: var(--space-2);
+  cursor: ns-resize;
+}
+
+.spf-grid .react-grid-item > .react-resizable-handle-e:hover,
+.spf-grid .react-grid-item > .react-resizable-handle-s:hover {
+  background: var(--color-state-accent);
+}
+
+.spf-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spf-picker__item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  column-gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width-hairline) solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.spf-picker__item:hover:not(:disabled) {
+  border-color: var(--color-border-default);
+  background: var(--color-bg-surface-2);
+}
+
+.spf-picker__item:disabled {
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+.spf-picker__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.spf-picker__description {
+  grid-column: 2;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+.spf-picker__state {
+  grid-column: 3;
+  grid-row: 1;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-2xs);
+}

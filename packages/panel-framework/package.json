@@ -1,0 +1,48 @@
+{
+  "name": "@strata/panel-framework",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The Infora panel grid for Strata: panel registry, drag, resize, snap, collapse, maximise, close, add panel, workspaces and layout storage.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "lint": "eslint . && stylelint \"src/**/*.css\"",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run",
+    "build": "tsc --noEmit -p ."
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "@strata/design-system": "workspace:*",
+    "react-grid-layout": "^2.2.4"
+  },
+  "devDependencies": {
+    "@strata/eslint-plugin-strata": "workspace:*",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.11.0",
+    "jsdom": "^30.1.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "stylelint": "^17.15.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}
