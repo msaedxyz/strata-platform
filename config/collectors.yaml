@@ -1,0 +1,114 @@
+# Collector settings. Source: docs/04-ingestion.md.
+# Code reads every threshold, schedule and mapping from this file.
+
+# Time zone of the schedules. "daily" and "weekly" are cron strings in this time zone.
+timezone: Africa/Lusaka
+schedules:
+  daily: "0 5 * * *"      # each day at 05:00 Africa/Lusaka
+  weekly: "0 5 * * 1"     # each Monday at 05:00 Africa/Lusaka
+# Random delay before each scheduled collect job, in seconds (docs/04: jitter of up to one minute).
+jitter_seconds: 60
+
+# The worker checks for due sources on this cron (every minute). It also purges expired text.
+dispatcher_cron: "* * * * *"
+purge_cron: "17 * * * *"
+worker:
+  concurrency: 4
+
+http:
+  user_agent: "Strata/0.1 (+contact: {contact_email})"
+  robots_user_agent: "Strata"
+  timeout_seconds: 30
+  max_redirects: 5
+  max_bytes: 26214400           # 25 MB for one response
+  default_rate_limit_seconds: 5 # one request for each domain every five seconds
+  robots_cache_seconds: 86400
+  robots_error_cache_seconds: 600
+  # A fetch that fails is retried three times with exponential backoff: 2, 4 and 8 seconds.
+  retry:
+    max_retries: 3
+    backoff_seconds: 2
+    retry_statuses: [429, 500, 502, 503, 504]
+
+google_news:
+  # The collector adds q, hl, gl and ceid from the brief. STRATA_GOOGLE_NEWS_BASE_URL overrides this value.
+  base_url: "https://news.google.com/rss/search"
+  rate_limit_seconds: 5
+
+pipeline:
+  excerpt_chars: 280
+  # Two texts are near duplicates when the Hamming distance of their 64 bit simhash is this value or less.
+  hamming_distance: 3
+  simhash_shingle_words: 3
+  # Only sources fetched in this many days are candidates for a near duplicate.
+  near_duplicate_window_days: 60
+  language_sample_chars: 2000
+
+pdf:
+  # A page with fewer characters than this has no text layer. OCR reads the page.
+  ocr_min_chars: 20
+  ocr_dpi: 200
+  ocr_language: eng
+
+web:
+  # A sitemap can list many pages. The collector fetches this many pages at most in one run.
+  max_sitemap_pages: 50
+
+health:
+  # The health API calculates the error rate and the documents for each run from this many recent runs.
+  window_runs: 20
+
+# Brief source types and the source table type that each one gives.
+source_types:
+  google_news: google_news
+  rss: rss
+  atom: rss
+  web: web
+  sitemap: web
+  pdf: pdf
+
+# The nine early signal source types of docs/04-ingestion.md.
+# Each type lists the source_type codes in sources.early_signal that cover it, and the
+# known_gaps names that explain why it is not collected. docs/04 criterion 14 checks this map.
+early_signal_types:
+  - code: zema
+    name: "ZEMA notices and assessment reports"
+    source_types: [zema_eia]
+    known_gaps: []
+  - code: mining_cadastre
+    name: "Zambia Mining Cadastre"
+    source_types: [mining_cadastre]
+    known_gaps: ["Zambia Mining Cadastre"]
+  - code: exchange_filings
+    name: "Stock exchange filings of the watched operators"
+    source_types: [exchange_filings]
+    known_gaps: ["SEDAR+ filings", "LSE RNS filings", "JSE SENS announcements", "Lusaka Securities Exchange announcements"]
+  - code: investor_reports
+    name: "Investor presentations and annual reports"
+    source_types: [investor_reports]
+    known_gaps: []
+  - code: dfi_projects
+    name: "Project pages of development finance institutions"
+    source_types: [dfi_projects]
+    known_gaps: ["IFC project pages", "DFC project pages"]
+  - code: zda_mfez
+    name: "Zambia Development Agency and the economic zones"
+    source_types: [zda_mfez]
+    known_gaps: ["Zambia Development Agency investment licences and MFEZ tenant lists"]
+  - code: procurement
+    name: "ZPPA and procuring entities"
+    source_types: [procurement_notices]
+    known_gaps: ["ZESCO procurement notices", "Road Development Agency procurement notices", "ZCCM-IH procurement notices"]
+  - code: budget_parliament
+    name: "National budget and parliament statements"
+    source_types: [budget_parliament]
+    known_gaps: ["Ministry of Finance national budget documents"]
+  - code: job_postings
+    name: "Job postings for the watched sites and contractors"
+    source_types: [job_postings]
+    known_gaps: ["Job postings for watched sites and contractors"]
+
+# Research snapshots in data/snapshots/<date>/items.jsonl. Loaded once by services.collectors.snapshot.
+snapshot:
+  dir: data/snapshots
+  licence_code: gn_link_only

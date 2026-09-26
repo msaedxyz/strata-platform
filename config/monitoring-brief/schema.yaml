@@ -1,0 +1,156 @@
+# JSON schema of a Monitoring Brief version. Source: docs/04-ingestion.md.
+# services/collectors/brief.py validates each version against this schema before it stores it.
+# The loader also checks rules that a schema cannot give: unique ids, known licence codes,
+# valid schedules and known organisation ids.
+$schema: "https://json-schema.org/draft/2020-12/schema"
+type: object
+required: [version, name, timezone, sectors, geographies, deal_types, licences, watch, organisations,
+           themes, google_news, google_news_only, sources, known_gaps, scoring]
+properties:
+  version: {type: integer, minimum: 1}
+  name: {type: string, minLength: 1}
+  status: {type: string}
+  created_at: {type: [string, "null"]}
+  origin: {type: [string, "null"]}
+  timezone: {type: string, minLength: 1}
+  contact_email_env: {type: string}
+  taxonomy_ref: {type: string}
+  tiers_ref: {type: string}
+  sectors: {$ref: "#/$defs/codes"}
+  geographies: {$ref: "#/$defs/codes"}
+  deal_types: {$ref: "#/$defs/codes"}
+  licences:
+    type: object
+    minProperties: 1
+    additionalProperties: {enum: [full, verify_then_purge, link_only]}
+  watch:
+    type: object
+    required: [daily, weekly]
+    properties:
+      daily: {type: array, items: {$ref: "#/$defs/site"}}
+      weekly: {type: array, items: {$ref: "#/$defs/site"}}
+    additionalProperties: false
+  organisations:
+    type: array
+    items:
+      type: object
+      required: [id, name]
+      properties:
+        id: {$ref: "#/$defs/id"}
+        name: {type: string, minLength: 1}
+        aliases: {type: array, items: {type: string}}
+        role: {type: [string, "null"]}
+        country: {type: [string, "null"]}
+        external_ids: {type: object}
+        evidence_url: {type: [string, "null"]}
+  themes:
+    type: array
+    items:
+      type: object
+      required: [code, name, direction, keywords]
+      properties:
+        code: {$ref: "#/$defs/id"}
+        name: {type: string}
+        direction: {enum: [demand_up, procurement, project_pipeline, demand_down]}
+        keywords: {type: array, items: {type: string, minLength: 1}}
+  exclusions: {type: array, items: {type: string}}
+  google_news:
+    type: object
+    required: [edition, licence_code, queries]
+    properties:
+      edition:
+        type: object
+        required: [hl, gl, ceid]
+        properties:
+          hl: {type: string}
+          gl: {type: string}
+          ceid: {type: string}
+      licence_code: {type: string}
+      queries:
+        type: array
+        items:
+          type: object
+          required: [id, q, schedule]
+          properties:
+            id: {$ref: "#/$defs/id"}
+            q: {type: string, minLength: 1}
+            schedule: {$ref: "#/$defs/schedule"}
+            licence_code: {type: string}
+  google_news_only: {type: array, items: {type: string, pattern: "^[a-z0-9.-]+$"}}
+  sources:
+    type: object
+    required: [news, early_signal]
+    properties:
+      news: {type: array, items: {$ref: "#/$defs/source"}}
+      early_signal:
+        type: array
+        items:
+          allOf:
+            - {$ref: "#/$defs/source"}
+            - {type: object, required: [source_type]}
+      proposed: {type: array, items: {$ref: "#/$defs/source"}}
+    additionalProperties: false
+  known_gaps:
+    type: array
+    items:
+      type: object
+      required: [name, reason]
+      properties:
+        name: {type: string, minLength: 1}
+        reason: {type: string, minLength: 1}
+        workaround: {type: [string, "null"]}
+  scoring:
+    type: object
+    required: [weights]
+    properties:
+      weights: {type: object, additionalProperties: {type: number}}
+$defs:
+  id: {type: string, pattern: "^[a-z0-9_]+$"}
+  codes: {type: array, items: {type: string, pattern: "^[a-z0-9_]+$"}}
+  schedule:
+    description: "daily, weekly or a five field cron string in the brief time zone"
+    type: string
+    minLength: 1
+  site:
+    type: object
+    required: [id, name, site_class]
+    properties:
+      id: {$ref: "#/$defs/id"}
+      name: {type: string, minLength: 1}
+      aliases: {type: array, items: {type: string}}
+      site_class: {enum: [mine, exploration, farm, power, industrial, transport, border, fuel_supply]}
+      operator: {type: [string, "null"]}
+      owners: {type: array, items: {type: string}}
+      district: {type: [string, "null"]}
+      province: {type: [string, "null"]}
+      corridor: {type: [string, "null"]}
+      status_hint: {type: [string, "null"]}
+      geometry:
+        oneOf:
+          - {type: "null"}
+          - type: object
+            required: [lat, lon, approximate, dataset, licence]
+            properties:
+              lat: {type: number, minimum: -90, maximum: 90}
+              lon: {type: number, minimum: -180, maximum: 180}
+              approximate: {type: boolean}
+              dataset: {type: string, minLength: 1}
+              dataset_url: {type: [string, "null"]}
+              licence: {type: string, minLength: 1}
+      evidence_url: {type: [string, "null"]}
+      note: {type: [string, "null"]}
+  source:
+    type: object
+    required: [id, name, type, url, schedule, licence_code]
+    properties:
+      id: {$ref: "#/$defs/id"}
+      name: {type: string, minLength: 1}
+      type: {enum: [rss, atom, web, sitemap, pdf]}
+      url: {type: string, pattern: "^https?://"}
+      schedule: {$ref: "#/$defs/schedule"}
+      licence_code: {type: string}
+      rate_limit_seconds: {type: number, minimum: 0}
+      source_type: {type: string, pattern: "^[a-z0-9_]+$"}
+      credentials_env: {type: [string, "null"], description: "Name of an environment variable. The collector never logs in without it."}
+      publisher: {type: [string, "null"]}
+      reason: {type: [string, "null"]}

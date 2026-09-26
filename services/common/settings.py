@@ -48,6 +48,8 @@ class Settings(BaseSettings):
     contact_email: str = Field("strata-collector@example.invalid", alias="STRATA_CONTACT_EMAIL")
     fixture_mode: bool = Field(False, alias="STRATA_FIXTURE_MODE")
     verification_period_days: int = Field(30, alias="STRATA_VERIFICATION_PERIOD_DAYS")
+    google_news_base_url: str | None = Field(None, alias="STRATA_GOOGLE_NEWS_BASE_URL")
+    fixture_base_url: str = Field("http://localhost:8765", alias="STRATA_FIXTURE_BASE_URL")
 
     # Email alerts.
     smtp_host: str | None = Field(None, alias="STRATA_SMTP_HOST")
