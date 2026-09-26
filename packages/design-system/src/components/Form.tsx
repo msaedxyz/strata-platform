@@ -3,6 +3,7 @@ import {
   type InputHTMLAttributes,
   type ReactNode,
   type SelectHTMLAttributes,
+  type TextareaHTMLAttributes,
   useEffect,
   useId,
   useImperativeHandle,
@@ -89,6 +90,45 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function T
               {shortcutHint}
             </kbd>
           )}
+        </div>
+      )}
+    </Field>
+  );
+});
+
+export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string;
+  hideLabel?: boolean;
+  hint?: string;
+  error?: string;
+  loading?: boolean;
+  /** Use the mono font, for example for YAML or JSON. */
+  code?: boolean;
+}
+
+/** A text field with more than one line, for example a note, a reason or a YAML document. */
+export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(
+  { label, hideLabel, hint, error, loading, code = false, className, disabled, ...rest },
+  ref,
+) {
+  return (
+    <Field label={label} hideLabel={hideLabel} hint={hint} error={error} className={className} id={rest.id}>
+      {({ inputId, describedBy }) => (
+        <div
+          className={cx("sds-input", "sds-textarea", disabled && "sds-input--disabled", error && "sds-input--error")}
+          data-force-state={(rest as Record<string, unknown>)["data-force-state"] as string | undefined}
+        >
+          <textarea
+            ref={ref}
+            id={inputId}
+            className={cx("sds-input__control", "sds-textarea__control", code && "sds-textarea__control--code")}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={describedBy}
+            aria-busy={loading || undefined}
+            disabled={disabled}
+            {...rest}
+          />
+          {loading && <span className="sds-spinner sds-textarea__spinner" aria-hidden="true" />}
         </div>
       )}
     </Field>

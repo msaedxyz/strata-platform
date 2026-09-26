@@ -13,6 +13,7 @@ export { TickerStrip, type TickerItem, type TickerCount, type TickerStripProps }
 export { PanelFrame, PanelHeader, type PanelFrameProps, type PanelHeaderProps } from "./components/PanelFrame";
 export { FeedItem, type FeedItemProps } from "./components/FeedItem";
 export { DataTable, type Column, type DataTableProps, type Density, type SortState, type SortDirection } from "./components/DataTable";
+export { VirtualList, type VirtualListProps } from "./components/VirtualList";
 export { Badge, StatusBadge, STATUS_STYLE, type BadgeProps, type BadgeTone, type Status, type StatusBadgeProps } from "./components/Badge";
 export { Toast, ToastProvider, useToast, type ToastData, type ToastProps, type ToastTone } from "./components/Toast";
 export { Modal, Drawer, type ModalProps, type DrawerProps } from "./components/Overlay";
@@ -20,11 +21,13 @@ export { Tabs, type TabItem, type TabsProps } from "./components/Tabs";
 export { Button, IconButton, type ButtonProps, type ButtonVariant, type IconButtonProps } from "./components/Button";
 export {
   TextInput,
+  TextArea,
   SearchInput,
   Select,
   Checkbox,
   DatePicker,
   type TextInputProps,
+  type TextAreaProps,
   type SearchInputProps,
   type SelectProps,
   type SelectOption,
@@ -35,7 +38,7 @@ export { Tooltip, type TooltipProps } from "./components/Tooltip";
 export { EmptyState, ErrorState, LoadingState, type EmptyStateProps, type ErrorStateProps, type LoadingStateProps } from "./components/States";
 export { Sparkline, BarChart, type SparklineProps, type BarChartProps, type BarDatum, type ChartTone } from "./components/Charts";
 export { TimelineAxis, type TimelineAxisProps, type TimelineRow, type TimelineRange, type TimelineMarker } from "./components/TimelineAxis";
-export { MapView, EMPTY_MAP_STYLE, type MapViewProps, type MapMarker, type MapMarkerTone } from "./components/MapView";
+export { MapView, EMPTY_MAP_STYLE, boundaryStyle, type MapViewProps, type MapMarker, type MapMarkerTone } from "./components/MapView";
 export { KanbanBoard, type KanbanBoardProps, type KanbanColumn, type KanbanCard } from "./components/KanbanBoard";
 export {
   Fact,

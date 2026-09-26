@@ -20,6 +20,7 @@ import {
   TickerStrip,
   ToastProvider,
   useToast,
+  VirtualList,
 } from "../src";
 import { sampleEvidence } from "../src/components/evidence.fixtures";
 
@@ -381,5 +382,67 @@ describe("Toast", () => {
     });
     expect(screen.queryByText("Approved")).toBeNull();
     vi.useRealTimers();
+  });
+});
+
+/** jsdom has no layout. Give each element a fixed size so that the virtualizer can calculate the view. */
+function withLayout(height: number, run: () => void) {
+  const h = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight");
+  const w = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetWidth");
+  Object.defineProperty(HTMLElement.prototype, "offsetHeight", { configurable: true, get: () => height });
+  Object.defineProperty(HTMLElement.prototype, "offsetWidth", { configurable: true, get: () => 800 });
+  try {
+    run();
+  } finally {
+    if (h) Object.defineProperty(HTMLElement.prototype, "offsetHeight", h);
+    if (w) Object.defineProperty(HTMLElement.prototype, "offsetWidth", w);
+  }
+}
+
+describe("DataTable virtualize (docs/07 criteria 6 and 7)", () => {
+  const many: Row[] = Array.from({ length: 500 }, (_, i) => ({ id: `r${i}`, name: `Row ${i}`, score: i }));
+  it("renders only a part of 500 rows, with spacer rows and the full row count", () => {
+    withLayout(240, () => {
+      render(<DataTable columns={columns} rows={many} getRowId={(r) => r.id} label="Many" virtualize overscan={2} />);
+    });
+    const bodyRows = screen.getAllByRole("row").filter((r) => r.closest("tbody") && !r.classList.contains("sds-table__spacer"));
+    expect(bodyRows.length).toBeGreaterThan(0);
+    expect(bodyRows.length).toBeLessThan(100);
+    expect(screen.getByRole("table")).toHaveAttribute("aria-rowcount", "500");
+    expect(screen.getByText("500 rows")).toBeInTheDocument();
+  });
+
+  it("renders every row without virtualize", () => {
+    render(<DataTable columns={columns} rows={many.slice(0, 50)} getRowId={(r) => r.id} label="Few" />);
+    expect(screen.getAllByRole("row").filter((r) => r.closest("tbody"))).toHaveLength(50);
+  });
+});
+
+describe("VirtualList", () => {
+  const items = Array.from({ length: 10000 }, (_, i) => ({ id: `i${i}`, title: `Item ${i}` }));
+  it("renders a small part of 10 000 items and asks for more near the end", () => {
+    const onEnd = vi.fn();
+    withLayout(300, () => {
+      render(<VirtualList items={items} getKey={(i) => i.id} renderItem={(i) => <p>{i.title}</p>} label="Items" estimateSize={30} onEndReached={onEnd} />);
+    });
+    const rendered = screen.getAllByRole("listitem");
+    expect(rendered.length).toBeGreaterThan(0);
+    expect(rendered.length).toBeLessThan(100);
+    expect(onEnd).not.toHaveBeenCalled();
+  });
+
+  it("calls onEndReached once when the list is short", () => {
+    const onEnd = vi.fn();
+    withLayout(300, () => {
+      render(<VirtualList items={items.slice(0, 5)} getKey={(i) => i.id} renderItem={(i) => <p>{i.title}</p>} label="Items" estimateSize={30} onEndReached={onEnd} />);
+    });
+    expect(onEnd).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows the empty and error states", () => {
+    const { rerender } = render(<VirtualList items={[]} getKey={() => "x"} renderItem={() => null} label="Items" emptyTitle="No signals" />);
+    expect(screen.getByText("No signals")).toBeInTheDocument();
+    rerender(<VirtualList items={[]} getKey={() => "x"} renderItem={() => null} label="Items" error="Failed" />);
+    expect(screen.getByRole("alert")).toHaveTextContent("Failed");
   });
 });
