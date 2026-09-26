@@ -159,3 +159,6 @@ from .collector_support import cdb, fake_clock, fixture_server, fresh_db  # noqa
 
 # Fixtures of the enrichment tests (M3): brief v1 active with its watch lists as entities.
 from .enrichment_support import edb, edb_setup  # noqa: E402,F401
+
+# Fixtures of the governance tests (M4): master key, API client, SMTP stub and a live server for the SSE stream.
+from .governance_support import api, live_server, master_key, smtp_stub, tokens  # noqa: E402,F401

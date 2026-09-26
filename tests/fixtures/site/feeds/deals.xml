@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic fixture feed for the Strata acceptance tests (docs/09 scenario 1). The article is invented test data.
+     Only the brief version that scenario 1 activates lists this feed, so the collector tests of M2 do not see it. -->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Copperbelt Deals Wire (fixture)</title>
+    <link>{{BASE_URL}}/</link>
+    <description>Synthetic deal news for acceptance tests</description>
+    <language>en</language>
+    <item>
+      <title>KCM starts sale process and invites expressions of interest for diesel supply to Nchanga</title>
+      <link>{{BASE_URL}}/deals/2026/09/kcm-sale-process-nchanga-diesel.html</link>
+      <guid isPermaLink="false">fixture-kcm-sale-process-nchanga-diesel</guid>
+      <pubDate>Fri, 25 Sep 2026 08:00:00 +0200</pubDate>
+      <description>Konkola Copper Mines Plc started a sale process for its fuel supply contract at the Nchanga mine.</description>
+      <content:encoded><![CDATA[<p>Konkola Copper Mines Plc has started a sale process for the bulk fuel supply contract of the Nchanga mine and smelter in Chingola.</p>
+<p>KCM invites expressions of interest from fuel suppliers for the supply of diesel and lubricants to the Nchanga mine for three years. The mine and its contractors use about 4 million litres of diesel a month.</p>
+<p>Submissions must reach the KCM procurement office in Chingola by 30 October 2026. KCM said that it will shortlist suppliers in November.</p>]]></content:encoded>
+    </item>
+  </channel>
+</rss>
