@@ -68,6 +68,13 @@ def test_scenario_03_two_names_for_one_company_give_one_entity_and_a_merge_goes_
     payload = merges[0]["events"][0]["payload"]
     assert duplicate in payload["merged_ids"] + [payload["into_id"]]
     assert edb.execute("SELECT count(*) AS n FROM event WHERE event_type = 'EntityMerged'").fetchone()["n"] == 0
+    # After approval, the merged entity points to the entity that it merges into.
+    from services.governance.proposals import approve
+
+    approve(edb, merges[0]["id"], "approver-1")
+    for merged_id in payload["merged_ids"]:
+        row = edb.execute("SELECT merged_into FROM proj_entity WHERE id = %s", (merged_id,)).fetchone()
+        assert row["merged_into"] == payload["into_id"]
     edb.commit()
 
 

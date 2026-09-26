@@ -732,14 +732,14 @@ def _plan(c: _Ctx, a: Analysis, res: dict) -> None:
             continue
         seen_pairs.add(tuple(m["entity_ids"]))
         into, merged = m["entity_ids"][0], m["entity_ids"][1:]
+        payload = {"merged_ids": merged, "into_id": into,
+                   "reason": f"two existing {m['type']} entities have the normalised name '{normalise_name(m['name'])}'"}
+        # One event in the stream of each merged entity, so that its projection records merged_into on approval.
         a.facts.append(Fact(
             kind="EntityMerged", agent="resolver", title=f"Merge {len(m['entity_ids'])} entities named {m['name']}",
             key=f"EntityMerged:{':'.join(m['entity_ids'])}",
-            events=[PlannedEvent("entity", into, "EntityMerged",
-                                 {"merged_ids": merged, "into_id": into,
-                                  "reason": f"two existing {m['type']} entities have the normalised name "
-                                            f"'{normalise_name(m['name'])}'"},
-                                 m["spans"], "stated")],
+            events=[PlannedEvent("entity", merged_id, "EntityMerged", payload, m["spans"], "stated")
+                    for merged_id in merged],
             force_review=True))
 
 
