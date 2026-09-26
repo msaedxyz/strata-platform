@@ -1,0 +1,30 @@
+.sds-tooltip-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.sds-tooltip {
+  position: absolute;
+  left: 50%;
+  z-index: var(--z-tooltip);
+  width: max-content;
+  max-width: var(--size-overlay-tooltip);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width-hairline) solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface-3);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
+  line-height: var(--font-line-height-normal);
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.sds-tooltip--top {
+  bottom: calc(100% + var(--space-2));
+}
+
+.sds-tooltip--bottom {
+  top: calc(100% + var(--space-2));
+}

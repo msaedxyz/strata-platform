@@ -2,3 +2,7 @@ packages:
   - "apps/*"
   - "packages/*"
   - "tools/*"
+
+# Packages that may run install scripts.
+onlyBuiltDependencies:
+  - esbuild

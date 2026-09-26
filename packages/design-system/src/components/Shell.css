@@ -1,0 +1,196 @@
+.sds-shell {
+  display: grid;
+  grid-template-columns: var(--size-nav-rail) minmax(0, 1fr);
+  grid-template-rows: var(--size-top-bar) minmax(0, 1fr);
+  grid-template-areas:
+    "nav top"
+    "nav main";
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-bg-base);
+}
+
+.sds-shell--ticker {
+  grid-template-rows: var(--size-top-bar) var(--size-ticker) minmax(0, 1fr);
+  grid-template-areas:
+    "nav top"
+    "nav ticker"
+    "nav main";
+}
+
+.sds-shell__skip {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-tooltip);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-surface-3);
+  color: var(--color-text-primary);
+  transform: translateY(-200%);
+}
+
+.sds-shell__skip:focus {
+  transform: none;
+}
+
+.sds-shell__nav {
+  grid-area: nav;
+  min-height: 0;
+  border-right: var(--border-width-hairline) solid var(--color-border-subtle);
+  background: var(--color-bg-surface-1);
+}
+
+.sds-shell__top {
+  grid-area: top;
+  min-width: 0;
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+  background: var(--color-bg-surface-1);
+}
+
+.sds-shell__ticker {
+  grid-area: ticker;
+  min-width: 0;
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sds-shell__main {
+  grid-area: main;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.sds-shell__main:focus-visible {
+  outline-offset: calc(-1 * var(--border-width-focus));
+}
+
+.sds-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+  padding: var(--space-2) 0;
+}
+
+.sds-nav__brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+  color: var(--color-state-accent);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--font-letter-spacing-wide);
+}
+
+.sds-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sds-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-3) 0;
+  border: 0;
+  border-left: var(--border-width-focus) solid transparent;
+  background: transparent;
+  color: var(--color-text-tertiary);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.sds-nav__item:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface-2);
+}
+
+.sds-nav__item:focus-visible {
+  outline-offset: calc(-1 * var(--border-width-focus));
+}
+
+.sds-nav__item--active {
+  border-left-color: var(--color-state-accent);
+  color: var(--color-text-primary);
+}
+
+.sds-nav__label {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: var(--font-size-2xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sds-nav__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+.sds-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  height: 100%;
+  padding: 0 var(--space-4);
+}
+
+.sds-topbar__title {
+  flex: none;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.sds-topbar__search {
+  flex: 1;
+  max-width: var(--size-overlay-md);
+}
+
+.sds-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.sds-user__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-control-sm);
+  height: var(--size-control-sm);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-surface-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.sds-user__name {
+  font-size: var(--font-size-sm);
+}
+
+.sds-user__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sds-user__header-name {
+  font-weight: var(--font-weight-medium);
+}
+
+.sds-user__header-email {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+}

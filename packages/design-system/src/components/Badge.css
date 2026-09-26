@@ -1,0 +1,46 @@
+.sds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: var(--size-icon-md);
+  padding: 0 var(--space-2);
+  border: var(--border-width-hairline) solid currentColor;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--font-letter-spacing-wide);
+  line-height: var(--font-line-height-tight);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sds-badge--neutral {
+  color: var(--color-state-neutral);
+}
+
+.sds-badge--positive {
+  color: var(--color-state-positive);
+}
+
+.sds-badge--negative {
+  color: var(--color-state-negative);
+}
+
+.sds-badge--warning {
+  color: var(--color-state-warning);
+}
+
+.sds-badge--accent {
+  color: var(--color-state-accent);
+}
+
+/* Unconfirmed and reported: one shared style (docs/07 rule 4). */
+.sds-badge--unverified {
+  color: var(--color-state-warning);
+  border-style: dashed;
+}
+
+.sds-badge--solid {
+  border-color: transparent;
+  background: var(--color-bg-surface-3);
+}

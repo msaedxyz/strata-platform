@@ -1,0 +1,99 @@
+.sds-sparkline {
+  display: inline-block;
+  width: var(--size-chart-sparkline-width);
+  height: var(--size-chart-sparkline-height);
+  vertical-align: middle;
+}
+
+.sds-sparkline svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.sds-chart__line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--size-chart-stroke);
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.sds-chart__point {
+  fill: currentColor;
+}
+
+.sds-chart__baseline {
+  stroke: var(--color-border-default);
+  stroke-width: var(--border-width-hairline);
+  stroke-dasharray: var(--space-2) var(--space-2);
+  vector-effect: non-scaling-stroke;
+}
+
+.sds-chart--neutral {
+  color: var(--color-state-neutral);
+}
+
+.sds-chart--positive {
+  color: var(--color-state-positive);
+}
+
+.sds-chart--negative {
+  color: var(--color-state-negative);
+}
+
+.sds-chart--accent {
+  color: var(--color-state-accent);
+}
+
+.sds-chart--warning {
+  color: var(--color-state-warning);
+}
+
+.sds-bar-chart {
+  margin: 0;
+}
+
+.sds-bar-chart__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sds-bar-chart__row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-xs);
+}
+
+.sds-bar-chart__label {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sds-bar-chart__track {
+  display: block;
+  width: 100%;
+  height: var(--space-4);
+}
+
+.sds-bar-chart__bg {
+  fill: var(--color-bg-surface-3);
+}
+
+.sds-bar-chart__bar {
+  fill: currentColor;
+}
+
+.sds-bar-chart__value {
+  color: var(--color-text-primary);
+  text-align: right;
+}

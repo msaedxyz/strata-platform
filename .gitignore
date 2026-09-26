@@ -18,3 +18,7 @@ playwright-report/
 /tmp/
 coverage/
 *.log
+
+# Generated design tokens (packages/design-system/scripts/build-tokens.mjs)
+packages/design-system/src/tokens.css
+packages/design-system/src/tokens.ts

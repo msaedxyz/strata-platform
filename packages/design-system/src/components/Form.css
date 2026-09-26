@@ -1,0 +1,168 @@
+.sds-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.sds-field__label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.sds-field__hint {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-2xs);
+}
+
+.sds-field__error {
+  color: var(--color-state-negative);
+  font-size: var(--font-size-2xs);
+}
+
+.sds-input,
+.sds-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--size-control-md);
+  padding: 0 var(--space-3);
+  border: var(--border-width-hairline) solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface-1);
+  color: var(--color-text-primary);
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sds-input:hover,
+.sds-select:hover,
+.sds-input[data-force-state="hover"],
+.sds-select[data-force-state="hover"] {
+  border-color: var(--color-border-strong);
+}
+
+.sds-input:focus-within,
+.sds-select:focus-within,
+.sds-input[data-force-state="focus"],
+.sds-select[data-force-state="focus"] {
+  border-color: var(--color-focus-ring);
+  outline: var(--border-width-hairline) solid var(--color-focus-ring);
+}
+
+.sds-input--error {
+  border-color: var(--color-state-negative);
+}
+
+.sds-input--disabled {
+  background: var(--color-bg-base);
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-disabled);
+}
+
+.sds-input__icon {
+  color: var(--color-text-tertiary);
+}
+
+.sds-input__control,
+.sds-select__control {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+}
+
+.sds-input__control:focus-visible,
+.sds-select__control:focus-visible {
+  outline: none;
+}
+
+.sds-input__control::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.sds-input__control::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.sds-input__control:disabled,
+.sds-select__control:disabled {
+  cursor: not-allowed;
+}
+
+.sds-input__clear {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+}
+
+.sds-input__clear:hover {
+  color: var(--color-text-primary);
+}
+
+.sds-select__control {
+  appearance: none;
+  padding-right: var(--space-8);
+  cursor: pointer;
+}
+
+.sds-select__control option {
+  background: var(--color-bg-surface-2);
+  color: var(--color-text-primary);
+}
+
+.sds-select__chevron {
+  position: absolute;
+  right: var(--space-3);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+}
+
+.sds-date .sds-input__control::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.sds-checkbox {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.sds-checkbox__control {
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
+  margin: 0;
+  accent-color: var(--color-state-accent);
+  cursor: pointer;
+}
+
+.sds-checkbox__label {
+  cursor: pointer;
+}
+
+.sds-checkbox--disabled {
+  color: var(--color-text-disabled);
+}
+
+.sds-checkbox--disabled .sds-checkbox__control,
+.sds-checkbox--disabled .sds-checkbox__label {
+  cursor: not-allowed;
+}
+
+.sds-checkbox .sds-field__error {
+  flex-basis: 100%;
+}

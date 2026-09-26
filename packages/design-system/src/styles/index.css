@@ -1,0 +1,3 @@
+/* The token variables and the global base styles. Components import their own CSS. */
+@import "../tokens.css";
+@import "./base.css";
