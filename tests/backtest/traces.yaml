@@ -1,0 +1,253 @@
+# Lead time backtest: earlier public traces of the same project (docs 09-acceptance.md).
+# Source: WebSearch results only, collected 2026-09-26.
+# text holds the title only. The search results gave no exact source excerpts.
+# Each trace date is before the date of its event. Earliest trace first for each event.
+# One public document can support more than one event. It then has one row for each event.
+
+# EV-001 Lycopodium study award, Lumwana (2023-12-12)
+- id: TR-001
+  event_id: EV-001
+  project: Lumwana Super Pit Expansion
+  date: 2023-07-07
+  date_precision: day
+  source_type: news
+  publisher: Barrick Gold Corporation
+  title: Great Future Beckons for Lumwana as Barrick Unlocks Potential
+  url: https://www.barrick.com/English/news/news-details/2023/great-future-beckons-for-lumwana-as-barrick-unlocks-potential/default.aspx
+  text: Great Future Beckons for Lumwana as Barrick Unlocks Potential
+  note: >-
+    Company press release. The search result says the Lumwana pre-feasibility study
+    for the super pit was in progress. Date basis is a syndicated copy titled 07.07.2023
+    (wallstreet-online.de). source_type news because the list has no press release type.
+- id: TR-002
+  event_id: EV-001
+  project: Lumwana Super Pit Expansion
+  date: 2023-10-04
+  date_precision: day
+  source_type: news
+  publisher: Bloomberg
+  title: Barrick Earmarks $2 Billion for Copper 'Super Pit' in Zambia
+  url: https://www.bloomberg.com/news/articles/2023-10-04/barrick-to-spend-2-billion-on-super-pit-copper-mine-in-zambia
+  text: Barrick Earmarks $2 Billion for Copper 'Super Pit' in Zambia
+  note: >-
+    Announcement of the US$2 billion expansion after a meeting of Bristow and President
+    Hichilema. Full feasibility study targeted by end of 2024. Date basis is the URL path.
+
+# EV-002 Metso process equipment order, Lumwana (2024-09-30)
+- id: TR-003
+  event_id: EV-002
+  project: Lumwana Super Pit Expansion
+  date: 2023-07-07
+  date_precision: day
+  source_type: news
+  publisher: Barrick Gold Corporation
+  title: Great Future Beckons for Lumwana as Barrick Unlocks Potential
+  url: https://www.barrick.com/English/news/news-details/2023/great-future-beckons-for-lumwana-as-barrick-unlocks-potential/default.aspx
+  text: Great Future Beckons for Lumwana as Barrick Unlocks Potential
+  note: Same document as TR-001.
+- id: TR-004
+  event_id: EV-002
+  project: Lumwana Super Pit Expansion
+  date: 2023-10-04
+  date_precision: day
+  source_type: news
+  publisher: Bloomberg
+  title: Barrick Earmarks $2 Billion for Copper 'Super Pit' in Zambia
+  url: https://www.bloomberg.com/news/articles/2023-10-04/barrick-to-spend-2-billion-on-super-pit-copper-mine-in-zambia
+  text: Barrick Earmarks $2 Billion for Copper 'Super Pit' in Zambia
+  note: Same document as TR-002.
+- id: TR-005
+  event_id: EV-002
+  project: Lumwana Super Pit Expansion
+  date: 2023-12-12
+  date_precision: day
+  source_type: news
+  publisher: International Mining
+  title: Lycopodium engaged by Barrick for Lumwana copper expansion study
+  url: https://im-mining.com/2023/12/12/lycopodium-engaged-by-barrick-for-lumwana-copper-expansion-study/
+  text: Lycopodium engaged by Barrick for Lumwana copper expansion study
+  note: This is event EV-001. An engineering award is a strong trace of later equipment orders.
+- id: TR-006
+  event_id: EV-002
+  project: Lumwana Super Pit Expansion
+  date: 2024-01-29
+  date_precision: day
+  source_type: news
+  publisher: Global Mining Review
+  title: Barrick Gold accelerates Lumwana mine expansion project
+  url: https://www.globalminingreview.com/mining/29012024/barrick-gold-accelerates-lumwana-mine-expansion-project/
+  text: Barrick Gold accelerates Lumwana mine expansion project
+  note: Date basis is the URL path segment 29012024.
+- id: TR-007
+  event_id: EV-002
+  project: Lumwana Super Pit Expansion
+  date: 2024-09-11
+  date_precision: day
+  source_type: news
+  publisher: International Mining
+  title: Feasibility study on Lumwana Super Pit expansion expected by year-end
+  url: https://im-mining.com/2024/09/11/feasibility-study-on-lumwana-super-pit-expansion-expected-by-year-end/
+  text: Feasibility study on Lumwana Super Pit expansion expected by year-end
+  note: >-
+    Reports a Barrick release. Barrick also published a presentation "Lumwana Super Pit
+    Expansion Update" in September 2024 (s25.q4cdn.com, month precision, not added).
+
+# EV-003 Laxyo raise boring contract, Mopani (2026-06-22)
+- id: TR-008
+  event_id: EV-003
+  project: Mopani underground development
+  date: 2023-12-22
+  date_precision: day
+  source_type: filing
+  publisher: ZCCM-IH (Actusnews Wire)
+  title: ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines
+  url: https://www.actusnews.com/en/zccm/pr/2023/12/22/zccm-ih-transaction-announcement-regarding-mopani-copper-mines
+  text: ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines
+  note: >-
+    IRH commits US$1.1 billion to Mopani. The search result says US$620 million of new
+    equity is for capital projects and working capital. Company-level trace, not specific
+    to raise boring.
+- id: TR-009
+  event_id: EV-003
+  project: Mopani underground development
+  date: 2023-12-22
+  date_precision: day
+  source_type: news
+  publisher: Bloomberg
+  title: Abu Dhabi's IRH Will Invest $1.1 Billion in Mopani Copper Deal
+  url: https://www.bloomberg.com/news/articles/2023-12-22/abu-dhabi-s-irh-will-invest-1-1-billion-in-mopani-copper-deal
+  text: Abu Dhabi's IRH Will Invest $1.1 Billion in Mopani Copper Deal
+  note: Date basis is the URL path.
+- id: TR-010
+  event_id: EV-003
+  project: Mopani underground development
+  date: 2024-02-02
+  date_precision: day
+  source_type: filing
+  publisher: ZCCM-IH (Lusaka Securities Exchange)
+  title: THIS DOCUMENT IS IMPORTANT AND REQUIRES YOUR IMMEDIATE ATTENTION.
+  url: https://www.luse.co.zm/wp-content/uploads/2024/04/ZCCM-IH-PROPOSED-ENTRY-OF-STRATEGIC-EQUITY-PARTNER-IN-MOPANI-COPPERMINESPLC-02.02.2024-Copy.pdf
+  text: THIS DOCUMENT IS IMPORTANT AND REQUIRES YOUR IMMEDIATE ATTENTION.
+  note: >-
+    The search result title is the first line of the PDF. The file name gives the
+    subject: ZCCM-IH proposed entry of a strategic equity partner in Mopani Copper
+    Mines Plc (circular). Date basis is the file name (02.02.2024). The
+    upload path says April 2024. A search result, probably from this circular, says the
+    Mopani 2024-2033 Strategic Plan needs US$350 million to complete the Synclinorium,
+    Mindola and Mufulira deep shaft projects by 2027. Not verified as a quote.
+- id: TR-011
+  event_id: EV-003
+  project: Mopani underground development
+  date: 2026-04-10
+  date_precision: day
+  source_type: news
+  publisher: International Mining
+  title: Epiroc wins large order from Mopani Copper Mines in Zambia
+  url: https://im-mining.com/2026/04/10/epiroc-wins-large-order-from-mopani-copper-mines-in-zambia/
+  text: Epiroc wins large order from Mopani Copper Mines in Zambia
+  note: This is event EV-004. It shows underground production growth at Nkana and Mufulira.
+
+# EV-004 Epiroc underground equipment order, Mopani (2026-04-10)
+- id: TR-012
+  event_id: EV-004
+  project: Mopani underground fleet renewal
+  date: 2023-12-22
+  date_precision: day
+  source_type: filing
+  publisher: ZCCM-IH (Actusnews Wire)
+  title: ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines
+  url: https://www.actusnews.com/en/zccm/pr/2023/12/22/zccm-ih-transaction-announcement-regarding-mopani-copper-mines
+  text: ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines
+  note: Same document as TR-008.
+- id: TR-013
+  event_id: EV-004
+  project: Mopani underground fleet renewal
+  date: 2023-12-22
+  date_precision: day
+  source_type: news
+  publisher: Bloomberg
+  title: Abu Dhabi's IRH Will Invest $1.1 Billion in Mopani Copper Deal
+  url: https://www.bloomberg.com/news/articles/2023-12-22/abu-dhabi-s-irh-will-invest-1-1-billion-in-mopani-copper-deal
+  text: Abu Dhabi's IRH Will Invest $1.1 Billion in Mopani Copper Deal
+  note: Same document as TR-009.
+- id: TR-014
+  event_id: EV-004
+  project: Mopani underground fleet renewal
+  date: 2024-02-02
+  date_precision: day
+  source_type: filing
+  publisher: ZCCM-IH (Lusaka Securities Exchange)
+  title: THIS DOCUMENT IS IMPORTANT AND REQUIRES YOUR IMMEDIATE ATTENTION.
+  url: https://www.luse.co.zm/wp-content/uploads/2024/04/ZCCM-IH-PROPOSED-ENTRY-OF-STRATEGIC-EQUITY-PARTNER-IN-MOPANI-COPPERMINESPLC-02.02.2024-Copy.pdf
+  text: THIS DOCUMENT IS IMPORTANT AND REQUIRES YOUR IMMEDIATE ATTENTION.
+  note: Same document as TR-010.
+
+# EV-005 NERIN tailings leach plant EPC, KCM (2026-09-17)
+- id: TR-015
+  event_id: EV-005
+  project: KCM Tailings Leach Plant
+  date: 2024-07-22
+  date_precision: day
+  source_type: news
+  publisher: Vedanta Resources (PR Newswire)
+  title: Vedanta Regains Control of Konkola Copper Mines in Zambia
+  url: https://www.prnewswire.com/news-releases/vedanta-regains-control-of-konkola-copper-mines-in-zambia-302202425.html
+  text: Vedanta Regains Control of Konkola Copper Mines in Zambia
+  note: >-
+    Company-level trace. Vedanta pays US$245.75 million under the KCM scheme and
+    pledged about US$1 billion of investment. Date basis is the search result summary.
+    No trace specific to the tailings leach plant was found before the event.
+- id: TR-016
+  event_id: EV-005
+  project: KCM Tailings Leach Plant
+  date: 2025-05-02
+  date_precision: day
+  source_type: news
+  publisher: Business Standard
+  title: Vedanta Resources weighs Zambia copper IPO to fund $1 billion investment
+  url: https://www.business-standard.com/companies/news/vedanta-resources-weighs-zambia-copper-ipo-to-fund-1-billion-investment-125050200699_1.html
+  text: Vedanta Resources weighs Zambia copper IPO to fund $1 billion investment
+  note: Date basis is the Business Standard article id (125050200699).
+- id: TR-017
+  event_id: EV-005
+  project: KCM Tailings Leach Plant
+  date: 2025-11-07
+  date_precision: day
+  source_type: news
+  publisher: International Mining
+  title: Vedanta spins off Konkola Copper Mines into US-domiciled CopperTech Metals Inc
+  url: https://im-mining.com/2025/11/07/vedanta-spins-off-konkola-copper-mines-into-us-domiciled-coppertech-metals-inc/
+  text: Vedanta spins off Konkola Copper Mines into US-domiciled CopperTech Metals Inc
+  note: >-
+    CopperTech plans a further US$1.5 billion for KCM expansion and a target of
+    300,000 t/y by 2031. Mining Weekly reported the same day.
+
+# EV-006 Zambia Lobito Rail EPC bid phase (2026-04-28)
+- id: TR-018
+  event_id: EV-006
+  project: Zambia Lobito Rail (Jimbe to Chingola greenfield line)
+  date: 2025-06-24
+  date_precision: day
+  source_type: news
+  publisher: Efficacy News
+  title: AfDB invests $1B in Lobito Corridor, signs Zambia rail pact
+  url: https://efficacynews.africa/2025/06/24/afdb-invests-1b-in-lobito-corridor-signs-zambia-rail-pact/
+  text: AfDB invests $1B in Lobito Corridor, signs Zambia rail pact
+  note: >-
+    DFI financing trace in a news report. Earlier traces exist (AFC concession
+    agreements with Angola and Zambia, USTDA grant for environmental and social
+    studies, MoU for the Zambia-Lobito railway), but the search results gave no date
+    for them. They are not added.
+
+# EV-007 Metso flotation order, Kansanshi S3 (2023-07-04, outside window)
+- id: TR-019
+  event_id: EV-007
+  project: Kansanshi S3 Expansion
+  date: 2022-05-09
+  date_precision: day
+  source_type: news
+  publisher: International Mining
+  title: First Quantum board signs off development of Kansanshi S3 Expansion, Enterprise nickel project
+  url: https://im-mining.com/2022/05/09/first-quantum-board-signs-off-development-of-kansanshi-s3-expansion-enterprise-nickel-project/
+  text: First Quantum board signs off development of Kansanshi S3 Expansion, Enterprise nickel project
+  note: Board sanction of the US$1.25 billion S3 expansion. Date basis is the URL path.
