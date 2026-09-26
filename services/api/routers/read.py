@@ -18,6 +18,7 @@ from services.governance.event_store import stream_events
 from services.projections.folds import FOLDS
 
 from ..auth import User, require_viewer
+from .schemas import PriorityList
 
 router = APIRouter(prefix="/api", tags=["read"])
 
@@ -409,7 +410,7 @@ def deal_detail(deal_id: str, as_of: datetime | None = None, user: User = Depend
     return {"deal": _jsonable(state), "as_of": as_of.isoformat() if as_of else None}
 
 
-@router.get("/priority")
+@router.get("/priority", response_model=PriorityList)
 def priority(limit: int = Query(100, le=500), user: User = Depends(require_viewer)) -> dict:
     """Opportunities ranked by lead time, demand estimate, confidence and buyer fit, with the breakdown.
 
