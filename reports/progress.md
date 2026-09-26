@@ -19,11 +19,12 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 - M3 done: seven agents, deterministic and Anthropic backends, guardrails, quarantine, proposals, Tier 0 alerts, gold set of 50 documents and a held-out set of 12, eval job in CI. 205 Python tests pass. Held-out extraction precision 0.727 and recall 0.667 are below target. Report: reports/M3.md.
 - M6 frontend done: the 18 modules on the design system, 351 unit tests and 77 e2e tests, criteria 5 to 7 pass against mocks. Report: reports/M6-frontend.md.
 - The stack enriches the 146 real snapshot items: 128 signals, 27 Tier 0 alerts, 17 demand drivers, 10 projects.
+- M4 done: write API, roles, own-proposal 403, Tier 0 alerts on the live stream before approval, telemetry, personal data encryption and erasure. 310 Python tests pass, 1 expected failure (backtest has 7 of 20 events). Held-out 2: precision 0.818, recall 0.643 (below target). Report: reports/M4.md.
+- Backtest harness: 7 of 7 events found, median 14.8 months. Fails the 20-event minimum. Report: reports/backtest/results.md.
 
 ## In progress
 
-- Track 1 (M4): governance API, roles, alerts, telemetry, personal data.
-- Backtest harness subagent (new files only).
+- M6 integration: priority calculator, demand estimates, evidence ids for all facts in the read API, frontend write types from the real API, live update test on the real stack.
 
 ## Next
 

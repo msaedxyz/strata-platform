@@ -165,3 +165,15 @@ docs/07 asks to record the Infora components that each module uses. The list use
 | 2026-09-26 | The M4 endpoints are typed by hand in apps/web/src/api/writes.ts | The generated client has no M4 endpoints yet. The lead regenerates it after M4 | 07 |
 | 2026-09-26 | The 20-event minimum of the backtest is a third reported condition. The backtest passes only when all three conditions pass | 09 needs at least 20 events. The dataset has 7 because the search budget ended | 09 |
 | 2026-09-26 | The backtest report shows the sensitivity to the matching rules | Most hits come from title words or the operator company, not from entity links | 09 |
+| 2026-09-26 | Migration 0300 adds event_evidence_exempt(): a person entity that a user adds passes the evidence constraint without source evidence. fact_evidence_problems() uses the same rule | docs/03 says that the team is the source of its work. Personal fields must never go into a source document | 03, 06 |
+| 2026-09-26 | New event types PersonErased, BriefVersionCreated and SourceAdded | docs/06 audit log rule 1: each user action that changes data is an event with actor type human | 03, 06 |
+| 2026-09-26 | The ContactAdded schema refuses clear name, email and phone | docs/06 personal data rule 1 | 06, config/event-schemas.yaml |
+| 2026-09-26 | Alert decisions go directly through the governance alert service, not through proposals | The decision of the approver is itself the approval. A proposal would need a second approver | 06 |
+| 2026-09-26 | The first trace Tier 0 rule applies only when the stage is unknown or before contractor procurement (config/tiers.yaml) | Review of the snapshot run: a first trace at commissioning is not an early signal | 05, config/tiers.yaml |
+| 2026-09-26 | The watched feature includes the operator of a watched site | Review of the backtest: an order from the operator of a watched mine is a watched item | 05 |
+| 2026-09-26 | A study that is due or under way names its lifecycle stage | Review of the backtest. docs/05 lifecycle rule 2: the evidence names the stage | 05 |
+| 2026-09-26 | Brief v1 gets no new alias for the Lobito rail line | "Lobito Corridor" is the geography corr_lobito. v1 loads by content hash | 04, v1.yaml |
+| 2026-09-26 | Held-out set 2 ran once before the backtest fixes. No third set | A second run after the fixes gave the same numbers | 05, tests/eval |
+| 2026-09-26 | The gold labels stay. Four tier labels follow the old reading of the first trace rule | A label changes only through a review by Mohamed | 05, tests/eval |
+| 2026-09-26 | The live stream adds the alert status to each alert message, and /api/ticker and /api/signals items carry alert_status | docs/06: the alert shows its status in every place where it appears | 06, api-contract |
+| 2026-09-26 | A project that enters the engagement window raises Tier 0 also when its previous stage is unknown | docs/05 lists "a project that enters the engagement window" as Tier 0. The first trace in the window is the entry for Strata | 05 |

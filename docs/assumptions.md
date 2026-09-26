@@ -91,8 +91,31 @@ Claude Code does not wait for answers. It uses each default below and continues.
 | 115 | Owner of a next action | The form gives the user id of the current user. The user can change it |
 | 116 | Selection | A click on an opportunity in the Kanban board, the priority list or the next actions selects it for the relationship panel and the timeline. A click on a project or a site selects it for the timeline. The selection is not stored |
 | 117 | Map start view | Zambia and its neighbours (21.5 W to 34 E, 18.5 S to 8 S). Zambia is filled. The countries are Zambia, DR Congo, Angola, Tanzania, Zimbabwe, Botswana, Malawi, Namibia and Mozambique |
-| 120 | Backtest replay | One source per distinct URL. Type snapshot, licence gn_link_only, read_at_source true. published_at and fetched_at are the trace date at 00:00 UTC |
-| 121 | Backtest signal | A SignalScored event with tier 0, 1 or 2, dated strictly before the procurement event |
-| 122 | Backtest match order | Project, site, title words, company. Only the site operator counts at company level |
-| 123 | Backtest median | Over detected events only, with 30.44 days for each month |
-| 124 | Backtest window | 2023-10-01 to 2026-09-26, not strict. EV-007 stays in with a flag |
+| 140 | Backtest replay | One source per distinct URL. Type snapshot, licence gn_link_only, read_at_source true. published_at and fetched_at are the trace date at 00:00 UTC |
+| 141 | Backtest signal | A SignalScored event with tier 0, 1 or 2, dated strictly before the procurement event |
+| 142 | Backtest match order | Project, site, title words, company. Only the site operator counts at company level |
+| 143 | Backtest median | Over detected events only, with 30.44 days for each month |
+| 144 | Backtest window | 2023-10-01 to 2026-09-26, not strict. EV-007 stays in with a flag |
+| 150 | Master key | STRATA_MASTER_KEY gives 32 bytes in base64 (standard or URL safe) or in 64 hex characters. Without a valid key the contact endpoint gives HTTP 503 |
+| 151 | Encryption of personal fields | AES-256-GCM with a random 256-bit data key for each person. The master key wraps the data key with AES-256-GCM. The entity id is the associated data. The fields are in config/personal-data.yaml |
+| 152 | Same person | A blind index: HMAC-SHA256 of the business email, else of the name and the organisation. The index is in the key row and goes with the erasure |
+| 153 | Person entity | EntityIdentified of a person from a user needs no source evidence. The name in the record is "[personal data]". The real fields are encrypted only |
+| 154 | Output after erasure | name "[erased]", email and phone null, erased true. The reason of the erasure goes to security_log only, not to the event store |
+| 155 | Stage move without a reason | The reason is "Moved from <stage> to <stage> by an analyst". One pending stage change for each deal (409 for a second one) |
+| 156 | Alert decisions | Confirm takes an optional reason. Dismiss needs a reason (422). A second acknowledgement writes nothing. A decision on a decided alert gives 409 |
+| 157 | Frontend delivery | "broadcast" when the alert is raised. "delivered" when the live stream sends it to the first connected client. Telemetry shows both |
+| 158 | Telemetry metrics | Median and p90 with linear interpolation between the closest ranks. Latency = raised_at minus source fetched_at. Time to acknowledgement = acknowledged_at minus raised_at. False positive rate = false positives over decided alerts of the tier rule |
+| 159 | Admin review | An admin_review proposal needs an admin to approve or reject. A SourceProposed proposal goes through approve-source only |
+| 160 | Session routes | POST /api/session/login and logout write the security log only. They are not data writes, so a viewer can call them |
+| 161 | Audit events | A manual upload writes SourceAdded (stream source). A new brief version writes BriefVersionCreated (stream brief, main) |
+| 162 | Scenario 1 "sale process" | The fixture article describes a sale process in which KCM invites expressions of interest for diesel supply to Nchanga. The Tier 0 rule is t0_open_procurement_notice, because docs/05 has no Tier 0 rule for a change of owner |
+| 163 | Scenario 4 "previous day" | The test uses a time between the deal creation and the approval, because the database sets recorded_at |
+| 164 | Scenario 17 | The API part only. The rank change for "no contact found" needs the priority list calculator of M6 |
+| 165 | First trace stage limit | config/tiers.yaml first_trace_before_stage: contractor_procurement. A restart stage uses the order of the restart path |
+| 166 | from_status | The projection status, else the brief status_hint with from_status_source "brief_status_hint" |
+| 167 | Project names | Title boundary words, generic words and title separators in config/enrichment-rules.yaml (mentions) |
+| 168 | Same project at one site | Confidence 0.85. Two or more known projects of the same kind at the site give no decision |
+| 169 | Smallest project amount | 1000 in any currency (claims.min_project_money_amount) |
+| 170 | Sole word of a site name | A word names a watched site when it is the only distinctive word of the name of exactly one watched site. Stop list in config |
+| 171 | Watched through the operator | An organisation that operates a daily or weekly site makes the item watched for the Tier 1 rules. The watch weights of the score stay site based |
+| 172 | Entering the engagement window | A first stage inside the window counts as entering the window (Tier 0), also when the stage before is unknown |
