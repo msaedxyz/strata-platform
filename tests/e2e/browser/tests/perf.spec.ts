@@ -19,7 +19,7 @@ const QUIET_MS = 1000;
 const SIGNALS = 10000;
 const DEALS = 500;
 const OUT = process.env.E2E_RESULTS_DIR ?? join(REPO_ROOT, "test-results", "e2e");
-const COMPOSE = (process.env.E2E_COMPOSE ?? "docker compose -f docker-compose.yml -f tests/e2e/compose.e2e.yml --profile test").split(" ");
+const COMPOSE = (process.env.E2E_COMPOSE ?? "docker compose -f docker-compose.yml -f tests/e2e/compose.e2e.yml --profile test").split(/\s+/).filter(Boolean);
 const WORKSPACE_MODULES: Record<string, string[]> = {
   monitoring: ["ticker", "tier0-alerts", "demand-drivers", "signal-feed", "site-watch-list", "source-health"],
   origination: ["priority-list", "procurement-calendar", "project-pipeline", "deal-map"],
