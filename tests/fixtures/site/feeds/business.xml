@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic fixture feed for the Strata collector tests. The articles are invented test data.
+     The first item is the same article as the first item of mining.xml (docs/04 criterion 2).
+     The second item is a near duplicate of the KCM item of mining.xml (docs/04 criterion 3). -->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Zambia Business Daily (fixture)</title>
+    <link>{{BASE_URL}}/business/</link>
+    <description>Synthetic business news for collector tests</description>
+    <language>en</language>
+    <item>
+      <title>First Quantum awards haulage and contract mining work for Kansanshi S3 ramp-up</title>
+      <link>{{BASE_URL}}/business/2026/09/fqm-kansanshi-contracts.html?utm_source=feed</link>
+      <guid isPermaLink="false">biz-kansanshi-s3-contracts</guid>
+      <pubDate>Mon, 21 Sep 2026 10:05:00 +0200</pubDate>
+      <description>Kansanshi Mining Plc has awarded two contracts for the S3 expansion ramp-up.</description>
+      <content:encoded><![CDATA[<p>Kansanshi Mining Plc, the First Quantum Minerals subsidiary that operates the Kansanshi copper-gold mine in Solwezi, has awarded two contracts for the ramp-up of the S3 expansion.</p>
+<p>The first contract covers the haulage of copper concentrate from the mine to the Kasumbalesa border post. The second contract covers contract mining at the new S3 pit, with a fleet of 40 haul trucks and six excavators.</p>
+<p>The company said that the contractors will mobilise in the fourth quarter of 2026. It expects the S3 plant to reach design capacity in 2027. The contracts run for three years with an option to extend for two years.</p>
+<p>A company spokesperson said that local suppliers will provide fuel, tyres and maintenance services to the contractors. The North-Western Province administration welcomed the awards.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>KCM outlines Konkola Deep dewatering and Nchanga smelter restart plan</title>
+      <link>{{BASE_URL}}/business/2026/09/kcm-plan-konkola-deep.html</link>
+      <guid isPermaLink="false">biz-kcm-konkola-deep-plan</guid>
+      <pubDate>Wed, 23 Sep 2026 15:40:00 +0200</pubDate>
+      <description>Konkola Copper Mines published a plan for the Konkola Deep project and the Nchanga smelter.</description>
+      <content:encoded><![CDATA[<p>Konkola Copper Mines Plc has published a two year plan for the Konkola Deep Mining Project in Chililabombwe and for the Nchanga smelter in Chingola. The plan follows the restart of the Nchanga smelter after a shutdown of 106 days.</p>
+<p>Under the plan, KCM will first complete the dewatering of the Konkola underground mine. The company will install new pumps at the number four shaft and will rehabilitate the pipeline that takes water to the Kafue River treatment plant. KCM expects the dewatering work to take about nine months.</p>
+<p>The second phase is the development of the Konkola Deep orebody. KCM said that it will appoint a shaft sinking contractor and an underground mining contractor after a tender process. The company expects to issue expressions of interest for these contracts in the first quarter of 2027. It will also buy a new fleet of underground loaders and trucks.</p>
+<p>At Nchanga, the company will reline the smelter furnace and replace the acid plant converter. The work needs a planned shutdown of six weeks in the second half of 2027. KCM said that the smelter will treat concentrate from Nchanga and from third party mines in the Copperbelt.</p>
+<p>The chief executive officer said that the plan will increase copper output to about 300,000 tonnes a year by 2029. He said that KCM will need more diesel, explosives and mining services when the underground development starts. Local suppliers can register on the KCM supplier portal before the tenders open.</p>
+<p>The Chililabombwe district commissioner praised the plan and said that the district expects new jobs for local contractors. The Ministry of Mines and Minerals Development said that it will monitor the progress of the plan each quarter.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Fuel shortage hits Copperbelt filling stations as tankers queue at Ndola terminal</title>
+      <link>{{BASE_URL}}/business/2026/09/copperbelt-fuel-shortage.html</link>
+      <guid isPermaLink="false">biz-copperbelt-fuel-shortage</guid>
+      <pubDate>Thu, 24 Sep 2026 08:20:00 +0200</pubDate>
+      <description>Filling stations in Kitwe, Ndola and Chingola ran out of diesel.</description>
+      <content:encoded><![CDATA[<p>Many filling stations in Kitwe, Ndola and Chingola ran out of diesel on Wednesday. Tanker trucks queued for two days at the Ndola fuel terminal.</p>
+<p>Oil marketing companies said that a delay in the arrival of product through the TAZAMA pipeline caused the shortage. Mining contractors said that they reduced haulage shifts to save fuel.</p>
+<p>The Ministry of Energy said that it expects supply to return to normal within one week.</p>]]></content:encoded>
+    </item>
+  </channel>
+</rss>

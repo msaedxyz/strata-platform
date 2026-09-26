@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Synthetic Google News search feed (query "Kansanshi mine") in the Google News RSS format.
+     The items are invented test data. The first item links to miningweekly.com, a google_news_only domain. -->
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <generator>NFE/5.0</generator>
+    <title>"Kansanshi mine" - Google News</title>
+    <link>https://news.google.com/search?q=Kansanshi+mine&amp;hl=en-ZM&amp;gl=ZM&amp;ceid=ZM:en</link>
+    <language>en-ZM</language>
+    <webMaster>news-webmaster@google.com</webMaster>
+    <description>Google News</description>
+    <item>
+      <title>Kansanshi S3 expansion delivers first ore to the new plant - Mining Weekly</title>
+      <link>https://news.google.com/rss/articles/CBMiRmh0dHBzOi8vd3d3Lm1pbmluZ3dlZWtseS5jb20vYXJ0aWNsZS9rYW5zYW5zaGktczMtZmlyc3Qtb3JlLTIwMjYtMDktMjDSAQA?oc=5</link>
+      <guid isPermaLink="false">CBMiRmh0dHBzOi8vd3d3Lm1pbmluZ3dlZWtseS5jb20vYXJ0aWNsZS9rYW5zYW5zaGktczMtZmlyc3Qtb3JlLTIwMjYtMDktMjDSAQA</guid>
+      <pubDate>Sun, 20 Sep 2026 08:00:00 GMT</pubDate>
+      <description>&lt;a href="https://news.google.com/rss/articles/CBMiRmh0dHBzOi8vd3d3Lm1pbmluZ3dlZWtseS5jb20vYXJ0aWNsZS9rYW5zYW5zaGktczMtZmlyc3Qtb3JlLTIwMjYtMDktMjDSAQA?oc=5" target="_blank"&gt;Kansanshi S3 expansion delivers first ore to the new plant&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;Mining Weekly&lt;/font&gt;</description>
+      <source url="https://www.miningweekly.com">Mining Weekly</source>
+    </item>
+    <item>
+      <title>Solwezi traders expect more business as Kansanshi hires contractors - Lusaka Times</title>
+      <link>https://news.google.com/rss/articles/AU_yqLfixtureNoEmbeddedUrl01?oc=5</link>
+      <guid isPermaLink="false">AU_yqLfixtureNoEmbeddedUrl01</guid>
+      <pubDate>Tue, 22 Sep 2026 12:30:00 GMT</pubDate>
+      <description>&lt;a href="https://news.google.com/rss/articles/AU_yqLfixtureNoEmbeddedUrl01?oc=5" target="_blank"&gt;Solwezi traders expect more business as Kansanshi hires contractors&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;Lusaka Times&lt;/font&gt;</description>
+      <source url="https://www.lusakatimes.com">Lusaka Times</source>
+    </item>
+    <item>
+      <title>Kansanshi invites bids for diesel supply to its mining fleet - Zambian Business Times</title>
+      <link>https://news.google.com/rss/articles/CBMiQGh0dHBzOi8vemFtYmlhbmJ1c2luZXNzdGltZXMuY29tL2thbnNhbnNoaS1kaWVzZWwtc3VwcGx5LXRlbmRlci_SAQA?oc=5</link>
+      <guid isPermaLink="false">CBMiQGh0dHBzOi8vemFtYmlhbmJ1c2luZXNzdGltZXMuY29tL2thbnNhbnNoaS1kaWVzZWwtc3VwcGx5LXRlbmRlci_SAQA</guid>
+      <pubDate>Thu, 24 Sep 2026 06:45:00 GMT</pubDate>
+      <description>&lt;a href="https://news.google.com/rss/articles/CBMiQGh0dHBzOi8vemFtYmlhbmJ1c2luZXNzdGltZXMuY29tL2thbnNhbnNoaS1kaWVzZWwtc3VwcGx5LXRlbmRlci_SAQA?oc=5" target="_blank"&gt;Kansanshi invites bids for diesel supply to its mining fleet&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;Zambian Business Times&lt;/font&gt;</description>
+      <source url="https://zambianbusinesstimes.com">Zambian Business Times</source>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Synthetic Google News search feed (query "Kasumbalesa border") in the Google News RSS format.
+     The items are invented test data. The second item is in French, for the language detection. -->
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <generator>NFE/5.0</generator>
+    <title>"Kasumbalesa border" - Google News</title>
+    <link>https://news.google.com/search?q=Kasumbalesa+border&amp;hl=en-ZM&amp;gl=ZM&amp;ceid=ZM:en</link>
+    <language>en-ZM</language>
+    <webMaster>news-webmaster@google.com</webMaster>
+    <description>Google News</description>
+    <item>
+      <title>Kasumbalesa border delays cost transporters millions of kwacha - ZNBC</title>
+      <link>https://www.znbc.co.zm/news/kasumbalesa-border-delays-cost-transporters/</link>
+      <guid isPermaLink="false">fixture-znbc-kasumbalesa-delays</guid>
+      <pubDate>Fri, 25 Sep 2026 10:00:00 GMT</pubDate>
+      <description>&lt;a href="https://www.znbc.co.zm/news/kasumbalesa-border-delays-cost-transporters/" target="_blank"&gt;Kasumbalesa border delays cost transporters millions of kwacha&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;ZNBC&lt;/font&gt;</description>
+      <source url="https://www.znbc.co.zm">ZNBC</source>
+    </item>
+    <item>
+      <title>Kasumbalesa : les camions de cuivre bloqués à la frontière pendant trois jours - Radio Okapi</title>
+      <link>https://news.google.com/rss/articles/CBMiQWh0dHBzOi8vd3d3LnJhZGlvb2thcGkubmV0LzIwMjYvMDkvMjMva2FzdW1iYWxlc2EtY2FtaW9ucy1ibG9xdWVz0gEA?oc=5</link>
+      <guid isPermaLink="false">CBMiQWh0dHBzOi8vd3d3LnJhZGlvb2thcGkubmV0LzIwMjYvMDkvMjMva2FzdW1iYWxlc2EtY2FtaW9ucy1ibG9xdWVz0gEA</guid>
+      <pubDate>Wed, 23 Sep 2026 14:00:00 GMT</pubDate>
+      <description>&lt;a href="https://news.google.com/rss/articles/CBMiQWh0dHBzOi8vd3d3LnJhZGlvb2thcGkubmV0LzIwMjYvMDkvMjMva2FzdW1iYWxlc2EtY2FtaW9ucy1ibG9xdWVz0gEA?oc=5" target="_blank"&gt;Les camions de cuivre restent bloqués à la frontière de Kasumbalesa pendant trois jours à cause d'une panne du système douanier&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;Radio Okapi&lt;/font&gt;</description>
+      <source url="https://www.radiookapi.net">Radio Okapi</source>
+    </item>
+  </channel>
+</rss>

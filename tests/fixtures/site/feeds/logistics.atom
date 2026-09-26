@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Synthetic fixture Atom feed for the Strata collector tests. The entries are invented test data. -->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Corridor Logistics Monitor (fixture)</title>
+  <link href="{{BASE_URL}}/logistics/"/>
+  <id>urn:strata:fixture:logistics</id>
+  <updated>2026-09-25T06:00:00Z</updated>
+  <entry>
+    <title>Truck queues at Kasumbalesa border stretch 40 km after a customs system outage</title>
+    <link href="{{BASE_URL}}/logistics/2026/09/kasumbalesa-queues.html"/>
+    <id>urn:strata:fixture:logistics:kasumbalesa-queues</id>
+    <updated>2026-09-24T16:00:00Z</updated>
+    <published>2026-09-24T16:00:00Z</published>
+    <summary>Trucks waited up to four days at the Kasumbalesa border post.</summary>
+    <content type="html">&lt;p&gt;Trucks that carry copper cathode and fuel waited up to four days at the Kasumbalesa border post between Zambia and the Democratic Republic of the Congo. The queue on the Zambian side reached 40 kilometres.&lt;/p&gt;&lt;p&gt;Transporters said that an outage of the customs clearance system on the DRC side caused the delay. The Zambia Revenue Authority said that its own systems worked normally.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title>ERB keeps October fuel pump prices unchanged</title>
+    <link href="{{BASE_URL}}/logistics/2026/09/erb-october-prices.html"/>
+    <id>urn:strata:fixture:logistics:erb-october</id>
+    <updated>2026-09-25T18:00:00Z</updated>
+    <published>2026-09-25T18:00:00Z</published>
+    <summary>The Energy Regulation Board kept the pump prices of petrol and diesel for October 2026.</summary>
+    <content type="html">&lt;p&gt;The Energy Regulation Board (ERB) announced that the pump prices of petrol, diesel and kerosene will not change in October 2026. The board said that stable oil prices and a stable kwacha exchange rate balanced the higher cost of freight.&lt;/p&gt;&lt;p&gt;Mining companies and transporters welcomed the decision.&lt;/p&gt;</content>
+  </entry>
+</feed>

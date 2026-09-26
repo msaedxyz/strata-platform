@@ -149,3 +149,7 @@ def client(database, auth):
 
 def bearer(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
+
+
+# Fixtures of the collector tests (M2): a fresh database for each module, the fixture server and a fake clock.
+from .collector_support import cdb, fake_clock, fixture_server, fresh_db  # noqa: E402,F401

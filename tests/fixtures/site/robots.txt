@@ -1,0 +1,3 @@
+# Fixture robots.txt for the Strata collector tests.
+User-agent: *
+Disallow: /private/

@@ -160,7 +160,7 @@ def compute(history: dict) -> dict:
                 add((frm, target))
     # 2. Consecutive pairs in both orders.
     for order in (stage_order, restart_order):
-        for a, b in zip(order, order[1:]):
+        for a, b in zip(order, order[1:], strict=False):
             add((a, b))
 
     rows = []
