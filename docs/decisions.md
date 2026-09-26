@@ -89,3 +89,49 @@ Record each decision that changes this pack or that chooses between options.
 | 2026-09-26 | The token collector skips colours of elements in a running colour transition, and spacing values above 200px | These values are between two states or come from layout (margin: auto). They are not tokens | 01 |
 | 2026-09-26 | The sensitive-page check reads the page content without the navigation, the header and the menus | Navigation labels such as "API keys" are on every page | 01 |
 | 2026-09-26 | gitleaks runs from the zricethezav/gitleaks Docker image when no gitleaks binary is present | Criterion 5 must run in any environment with Docker | 01 |
+| 2026-09-26 | The design tokens are provisional: a dense dark palette with system fonts. `pnpm tokens:sync` replaces them after the audit | The build network blocked beta.infora.io. No audit exists | 07, 01 |
+| 2026-09-26 | Tokens use the DTCG 2025.10 format. A generator makes CSS variables and a typed TS object. Components use only the variables | The audit can change the whole look with no code change | 07 |
+| 2026-09-26 | A second token file (strata.component.tokens.json) holds structural sizes. Each size refers to a base token where one fits | The base token groups have no sizes for controls, rails and borders | 07 |
+| 2026-09-26 | The icon set is lucide-react, provisional | The Infora icon set is unknown | 07, 01 |
+| 2026-09-26 | Layouts stay in localStorage under versioned keys for each user and workspace, behind a LayoutStore interface | The Infora method is unknown. A server store can replace it | 07 |
+| 2026-09-26 | The keyboard shortcuts are provisional (apps/web/SHORTCUTS.md) | The Infora shortcuts are unknown | 07 |
+| 2026-09-26 | The raw value rule also applies to the design system components. Only the token files hold raw values | Stricter than docs/07 rule 6. It keeps each component token-only | 07 |
+| 2026-09-26 | The visual parity test skips with "blocked: no Infora audit (beta.infora.io unreachable)" when the audit is missing | A pass without the audit would be false | 07 |
+| 2026-09-26 | Axe must find zero violations until audit/a11y.md gives the Infora baseline | No baseline exists | 07 |
+| 2026-09-26 | The text.tertiary token is #808a96 | Contrast of 4.5:1 on each surface (axe color-contrast) | 07 |
+| 2026-09-26 | Each module can be in a workspace once. The panel id is the module id | Simple and testable. The audit can change it | 07 |
+| 2026-09-26 | The maximised panel is a view state. It is not stored | Esc or restore goes back. The stored layout stays the same | 07 |
+| 2026-09-26 | A test-only auth driver exists only when VITE_E2E_AUTH=mock. The production build fails if it contains the driver | End to end tests run with no Keycloak. Production never has a bypass | 07, 06 |
+| 2026-09-26 | OIDC tokens stay in sessionStorage | Less exposure than localStorage | 06 |
+| 2026-09-26 | The brief editor panel shows only for the admin role | docs/06: the admin manages brief versions. The API enforces | 06 |
+| 2026-09-26 | The map uses an empty style when VITE_MAP_STYLE_URL is not set | Tests need no tiles. The tile source follows assumption 7 | 07 |
+| 2026-09-26 | @playwright/test is pinned to 1.56.1 | It matches the Chromium build in the build environment. CI installs the same browser | 02 |
+| 2026-09-26 | TypeScript stays at 5.9 | typescript-eslint supports TypeScript below 6.1 | 02 |
+| 2026-09-26 | A CI job runs the Playwright end to end and visual tests | A criterion counts only when its test passes in CI | 08 |
+| 2026-09-26 | The Strata modules use the Infora components in the table in section 6 | docs/07 asks for this record | 07 |
+
+## Infora components for each Strata module
+
+docs/07 asks to record the Infora components that each module uses. The list uses the provisional component inventory from M5. The audit must confirm it.
+
+| Module id | Infora components |
+|---|---|
+| ticker | PanelFrame, TickerStrip, Badge |
+| tier0-alerts | PanelFrame, FeedItem, StatusBadge, Button, Toast, ProvenanceControl, EmptyState, LoadingState, ErrorState |
+| demand-drivers | PanelFrame, FeedItem, Badge, Fact, Sparkline |
+| site-watch-list | PanelFrame, DataTable, StatusBadge, Fact, Drawer |
+| signal-feed | PanelFrame, FeedItem, Badge, StatusBadge, Select, Checkbox, SearchInput, ProvenanceControl |
+| deal-map | PanelFrame, MapView, Select, Checkbox, Drawer, Badge |
+| kanban | PanelFrame, KanbanBoard, StatusBadge (pending approval), Toast, Drawer |
+| priority-list | PanelFrame, DataTable, BarChart (score breakdown), Fact, Drawer |
+| project-pipeline | PanelFrame, DataTable, Badge, TimelineAxis (engagement window), Fact |
+| procurement-calendar | PanelFrame, TimelineAxis, Fact, Drawer |
+| relationship-panel | PanelFrame, Tabs, DataTable, TextInput, Select, DatePicker, Button, Modal, Toast, Badge |
+| timeline | PanelFrame, FeedItem, DatePicker (as of), ProvenanceControl |
+| approval-queue | PanelFrame, FeedItem, ProvenanceControl, Button (Approve, Reject, Edit and approve), Modal (reason), Toast, StatusBadge |
+| quarantine | PanelFrame, DataTable, Badge, Drawer |
+| source-health | PanelFrame, DataTable, Badge, Sparkline |
+| brief-editor | PanelFrame, Tabs, TextInput, Select, Checkbox, DataTable (differences), Button, Modal, Toast |
+| alert-telemetry | PanelFrame, BarChart, Sparkline, DataTable |
+| next-actions | PanelFrame, DataTable, DatePicker, Badge, Button |
+

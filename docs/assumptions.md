@@ -48,3 +48,8 @@ Claude Code does not wait for answers. It uses each default below and continues.
 | 83 | Value-change observation | 30 seconds on the first view |
 | 84 | Grid row height | When more than one row height fits the geometry, the guess is the smallest candidate of 20px or more. layout-system.md lists all candidates |
 | 85 | Neutral state colour | color.state.neutral uses the secondary text colour. This is a guess until the audit shows a neutral state |
+| 90 | Infora audit | Not available on 2026-09-26. Tokens, icons, layout storage and shortcuts are provisional until the audit |
+| 91 | Ticker speed | 40 px per second, pause on hover and on keyboard focus |
+| 92 | Live reconnect | 1 s, then double each time, 30 s at most (apps/web/src/config/app.config.ts) |
+| 93 | Shortcut sequence time | 1200 ms for the second key of "g 1" |
+| 94 | Map style | Empty style until VITE_MAP_STYLE_URL gives a style with a licence for commercial use |
