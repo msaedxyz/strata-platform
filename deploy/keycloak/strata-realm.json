@@ -1,0 +1,173 @@
+{
+  "realm": "strata",
+  "enabled": true,
+  "displayName": "Strata",
+  "sslRequired": "external",
+  "accessTokenLifespan": 1800,
+  "ssoSessionIdleTimeout": 36000,
+  "registrationAllowed": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "viewer",
+        "description": "Strata viewer"
+      },
+      {
+        "name": "analyst",
+        "description": "Strata analyst"
+      },
+      {
+        "name": "approver",
+        "description": "Strata approver"
+      },
+      {
+        "name": "admin",
+        "description": "Strata admin"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "strata-web",
+      "name": "Strata web",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "http://localhost:8088/*",
+        "http://localhost:5173/*",
+        "${STRATA_PUBLIC_URL:http://localhost:8088}/*"
+      ],
+      "webOrigins": [
+        "+"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "+"
+      },
+      "protocolMappers": [
+        {
+          "name": "strata-web-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "strata-web",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "viewer@strata.local",
+      "email": "viewer@strata.local",
+      "emailVerified": true,
+      "firstName": "Viewer",
+      "lastName": "Dev",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${STRATA_DEV_USER_PASSWORD}",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "viewer"
+      ]
+    },
+    {
+      "username": "analyst@strata.local",
+      "email": "analyst@strata.local",
+      "emailVerified": true,
+      "firstName": "Analyst",
+      "lastName": "Dev",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${STRATA_DEV_USER_PASSWORD}",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "analyst"
+      ]
+    },
+    {
+      "username": "analyst2@strata.local",
+      "email": "analyst2@strata.local",
+      "emailVerified": true,
+      "firstName": "Analyst",
+      "lastName": "Dev2",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${STRATA_DEV_USER_PASSWORD}",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "analyst"
+      ]
+    },
+    {
+      "username": "approver@strata.local",
+      "email": "approver@strata.local",
+      "emailVerified": true,
+      "firstName": "Approver",
+      "lastName": "Dev",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${STRATA_DEV_USER_PASSWORD}",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "approver"
+      ]
+    },
+    {
+      "username": "approver2@strata.local",
+      "email": "approver2@strata.local",
+      "emailVerified": true,
+      "firstName": "Approver",
+      "lastName": "Dev2",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${STRATA_DEV_USER_PASSWORD}",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "approver"
+      ]
+    },
+    {
+      "username": "admin@strata.local",
+      "email": "admin@strata.local",
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "Dev",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "${STRATA_DEV_USER_PASSWORD}",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "admin"
+      ]
+    }
+  ]
+}

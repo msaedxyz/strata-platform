@@ -1,0 +1,10 @@
+site_classes:
+  - {code: mine, name: "Mine"}
+  - {code: exploration, name: "Exploration"}
+  - {code: farm, name: "Farm"}
+  - {code: power, name: "Power"}
+  - {code: industrial, name: "Industrial"}
+  - {code: transport, name: "Transport"}
+  - {code: border, name: "Border post"}
+  - {code: fuel_supply, name: "Fuel supply"}
+site_statuses: [producing, ramping_up, care_and_maintenance, suspended, closed, under_construction]

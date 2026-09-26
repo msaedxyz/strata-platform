@@ -1,0 +1,30 @@
+# Approval policy. Source: docs/06-governance.md.
+# policy values: automatic, review, admin_review
+# conditions: min_resolution_confidence, certainty_stated
+policies:
+  SignalScored: {policy: automatic}
+  EntityIdentified: {policy: review, automatic_if: {new_entity: true, min_resolution_confidence: 0.9}}
+  EntityAttributeAsserted: {policy: review, automatic_if: {certainty: stated}}
+  EntityMerged: {policy: review}
+  EntitySplit: {policy: review}
+  DealIdentified: {policy: review}
+  DealAttributeAsserted: {policy: review, automatic_if: {certainty: stated}}
+  DealStageChanged: {policy: review}
+  RelationshipAsserted: {policy: review}
+  SiteStatusChanged: {policy: review}
+  DemandDriverObserved: {policy: review, automatic_if: {certainty: stated}}
+  SourceProposed: {policy: admin_review}
+  ProjectStageChanged: {policy: review, automatic_if: {certainty: stated}}
+  ProcurementWindowForecast: {policy: automatic}
+  DemandEstimated: {policy: review}
+  ClaimRetracted: {policy: review}
+  # Engagement events from a user are automatic. The user is the actor.
+  ContactAdded: {policy: automatic, actor: human}
+  TouchpointLogged: {policy: automatic, actor: human}
+  NextActionSet: {policy: automatic, actor: human}
+  PrequalificationStatusChanged: {policy: automatic, actor: human}
+  AlertAcknowledged: {policy: automatic, actor: human}
+# Tier 0 alerts do not wait for approval. See docs/06-governance.md.
+alerts:
+  raise_without_approval: true
+  initial_status: unconfirmed

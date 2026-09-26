@@ -1,0 +1,115 @@
+# Strata local stack. Start with: make setup && docker compose up
+name: strata
+
+x-python: &python
+  image: strata/python:dev
+  build:
+    context: .
+    dockerfile: deploy/docker/python.Dockerfile
+  env_file: .env
+  environment: &python-env
+    STRATA_DATABASE_URL: postgresql://strata_app:${STRATA_APP_DB_PASSWORD}@db:5432/strata
+    STRATA_ADMIN_DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/strata
+    STRATA_OIDC_ISSUER: ${STRATA_OIDC_ISSUER:-http://localhost:8080/realms/strata}
+    STRATA_OIDC_INTERNAL_ISSUER: http://keycloak:8080/realms/strata
+    STRATA_S3_ENDPOINT_URL: http://objectstore:8333
+    STRATA_SMTP_HOST: mail
+    STRATA_SMTP_PORT: "1025"
+    STRATA_FIXTURE_BASE_URL: http://fixtures:8765
+  restart: unless-stopped
+
+services:
+  db:
+    image: timescale/timescaledb-ha:pg16
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?run make setup first}
+      POSTGRES_DB: strata
+    volumes:
+      - db-data:/home/postgres/pgdata
+    ports: ["127.0.0.1:5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d strata"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+    restart: unless-stopped
+
+  keycloak:
+    image: keycloak/keycloak:26.0
+    command: ["start-dev", "--import-realm", "--http-port=8080"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?run make setup first}
+      KC_HOSTNAME: http://localhost:8080
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HEALTH_ENABLED: "true"
+      STRATA_DEV_USER_PASSWORD: ${STRATA_DEV_USER_PASSWORD:?run make setup first}
+      STRATA_PUBLIC_URL: ${STRATA_PUBLIC_URL:-http://localhost:8088}
+    volumes:
+      - ./deploy/keycloak:/opt/keycloak/data/import:ro
+    ports: ["127.0.0.1:8080:8080"]
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q UP <&3"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+    restart: unless-stopped
+
+  objectstore:
+    # S3 compatible object storage. SeaweedFS replaces MinIO, because the MinIO image is not on Docker Hub.
+    # The service has no published port, so only the stack can reach it.
+    image: chrislusf/seaweedfs:latest
+    command: ["server", "-dir=/data", "-s3", "-s3.port=8333", "-ip.bind=0.0.0.0"]
+    volumes:
+      - object-data:/data
+    restart: unless-stopped
+
+  mail:
+    image: axllent/mailpit:latest
+    ports: ["127.0.0.1:8025:8025"]
+    restart: unless-stopped
+
+  migrate:
+    <<: *python
+    command: ["python", "-m", "services.common.bootstrap"]
+    restart: "no"
+    depends_on:
+      db: {condition: service_healthy}
+
+  api:
+    <<: *python
+    command: ["uvicorn", "services.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      keycloak: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  worker:
+    <<: *python
+    command: ["python", "-m", "services.worker"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+
+  web:
+    image: strata/web:dev
+    build:
+      context: .
+      dockerfile: deploy/docker/web.Dockerfile
+    ports: ["127.0.0.1:8088:8088"]
+    depends_on:
+      api: {condition: service_healthy}
+    restart: unless-stopped
+
+  fixtures:
+    <<: *python
+    command: ["python", "-m", "tests.fixtures.server", "--host", "0.0.0.0", "--port", "8765"]
+    profiles: ["test"]
+
+volumes:
+  db-data:
+  object-data:

@@ -1,0 +1,7 @@
+sectors:
+  - {code: mining, name: "Mining"}
+  - {code: agriculture, name: "Agriculture"}
+  - {code: power, name: "Power"}
+  - {code: industry, name: "Industry"}
+  - {code: transport, name: "Transport"}
+  - {code: fuel_supply, name: "Fuel supply"}

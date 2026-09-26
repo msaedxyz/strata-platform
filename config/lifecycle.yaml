@@ -1,0 +1,31 @@
+# Project lifecycle stages. Source: docs/03-data-model.md.
+# The window forecaster reads the intervals from this file.
+# The intervals section is generated from config/lifecycle-history.yaml
+# by scripts/compute_lifecycle_intervals.py. Do not edit it by hand.
+stages:
+  - {code: exploration, name: "Exploration", order: 1}
+  - {code: resource_defined, name: "Resource defined", order: 2}
+  - {code: scoping_prefeasibility, name: "Scoping or pre-feasibility study", order: 3}
+  - {code: feasibility, name: "Feasibility study", order: 4}
+  - {code: eia_filed, name: "Environmental assessment filed", order: 5}
+  - {code: environmental_approval, name: "Environmental approval", order: 6}
+  - {code: licence_granted, name: "Mining or construction licence granted", order: 7}
+  - {code: financing_fid, name: "Financing close or final investment decision", order: 8}
+  - {code: contractor_procurement, name: "Contractor procurement", order: 9}
+  - {code: construction_mobilisation, name: "Construction or mobilisation", order: 10}
+  - {code: commissioning_rampup, name: "Commissioning and ramp up", order: 11}
+  - {code: steady_operation, name: "Steady operation", order: 12}
+  - {code: care_maintenance_suspension_closure, name: "Care and maintenance, suspension or closure", order: 13}
+restart_path:
+  - {code: care_maintenance_suspension_closure, name: "Care and maintenance"}
+  - {code: restart_plan, name: "Restart plan"}
+  - {code: recapitalisation, name: "Recapitalisation"}
+  - {code: contractor_procurement, name: "Contractor procurement"}
+  - {code: restart, name: "Restart"}
+engagement_window:
+  from: feasibility
+  to: financing_fid
+procurement_stage: contractor_procurement
+# The forecaster shows no date when fewer projects than this support an interval.
+min_projects_per_interval: 5
+intervals: []   # filled by scripts/compute_lifecycle_intervals.py

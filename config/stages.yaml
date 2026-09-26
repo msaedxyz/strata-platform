@@ -1,0 +1,14 @@
+# Deal stages. A deal is a commercial opportunity. Source: docs/03-data-model.md.
+# Mohamed confirms these stages later. Change them here, not in code.
+stages:
+  - {code: signal, name: "Signal", order: 1, terminal: false}
+  - {code: qualified, name: "Qualified", order: 2, terminal: false}
+  - {code: contact_found, name: "Contact found", order: 3, terminal: false}
+  - {code: approach, name: "Approach", order: 4, terminal: false}
+  - {code: relationship_active, name: "Relationship active", order: 5, terminal: false}
+  - {code: prequalification, name: "Prequalification", order: 6, terminal: false}
+  - {code: tender_or_proposal, name: "Tender or proposal", order: 7, terminal: false}
+  - {code: negotiation, name: "Negotiation", order: 8, terminal: false}
+  - {code: won, name: "Won", order: 9, terminal: true}
+  - {code: lost, name: "Lost", order: 10, terminal: true}
+  - {code: parked, name: "Parked", order: 11, terminal: true}

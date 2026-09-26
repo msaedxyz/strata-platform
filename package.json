@@ -1,0 +1,17 @@
+{
+  "name": "strata",
+  "private": true,
+  "packageManager": "pnpm@10.18.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "api-client": "pnpm --filter @strata/api-client generate"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.9.0"
+  }
+}

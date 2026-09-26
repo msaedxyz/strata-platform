@@ -1,0 +1,20 @@
+# Audit captures can show live Infora data. Never commit them.
+/audit
+node_modules/
+dist/
+storybook-static/
+.turbo/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+.claude/worktrees/
+/tmp/
+coverage/
+*.log

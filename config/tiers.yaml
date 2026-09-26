@@ -1,0 +1,46 @@
+# Tier rules. The scorer assigns a tier from features only. A model never assigns a tier.
+# Source: docs/05-enrichment.md. Rules are checked in order. The first match wins.
+# Each condition is a feature name with a required value. "any" lists alternatives.
+tiers:
+  - tier: 0
+    name: "Tier 0"
+    rules:
+      - id: t0_new_project_first_trace
+        description: "A new project at its first public trace"
+        all: {is_project: true, project_first_trace: true}
+      - id: t0_enters_engagement_window
+        description: "A project that enters the engagement window"
+        all: {enters_engagement_window: true}
+      - id: t0_forecast_moves_nearer
+        description: "A forecast procurement start that moves six months nearer or more"
+        all: {forecast_shift_months_nearer_gte_6: true}
+      - id: t0_open_procurement_notice
+        description: "An open tender, EOI or prequalification notice for fuel, haulage or mining services"
+        all: {open_procurement_notice: true, procurement_category_in_scope: true}
+      - id: t0_daily_site_status_change
+        description: "A status change at a site on the daily watch list"
+        all: {site_status_change: true, watch_daily: true}
+      - id: t0_market_demand_driver
+        description: "A market demand driver, such as a fuel shortage, pipeline outage, border closure or ERB change"
+        all: {market_demand_driver: true}
+  - tier: 1
+    name: "Tier 1"
+    rules:
+      - id: t1_stage_change_watched
+        description: "Other lifecycle stage changes at watched projects"
+        all: {lifecycle_stage_change: true, watched: true}
+      - id: t1_contractor_award_watched
+        description: "Contractor awards at watched projects"
+        all: {contractor_award: true, watched: true}
+      - id: t1_buyer_change_watched
+        description: "Buyer changes at watched projects"
+        all: {buyer_change: true, watched: true}
+  - tier: 2
+    name: "Tier 2"
+    rules:
+      - id: t2_relevant
+        description: "Other relevant items and background information"
+        all: {in_scope: true}
+# Features that the market_demand_driver flag accepts.
+demand_driver_themes: [fuel_shortage, pipeline_outage, border_closure, border_delay, erb_price_change, load_shedding]
+procurement_categories_in_scope: [fuel, haulage, mining_services, contract_mining, drilling, epc]

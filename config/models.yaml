@@ -1,0 +1,19 @@
+# Model names and call settings for each agent. Keep model names here only.
+provider: anthropic
+api_key_env: ANTHROPIC_API_KEY
+# When the key is not set, agents use the deterministic backend. See docs/decisions.md.
+fallback_backend: deterministic
+defaults:
+  model: claude-sonnet-5
+  temperature: 0
+  max_tokens: 4096
+  timeout_seconds: 60
+  retries_on_schema_failure: 1
+agents:
+  classifier: {model: claude-haiku-4-5-20251001, prompt: prompts/classifier/v1.md}
+  extractor: {model: claude-sonnet-5, prompt: prompts/extractor/v1.md}
+  resolver: {model: claude-sonnet-5, prompt: prompts/resolver/v1.md}
+  scorer: {model: claude-haiku-4-5-20251001, prompt: prompts/scorer/v1.md}
+  lifecycle: {model: claude-sonnet-5, prompt: prompts/lifecycle/v1.md}
+  window_forecaster: {model: none, note: "The forecaster calculates from intervals. A model does not produce the forecast."}
+  summariser: {model: claude-haiku-4-5-20251001, prompt: prompts/summariser/v1.md}

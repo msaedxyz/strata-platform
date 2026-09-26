@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, build/strata, "claude/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Python lint and tests
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: timescale/timescaledb-ha:pg16
+        env:
+          POSTGRES_PASSWORD: ci-only-not-secret
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 3s --health-timeout 3s --health-retries 40
+    env:
+      STRATA_TEST_ADMIN_URL: postgresql://postgres:ci-only-not-secret@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with: {python-version: "3.12"}
+      - name: Install Tesseract OCR
+        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-eng
+      - run: uv sync --frozen --extra ocr-fallback
+      - run: uv run ruff check services tests scripts
+      - run: uv run pytest -q --junitxml=test-results/python.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: python-test-results, path: test-results}
+
+  frontend:
+    name: Frontend lint, typecheck, tests and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: pnpm}
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+  api-client:
+    name: OpenAPI schema and typed client
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with: {python-version: "3.12"}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: pnpm}
+      - run: uv sync --frozen
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm api-client
+      - name: The committed client matches the API
+        run: git diff --exit-code packages/api-client
+
+  gitleaks:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Scan the repository and its history
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest detect --source /repo --config /repo/.gitleaks.toml --redact --verbose

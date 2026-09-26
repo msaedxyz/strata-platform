@@ -1,0 +1,28 @@
+# Predicates for extracted claims. The extractor uses these codes only.
+# value_type: entity, text, number, money, percent, date, enum, quantity
+predicates:
+  - {code: operates, subject: organisation, object: site, value_type: entity, name: "operates"}
+  - {code: owns, subject: organisation, object: site, value_type: entity, name: "owns"}
+  - {code: ownership_percent, subject: organisation, value_type: percent, name: "ownership share"}
+  - {code: project_at_site, subject: project, object: site, value_type: entity, name: "is at site"}
+  - {code: project_stage, subject: project, value_type: enum, enum_ref: config/lifecycle.yaml, name: "lifecycle stage"}
+  - {code: site_status, subject: site, value_type: enum, enum_ref: config/taxonomy/site-classes.yaml#site_statuses, name: "site status"}
+  - {code: buyer_role_owner, subject: project, object: organisation, value_type: entity, name: "owner"}
+  - {code: buyer_role_epc_contractor, subject: project, object: organisation, value_type: entity, name: "EPC contractor"}
+  - {code: buyer_role_mining_contractor, subject: project, object: organisation, value_type: entity, name: "mining contractor"}
+  - {code: buyer_role_haulage_contractor, subject: project, object: organisation, value_type: entity, name: "haulage contractor"}
+  - {code: buyer_role_fuel_supplier, subject: project, object: organisation, value_type: entity, name: "fuel supplier of record"}
+  - {code: capex, subject: project, value_type: money, name: "capital expenditure"}
+  - {code: contract_value, subject: opportunity, value_type: money, name: "contract value"}
+  - {code: production_target, subject: site, value_type: quantity, name: "production target"}
+  - {code: tonnes_moved_per_year, subject: site, value_type: quantity, name: "material moved per year"}
+  - {code: fleet_trucks, subject: site, value_type: number, name: "haul trucks"}
+  - {code: generation_mw, subject: site, value_type: number, name: "generation capacity MW"}
+  - {code: employees, subject: site, value_type: number, name: "employees"}
+  - {code: event_date, subject: any, value_type: date, name: "date of the event"}
+  - {code: expected_start, subject: project, value_type: date, name: "expected start"}
+  - {code: tender_deadline, subject: opportunity, value_type: date, name: "tender closing date"}
+  - {code: fuel_price, subject: market, value_type: money, name: "fuel price"}
+  - {code: supply_disruption, subject: market, value_type: text, name: "supply disruption"}
+  - {code: licence_number, subject: site, value_type: text, name: "licence number"}
+  - {code: located_in, subject: any, object: location, value_type: entity, name: "is located in"}

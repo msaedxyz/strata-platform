@@ -1,0 +1,15 @@
+title = "Strata gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Values that are not secrets"
+paths = [
+  '''pnpm-lock\.yaml''',
+  '''uv\.lock''',
+  '''packages/api-client/openapi\.json''',
+]
+regexes = [
+  '''ci-only-not-secret''',
+]
