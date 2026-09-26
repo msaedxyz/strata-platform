@@ -1,0 +1,921 @@
+# Historical lifecycle milestones for the window forecaster.
+# Source: WebSearch results only, collected 2026-09-26. See reports/notes/research-lifecycle.md.
+# Each milestone has a URL from a search result. No date is invented.
+#
+# Date format by date_precision:
+#   day     -> YYYY-MM-DD
+#   month   -> YYYY-MM
+#   quarter -> YYYY-Qn
+#   year    -> YYYY
+#
+# A note that starts with "VERIFY:" means that the search summary gave the date
+# but did not show which listed page holds it. A human must check that page.
+
+settings:
+  target_stage: contractor_procurement
+  min_projects: 5            # doc 05: fewer than five projects -> show stage only, no date
+  days_per_month: 30.4375
+  # Point date that the script uses for each precision.
+  precision_point:
+    day: exact
+    month: day_15
+    quarter: middle_month_day_15
+    year: july_1
+  # Half width of the uncertainty of each precision, in days.
+  # If an interval is negative, but its size is not more than the sum of the
+  # half widths of its two dates, the script sets it to 0 (concurrent).
+  # A larger negative interval is "out of order" and is not in the statistics.
+  precision_half_width_days:
+    day: 0
+    month: 15
+    quarter: 45
+    year: 182
+  stage_order:
+    - exploration
+    - resource_defined
+    - scoping_prefeasibility
+    - feasibility
+    - eia_filed
+    - environmental_approval
+    - licence_granted
+    - financing_fid
+    - contractor_procurement
+    - construction_mobilisation
+    - commissioning_rampup
+    - steady_operation
+    - care_maintenance_suspension_closure
+  restart_order:
+    - care_maintenance_suspension_closure
+    - restart_plan
+    - recapitalisation
+    - contractor_procurement
+    - restart
+
+projects:
+
+  # ---------------------------------------------------------------- Zambia
+
+  - id: lumwana_super_pit
+    name: Lumwana Super Pit Expansion (Barrick)
+    country: ZM
+    commodity_or_type: copper, open pit expansion
+    milestones:
+      - stage: feasibility
+        date: "2025-02-19"
+        date_precision: day
+        url: https://finance.yahoo.com/news/barrick-initiates-development-2bn-lumwana-103656748.html
+        publisher: Mining Technology via Yahoo Finance
+        title: Barrick initiates development of $2bn Lumwana super pit expansion in Zambia
+        note: "VERIFY: search summary says the feasibility study completion was announced on 19 February 2025. Capex US$2bn."
+      - stage: financing_fid
+        date: "2025-02-19"
+        date_precision: day
+        url: https://finance.yahoo.com/news/barrick-gold-starts-development-lumwana-101000000.html
+        publisher: Yahoo Finance
+        title: Barrick Gold Starts Development of Lumwana Super Pit Expansion
+        note: Owner funded. The development start is the investment decision.
+      - stage: contractor_procurement
+        date: "2025-Q1"
+        date_precision: quarter
+        url: https://www.miningweekly.com/article/construction-of-lumwanas-2bn-super-pit-expansion-under-way-2025-07-11
+        publisher: Mining Weekly
+        title: Construction of Lumwana's $2bn super pit expansion under way
+        note: Long-lead orders placed. US$177m (81 percent) of procurement placed with local contractors in Q1 2025. No named EPC award found.
+
+  - id: kansanshi_s3
+    name: Kansanshi S3 Expansion (First Quantum)
+    country: ZM
+    commodity_or_type: copper, plant and fleet expansion
+    milestones:
+      - stage: financing_fid
+        date: "2022-05-08"
+        date_precision: day
+        url: https://www.globenewswire.com/news-release/2022/05/08/2438156/0/en/First-Quantum-Announces-Board-Approval-of-the-Kansanshi-S3-Expansion-and-Enterprise-Nickel-Project.html
+        publisher: GlobeNewswire (First Quantum)
+        title: First Quantum Announces Board Approval of the Kansanshi S3 Expansion and Enterprise Nickel Project
+        note: Board approval, capex US$1.25bn. No contractor award date or first production date found. Owner performs most work.
+
+  - id: enterprise_nickel
+    name: Enterprise Nickel (First Quantum, Trident)
+    country: ZM
+    commodity_or_type: nickel, open pit
+    milestones:
+      - stage: financing_fid
+        date: "2022-05-08"
+        date_precision: day
+        url: https://www.globenewswire.com/news-release/2022/05/08/2438156/0/en/First-Quantum-Announces-Board-Approval-of-the-Kansanshi-S3-Expansion-and-Enterprise-Nickel-Project.html
+        publisher: GlobeNewswire (First Quantum)
+        title: First Quantum Announces Board Approval of the Kansanshi S3 Expansion and Enterprise Nickel Project
+        note: Board approval.
+      - stage: contractor_procurement
+        date: "2022-05"
+        date_precision: month
+        url: https://s24.q4cdn.com/821689673/files/doc_news/2022/05/NR-22-11-S3-and-Enterprise-Approval-FINAL.pdf
+        publisher: First Quantum Minerals
+        title: NEWS RELEASE 22-11 May 8, 2022
+        note: The release states that a mining contractor was mobilised to start the pre-strip. The award date is not public. The month of the release is used.
+      - stage: construction_mobilisation
+        date: "2022-Q2"
+        date_precision: quarter
+        url: https://www.globenewswire.com/news-release/2022/10/25/2541292/0/en/First-Quantum-Minerals-Reports-Third-Quarter-2022-Results.html
+        publisher: GlobeNewswire (First Quantum)
+        title: First Quantum Minerals Reports Third Quarter 2022 Results
+        note: Q3 2022 results say the pre-strip started in May 2022. The approval release says June 2022. Quarter precision covers both.
+      - stage: commissioning_rampup
+        date: "2023-02"
+        date_precision: month
+        url: https://www.first-quantum.com/English/announcements/announcements-details/2023/CORRECTION----First-Quantum-Minerals-Announces-2022-Preliminary-Production-and-2023-2025-Guidance/default.aspx
+        publisher: First Quantum Minerals
+        title: CORRECTION -- First Quantum Minerals Announces 2022 Preliminary Production and 2023-2025 Guidance
+        note: First ore through the Enterprise plant in February 2023.
+      - stage: steady_operation
+        date: "2024-06-01"
+        date_precision: day
+        url: https://www.mining.com/first-quantum-begins-commercial-production-at-zambia-nickel-mine/
+        publisher: MINING.COM
+        title: First Quantum begins production at Zambia nickel mine
+        note: Commercial production declared 1 June 2024.
+
+  - id: sentinel_trident
+    name: Sentinel Copper Mine, Kalumbila (First Quantum, Trident)
+    country: ZM
+    commodity_or_type: copper, open pit
+    milestones:
+      - stage: construction_mobilisation
+        date: "2012"
+        date_precision: year
+        url: https://www.nsenergybusiness.com/projects/sentinel-copper-mine-kalumbila/
+        publisher: NS Energy
+        title: Sentinel Copper Mine, Kalumbila, North Western Province, Zambia
+        note: Construction started in the second half of 2012.
+      - stage: commissioning_rampup
+        date: "2014-10"
+        date_precision: month
+        url: https://www.nsenergybusiness.com/projects/sentinel-copper-mine-kalumbila/
+        publisher: NS Energy
+        title: Sentinel Copper Mine, Kalumbila, North Western Province, Zambia
+        note: Commissioning in stages from October 2014.
+      - stage: steady_operation
+        date: "2016-11"
+        date_precision: month
+        url: https://www.nsenergybusiness.com/projects/sentinel-copper-mine-kalumbila/
+        publisher: NS Energy
+        title: Sentinel Copper Mine, Kalumbila, North Western Province, Zambia
+        note: Commercial production declared November 2016.
+
+  - id: lumwana_original
+    name: Lumwana Copper Mine, first development (Equinox)
+    country: ZM
+    commodity_or_type: copper, open pit
+    milestones:
+      - stage: feasibility
+        date: "2003-10"
+        date_precision: month
+        url: https://www.sec.gov/Archives/edgar/data/1377085/000119312511059375/dex21.htm
+        publisher: Equinox Minerals (SEC exhibit 2.1)
+        title: Exhibit 2.1
+        note: Bankable feasibility study completed October 2003.
+      - stage: construction_mobilisation
+        date: "2005-Q4"
+        date_precision: quarter
+        url: https://www.sec.gov/Archives/edgar/data/1377085/000119312511059375/dex21.htm
+        publisher: Equinox Minerals (SEC exhibit 2.1)
+        title: Exhibit 2.1
+        note: Construction started in the fourth quarter of 2005.
+      - stage: contractor_procurement
+        date: "2006-10"
+        date_precision: month
+        url: https://www.ijglobal.com/articles/36971/zambias-lumwana-copper-mine
+        publisher: IJGlobal
+        title: Zambia's Lumwana copper mine
+        note: "VERIFY: Ausenco and Bateman got a reimbursable FEED contract in January 2006. It became a full EPC contract in October 2006. EPC contract shares issued 9 January 2007."
+      - stage: financing_fid
+        date: "2006-12-01"
+        date_precision: day
+        url: https://www.sec.gov/Archives/edgar/data/1377085/000119312511059375/dex21.htm
+        publisher: Equinox Minerals (SEC exhibit 2.1)
+        title: Exhibit 2.1
+        note: US$582.7m project debt facility signed 1 December 2006.
+      - stage: commissioning_rampup
+        date: "2008-12-03"
+        date_precision: day
+        url: https://www.sec.gov/Archives/edgar/data/1377085/000119312511059375/dex21.htm
+        publisher: Equinox Minerals (SEC exhibit 2.1)
+        title: Exhibit 2.1
+        note: Ore commissioning started 3 December 2008.
+
+  - id: munali_nickel
+    name: Munali Nickel Mine (Albidon)
+    country: ZM
+    commodity_or_type: nickel, underground
+    milestones:
+      - stage: construction_mobilisation
+        date: "2006-09"
+        date_precision: month
+        url: https://www.mining-technology.com/projects/munali_nickel/
+        publisher: Mining Technology
+        title: Munali Nickel Project, Albidon, Zambia - Mining Technology
+        note: Albidon started development in September 2006 after a positive feasibility study.
+      - stage: contractor_procurement
+        date: "2007-06"
+        date_precision: month
+        url: https://shareprices.com/rns/grd-minproc-contract-awarded-x51pb8pd27u8wjo/
+        publisher: shareprices.com (RNS)
+        title: GRD Minproc contract awarded
+        note: Procurement and construction management contract for the US$100m concentrator. Byrnecut was the mining contractor (date not found).
+      - stage: commissioning_rampup
+        date: "2008-03"
+        date_precision: month
+        url: https://www.mining-technology.com/projects/munali_nickel/
+        publisher: Mining Technology
+        title: Munali Nickel Project, Albidon, Zambia - Mining Technology
+        note: Production started March 2008. Other results give April 2008 for concentrate production.
+
+  - id: kafue_gorge_lower
+    name: Kafue Gorge Lower Hydropower (750 MW)
+    country: ZM
+    commodity_or_type: power, hydro
+    milestones:
+      - stage: contractor_procurement
+        date: "2015-10"
+        date_precision: month
+        url: https://www.lusakatimes.com/2015/10/20/zesco-signs-deal-to-construct-the-kafue-gorge-power-project/
+        publisher: Lusaka Times
+        title: "Zambia : ZESCO signs deal to construct the Kafue Gorge Power Project"
+        note: Sinohydro EPC contract. Search summary gives 19 October 2015.
+      - stage: financing_fid
+        date: "2017-11-13"
+        date_precision: day
+        url: https://china.aiddata.org/projects/57536/
+        publisher: AidData
+        title: China Eximbank participates in $1.53 billion syndicated buyer's credit for 750MW Kafue Gorge Lower Hydropower Plant Construction Project
+        note: Buyer's credit signed two years after the EPC award. EPC plus finance model.
+      - stage: commissioning_rampup
+        date: "2021-07-23"
+        date_precision: day
+        url: https://en.wikipedia.org/wiki/Kafue_Gorge_Lower_Power_Station
+        publisher: Wikipedia
+        title: Kafue Gorge Lower Power Station
+        note: "VERIFY: first unit commissioned 23 July 2021. The last of five units started March 2023."
+
+  - id: maamba_phase2
+    name: Maamba Energy 300 MW Phase II
+    country: ZM
+    commodity_or_type: power, coal
+    milestones:
+      - stage: financing_fid
+        date: "2024-07"
+        date_precision: month
+        url: https://www.openzambia.com/economics/2024/7/11/maamba-collieries-secures-300m-for-300-megawatt-power-plant-expansion
+        publisher: Open Zambia
+        title: Maamba Collieries Secures $300M for 300-Megawatt Power Plant Expansion
+        note: Agreement with anchor lenders for US$300m debt. Total cost US$400m.
+      - stage: construction_mobilisation
+        date: "2024-08-13"
+        date_precision: day
+        url: https://www.actusnews.com/en/zccm/pr/2024/09/05/market-announcement-maamba-energy-limited-300-mw-phase-ii-power-plant-project
+        publisher: ZCCM-IH via Actusnews
+        title: MARKET ANNOUNCEMENT MAAMBA ENERGY LIMITED - 300 MW PHASE II POWER PLANT PROJECT
+        note: Groundbreaking 13 August 2024. EPC contractor and award date not found.
+
+  - id: ngonye_solar
+    name: Ngonye Solar PV (34 MW, Scaling Solar)
+    country: ZM
+    commodity_or_type: power, solar
+    milestones:
+      - stage: financing_fid
+        date: "2018-06"
+        date_precision: month
+        url: https://en.wikipedia.org/wiki/Ngonye_Solar_Power_Station
+        publisher: Wikipedia
+        title: Ngonye Solar Power Station
+        note: Financial close June 2018 (IFC, IFC-Canada, EIB loans).
+      - stage: construction_mobilisation
+        date: "2018-08-22"
+        date_precision: day
+        url: https://www.africa-energy.com/news-centre/article/zambia-enel-begins-construction-ngonye-solar
+        publisher: African Energy
+        title: "Zambia: Enel begins construction of Ngonye solar"
+        note: Enel Green Power began construction 22 August 2018.
+      - stage: commissioning_rampup
+        date: "2019-04-29"
+        date_precision: day
+        url: https://en.wikipedia.org/wiki/Ngonye_Solar_Power_Station
+        publisher: Wikipedia
+        title: Ngonye Solar Power Station
+        note: Commercially commissioned 29 April 2019.
+
+  - id: bangweulu_solar
+    name: Bangweulu Solar PV (54 MW, Scaling Solar)
+    country: ZM
+    commodity_or_type: power, solar
+    milestones:
+      - stage: financing_fid
+        date: "2017-12-20"
+        date_precision: day
+        url: https://www.africa-energy.com/news-centre/article/zambia-financial-close-first-scaling-solar-project
+        publisher: African Energy
+        title: "Zambia: Financial close for first Scaling Solar project"
+        note: IFC announced financial close on 20 December 2017. Sterling and Wilson was EPC contractor (award date not found).
+      - stage: construction_mobilisation
+        date: "2017-12"
+        date_precision: month
+        url: https://neoen.com/en/news/2017/zambia-beginning-of-works-on-a-solar-park/
+        publisher: Neoen
+        title: "Zambia: beginning of works on a solar park"
+        note: Neoen announced financial close and start of construction at the end of 2017.
+      - stage: commissioning_rampup
+        date: "2019-03-11"
+        date_precision: day
+        url: https://www.lusakatimes.com/2019/03/12/president-lungu-commissions-zambias-largest-solar-power-plant-producing-54-megawatts-of-power/
+        publisher: Lusaka Times
+        title: "Zambia : President Lungu commissions Zambia's largest Solar Power plant producing 54 megawatts of power"
+        note: Inaugurated 11 March 2019.
+
+  - id: chisamba_solar
+    name: Chisamba Solar PV (100 MW)
+    country: ZM
+    commodity_or_type: power, solar
+    milestones:
+      - stage: construction_mobilisation
+        date: "2024-07"
+        date_precision: month
+        url: https://en.wikipedia.org/wiki/Chisamba_Solar_Power_Plant
+        publisher: Wikipedia
+        title: Chisamba Solar Power Plant
+        note: Construction began July 2024. Power China is the contractor (award date not found).
+      - stage: commissioning_rampup
+        date: "2025-06"
+        date_precision: month
+        url: https://en.wikipedia.org/wiki/Chisamba_Solar_Power_Plant
+        publisher: Wikipedia
+        title: Chisamba Solar Power Plant
+        note: Commissioned June 2025.
+
+  - id: kitumba
+    name: Kitumba Copper Project (Blackthorn, Intrepid, Sinomine)
+    country: ZM
+    commodity_or_type: copper, underground and concentrator
+    milestones:
+      - stage: scoping_prefeasibility
+        date: "2014-09-25"
+        date_precision: day
+        url: https://minedocs.com/12/Kitumba_PreFeasibility_Report_09252014.pdf
+        publisher: minedocs.com (NI 43-101 report)
+        title: kitumba copper project optimised pre-feasibility study ni 43 ...
+        note: Report date from the file name. An updated PFS followed on 8 October 2015.
+      - stage: licence_granted
+        date: "2014-11"
+        date_precision: month
+        url: https://www.miningweekly.com/article/blackthorn-given-mining-license-over-kitumba-2014-11-18/rep_id:3650
+        publisher: Mining Weekly
+        title: Blackthorn given mining license over Kitumba
+        note: Mining licence granted November 2014, 25 year term.
+      - stage: financing_fid
+        date: "2025-04"
+        date_precision: month
+        url: https://www.miningweekly.com/article/sinomine-targets-2026-production-at-kitumba-copper-mine-in-zambia-2025-04-17
+        publisher: Mining Weekly
+        title: Sinomine targets 2026 production at Kitumba copper mine in Zambia
+        note: Sinomine (acquired 2024) announced about US$560m investment. Change of owner explains the long gap after the licence.
+      - stage: construction_mobilisation
+        date: "2025-04"
+        date_precision: month
+        url: https://www.miningweekly.com/article/sinomine-targets-2026-production-at-kitumba-copper-mine-in-zambia-2025-04-17
+        publisher: Mining Weekly
+        title: Sinomine targets 2026 production at Kitumba copper mine in Zambia
+        note: Surface stripping started April 2025. Stripping contractor not named.
+      - stage: commissioning_rampup
+        date: "2026-09-21"
+        date_precision: day
+        url: https://news.metal.com/newscontent/104127271-sinomines-zambia-kitumba-copper-project-enters-concentrate-trial-production
+        publisher: Shanghai Metals Market
+        title: Sinomine's Zambia Kitumba copper project enters concentrate trial production
+        note: Concentrate trial production started 21 September 2026. Smelter commissioning planned Q1 2027.
+
+  - id: mimbula
+    name: Mimbula Copper Phase 1 (Moxico)
+    country: ZM
+    commodity_or_type: copper, heap leach SX-EW
+    milestones:
+      - stage: commissioning_rampup
+        date: "2022-12"
+        date_precision: month
+        url: https://www.moxicoresources.com/projects/republic-of-zambia/operations
+        publisher: Moxico Resources
+        title: Republic of Zambia Operations - Moxico Resources PLC
+        note: First copper from the 10,000 tpa Phase 1 plant in December 2022. Phase 2 first cathode January 2024. No earlier stage dates found.
+
+  - id: kcm_restart
+    name: Konkola Copper Mines restart under Vedanta
+    country: ZM
+    commodity_or_type: copper, restart and recapitalisation
+    milestones:
+      - stage: restart_plan
+        date: "2023-09-05"
+        date_precision: day
+        url: https://www.miningweekly.com/article/zambia-agrees-to-hand-disputed-copper-assets-back-to-indias-vedanta-2023-09-05
+        publisher: Mining Weekly
+        title: Zambia agrees to hand disputed copper assets back to India's Vedanta
+        note: Government agrees to return KCM to Vedanta. Vedanta pledges more than US$1bn. KCM was in provisional liquidation from 2019.
+      - stage: recapitalisation
+        date: "2023-11-08"
+        date_precision: day
+        url: https://english.news.cn/africa/20231108/72800cf867fe47828dd51fd19e1a0122/c.html
+        publisher: Xinhua
+        title: Zambia, Indian firm sign agreements to revitalize Konkola Copper Mines
+        note: Shareholder and implementation agreements signed. Management control returned in 2024.
+      - stage: contractor_procurement
+        date: "2025-09"
+        date_precision: month
+        url: https://zambianbusinesstimes.com/kcm-awards-63-million-project-to-australian-firm-for-deep-mine-pump-station-construction/
+        publisher: Zambian Business Times
+        title: KCM awards $63 million project to Australian firm for deep mine pump station construction
+        note: "VERIFY: Mancala pump station contract at Konkola Deep. Search summary dates the announcement early September 2025."
+      - stage: contractor_procurement
+        date: "2026-09-17"
+        date_precision: day
+        url: https://www.kitco.com/news/off-the-wire/2026-09-17/kcm-signs-498-million-deal-chinese-firm-copper-recovery-plant
+        publisher: Kitco News
+        title: KCM signs $498 million deal with Chinese firm for copper recovery plant
+        note: NERIN EPC contract for tailings leach plant, Chingola.
+
+  - id: mopani_recap
+    name: Mopani Copper Mines recapitalisation (IRH)
+    country: ZM
+    commodity_or_type: copper, recapitalisation
+    milestones:
+      - stage: restart_plan
+        date: "2023-12"
+        date_precision: month
+        url: https://energycapitalpower.com/zambia-irh-acquisition-mopani-mine/
+        publisher: Energy Capital & Power
+        title: "Zambia: IRH Completes Acquisition of Mopani Mine for $1.1B"
+        note: IRH deal finalised December 2023.
+      - stage: recapitalisation
+        date: "2024-03"
+        date_precision: month
+        url: https://www.agbi.com/industry/2024/03/abu-dhabis-irh-completes-zambian-copper-mining-deal/
+        publisher: AGBI
+        title: Abu Dhabi's IRH completes Zambian copper mining deal
+        note: IRH completed the 51 percent acquisition. US$620m new equity. No dated contractor award found after completion.
+
+  - id: lubambe
+    name: Lubambe Copper Mine (JCHX acquisition)
+    country: ZM
+    commodity_or_type: copper, recapitalisation
+    milestones:
+      - stage: recapitalisation
+        date: "2024-07"
+        date_precision: month
+        url: https://en.wikipedia.org/wiki/JCHX
+        publisher: Wikipedia
+        title: JCHX
+        note: JCHX acquired 80 percent from EMR Capital. Plans about US$300m including a new shaft. No contractor date found.
+
+  - id: zambia_lobito_rail
+    name: Zambia Lobito greenfield rail (AFC)
+    country: ZM
+    commodity_or_type: transport, rail
+    milestones:
+      - stage: licence_granted
+        date: "2024-09"
+        date_precision: month
+        url: https://www.africafc.org/news-and-insights/news/afc-signs-concession-agreements-with-governments-of-angola-and-zambia-to-advance-zambia-lobito-rail-project
+        publisher: Africa Finance Corporation
+        title: AFC Signs Concession Agreements with Governments of Angola and Zambia to advance Zambia Lobito Rail Project
+        note: Concession agreements signed September 2024. Mapped to licence_granted. No EPC date found.
+
+  # ---------------------------------------------------------------- DRC
+
+  - id: kamoa_kakula
+    name: Kamoa-Kakula, Kakula mine Phase 1 (Ivanhoe, Zijin)
+    country: CD
+    commodity_or_type: copper, underground
+    milestones:
+      - stage: licence_granted
+        date: "2012-08-20"
+        date_precision: day
+        url: https://scielo.org.za/scielo.php?script=sci_arttext&pid=S2225-62532018001100003
+        publisher: Journal of the SAIMM (SciELO)
+        title: The giant Kamoa-Kakula project in the Democratic Republic of Congo
+        note: Kamoa exploitation licences approved 20 August 2012. Kakula lies inside the licence area.
+      - stage: eia_filed
+        date: "2017-06"
+        date_precision: month
+        url: https://minedocs.com/21/Kamoa_EIS_062017.pdf
+        publisher: Kamoa Copper SA via minedocs.com
+        title: June 2017 KAMOA COPPER SA Kamoa Copper Project Environmental Impact Study
+        note: EIS update dated June 2017. Filing date not stated.
+      - stage: contractor_procurement
+        date: "2017-11-14"
+        date_precision: day
+        url: https://im-mining.com/2017/11/14/leading-chinese-contractor-jchx-wins-kamoa-kakula-decline-project/
+        publisher: International Mining
+        title: Leading Chinese contractor JCHX wins Kamoa-Kakula decline project
+        note: Article date. DRA EPCM award date not found.
+      - stage: construction_mobilisation
+        date: "2017-11-16"
+        date_precision: day
+        url: https://im-mining.com/2017/11/24/jchx-company-starts-twin-decline-development-ahead-schedule-kamoa-kakula/
+        publisher: International Mining
+        title: JCHX company starts twin decline development ahead of schedule at Kamoa-Kakula
+        note: First blast of the twin declines 16 November 2017. Box cut completed 26 October 2017.
+      - stage: scoping_prefeasibility
+        date: "2019-02"
+        date_precision: month
+        url: https://www.ivanhoemines.com/news-stories/news-release/ivanhoe-mines-announces-an-independent-pre-feasibility-study-pfs-for-the-tier-one-kakula-copper-mine-in-the-democratic-republic-of-congo/
+        publisher: Ivanhoe Mines
+        title: Ivanhoe Mines announces an independent pre-feasibility study (PFS) for the Tier One Kakula copper mine in the Democratic Republic of Congo
+        note: Kakula PFS. Development started before the PFS.
+      - stage: feasibility
+        date: "2020-09-08"
+        date_precision: day
+        url: https://www.juniorminingnetwork.com/junior-miner-news/press-releases/397-tsx/ivn/82637-ivanhoe-mines-to-issue-independent-definitive-feasibility-study-and-expansion-studies-for-the-tier-one-kamoa-kakula-copper-project-on-september-8-2020.html
+        publisher: Junior Mining Network (Ivanhoe Mines)
+        title: Ivanhoe Mines to Issue Independent Definitive Feasibility Study and Expansion Studies for the Tier One Kamoa-Kakula Copper Project on September 8, 2020
+        note: Kakula DFS issued 8 September 2020, while the mine was under construction.
+      - stage: commissioning_rampup
+        date: "2021-05-25"
+        date_precision: day
+        url: https://www.ivanhoemines.com/news-stories/news-release/kamoa-kakula-phase-1-concentrator-plant-produced-first-copper-concentrate-on-may-25-ramp-up-toward-nameplate-capacity-of-3-8-million-tonnes-of-ore-per-year-progressing-smoothly/
+        publisher: Ivanhoe Mines
+        title: Kamoa-Kakula Phase 1 concentrator plant produced first copper concentrate on May 25
+        note: First concentrate.
+      - stage: steady_operation
+        date: "2021-07-01"
+        date_precision: day
+        url: https://www.ivanhoemines.com/news-stories/news-release/kamoa-kakula-phase-1-concentrator-plant-achieved-commercial-production-on-july-1-2021/
+        publisher: Ivanhoe Mines
+        title: Kamoa-Kakula Phase 1 concentrator plant achieved commercial production on July 1, 2021
+        note: Commercial production.
+
+  - id: kipushi_restart
+    name: Kipushi zinc mine restart (Ivanhoe, Gecamines)
+    country: CD
+    commodity_or_type: zinc, underground restart
+    milestones:
+      - stage: restart_plan
+        date: "2022-02-14"
+        date_precision: day
+        url: https://www.ivanhoemines.com/news-stories/news-release/ivanhoe-mines-and-gecamines-sign-new-agreement-to-return-the-ultra-high-grade-kipushi-mine-in-the-drc-to-production/
+        publisher: Ivanhoe Mines
+        title: Ivanhoe Mines and Gecamines sign new agreement to return the ultra-high-grade Kipushi Mine in the DRC to production
+        note: New joint venture agreement.
+      - stage: feasibility
+        date: "2022-02-14"
+        date_precision: day
+        url: https://www.ivanhoemines.com/wp-content/uploads/kipushi_2022_feasibility_study_february_14-_2022.pdf
+        publisher: Ivanhoe Mines
+        title: February 14, 2022 Ivanhoe Mines and Gecamines sign new agreement to return the ultra-high-grade Kipushi Mine in the DRC to production
+        note: Kipushi 2022 Feasibility Study. Capex US$382m.
+      - stage: construction_mobilisation
+        date: "2022-09-13"
+        date_precision: day
+        url: https://im-mining.com/2022/09/13/ivanhoe-and-gecamines-break-ground-on-kipushi-processing-plant/
+        publisher: International Mining
+        title: Ivanhoe and Gecamines break ground on Kipushi processing plant
+        note: Article date. No contractor award date found.
+      - stage: commissioning_rampup
+        date: "2024-06-14"
+        date_precision: day
+        url: https://www.ivanhoemines.com/news-stories/news-release/ivanhoe-mines-completes-construction-of-kipushi-concentrator-ahead-of-schedule/
+        publisher: Ivanhoe Mines
+        title: Ivanhoe Mines Completes Construction of Kipushi Concentrator Ahead of Schedule
+        note: First concentrate 14 June 2024.
+      - stage: restart
+        date: "2024-06-14"
+        date_precision: day
+        url: https://www.ivanhoemines.com/news-stories/news-release/ivanhoe-mines-completes-construction-of-kipushi-concentrator-ahead-of-schedule/
+        publisher: Ivanhoe Mines
+        title: Ivanhoe Mines Completes Construction of Kipushi Concentrator Ahead of Schedule
+        note: Return to production. Same evidence as commissioning_rampup.
+
+  - id: tfm_mixed_ore
+    name: Tenke Fungurume Mixed Ore Project (CMOC)
+    country: CD
+    commodity_or_type: copper-cobalt, expansion
+    milestones:
+      - stage: financing_fid
+        date: "2021-08"
+        date_precision: month
+        url: https://www.mining.com/china-moly-commits-2-5bn-to-double-tenke-fungurume-copper-cobalt-output/
+        publisher: MINING.COM
+        title: China Moly commits $2.5 billion to double Tenke Fungurume copper, cobalt output
+        note: Board approved US$2.51bn in August 2021.
+      - stage: commissioning_rampup
+        date: "2023-10"
+        date_precision: month
+        url: https://www.nsenergybusiness.com/projects/tenke-fungurume-copper-cobalt-mine/
+        publisher: NS Energy
+        title: Tenke Fungurume Copper-Cobalt Mine - NS Energy
+        note: "VERIFY: Mixed Ore Project put into operation October 2023."
+
+  - id: kisanfu
+    name: Kisanfu KFM Phase 1 (CMOC)
+    country: CD
+    commodity_or_type: copper-cobalt
+    milestones:
+      - stage: financing_fid
+        date: "2022-06"
+        date_precision: month
+        url: https://www.zawya.com/en/projects/bri/chinas-cmoc-to-invest-183bln-in-kfm-project-in-congo-iz445xf3
+        publisher: Zawya
+        title: China's CMOC to invest $1.83bln in KFM project in Congo
+        note: US$1.826bn phase 1 investment announced June 2022. First production planned 1H 2023 (no actual date found).
+
+  # ---------------------------------------------------------------- Botswana
+
+  - id: khoemacau_zone5
+    name: Khoemacau Zone 5 (Cupric Canyon)
+    country: BW
+    commodity_or_type: copper-silver, underground
+    milestones:
+      - stage: feasibility
+        date: "2014-07"
+        date_precision: month
+        url: https://miningdataonline.com/property/921/Khoemacau-Zone-5-Mine.aspx
+        publisher: Mining Data Online
+        title: Major Mines & Projects | Khoemacau (Zone 5) Mine
+        note: "VERIFY: feasibility study completed July 2014. Mining licence application September 2014."
+      - stage: licence_granted
+        date: "2015"
+        date_precision: year
+        url: https://miningdataonline.com/property/921/Khoemacau-Zone-5-Mine.aspx
+        publisher: Mining Data Online
+        title: Major Mines & Projects | Khoemacau (Zone 5) Mine
+        note: "VERIFY: mining licences for Zone 5 and Banana Zone granted in 2015."
+      - stage: contractor_procurement
+        date: "2019-06-24"
+        date_precision: day
+        url: https://im-mining.com/2019/06/24/barminco-gets-five-year-major-underground-mining-contract-khoemacau-copper-mine-botswana/
+        publisher: International Mining
+        title: Barminco gets five year major underground mining contract for Khoemacau copper mine in Botswana
+        note: Article date. About A$800m. Award was subject to project funding close.
+      - stage: contractor_procurement
+        date: "2019-07-30"
+        date_precision: day
+        url: https://im-mining.com/2019/07/30/cupric-canyon-rewards-fluor-khoemacau-copper-silver-epcm-contract/
+        publisher: International Mining
+        title: Cupric Canyon rewards Fluor with Khoemacau copper-silver EPCM contract
+        note: Fluor EPCM. Fluor had done FEED and early works before.
+      - stage: construction_mobilisation
+        date: "2019-06-28"
+        date_precision: day
+        url: https://www.sec.gov/Archives/edgar/data/85535/000155837019007611/ex-99d1.htm
+        publisher: Royal Gold (SEC exhibit 99.1)
+        title: EX-99.1 rgld_Ex99_1
+        note: "VERIFY: official groundbreaking 28 June 2019 attended by the President of Botswana."
+      - stage: financing_fid
+        date: "2019-07"
+        date_precision: month
+        url: https://www.fasken.com/en/experience/2019/07/fasken-advises-cupric-canyon-capital-on-the-financing-of-the-khoemacau-copper-project-in-botswana
+        publisher: Fasken
+        title: Fasken advises Cupric Canyon Capital on the financing of the Khoemacau Copper project in Botswana
+        note: US$565m package. Search summary says close announced 18 July 2019. Month from the URL path.
+      - stage: commissioning_rampup
+        date: "2021-06-30"
+        date_precision: day
+        url: https://www.miningweekly.com/article/khoemacau-produces-first-concentrate-2021-07-01/rep_id:3650
+        publisher: Mining Weekly
+        title: Khoemacau produces first concentrate
+        note: First concentrate 30 June 2021.
+      - stage: steady_operation
+        date: "2022-02-16"
+        date_precision: day
+        url: https://theprojectsbw.com/construction-of-the-p4-7-billion-khoemacau-project-complete-operations-now-fully-commissioned/
+        publisher: The Projects BW
+        title: Construction of the P4.7 billion Khoemacau project complete, operations now fully commissioned.
+        note: Construction and commissioning complete 16 February 2022.
+
+  - id: motheo_t3
+    name: Motheo T3 (MOD Resources, Sandfire)
+    country: BW
+    commodity_or_type: copper-silver, open pit
+    milestones:
+      - stage: eia_filed
+        date: "2019-08"
+        date_precision: month
+        url: https://www.miningweekly.com/article/t3-copper-project-botswana-2019-08-29
+        publisher: Mining Weekly
+        title: T3 copper project, Botswana
+        note: "VERIFY: DEA finished its review of the ESIA and will release it for public review."
+      - stage: feasibility
+        date: "2020-12"
+        date_precision: month
+        url: https://www.nsenergybusiness.com/projects/motheo-copper-project/
+        publisher: NS Energy
+        title: Motheo Copper Mine is located in Kalahari Copper Belt in Botswana
+        note: DFS for 3.2 Mtpa T3 open pit announced December 2020.
+      - stage: financing_fid
+        date: "2020-12"
+        date_precision: month
+        url: https://www.miningweekly.com/article/sandfire-cuts-the-ribbon-at-motheo-2023-08-10
+        publisher: Mining Weekly
+        title: Sandfire cuts the ribbon at Motheo
+        note: FID on the US$259m mine in December 2020.
+      - stage: contractor_procurement
+        date: "2020-12"
+        date_precision: month
+        url: https://www.lycopodium.com/case-studies/motheo-copper-project/
+        publisher: Lycopodium
+        title: Case Study - Motheo Copper Project
+        note: Engineering and procurement contract December 2020. Construction management added later.
+      - stage: contractor_procurement
+        date: "2021-06"
+        date_precision: month
+        url: https://www.mining-technology.com/news/sandfire-perenti-motheo-copper-botswana/
+        publisher: Mining Technology
+        title: Perenti wins $496m contract for Motheo copper project in Botswana
+        note: African Mining Services open pit mining contract.
+      - stage: licence_granted
+        date: "2021-07"
+        date_precision: month
+        url: https://www.globalminingreview.com/finance-business/08072021/sandfire-secures-mining-licence-for-motheo-copper-mine/
+        publisher: Global Mining Review
+        title: Sandfire secures mining licence for Motheo Copper Mine
+        note: URL date 8 July 2021. Licence came after FID and contract awards.
+      - stage: commissioning_rampup
+        date: "2023-05"
+        date_precision: month
+        url: https://www.miningweekly.com/article/sandfire-cuts-the-ribbon-at-motheo-2023-08-10
+        publisher: Mining Weekly
+        title: Sandfire cuts the ribbon at Motheo
+        note: First concentrate May 2023.
+      - stage: steady_operation
+        date: "2023-07"
+        date_precision: month
+        url: https://www.miningweekly.com/article/sandfire-cuts-the-ribbon-at-motheo-2023-08-10
+        publisher: Mining Weekly
+        title: Sandfire cuts the ribbon at Motheo
+        note: Commercial production declared from July 2023.
+
+  # ---------------------------------------------------------------- Namibia
+
+  - id: otjikoto
+    name: Otjikoto Gold Mine (B2Gold)
+    country: NA
+    commodity_or_type: gold, open pit
+    milestones:
+      - stage: environmental_approval
+        date: "2012-08"
+        date_precision: month
+        url: https://eia.meft.gov.na/screening/6562_20251016_otjikoto_mine_ecc_amendment_final.pdf
+        publisher: Namibia Ministry of Environment, Forestry and Tourism
+        title: Environmental Impact Assessment (Otjikoto Mine ECC amendment)
+        note: "VERIFY: Environmental Clearance Certificate issued August 2012."
+      - stage: licence_granted
+        date: "2012-12"
+        date_precision: month
+        url: https://www.b2gold.com/operations-projects/producing/otjikoto-mine-namibia/default.aspx
+        publisher: B2Gold
+        title: B2Gold Corp. - Otjikoto Mine, Namibia
+        note: Mining Licence ML 169 received December 2012.
+      - stage: feasibility
+        date: "2013-01"
+        date_precision: month
+        url: https://www.sec.gov/Archives/edgar/data/1429937/000106299313002663/exhibit99-51.htm
+        publisher: B2Gold (SEC exhibit 99.51)
+        title: B2Gold Corp. - Exhibit 99.51
+        note: "VERIFY: feasibility study results and start of construction announced January 2013."
+      - stage: financing_fid
+        date: "2013-01"
+        date_precision: month
+        url: https://www.sec.gov/Archives/edgar/data/1429937/000106299313002663/exhibit99-51.htm
+        publisher: B2Gold (SEC exhibit 99.51)
+        title: B2Gold Corp. - Exhibit 99.51
+        note: "VERIFY: construction decision with the feasibility results. Owner funded."
+      - stage: contractor_procurement
+        date: "2013"
+        date_precision: year
+        url: https://www.lycopodium.com/case-studies/otjikoto/
+        publisher: Lycopodium
+        title: Case Study - Otjikoto
+        note: Lycopodium engineering and procurement contract awarded 2013.
+      - stage: construction_mobilisation
+        date: "2013-04-26"
+        date_precision: day
+        url: https://www.sec.gov/Archives/edgar/data/0001429937/000110262414002019/exh99_1.htm
+        publisher: B2Gold (SEC Form 6-K)
+        title: B2GOLD CORP - Form 6-K - FY2014
+        note: "VERIFY: groundbreaking ceremony 26 April 2013."
+      - stage: commissioning_rampup
+        date: "2014-12-11"
+        date_precision: day
+        url: https://finance.yahoo.com/news/b2gold-announces-first-gold-pour-184225900.html
+        publisher: Yahoo Finance (B2Gold)
+        title: B2Gold Announces First Gold Pour at Otjikoto Ahead of Schedule
+        note: First gold pour 11 December 2014.
+
+  - id: tschudi
+    name: Tschudi Copper (Weatherly)
+    country: NA
+    commodity_or_type: copper, open pit SX-EW
+    milestones:
+      - stage: environmental_approval
+        date: "2013-04"
+        date_precision: month
+        url: https://www.mining-technology.com/projects/tschudi-copper-project-namibia/
+        publisher: Mining Technology
+        title: Tschudi Copper Project, Namibia
+        note: Environmental approval April 2013.
+      - stage: construction_mobilisation
+        date: "2013-11"
+        date_precision: month
+        url: https://www.mining-technology.com/projects/tschudi-copper-project-namibia/
+        publisher: Mining Technology
+        title: Tschudi Copper Project, Namibia
+        note: Groundbreaking November 2013. Civil works from April 2014.
+      - stage: commissioning_rampup
+        date: "2015-10"
+        date_precision: month
+        url: https://www.mining-technology.com/projects/tschudi-copper-project-namibia/
+        publisher: Mining Technology
+        title: Tschudi Copper Project, Namibia
+        note: First copper October 2015.
+      - stage: care_maintenance_suspension_closure
+        date: "2020"
+        date_precision: year
+        url: https://www.mining-technology.com/projects/tschudi-copper-project-namibia/
+        publisher: Mining Technology
+        title: Tschudi Copper Project, Namibia
+        note: Placed on care and maintenance in 2020.
+
+  # ---------------------------------------------------------------- Tanzania
+
+  - id: nyanzaga
+    name: Nyanzaga Gold (OreCorp, Perseus)
+    country: TZ
+    commodity_or_type: gold, open pit
+    milestones:
+      - stage: licence_granted
+        date: "2021-12-13"
+        date_precision: day
+        url: https://www.sec.gov/Archives/edgar/data/1340677/000127956923001005/ex991.htm
+        publisher: Silvercorp (SEC exhibit 99.1)
+        title: silvercorp to acquire orecorp, creating a diversified, high ...
+        note: "VERIFY: Special Mining Licence granted to Sotta Mining Corporation on 13 December 2021."
+      - stage: feasibility
+        date: "2022-08"
+        date_precision: month
+        url: https://uk.marketscreener.com/quote/stock/ORECORP-12786430/news/OreCorp-Limited-Announces-Definitive-Feasibility-Study-for-the-Nyanzaga-Gold-Project-in-Tanzania-41372599/
+        publisher: MarketScreener
+        title: OreCorp Limited Announces Definitive Feasibility Study for the Nyanzaga Gold Project in Tanzania
+        note: OreCorp DFS August 2022. Perseus updated the study in April 2025.
+      - stage: financing_fid
+        date: "2025-04-28"
+        date_precision: day
+        url: https://minedocs.com/28/Perseus-Mining-FS(Upd)-04282025.pdf
+        publisher: Perseus Mining via minedocs.com
+        title: 28 APRIL 2025 NEWS RELEASE PERSEUS MINING PROCEEDS WITH DEVELOPMENT OF THE NYANZAGA GOLD PROJECT
+        note: FID, US$523m. Change of owner (Perseus acquired OreCorp in 2024) lengthened the gap.
+      - stage: contractor_procurement
+        date: "2025-07-30"
+        date_precision: day
+        url: https://www.miningweekly.com/article/lycopodium-awarded-a48m-nyanzaga-epcm-contract-2025-07-30
+        publisher: Mining Weekly
+        title: Lycopodium awarded A$48m Nyanzaga EPCM contract
+        note: Article date. EPCM for 5 Mtpa CIL plant.
+
+  # ---------------------------------------------------------------- Mozambique
+
+  - id: balama
+    name: Balama Graphite (Syrah)
+    country: MZ
+    commodity_or_type: graphite, open pit
+    milestones:
+      - stage: licence_granted
+        date: "2013-12"
+        date_precision: month
+        url: https://www.nsenergybusiness.com/projects/balama-graphite-project/
+        publisher: NS Energy
+        title: Balama Graphite Project, Mozambique
+        note: "VERIFY: mining concession granted December 2013, 25 plus 25 years."
+      - stage: feasibility
+        date: "2015-05-29"
+        date_precision: day
+        url: https://www.asx.com.au/asxpdf/20150529/pdf/42yw7f27bc6j4d.pdf
+        publisher: ASX (Syrah Resources)
+        title: syrah finalises balama graphite feasibility study and ...
+        note: Feasibility study and maiden ore reserve. ASX release date from the URL.
+      - stage: construction_mobilisation
+        date: "2016-07"
+        date_precision: month
+        url: https://www.nsenergybusiness.com/projects/balama-graphite-project/
+        publisher: NS Energy
+        title: Balama Graphite Project, Mozambique
+        note: "VERIFY: construction of the process plant started July 2016. No EPC award date found."
+      - stage: commissioning_rampup
+        date: "2017-11"
+        date_precision: month
+        url: https://www.mining-technology.com/news/syrah-first-graphite-balama-mozambique/
+        publisher: Mining Technology
+        title: Syrah achieves first graphite production at Balama project in Mozambique
+        note: First natural graphite November 2017.
+      - stage: steady_operation
+        date: "2019-01"
+        date_precision: month
+        url: https://www.nsenergybusiness.com/projects/balama-graphite-project/
+        publisher: NS Energy
+        title: Balama Graphite Project, Mozambique
+        note: "VERIFY: commercial production January 2019."

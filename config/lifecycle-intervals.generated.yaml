@@ -1,0 +1,339 @@
+# GENERATED FILE. Do not edit by hand.
+# Run: python scripts/compute_lifecycle_intervals.py
+generated_by: scripts/compute_lifecycle_intervals.py
+source: config/lifecycle-history.yaml
+generated_on: '2026-09-26'
+min_projects: 5
+n_history_projects: 27
+intervals:
+- from: scoping_prefeasibility
+  to: contractor_procurement
+  median_days: null
+  min_days: null
+  max_days: null
+  median_months: null
+  min_months: null
+  max_months: null
+  n_projects: 0
+  projects: []
+  project_days: {}
+  out_of_order:
+  - project: kamoa_kakula
+    days: -458
+  insufficient: true
+- from: feasibility
+  to: contractor_procurement
+  median_days: 623.5
+  min_days: 0
+  max_days: 1805
+  median_months: 20.5
+  min_months: 0.0
+  max_months: 59.3
+  n_projects: 6
+  projects:
+  - lumwana_super_pit
+  - lumwana_original
+  - khoemacau_zone5
+  - motheo_t3
+  - otjikoto
+  - nyanzaga
+  project_days:
+    lumwana_super_pit: 0
+    lumwana_original: 1096
+    khoemacau_zone5: 1805
+    motheo_t3: 0
+    otjikoto: 167
+    nyanzaga: 1080
+  concurrent_projects:
+  - lumwana_super_pit
+  out_of_order:
+  - project: kamoa_kakula
+    days: -1029
+  insufficient: false
+- from: eia_filed
+  to: contractor_procurement
+  median_days: 320.0
+  min_days: 152
+  max_days: 488
+  median_months: 10.5
+  min_months: 5.0
+  max_months: 16.0
+  n_projects: 2
+  projects:
+  - kamoa_kakula
+  - motheo_t3
+  project_days:
+    kamoa_kakula: 152
+    motheo_t3: 488
+  insufficient: true
+- from: environmental_approval
+  to: contractor_procurement
+  median_days: 320.0
+  min_days: 320
+  max_days: 320
+  median_months: 10.5
+  min_months: 10.5
+  max_months: 10.5
+  n_projects: 1
+  projects:
+  - otjikoto
+  project_days:
+    otjikoto: 320
+  insufficient: true
+- from: licence_granted
+  to: contractor_procurement
+  median_days: 1389.5
+  min_days: 198
+  max_days: 1912
+  median_months: 45.7
+  min_months: 6.5
+  max_months: 62.8
+  n_projects: 4
+  projects:
+  - kamoa_kakula
+  - khoemacau_zone5
+  - otjikoto
+  - nyanzaga
+  project_days:
+    kamoa_kakula: 1912
+    khoemacau_zone5: 1454
+    otjikoto: 198
+    nyanzaga: 1325
+  out_of_order:
+  - project: motheo_t3
+    days: -212
+  insufficient: true
+- from: financing_fid
+  to: contractor_procurement
+  median_days: 7.0
+  min_days: 0
+  max_days: 167
+  median_months: 0.2
+  min_months: 0.0
+  max_months: 5.5
+  n_projects: 5
+  projects:
+  - lumwana_super_pit
+  - enterprise_nickel
+  - motheo_t3
+  - otjikoto
+  - nyanzaga
+  project_days:
+    lumwana_super_pit: 0
+    enterprise_nickel: 7
+    motheo_t3: 0
+    otjikoto: 167
+    nyanzaga: 93
+  concurrent_projects:
+  - lumwana_super_pit
+  out_of_order:
+  - project: lumwana_original
+    days: -47
+  - project: kafue_gorge_lower
+    days: -760
+  - project: khoemacau_zone5
+    days: -21
+  insufficient: false
+- from: restart_plan
+  to: contractor_procurement
+  median_days: 741.0
+  min_days: 741
+  max_days: 741
+  median_months: 24.3
+  min_months: 24.3
+  max_months: 24.3
+  n_projects: 1
+  projects:
+  - kcm_restart
+  project_days:
+    kcm_restart: 741
+  insufficient: true
+- from: recapitalisation
+  to: contractor_procurement
+  median_days: 677.0
+  min_days: 677
+  max_days: 677
+  median_months: 22.2
+  min_months: 22.2
+  max_months: 22.2
+  n_projects: 1
+  projects:
+  - kcm_restart
+  project_days:
+    kcm_restart: 677
+  insufficient: true
+- from: scoping_prefeasibility
+  to: feasibility
+  median_days: 571.0
+  min_days: 571
+  max_days: 571
+  median_months: 18.8
+  min_months: 18.8
+  max_months: 18.8
+  n_projects: 1
+  projects:
+  - kamoa_kakula
+  project_days:
+    kamoa_kakula: 571
+  insufficient: true
+- from: feasibility
+  to: eia_filed
+  median_days: null
+  min_days: null
+  max_days: null
+  median_months: null
+  min_months: null
+  max_months: null
+  n_projects: 0
+  projects: []
+  project_days: {}
+  out_of_order:
+  - project: kamoa_kakula
+    days: -1181
+  - project: motheo_t3
+    days: -488
+  insufficient: true
+- from: environmental_approval
+  to: licence_granted
+  median_days: 122.0
+  min_days: 122
+  max_days: 122
+  median_months: 4.0
+  min_months: 4.0
+  max_months: 4.0
+  n_projects: 1
+  projects:
+  - otjikoto
+  project_days:
+    otjikoto: 122
+  insufficient: true
+- from: licence_granted
+  to: financing_fid
+  median_days: 1353.5
+  min_days: 31
+  max_days: 3804
+  median_months: 44.5
+  min_months: 1.0
+  max_months: 125.0
+  n_projects: 4
+  projects:
+  - kitumba
+  - khoemacau_zone5
+  - otjikoto
+  - nyanzaga
+  project_days:
+    kitumba: 3804
+    khoemacau_zone5: 1475
+    otjikoto: 31
+    nyanzaga: 1232
+  out_of_order:
+  - project: motheo_t3
+    days: -212
+  insufficient: true
+- from: contractor_procurement
+  to: construction_mobilisation
+  median_days: 1.0
+  min_days: 0
+  max_days: 4
+  median_months: 0.0
+  min_months: 0.0
+  max_months: 0.1
+  n_projects: 4
+  projects:
+  - enterprise_nickel
+  - kamoa_kakula
+  - khoemacau_zone5
+  - otjikoto
+  project_days:
+    enterprise_nickel: 0
+    kamoa_kakula: 2
+    khoemacau_zone5: 4
+    otjikoto: 0
+  concurrent_projects:
+  - otjikoto
+  out_of_order:
+  - project: lumwana_original
+    days: -334
+  - project: munali_nickel
+    days: -273
+  insufficient: true
+- from: construction_mobilisation
+  to: commissioning_rampup
+  median_days: 570.5
+  min_days: 250
+  max_days: 1286
+  median_months: 18.7
+  min_months: 8.2
+  max_months: 42.3
+  n_projects: 14
+  projects:
+  - enterprise_nickel
+  - sentinel_trident
+  - lumwana_original
+  - munali_nickel
+  - ngonye_solar
+  - bangweulu_solar
+  - chisamba_solar
+  - kitumba
+  - kamoa_kakula
+  - kipushi_restart
+  - khoemacau_zone5
+  - otjikoto
+  - tschudi
+  - balama
+  project_days:
+    enterprise_nickel: 276
+    sentinel_trident: 836
+    lumwana_original: 1114
+    munali_nickel: 547
+    ngonye_solar: 250
+    bangweulu_solar: 451
+    chisamba_solar: 335
+    kitumba: 524
+    kamoa_kakula: 1286
+    kipushi_restart: 640
+    khoemacau_zone5: 733
+    otjikoto: 594
+    tschudi: 699
+    balama: 488
+  insufficient: false
+- from: commissioning_rampup
+  to: steady_operation
+  median_days: 328.5
+  min_days: 37
+  max_days: 762
+  median_months: 10.8
+  min_months: 1.2
+  max_months: 25.0
+  n_projects: 6
+  projects:
+  - enterprise_nickel
+  - sentinel_trident
+  - kamoa_kakula
+  - khoemacau_zone5
+  - motheo_t3
+  - balama
+  project_days:
+    enterprise_nickel: 472
+    sentinel_trident: 762
+    kamoa_kakula: 37
+    khoemacau_zone5: 231
+    motheo_t3: 61
+    balama: 426
+  insufficient: false
+- from: restart_plan
+  to: recapitalisation
+  median_days: 77.5
+  min_days: 64
+  max_days: 91
+  median_months: 2.5
+  min_months: 2.1
+  max_months: 3.0
+  n_projects: 2
+  projects:
+  - kcm_restart
+  - mopani_recap
+  project_days:
+    kcm_restart: 64
+    mopani_recap: 91
+  insufficient: true
