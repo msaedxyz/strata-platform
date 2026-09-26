@@ -42,3 +42,9 @@ Claude Code does not wait for answers. It uses each default below and continues.
 | 36 | Watch level of a site that leaves the brief | The start-up step sets watch none for a site that the active brief does not list |
 | 37 | Health window | Error rate and documents for each run from the last 20 runs of a source |
 | 38 | Snapshot enrichment | Each new snapshot source gets an enrich_source job, like any other source |
+| 80 | Audit output directory | `<repository>/audit`, ignored by git. AUDIT_OUT_DIR can change it |
+| 81 | Sensitive pages | A URL or page text that suggests credentials, API keys, billing, users, team, profile, account or admin. A password field. Three or more e-mail addresses on the page |
+| 82 | Personal data in screenshots | Masks on password and e-mail fields, on the user name and on text that looks like an e-mail address |
+| 83 | Value-change observation | 30 seconds on the first view |
+| 84 | Grid row height | When more than one row height fits the geometry, the guess is the smallest candidate of 20px or more. layout-system.md lists all candidates |
+| 85 | Neutral state colour | color.state.neutral uses the secondary text colour. This is a guess until the audit shows a neutral state |

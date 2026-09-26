@@ -38,5 +38,17 @@ check-chain: ## Check the hash chain of every event stream
 rebuild-projections: ## Delete and rebuild all projections
 	docker compose exec api python -m services.projections.cli rebuild
 
-audit: ## Run the Infora audit (needs INFORA_URL, INFORA_USERNAME, INFORA_PASSWORD)
-	pnpm --filter @strata/audit audit
+PLAYWRIGHT_BROWSERS_PATH ?= /opt/pw-browsers
+export PLAYWRIGHT_BROWSERS_PATH
+
+audit-install: ## Install the audit tool on its own
+	pnpm --dir tools/audit install --ignore-workspace --frozen-lockfile
+
+audit: ## Run the read-only Infora audit into ./audit (needs INFORA_URL, INFORA_USERNAME, INFORA_PASSWORD)
+	pnpm --dir tools/audit audit
+
+audit-check-tokens: ## Check that each computed value maps to a token in audit/tokens.json
+	pnpm --dir tools/audit check-tokens
+
+audit-test: ## Run the audit tool tests against the local mock site
+	pnpm --dir tools/audit test

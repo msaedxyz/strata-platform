@@ -65,6 +65,18 @@ jobs:
       - name: The committed client matches the API
         run: git diff --exit-code packages/api-client
 
+  audit-tool:
+    name: Infora audit tool tests (mock site)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - run: pnpm --dir tools/audit install --ignore-workspace --frozen-lockfile
+      - run: pnpm --dir tools/audit exec playwright install --with-deps chromium
+      - run: pnpm --dir tools/audit test
+
   gitleaks:
     name: Secret scan (gitleaks)
     runs-on: ubuntu-latest

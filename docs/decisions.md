@@ -79,3 +79,13 @@ Record each decision that changes this pack or that chooses between options.
 | 2026-09-26 | The fixture documents are synthetic articles about the watched sites | docs/05 allows synthetic documents. The build cannot fetch the real sources | 04 |
 | 2026-09-26 | Fixed the ruff rule B905 in scripts/compute_lifecycle_intervals.py | CI runs `ruff check services tests scripts`. The check failed before M2 | 02 |
 | 2026-09-26 | Test role passwords come from a hash of the test admin URL | Roles are cluster wide. Random passwords let two test sessions break each other | tests/python/conftest.py |
+| 2026-09-26 | M0 delivers the audit tool in tools/audit and tests it on a local mock site. The live audit runs when access exists | The egress policy blocks beta.infora.io and INFORA_REPO_PATH is not set | 01, 08 |
+| 2026-09-26 | The browser blocks each non-GET request. Only the login request and the final log out request can pass | Read actions only. This also proves criterion 6 | 01 |
+| 2026-09-26 | The final log out request counts as a session request, not as a change of data | Access rule 8 asks for a log out at the end | 01 |
+| 2026-09-26 | The crawler clicks only controls on a safe-click allow list. A deny list always wins. The lists are in tools/audit/config/audit.config.json | Access rules 4 and 5. CLAUDE.md rule 11 | 01 |
+| 2026-09-26 | The audit records a panel interaction only when it sends no non-GET request. An interaction that tries to persist to the server goes to gaps.md without screenshots | The audit must not change data | 01 |
+| 2026-09-26 | tokens.json uses the DTCG 2025.10 format. font.numeric is a group with an extension, because DTCG has no token type for font-variant-numeric | The format must be valid DTCG | 01, 07 |
+| 2026-09-26 | A colour, font size or spacing value with no named role becomes an extra token named x-<value> | Criterion 2 needs a token for each value | 01, 07 |
+| 2026-09-26 | The token collector skips colours of elements in a running colour transition, and spacing values above 200px | These values are between two states or come from layout (margin: auto). They are not tokens | 01 |
+| 2026-09-26 | The sensitive-page check reads the page content without the navigation, the header and the menus | Navigation labels such as "API keys" are on every page | 01 |
+| 2026-09-26 | gitleaks runs from the zricethezav/gitleaks Docker image when no gitleaks binary is present | Criterion 5 must run in any environment with Docker | 01 |
