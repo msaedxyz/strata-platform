@@ -300,7 +300,7 @@ def _resolve(c: _Ctx, a: Analysis) -> dict[tuple[str, str], dict]:
             continue
         exact = c.index.exact(g["text"], types)
         if len(exact) > 1:
-            countries = [x for x in (c.doc.brief or {}).get("_countries", []) if x]
+            countries = [x for x in (a.classification or {}).get("geographies", []) if len(x) == 2]
             narrowed = [r for r in exact if r.country and r.country in countries]
             if len(narrowed) == 1:
                 exact = narrowed
