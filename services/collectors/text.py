@@ -16,7 +16,6 @@ from services.common.config import load_yaml
 _WORD = re.compile(r"\w+", re.UNICODE)
 _TAG = re.compile(r"<[^>]+>")
 _BLOCK_TAG = re.compile(r"</?(p|div|br|li|ul|ol|h[1-6]|tr|table|section|article|blockquote)\b[^>]*>", re.IGNORECASE)
-_SPACES = re.compile(r"[ \t\f\v ]+")
 _BLANK_LINES = re.compile(r"\n{3,}")
 
 
@@ -26,14 +25,17 @@ def collectors_config() -> dict:
 
 
 def normalise(text: str) -> str:
-    """Unicode NFC, \\n line endings, no trailing spaces, at most one blank line in a row."""
+    """Unicode NFC, \\n line endings, no trailing spaces, at most one blank line in a row.
+
+    Indentation stays, so that structured text (for example the brief YAML) keeps its meaning.
+    """
     text = unicodedata.normalize("NFC", text)
     text = text.replace("\r\n", "\n").replace("\r", "\n").replace(" ", "\n").replace(" ", "\n")
-    text = text.replace("\x00", "")
-    lines = [_SPACES.sub(" ", line).strip() for line in text.split("\n")]
+    text = text.replace("\x00", "").replace(" ", " ")
+    lines = [line.rstrip() for line in text.split("\n")]
     text = "\n".join(lines)
     text = _BLANK_LINES.sub("\n\n", text)
-    return text.strip()
+    return text.strip("\n").rstrip()
 
 
 def html_to_text(fragment: str) -> str:
