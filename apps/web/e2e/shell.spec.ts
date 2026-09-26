@@ -49,7 +49,7 @@ test.describe("role-aware controls: viewer", () => {
     await page.keyboard.press("Escape");
     await page.keyboard.press("/");
     await page.keyboard.type("brief editor");
-    await expect(page.getByRole("option")).toHaveCount(0);
+    await expect(page.getByRole("dialog", { name: "Command input" }).getByRole("option")).toHaveCount(0);
   });
 });
 

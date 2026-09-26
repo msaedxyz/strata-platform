@@ -81,7 +81,8 @@ const checks: Record<string, (page: Page) => Promise<void>> = {
     await expect(page.locator('[data-nav-id="origination"]')).toBeFocused();
     // Command input results.
     await page.keyboard.press("/");
-    const options = page.getByRole("option");
+    // Scope to the command input: the M6 modules have native select elements with options too.
+    const options = page.getByRole("dialog", { name: "Command input" }).getByRole("option");
     await expect(options.first()).toHaveAttribute("aria-selected", "true");
     await page.keyboard.press("ArrowDown");
     await expect(options.nth(1)).toHaveAttribute("aria-selected", "true");
