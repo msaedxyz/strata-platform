@@ -1,0 +1,113 @@
+# Geography taxonomy for Monitoring Brief v1.
+# Levels: country, province, district, corridor.
+# Districts: only the districts that the watch lists in config/monitoring-brief/v1.yaml use.
+# Province parents come from the research notes in reports/notes/research-brief.md.
+# An entry with a "note" has a parent that the research did not confirm. Review it.
+
+- code: zm
+  name: Zambia
+  level: country
+- code: cd
+  name: Democratic Republic of the Congo
+  level: country
+- code: ao
+  name: Angola
+  level: country
+- code: tz
+  name: Tanzania
+  level: country
+- code: zw
+  name: Zimbabwe
+  level: country
+- code: bw
+  name: Botswana
+  level: country
+- code: mw
+  name: Malawi
+  level: country
+- code: na
+  name: Namibia
+  level: country
+
+# Provinces of Zambia (10)
+- {code: prov_central, name: Central Province, level: province, parent: zm}
+- {code: prov_copperbelt, name: Copperbelt Province, level: province, parent: zm}
+- {code: prov_eastern, name: Eastern Province, level: province, parent: zm}
+- {code: prov_luapula, name: Luapula Province, level: province, parent: zm}
+- {code: prov_lusaka, name: Lusaka Province, level: province, parent: zm}
+- {code: prov_muchinga, name: Muchinga Province, level: province, parent: zm}
+- {code: prov_northern, name: Northern Province, level: province, parent: zm}
+- {code: prov_north_western, name: North-Western Province, level: province, parent: zm}
+- {code: prov_southern, name: Southern Province, level: province, parent: zm}
+- {code: prov_western, name: Western Province, level: province, parent: zm}
+
+# Districts in the watch lists
+- {code: dist_solwezi, name: Solwezi District, level: district, parent: prov_north_western}
+- {code: dist_kalumbila, name: Kalumbila District, level: district, parent: prov_north_western}
+- {code: dist_mufumbwe, name: Mufumbwe District, level: district, parent: prov_north_western}
+- {code: dist_mwinilunga, name: Mwinilunga District, level: district, parent: prov_north_western}
+- {code: dist_ikelenge, name: Ikelenge District, level: district, parent: prov_north_western}
+- {code: dist_chingola, name: Chingola District, level: district, parent: prov_copperbelt}
+- {code: dist_chililabombwe, name: Chililabombwe District, level: district, parent: prov_copperbelt}
+- {code: dist_mufulira, name: Mufulira District, level: district, parent: prov_copperbelt}
+- {code: dist_kitwe, name: Kitwe District, level: district, parent: prov_copperbelt}
+- {code: dist_kalulushi, name: Kalulushi District, level: district, parent: prov_copperbelt}
+- {code: dist_luanshya, name: Luanshya District, level: district, parent: prov_copperbelt}
+- {code: dist_lufwanyama, name: Lufwanyama District, level: district, parent: prov_copperbelt}
+- {code: dist_ndola, name: Ndola District, level: district, parent: prov_copperbelt}
+- {code: dist_masaiti, name: Masaiti District, level: district, parent: prov_copperbelt}
+- {code: dist_mpongwe, name: Mpongwe District, level: district, parent: prov_copperbelt}
+- {code: dist_mumbwa, name: Mumbwa District, level: district, parent: prov_central}
+- {code: dist_mkushi, name: Mkushi District, level: district, parent: prov_central}
+- {code: dist_kabwe, name: Kabwe District, level: district, parent: prov_central}
+- {code: dist_kapiri_mposhi, name: Kapiri Mposhi District, level: district, parent: prov_central}
+- {code: dist_chisamba, name: Chisamba District, level: district, parent: prov_central}
+- {code: dist_serenje, name: Serenje District, level: district, parent: prov_central}
+- code: dist_shibuyunji
+  name: Shibuyunji District
+  level: district
+  parent: prov_central
+  note: "Research did not confirm the province. Confirm it before use."
+- {code: dist_sinazongwe, name: Sinazongwe District, level: district, parent: prov_southern}
+- {code: dist_chikankata, name: Chikankata District, level: district, parent: prov_southern}
+- {code: dist_mazabuka, name: Mazabuka District, level: district, parent: prov_southern}
+- {code: dist_siavonga, name: Siavonga District, level: district, parent: prov_southern}
+- {code: dist_kazungula, name: Kazungula District, level: district, parent: prov_southern}
+- code: dist_chirundu
+  name: Chirundu District
+  level: district
+  parent: prov_lusaka
+  note: "Research did not confirm the province. Confirm it before use."
+- {code: dist_kafue, name: Kafue District, level: district, parent: prov_lusaka}
+- {code: dist_lusaka, name: Lusaka District, level: district, parent: prov_lusaka}
+- {code: dist_chilanga, name: Chilanga District, level: district, parent: prov_lusaka}
+- {code: dist_chipata, name: Chipata District, level: district, parent: prov_eastern}
+- {code: dist_sesheke, name: Sesheke District, level: district, parent: prov_western}
+- {code: dist_nakonde, name: Nakonde District, level: district, parent: prov_muchinga}
+
+# Corridors
+- code: corr_kasumbalesa
+  name: Kasumbalesa corridor
+  level: corridor
+  countries: [zm, cd]
+  description: "Road corridor from the Copperbelt (T3) through the Kasumbalesa border post to Katanga in the DRC."
+- code: corr_lobito
+  name: Lobito corridor
+  level: corridor
+  countries: [zm, ao, cd]
+  description: "Rail and road corridor from the Copperbelt and North-Western Province through Jimbe to the port of Lobito in Angola. Includes the Zambia-Lobito greenfield rail line and the Mwinilunga-Jimbe (T5) road."
+- code: corr_dar_es_salaam
+  name: Dar es Salaam corridor
+  level: corridor
+  countries: [zm, tz]
+  description: "TAZARA railway, TAZAMA pipeline and the T2 road through Nakonde and Tunduma to the port of Dar es Salaam."
+- code: corr_chirundu_beitbridge
+  name: Chirundu-Beitbridge corridor
+  level: corridor
+  countries: [zm, zw]
+  description: "Regional road corridor from Lusaka through the Chirundu one-stop border post and Zimbabwe to South Africa."
+- code: corr_trans_caprivi
+  name: Trans-Caprivi corridor
+  level: corridor
+  countries: [zm, na]
+  description: "Road corridor through the Katima Mulilo bridge at Sesheke to Namibia."

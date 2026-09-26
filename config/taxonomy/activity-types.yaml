@@ -1,0 +1,747 @@
+# Activity types for Monitoring Brief v1.
+# Generated from the themes in config/monitoring-brief/v1.yaml: one entry for each keyword.
+# Code format: <theme code>__<keyword slug>.
+# Directions: demand_up, procurement, project_pipeline, demand_down.
+# Each keyword is a hint for the Classifier. The Classifier must also find activities
+# that a source describes in other words (docs/05-enrichment.md).
+
+- code: new_mine_project__new_mine
+  keyword: new mine
+  theme: new_mine_project
+  direction: project_pipeline
+- code: new_mine_project__greenfield_mine
+  keyword: greenfield mine
+  theme: new_mine_project
+  direction: project_pipeline
+- code: new_mine_project__mine_development
+  keyword: mine development
+  theme: new_mine_project
+  direction: project_pipeline
+- code: new_mine_project__groundbreaking
+  keyword: groundbreaking
+  theme: new_mine_project
+  direction: project_pipeline
+- code: new_mine_project__ground_breaking_ceremony
+  keyword: ground-breaking ceremony
+  theme: new_mine_project
+  direction: project_pipeline
+- code: mine_expansion__mine_expansion
+  keyword: mine expansion
+  theme: mine_expansion
+  direction: project_pipeline
+- code: mine_expansion__expansion_project
+  keyword: expansion project
+  theme: mine_expansion
+  direction: project_pipeline
+- code: mine_expansion__new_shaft
+  keyword: new shaft
+  theme: mine_expansion
+  direction: project_pipeline
+- code: mine_expansion__shaft_sinking
+  keyword: shaft sinking
+  theme: mine_expansion
+  direction: project_pipeline
+- code: mine_expansion__super_pit
+  keyword: super pit
+  theme: mine_expansion
+  direction: project_pipeline
+- code: mine_restart__restart
+  keyword: restart
+  theme: mine_restart
+  direction: project_pipeline
+- code: mine_restart__reopen
+  keyword: reopen
+  theme: mine_restart
+  direction: project_pipeline
+- code: mine_restart__resume_production
+  keyword: resume production
+  theme: mine_restart
+  direction: project_pipeline
+- code: mine_restart__dewatering
+  keyword: dewatering
+  theme: mine_restart
+  direction: project_pipeline
+- code: mine_restart__recapitalisation
+  keyword: recapitalisation
+  theme: mine_restart
+  direction: project_pipeline
+- code: exploration_drilling__exploration_licence
+  keyword: exploration licence
+  theme: exploration_drilling
+  direction: project_pipeline
+- code: exploration_drilling__drilling_programme
+  keyword: drilling programme
+  theme: exploration_drilling
+  direction: project_pipeline
+- code: exploration_drilling__drill_results
+  keyword: drill results
+  theme: exploration_drilling
+  direction: project_pipeline
+- code: exploration_drilling__mineral_resource_estimate
+  keyword: mineral resource estimate
+  theme: exploration_drilling
+  direction: project_pipeline
+- code: exploration_drilling__jorc
+  keyword: JORC
+  theme: exploration_drilling
+  direction: project_pipeline
+- code: exploration_drilling__ni_43_101
+  keyword: NI 43-101
+  theme: exploration_drilling
+  direction: project_pipeline
+- code: feasibility_study__feasibility_study
+  keyword: feasibility study
+  theme: feasibility_study
+  direction: project_pipeline
+- code: feasibility_study__pre_feasibility_study
+  keyword: pre-feasibility study
+  theme: feasibility_study
+  direction: project_pipeline
+- code: feasibility_study__scoping_study
+  keyword: scoping study
+  theme: feasibility_study
+  direction: project_pipeline
+- code: feasibility_study__definitive_feasibility_study
+  keyword: definitive feasibility study
+  theme: feasibility_study
+  direction: project_pipeline
+- code: feasibility_study__bankable_feasibility_study
+  keyword: bankable feasibility study
+  theme: feasibility_study
+  direction: project_pipeline
+- code: feasibility_study__engineering_study
+  keyword: engineering study
+  theme: feasibility_study
+  direction: project_pipeline
+- code: eia_filed__environmental_impact_assessment
+  keyword: environmental impact assessment
+  theme: eia_filed
+  direction: project_pipeline
+- code: eia_filed__environmental_impact_statement
+  keyword: environmental impact statement
+  theme: eia_filed
+  direction: project_pipeline
+- code: eia_filed__esia
+  keyword: ESIA
+  theme: eia_filed
+  direction: project_pipeline
+- code: eia_filed__environmental_project_brief
+  keyword: environmental project brief
+  theme: eia_filed
+  direction: project_pipeline
+- code: eia_filed__public_disclosure_meeting
+  keyword: public disclosure meeting
+  theme: eia_filed
+  direction: project_pipeline
+- code: eia_filed__public_consultation_meeting
+  keyword: public consultation meeting
+  theme: eia_filed
+  direction: project_pipeline
+- code: eia_approved__zema_approval
+  keyword: ZEMA approval
+  theme: eia_approved
+  direction: project_pipeline
+- code: eia_approved__environmental_approval
+  keyword: environmental approval
+  theme: eia_approved
+  direction: project_pipeline
+- code: eia_approved__decision_letter
+  keyword: decision letter
+  theme: eia_approved
+  direction: project_pipeline
+- code: eia_approved__environmental_authorisation
+  keyword: environmental authorisation
+  theme: eia_approved
+  direction: project_pipeline
+- code: mining_licence_granted__mining_licence_granted
+  keyword: mining licence granted
+  theme: mining_licence_granted
+  direction: project_pipeline
+- code: mining_licence_granted__large_scale_mining_licence
+  keyword: large-scale mining licence
+  theme: mining_licence_granted
+  direction: project_pipeline
+- code: mining_licence_granted__mining_right
+  keyword: mining right
+  theme: mining_licence_granted
+  direction: project_pipeline
+- code: mining_licence_granted__licence_renewal
+  keyword: licence renewal
+  theme: mining_licence_granted
+  direction: project_pipeline
+- code: mining_licence_granted__licence_transfer
+  keyword: licence transfer
+  theme: mining_licence_granted
+  direction: project_pipeline
+- code: financing_close__financial_close
+  keyword: financial close
+  theme: financing_close
+  direction: project_pipeline
+- code: financing_close__final_investment_decision
+  keyword: final investment decision
+  theme: financing_close
+  direction: project_pipeline
+- code: financing_close__fid
+  keyword: FID
+  theme: financing_close
+  direction: project_pipeline
+- code: financing_close__loan_approved
+  keyword: loan approved
+  theme: financing_close
+  direction: project_pipeline
+- code: financing_close__project_financing
+  keyword: project financing
+  theme: financing_close
+  direction: project_pipeline
+- code: financing_close__equity_raise
+  keyword: equity raise
+  theme: financing_close
+  direction: project_pipeline
+- code: power_project__power_plant_construction
+  keyword: power plant construction
+  theme: power_project
+  direction: project_pipeline
+- code: power_project__solar_plant
+  keyword: solar plant
+  theme: power_project
+  direction: project_pipeline
+- code: power_project__hydropower_project
+  keyword: hydropower project
+  theme: power_project
+  direction: project_pipeline
+- code: power_project__power_purchase_agreement
+  keyword: power purchase agreement
+  theme: power_project
+  direction: project_pipeline
+- code: power_project__ppa_signed
+  keyword: PPA signed
+  theme: power_project
+  direction: project_pipeline
+- code: power_project__megawatt_project
+  keyword: megawatt project
+  theme: power_project
+  direction: project_pipeline
+- code: transport_infrastructure_project__road_upgrade
+  keyword: road upgrade
+  theme: transport_infrastructure_project
+  direction: project_pipeline
+- code: transport_infrastructure_project__dual_carriageway
+  keyword: dual carriageway
+  theme: transport_infrastructure_project
+  direction: project_pipeline
+- code: transport_infrastructure_project__railway_rehabilitation
+  keyword: railway rehabilitation
+  theme: transport_infrastructure_project
+  direction: project_pipeline
+- code: transport_infrastructure_project__greenfield_rail
+  keyword: greenfield rail
+  theme: transport_infrastructure_project
+  direction: project_pipeline
+- code: transport_infrastructure_project__concession_agreement
+  keyword: concession agreement
+  theme: transport_infrastructure_project
+  direction: project_pipeline
+- code: transport_infrastructure_project__one_stop_border_post
+  keyword: one-stop border post
+  theme: transport_infrastructure_project
+  direction: project_pipeline
+- code: industrial_project__new_factory
+  keyword: new factory
+  theme: industrial_project
+  direction: project_pipeline
+- code: industrial_project__processing_plant
+  keyword: processing plant
+  theme: industrial_project
+  direction: project_pipeline
+- code: industrial_project__smelter_project
+  keyword: smelter project
+  theme: industrial_project
+  direction: project_pipeline
+- code: industrial_project__refinery_upgrade
+  keyword: refinery upgrade
+  theme: industrial_project
+  direction: project_pipeline
+- code: industrial_project__investment_licence
+  keyword: investment licence
+  theme: industrial_project
+  direction: project_pipeline
+- code: industrial_project__economic_zone_investment
+  keyword: economic zone investment
+  theme: industrial_project
+  direction: project_pipeline
+- code: agri_expansion__irrigation_project
+  keyword: irrigation project
+  theme: agri_expansion
+  direction: project_pipeline
+- code: agri_expansion__farm_block
+  keyword: farm block
+  theme: agri_expansion
+  direction: project_pipeline
+- code: agri_expansion__commercial_farm_expansion
+  keyword: commercial farm expansion
+  theme: agri_expansion
+  direction: project_pipeline
+- code: agri_expansion__centre_pivot
+  keyword: centre pivot
+  theme: agri_expansion
+  direction: project_pipeline
+- code: agri_expansion__hectares_under_irrigation
+  keyword: hectares under irrigation
+  theme: agri_expansion
+  direction: project_pipeline
+- code: tender_notice__tender
+  keyword: tender
+  theme: tender_notice
+  direction: procurement
+- code: tender_notice__invitation_to_bid
+  keyword: invitation to bid
+  theme: tender_notice
+  direction: procurement
+- code: tender_notice__request_for_proposals
+  keyword: request for proposals
+  theme: tender_notice
+  direction: procurement
+- code: tender_notice__rfp
+  keyword: RFP
+  theme: tender_notice
+  direction: procurement
+- code: tender_notice__bid_notice
+  keyword: bid notice
+  theme: tender_notice
+  direction: procurement
+- code: tender_notice__invitation_for_bids
+  keyword: invitation for bids
+  theme: tender_notice
+  direction: procurement
+- code: eoi_notice__expression_of_interest
+  keyword: expression of interest
+  theme: eoi_notice
+  direction: procurement
+- code: eoi_notice__eoi
+  keyword: EOI
+  theme: eoi_notice
+  direction: procurement
+- code: eoi_notice__request_for_information
+  keyword: request for information
+  theme: eoi_notice
+  direction: procurement
+- code: eoi_notice__general_procurement_notice
+  keyword: general procurement notice
+  theme: eoi_notice
+  direction: procurement
+- code: prequalification_notice__prequalification
+  keyword: prequalification
+  theme: prequalification_notice
+  direction: procurement
+- code: prequalification_notice__pre_qualification
+  keyword: pre-qualification
+  theme: prequalification_notice
+  direction: procurement
+- code: prequalification_notice__supplier_registration
+  keyword: supplier registration
+  theme: prequalification_notice
+  direction: procurement
+- code: prequalification_notice__vendor_registration
+  keyword: vendor registration
+  theme: prequalification_notice
+  direction: procurement
+- code: prequalification_notice__approved_supplier_list
+  keyword: approved supplier list
+  theme: prequalification_notice
+  direction: procurement
+- code: contractor_award__contract_awarded
+  keyword: contract awarded
+  theme: contractor_award
+  direction: procurement
+- code: contractor_award__awarded_the_contract
+  keyword: awarded the contract
+  theme: contractor_award
+  direction: procurement
+- code: contractor_award__epc_contract
+  keyword: EPC contract
+  theme: contractor_award
+  direction: procurement
+- code: contractor_award__preferred_bidder
+  keyword: preferred bidder
+  theme: contractor_award
+  direction: procurement
+- code: contractor_award__selected_contractor
+  keyword: selected contractor
+  theme: contractor_award
+  direction: procurement
+- code: contract_mining__contract_mining
+  keyword: contract mining
+  theme: contract_mining
+  direction: procurement
+- code: contract_mining__mining_contractor
+  keyword: mining contractor
+  theme: contract_mining
+  direction: procurement
+- code: contract_mining__load_and_haul
+  keyword: load and haul
+  theme: contract_mining
+  direction: procurement
+- code: contract_mining__drill_and_blast
+  keyword: drill and blast
+  theme: contract_mining
+  direction: procurement
+- code: contract_mining__waste_stripping
+  keyword: waste stripping
+  theme: contract_mining
+  direction: procurement
+- code: haulage_contract__haulage_contract
+  keyword: haulage contract
+  theme: haulage_contract
+  direction: procurement
+- code: haulage_contract__transport_contract
+  keyword: transport contract
+  theme: haulage_contract
+  direction: procurement
+- code: haulage_contract__trucking_contract
+  keyword: trucking contract
+  theme: haulage_contract
+  direction: procurement
+- code: haulage_contract__ore_haulage
+  keyword: ore haulage
+  theme: haulage_contract
+  direction: procurement
+- code: haulage_contract__concentrate_haulage
+  keyword: concentrate haulage
+  theme: haulage_contract
+  direction: procurement
+- code: fleet_purchase__fleet_purchase
+  keyword: fleet purchase
+  theme: fleet_purchase
+  direction: procurement
+- code: fleet_purchase__haul_trucks
+  keyword: haul trucks
+  theme: fleet_purchase
+  direction: procurement
+- code: fleet_purchase__mining_fleet
+  keyword: mining fleet
+  theme: fleet_purchase
+  direction: procurement
+- code: fleet_purchase__new_locomotives
+  keyword: new locomotives
+  theme: fleet_purchase
+  direction: procurement
+- code: fleet_purchase__new_wagons
+  keyword: new wagons
+  theme: fleet_purchase
+  direction: procurement
+- code: fleet_purchase__equipment_order
+  keyword: equipment order
+  theme: fleet_purchase
+  direction: procurement
+- code: fuel_supply_tender__fuel_supply_contract
+  keyword: fuel supply contract
+  theme: fuel_supply_tender
+  direction: procurement
+- code: fuel_supply_tender__diesel_supply
+  keyword: diesel supply
+  theme: fuel_supply_tender
+  direction: procurement
+- code: fuel_supply_tender__bulk_fuel_tender
+  keyword: bulk fuel tender
+  theme: fuel_supply_tender
+  direction: procurement
+- code: fuel_supply_tender__fuel_tender
+  keyword: fuel tender
+  theme: fuel_supply_tender
+  direction: procurement
+- code: fuel_supply_tender__supply_of_diesel
+  keyword: supply of diesel
+  theme: fuel_supply_tender
+  direction: procurement
+- code: load_shedding__load_shedding
+  keyword: load shedding
+  theme: load_shedding
+  direction: demand_up
+- code: load_shedding__load_shedding_2
+  keyword: load-shedding
+  theme: load_shedding
+  direction: demand_up
+- code: load_shedding__power_outage
+  keyword: power outage
+  theme: load_shedding
+  direction: demand_up
+- code: load_shedding__power_rationing
+  keyword: power rationing
+  theme: load_shedding
+  direction: demand_up
+- code: load_shedding__electricity_deficit
+  keyword: electricity deficit
+  theme: load_shedding
+  direction: demand_up
+- code: load_shedding__diesel_generators
+  keyword: diesel generators
+  theme: load_shedding
+  direction: demand_up
+- code: fuel_shortage__fuel_shortage
+  keyword: fuel shortage
+  theme: fuel_shortage
+  direction: demand_up
+- code: fuel_shortage__diesel_shortage
+  keyword: diesel shortage
+  theme: fuel_shortage
+  direction: demand_up
+- code: fuel_shortage__fuel_scarcity
+  keyword: fuel scarcity
+  theme: fuel_shortage
+  direction: demand_up
+- code: fuel_shortage__fuel_queues
+  keyword: fuel queues
+  theme: fuel_shortage
+  direction: demand_up
+- code: fuel_shortage__dry_pumps
+  keyword: dry pumps
+  theme: fuel_shortage
+  direction: demand_up
+- code: pipeline_outage__pipeline_outage
+  keyword: pipeline outage
+  theme: pipeline_outage
+  direction: demand_up
+- code: pipeline_outage__pipeline_shutdown
+  keyword: pipeline shutdown
+  theme: pipeline_outage
+  direction: demand_up
+- code: pipeline_outage__pipeline_leak
+  keyword: pipeline leak
+  theme: pipeline_outage
+  direction: demand_up
+- code: pipeline_outage__tazama_shutdown
+  keyword: TAZAMA shutdown
+  theme: pipeline_outage
+  direction: demand_up
+- code: pipeline_outage__pipeline_vandalism
+  keyword: pipeline vandalism
+  theme: pipeline_outage
+  direction: demand_up
+- code: construction_mobilisation__mobilisation
+  keyword: mobilisation
+  theme: construction_mobilisation
+  direction: demand_up
+- code: construction_mobilisation__site_establishment
+  keyword: site establishment
+  theme: construction_mobilisation
+  direction: demand_up
+- code: construction_mobilisation__construction_begins
+  keyword: construction begins
+  theme: construction_mobilisation
+  direction: demand_up
+- code: construction_mobilisation__commence_construction
+  keyword: commence construction
+  theme: construction_mobilisation
+  direction: demand_up
+- code: construction_mobilisation__earthworks
+  keyword: earthworks
+  theme: construction_mobilisation
+  direction: demand_up
+- code: commissioning_rampup__commissioning
+  keyword: commissioning
+  theme: commissioning_rampup
+  direction: demand_up
+- code: commissioning_rampup__first_production
+  keyword: first production
+  theme: commissioning_rampup
+  direction: demand_up
+- code: commissioning_rampup__trial_production
+  keyword: trial production
+  theme: commissioning_rampup
+  direction: demand_up
+- code: commissioning_rampup__first_ore
+  keyword: first ore
+  theme: commissioning_rampup
+  direction: demand_up
+- code: commissioning_rampup__ramp_up
+  keyword: ramp-up
+  theme: commissioning_rampup
+  direction: demand_up
+- code: commissioning_rampup__commercial_production
+  keyword: commercial production
+  theme: commissioning_rampup
+  direction: demand_up
+- code: production_increase__record_production
+  keyword: record production
+  theme: production_increase
+  direction: demand_up
+- code: production_increase__increased_output
+  keyword: increased output
+  theme: production_increase
+  direction: demand_up
+- code: production_increase__production_guidance_raised
+  keyword: production guidance raised
+  theme: production_increase
+  direction: demand_up
+- code: production_increase__higher_throughput
+  keyword: higher throughput
+  theme: production_increase
+  direction: demand_up
+- code: harvest_marketing__bumper_harvest
+  keyword: bumper harvest
+  theme: harvest_marketing
+  direction: demand_up
+- code: harvest_marketing__crop_marketing_season
+  keyword: crop marketing season
+  theme: harvest_marketing
+  direction: demand_up
+- code: harvest_marketing__maize_marketing
+  keyword: maize marketing
+  theme: harvest_marketing
+  direction: demand_up
+- code: harvest_marketing__fra_purchases
+  keyword: FRA purchases
+  theme: harvest_marketing
+  direction: demand_up
+- code: harvest_marketing__harvest_season
+  keyword: harvest season
+  theme: harvest_marketing
+  direction: demand_up
+- code: suspension__suspended_operations
+  keyword: suspended operations
+  theme: suspension
+  direction: demand_down
+- code: suspension__suspension
+  keyword: suspension
+  theme: suspension
+  direction: demand_down
+- code: suspension__stop_order
+  keyword: stop order
+  theme: suspension
+  direction: demand_down
+- code: suspension__operations_halted
+  keyword: operations halted
+  theme: suspension
+  direction: demand_down
+- code: suspension__production_halt
+  keyword: production halt
+  theme: suspension
+  direction: demand_down
+- code: care_and_maintenance__care_and_maintenance
+  keyword: care and maintenance
+  theme: care_and_maintenance
+  direction: demand_down
+- code: care_and_maintenance__mothballed
+  keyword: mothballed
+  theme: care_and_maintenance
+  direction: demand_down
+- code: care_and_maintenance__placed_on_care
+  keyword: placed on care
+  theme: care_and_maintenance
+  direction: demand_down
+- code: closure__mine_closure
+  keyword: mine closure
+  theme: closure
+  direction: demand_down
+- code: closure__plant_closure
+  keyword: plant closure
+  theme: closure
+  direction: demand_down
+- code: closure__shut_down
+  keyword: shut down
+  theme: closure
+  direction: demand_down
+- code: closure__shutdown
+  keyword: shutdown
+  theme: closure
+  direction: demand_down
+- code: closure__decommissioning
+  keyword: decommissioning
+  theme: closure
+  direction: demand_down
+- code: retrenchment__retrenchment
+  keyword: retrenchment
+  theme: retrenchment
+  direction: demand_down
+- code: retrenchment__layoffs
+  keyword: layoffs
+  theme: retrenchment
+  direction: demand_down
+- code: retrenchment__job_cuts
+  keyword: job cuts
+  theme: retrenchment
+  direction: demand_down
+- code: retrenchment__redundancies
+  keyword: redundancies
+  theme: retrenchment
+  direction: demand_down
+- code: border_delay__border_delays
+  keyword: border delays
+  theme: border_delay
+  direction: demand_down
+- code: border_delay__truck_queue
+  keyword: truck queue
+  theme: border_delay
+  direction: demand_down
+- code: border_delay__border_congestion
+  keyword: border congestion
+  theme: border_delay
+  direction: demand_down
+- code: border_delay__border_closure
+  keyword: border closure
+  theme: border_delay
+  direction: demand_down
+- code: border_delay__border_closed
+  keyword: border closed
+  theme: border_delay
+  direction: demand_down
+- code: erb_price_change__fuel_price_increase
+  keyword: fuel price increase
+  theme: erb_price_change
+  direction: demand_down
+- code: erb_price_change__pump_price
+  keyword: pump price
+  theme: erb_price_change
+  direction: demand_down
+- code: erb_price_change__erb_fuel_price
+  keyword: ERB fuel price
+  theme: erb_price_change
+  direction: demand_down
+- code: erb_price_change__price_review
+  keyword: price review
+  theme: erb_price_change
+  direction: demand_down
+- code: erb_price_change__fuel_price_adjustment
+  keyword: fuel price adjustment
+  theme: erb_price_change
+  direction: demand_down
+- code: drought__drought
+  keyword: drought
+  theme: drought
+  direction: demand_down
+- code: drought__low_rainfall
+  keyword: low rainfall
+  theme: drought
+  direction: demand_down
+- code: drought__crop_failure
+  keyword: crop failure
+  theme: drought
+  direction: demand_down
+- code: drought__el_nino
+  keyword: El Nino
+  theme: drought
+  direction: demand_down
+- code: drought__kariba_water_levels
+  keyword: Kariba water levels
+  theme: drought
+  direction: demand_down
+- code: road_disruption__road_closed
+  keyword: road closed
+  theme: road_disruption
+  direction: demand_down
+- code: road_disruption__bridge_collapse
+  keyword: bridge collapse
+  theme: road_disruption
+  direction: demand_down
+- code: road_disruption__washaway
+  keyword: washaway
+  theme: road_disruption
+  direction: demand_down
+- code: road_disruption__derailment
+  keyword: derailment
+  theme: road_disruption
+  direction: demand_down
+- code: road_disruption__road_blocked
+  keyword: road blocked
+  theme: road_disruption
+  direction: demand_down

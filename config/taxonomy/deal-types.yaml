@@ -1,0 +1,39 @@
+# Deal types for Monitoring Brief v1.
+# A deal is a commercial opportunity at a site or with an organisation (docs/03-data-model.md).
+
+- code: fuel_supply_contract
+  name: Fuel supply contract
+  description: "A contract to supply diesel or other fuel to a site, a contractor or a fleet. This is the main opportunity type for Strata."
+- code: haulage_contract
+  name: Haulage contract
+  description: "A contract to move ore, concentrate, cathode, coal, crops, fuel or other bulk goods by road or rail. The haulage contractor usually buys the fuel."
+- code: contract_mining
+  name: Contract mining
+  description: "A contract for load and haul, drill and blast, or waste stripping at a mine. The mining contractor usually buys the fuel."
+- code: epc_contract
+  name: EPC contract
+  description: "An engineering, procurement and construction contract for a mine, plant, power station, pipeline or other facility."
+- code: construction_contract
+  name: Construction contract
+  description: "A civil works contract, for example a road, rail line, dam, border post or building, that is not a full EPC contract."
+- code: tender
+  name: Tender
+  description: "An open invitation to bid or request for proposals from a procuring entity or a company."
+- code: eoi
+  name: Expression of interest
+  description: "A call for expressions of interest or a request for information that comes before a tender."
+- code: prequalification
+  name: Prequalification
+  description: "A prequalification notice or a supplier or vendor registration window. Only suppliers on the list can bid later."
+- code: fleet_purchase
+  name: Fleet purchase
+  description: "A purchase or lease of haul trucks, mining equipment, locomotives, wagons or generator sets that will need fuel."
+- code: power_supply
+  name: Power supply
+  description: "A power purchase agreement, a grid supply change or a standby generation need at a site. It can change diesel demand for generators."
+- code: equipment_rental
+  name: Equipment rental
+  description: "Hire of plant, generators or vehicles for a project. The renter or the hirer can buy the fuel."
+- code: other
+  name: Other
+  description: "A commercial opportunity that fits no other deal type. The Classifier must give a reason."
