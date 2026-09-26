@@ -119,3 +119,21 @@ Claude Code does not wait for answers. It uses each default below and continues.
 | 170 | Sole word of a site name | A word names a watched site when it is the only distinctive word of the name of exactly one watched site. Stop list in config |
 | 171 | Watched through the operator | An organisation that operates a daily or weekly site makes the item watched for the Tier 1 rules. The watch weights of the score stay site based |
 | 172 | Entering the engagement window | A first stage inside the window counts as entering the window (Tier 0), also when the stage before is unknown |
+| 180 | Priority weights | Lead time 0.35, demand 0.25, confidence 0.2, buyer fit 0.2 (config/priority.yaml) |
+| 181 | Lead time score | Linear points [-365, 0.05], [0, 0.3], [90, 0.8], [180, 1.0], [540, 1.0], [1095, 0.4], [1825, 0.2]. No forecast date gives 0. A date more than 3650 days away counts as unknown |
+| 182 | "As of" of the priority | The recorded time of the event that caused the calculation. A rebuild gives the same values |
+| 183 | Demand score | Linear points [0, 0], [20000, 0.3], [100000, 0.6], [500000, 0.9], [2000000, 1.0] litres a month. No estimate gives 0 |
+| 184 | Confidence | From the certainty of the DealIdentified event: stated 1.0, reported 0.6, speculative 0.3, unknown 0.5 |
+| 185 | Buyer fit | Mining and haulage contractor 1.0, EPC contractor 0.9, owner 0.5, fuel supplier of record 0.2. An owner that buys directly 0.9: the organisation of the deal, or the operator of the site when the project names no contractor. An organisation without a role 0.4. Unknown 0.3 |
+| 186 | Priority groups | Signal to approach, relationship to prequalification, tender and negotiation, closed. The list shows the groups in this order |
+| 187 | Contact found | A ContactAdded event, a touchpoint that names a contact, or a deal stage at or after "Contact found". The rule adds 1.0 to the score, and the list sorts these deals first in the group |
+| 188 | Opportunity of a project | When the record gets the project or a new stage (not at the proposal). An unknown stage or a stage up to contractor procurement. Once for each project. None when the project has an open or pending fuel supply deal. The owner buyer role is the organisation. The evidence is the stage evidence, else the identity evidence |
+| 189 | Demand estimate inputs | Project facts first, then site facts. The first formula in config/demand-model.yaml with evidence for each input. A site with input facts gets its own estimate. A new proposal only when the input facts change |
+| 190 | Forecast without a window | A stage at or after contractor procurement, or with no interval, gets a forecast with no dates (stage_only, procurement_reached). The stage change clears the old forecast of the projection |
+| 191 | Forecast shift alert | The forecaster raises t0_forecast_moves_nearer after the write, for the source of the stage evidence, one alert for each source and rule |
+| 192 | Site identity evidence | The evidence of the first EntityIdentified event of the site (for a brief site, the span of the brief) |
+| 193 | Provenance of a stage move by the team | The reason of the move. The timeline shows "Reason: ...". The deal drawer shows the stage reason |
+| 194 | Response models | Extra fields stay in the response. The OpenAPI schema lists the known fields only |
+| 195 | Live delay test | Five touchpoints, from just before the commit to the SSE message in the reader. The maximum must be 2 s or less |
+| 196 | Priority list live events | Deal, engagement and project events (config apps/web/src/config/modules.ts) |
+| 197 | New agents in config/models.yaml | demand_estimator and opportunity_proposer, model none. The prompt version is the config version (demand-model, priority-config) |
