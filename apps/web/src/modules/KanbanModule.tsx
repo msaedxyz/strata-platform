@@ -7,15 +7,13 @@ import { useCallback, useMemo, useState } from "react";
 import type { Deal } from "../api/types";
 import { moveDealStage } from "../api/writes";
 import { useCan } from "../auth/RequireRole";
-import { moduleConfig, sharedResources } from "../config/modules";
+import { sharedResources } from "../config/modules";
 import { useResource } from "../data/resource";
 import { useAction } from "./common/actions";
 import { useApi, useStages, useTaxonomy } from "./common/api";
 import { nameOf } from "./common/format";
 import { useSelection } from "./common/selection";
 import { ModuleRoot, resourceState } from "./common/ui";
-
-const cfg = moduleConfig.kanban;
 
 /** GET /api/deals. The Kanban board, the next actions, the relationship panel and the timeline share it. */
 export function useDeals() {

@@ -147,8 +147,9 @@ test("provenance (docs/07 rule 1): a fact opens its evidence with the span highl
   await expect(quote.locator("mark.sds-evidence__span")).toHaveText(ev.quote);
   // The span shows in its context: the text before and after it comes from the source (licence full).
   await expect(quote.locator(".sds-evidence__context").first()).toContainText("LUSAKA.");
-  const marked = await quote.locator("mark").evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(marked).not.toBe("rgba(0, 0, 0, 0)");
+  // The span has its own highlight: its background differs from the quote around it.
+  const [markBg, quoteBg] = await quote.locator("mark").evaluate((el) => [getComputedStyle(el).backgroundColor, getComputedStyle(el.parentElement!).backgroundColor]);
+  expect(markBg).not.toBe(quoteBg);
   await expect(drawer.getByRole("link", { name: /Open source/ })).toHaveAttribute("href", ev.url);
   await expect(drawer.locator("figcaption.sds-evidence__source")).toContainText(ev.publisher!);
   await page.keyboard.press("Escape");

@@ -46,8 +46,8 @@ export const test = base.extend<{ role: Role; dataset: DatasetName; autoLive: bo
   dataset: ["small", { option: true }],
   /** Send the live events of each write back to the page, as the database trigger does. */
   autoLive: [true, { option: true }],
-  mock: async ({ role, dataset }, use) => {
-    await use(new MockApi(loadDataset(dataset), role, `e2e-${role}`));
+  mock: async ({ role, dataset }, provide) => {
+    await provide(new MockApi(loadDataset(dataset), role, `e2e-${role}`));
   },
   api: [
     async ({ page, role, mock, autoLive }, use) => {
