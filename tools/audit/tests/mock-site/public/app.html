@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mock Terminal</title>
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<div id="root">
+  <div class="app-shell">
+    <header class="topbar" role="banner">
+      <a class="brand" href="/dashboard">Mock Terminal</a>
+      <div role="search" class="search">
+        <input type="search" id="search" placeholder="Search or type a command" aria-label="Search" autocomplete="off">
+        <ul id="search-results" role="listbox" class="dropdown" hidden></ul>
+      </div>
+      <button id="add-panel" class="btn btn-ghost" aria-label="Add panel" hidden>+ Add panel</button>
+      <ul id="add-menu" role="menu" class="dropdown add-menu" hidden>
+        <li><button role="menuitem" data-kind="chart">Chart panel</button></li>
+        <li><button role="menuitem" data-kind="news">News panel</button></li>
+      </ul>
+      <div class="user-menu">
+        <button id="user-btn" class="btn btn-ghost" aria-haspopup="menu" aria-expanded="false" aria-label="User menu"><span class="avatar">U</span> <span id="user-name"></span></button>
+        <ul id="user-dropdown" role="menu" class="dropdown" hidden>
+          <li><a role="menuitem" href="/account/profile">Profile</a></li>
+          <li><button role="menuitem" id="logout-btn">Log out</button></li>
+        </ul>
+      </div>
+    </header>
+    <div class="ticker" aria-label="Ticker">
+      <div class="ticker-track" id="ticker-track"></div>
+    </div>
+    <div class="body">
+      <nav class="sidebar" aria-label="Main">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/markets">Markets</a>
+        <a href="/news">News</a>
+        <div class="more">
+          <button id="more-btn" class="nav-button" aria-haspopup="menu" aria-expanded="false">More</button>
+          <ul id="more-menu" role="menu" class="dropdown submenu" hidden>
+            <li><a role="menuitem" href="/reports">Reports</a></li>
+          </ul>
+        </div>
+        <a href="/alerts/new">Create alert</a>
+        <a href="/billing">Billing</a>
+        <a href="/account/api-keys">API keys</a>
+      </nav>
+      <main id="main"></main>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status">Connected to live feed</div>
+  <div id="tooltip" class="tooltip" role="tooltip" hidden>Tip</div>
+  <div id="modal-backdrop" class="overlay" hidden></div>
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-label="Details" hidden>
+    <h2>Details</h2>
+    <p>Quote details.</p>
+    <button class="btn" id="modal-close">Close</button>
+  </div>
+  <div id="palette" class="modal palette" role="dialog" aria-modal="true" aria-label="Command palette" hidden>
+    <input id="palette-input" placeholder="Type a command" aria-label="Command">
+    <ul id="palette-list" role="listbox"></ul>
+  </div>
+  <div id="help" class="modal" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" hidden>
+    <h2>Keyboard shortcuts</h2>
+    <ul>
+      <li><kbd>/</kbd> Focus search</li>
+      <li><kbd>Ctrl</kbd> <kbd>K</kbd> Open the command palette</li>
+      <li><kbd>?</kbd> Show this help</li>
+      <li><kbd>g</kbd> <kbd>d</kbd> Go to the dashboard</li>
+      <li><kbd>g</kbd> <kbd>m</kbd> Go to markets</li>
+      <li><kbd>Esc</kbd> Close</li>
+    </ul>
+  </div>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>

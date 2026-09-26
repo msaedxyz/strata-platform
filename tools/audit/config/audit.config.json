@@ -1,0 +1,190 @@
+{
+  "$comment": "Thresholds, patterns and heuristics for the Infora audit. Keep values here, not in code (CLAUDE.md rule 11).",
+  "viewports": [
+    { "width": 1920, "height": 1080 },
+    { "width": 1440, "height": 900 },
+    { "width": 1280, "height": 800 }
+  ],
+  "primaryViewport": { "width": 1920, "height": 1080 },
+  "crawl": {
+    "maxRoutes": 60,
+    "maxDepth": 2,
+    "settleMs": 1500,
+    "navTimeoutMs": 30000,
+    "menuSettleMs": 400
+  },
+  "behaviour": {
+    "observeMs": 30000,
+    "tickerSampleMs": 3000,
+    "tickerHoverSampleMs": 1500,
+    "maxTabStops": 80,
+    "keySettleMs": 350,
+    "commandQueries": ["help", "a"],
+    "safeKeys": ["/", "?", "Control+k", "Meta+k", "Escape", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    "gChordLetters": "abcdefghijklmnopqrstuvwxyz",
+    "pollingMinRepeats": 3
+  },
+  "components": {
+    "maxInstancesPerComponent": 3,
+    "screenshotPadding": 6,
+    "loadingWatchMs": 3000,
+    "definitions": {
+      "app-shell": ["#root > *:first-child", "#app > *:first-child", "[class*='app-shell' i]", "[class*='appshell' i]", "[class*='layout' i]:not(.react-grid-layout):not(.react-grid-item)", "body > div:first-of-type"],
+      "navigation": ["nav", "[role='navigation']", "aside", "[class*='sidebar' i]"],
+      "top-bar": ["header", "[role='banner']", "[class*='topbar' i]", "[class*='top-bar' i]", "[class*='navbar' i]"],
+      "search": ["[role='search']", "input[type='search']", "[role='combobox']", "input[placeholder*='search' i]", "input[placeholder*='command' i]"],
+      "user-menu": ["[aria-label*='user' i][aria-haspopup]", "[aria-label*='account' i][aria-haspopup]", "[aria-label*='profile' i][aria-haspopup]", "[class*='user-menu' i]", "[class*='usermenu' i]", "[class*='avatar' i]"],
+      "ticker": ["[class*='ticker' i]", "[class*='marquee' i]", "marquee"],
+      "panel-frame": [".react-grid-item", "[data-panel]", "[class*='panel' i]:not([class*='panel-header' i]):not([class*='panel-body' i]):not([class*='panel-title' i])", "[class*='widget' i]"],
+      "panel-header-controls": ["[class*='panel-header' i] button", "[class*='panel-header' i] [role='button']", ".react-grid-item header button", "[class*='widget-header' i] button"],
+      "feed-item": ["[role='feed'] > *", "[role='article']", "[class*='feed-item' i]", "[class*='news-item' i]", "[class*='feed' i] li"],
+      "data-table": ["table", "[role='grid']", "[role='table']", "[role='treegrid']", ".ag-root", "[class*='data-table' i]", "[class*='datatable' i]"],
+      "chart": ["svg.recharts-surface", "[_echarts_instance_]", ".tv-lightweight-charts", "[class*='chart' i] canvas", "[class*='chart' i] svg", "[class*='chart' i]", "canvas"],
+      "map": [".maplibregl-map", ".mapboxgl-map", ".leaflet-container", "[class*='map' i] canvas"],
+      "badge": ["[class*='badge' i]", "[class*='chip' i]", "[class*='pill' i]", "[class*='tag' i]:not(svg)"],
+      "toast": ["[class*='toast' i]", "[class*='snackbar' i]", "[class*='notification' i]", "[role='status']", "[role='alert']"],
+      "modal": ["[role='dialog']", "[aria-modal='true']", "dialog", "[class*='modal' i]"],
+      "drawer": ["[class*='drawer' i]", "[class*='offcanvas' i]", "[class*='sheet' i]"],
+      "tabs": ["[role='tablist']", "[class*='tabs' i]"],
+      "button": ["button", "[role='button']"],
+      "text-input": ["input[type='text']", "input:not([type])", "input[type='search']", "input[type='email']", "input[type='number']", "textarea"],
+      "select": ["select", "[role='listbox']", "[role='combobox']"],
+      "checkbox": ["input[type='checkbox']", "[role='checkbox']"],
+      "switch": ["[role='switch']"],
+      "radio": ["input[type='radio']", "[role='radio']"],
+      "slider": ["input[type='range']", "[role='slider']"],
+      "tooltip": ["[role='tooltip']", "[class*='tooltip' i]"],
+      "menu": ["[role='menu']", "[role='menubar']", "[class*='dropdown' i]"]
+    },
+    "stateSelectors": {
+      "disabled": [":disabled", "[aria-disabled='true']"],
+      "loading": ["[aria-busy='true']", "[class*='skeleton' i]", "[class*='spinner' i]", "[class*='loading' i]", "[role='progressbar']"],
+      "empty": ["[class*='empty' i]", "[class*='no-data' i]", "[class*='nodata' i]", "[class*='placeholder' i]:not(input)"],
+      "error": ["[aria-invalid='true']", "[class*='error' i]", "[class*='invalid' i]", "[role='alert']"]
+    },
+    "emptyTextPatterns": ["^no (data|results|items|records|matches)", "^nothing (here|to show)", "^empty$"],
+    "stateContainers": ["panel-frame", "data-table", "chart", "map", "feed-item", "search", "select", "tabs", "toast", "modal", "drawer", "ticker", "menu"]
+  },
+  "layout": {
+    "gridSelectors": [".react-grid-layout", "[class*='grid-layout' i]"],
+    "itemSelectors": [".react-grid-item", "[data-grid]", "[class*='grid-item' i]"],
+    "dragHandleSelectors": [".react-draggable-handle", "[class*='drag-handle' i]", "[class*='draghandle' i]", "[class*='panel-header' i]", "[class*='widget-header' i]", "header"],
+    "resizeHandleSelectors": [".react-resizable-handle-se", ".react-resizable-handle", "[class*='resize-handle' i]", "[class*='resizer' i]"],
+    "placeholderSelectors": [".react-grid-placeholder", "[class*='placeholder' i]"],
+    "candidateColumns": [12, 24, 16, 10, 8, 6, 4, 48, 36, 20],
+    "rowHeightRange": [4, 200],
+    "rowHeightGuessMin": 20,
+    "dragSteps": 12,
+    "interactionSettleMs": 500,
+    "interactions": {
+      "collapse": "\\b(collapse|minimi[sz]e|fold)\\b",
+      "maximise": "\\b(maximi[sz]e|expand|full\\s*-?screen|enlarge|zoom)\\b",
+      "close": "\\b(close|hide)\\b",
+      "add": "\\badd\\b.*\\b(panel|widget|module|tile|window|view)\\b|^\\+$"
+    }
+  },
+  "safety": {
+    "allowedMethods": ["GET", "HEAD"],
+    "denyPatterns": [
+      "\\b(save|saves|saved|saving)\\b",
+      "\\b(delete|deletes|deleted|deleting|del)\\b",
+      "\\b(submit|submits|submitted|submitting)\\b",
+      "\\b(send|sends|sending|resend)\\b",
+      "\\b(publish|publishes|published|publishing|unpublish)\\b",
+      "\\b(create|creates|created|creating|new)\\b",
+      "\\b(update|updates|updated|updating)\\b",
+      "\\b(remove|removes|removed|removing)\\b",
+      "\\b(apply|applies|applied|applying)\\b",
+      "\\b(confirm|confirms|confirmed|confirming)\\b",
+      "\\b(buy|buys|buying|sell|sells|selling|trade|trading)\\b",
+      "\\b(order|orders|ordering)\\b",
+      "\\b(settings?|preferences?)\\b",
+      "\\b(add|adds|adding)\\b",
+      "\\b(edit|edits|rename|duplicate|clone|copy|move|assign|reassign)\\b",
+      "\\b(approve|approves|reject|rejects|dismiss|dismisses|acknowledge|ack|accept|decline|archive|unarchive)\\b",
+      "\\b(subscribe|unsubscribe|follow|unfollow|mute|unmute|pin|unpin|star|unstar|favou?rite|bookmark)\\b",
+      "\\b(watch|unwatch)\\b(?!\\s*-?list)",
+      "\\b(enable|disable|toggle|turn\\s+on|turn\\s+off|reset|clear|revoke|rotate|generate|regenerate)\\b",
+      "\\b(invite|share|upload|import|export|download|sync|connect|disconnect)\\b",
+      "\\b(pay|payment|checkout|purchase|withdraw|deposit|transfer|execute|place|cancel)\\b",
+      "\\b(mark\\s+(as|all)|read\\s+all)\\b",
+      "\\b(sign\\s*-?\\s*up|signup|register)\\b",
+      "\\b(run|start|stop|restart)\\b"
+    ],
+    "logoutPatterns": ["\\blog\\s*-?\\s*out\\b", "\\blogout\\b", "\\bsign\\s*-?\\s*out\\b", "\\bsignout\\b", "\\blog\\s*off\\b"],
+    "panelViewPatterns": [
+      "\\b(maximi[sz]e|minimi[sz]e|expand|collapse|full\\s*-?screen|restore|enlarge|shrink|fold|unfold)\\b",
+      "\\b(chart|table|list|grid|card|compact|detail(ed)?)\\s*view\\b",
+      "^(1d|5d|1w|1m|3m|6m|1y|ytd|max|all)$"
+    ],
+    "layoutClosePatterns": ["\\b(close|hide)\\b"],
+    "layoutAddPatterns": ["\\badd\\b.*\\b(panel|widget|module|tile|window|view)\\b", "^\\+$"],
+    "wsProtocolActions": ["subscribe", "unsubscribe", "start", "stop", "connection_init", "connection_ack", "ping", "pong", "ka", "complete", "join", "leave", "phx_join", "phx_leave", "heartbeat", "hello", "auth", "authenticate", "listen", "unlisten", "sub", "unsub"],
+    "loginRequestPatterns": ["login", "log-in", "signin", "sign-in", "sign_in", "auth", "session", "token", "oauth", "oidc", "sso", "saml", "callback", "mfa", "otp", "verify", "authorize", "authenticate"],
+    "logoutRequestPatterns": ["logout", "log-out", "signout", "sign-out", "sign_out", "session", "revoke", "end_session", "end-session"],
+    "wsActionKeys": ["type", "action", "method", "op", "event", "cmd", "command", "operation", "kind", "name"]
+  },
+  "sensitive": {
+    "urlPatterns": [
+      "api[-_ ]?keys?",
+      "access[-_ ]?tokens?",
+      "\\btokens?\\b",
+      "secrets?",
+      "credentials?",
+      "passwords?",
+      "billing",
+      "invoices?",
+      "payments?",
+      "subscriptions?",
+      "checkout",
+      "\\bplans?\\b",
+      "\\busers?\\b",
+      "\\bmembers?\\b",
+      "\\bteam\\b",
+      "profile",
+      "\\baccount\\b",
+      "\\badmin\\b",
+      "security",
+      "\\b2fa\\b|mfa"
+    ],
+    "textPatterns": [
+      "\\bapi\\s*keys?\\b",
+      "\\bsecret\\s*keys?\\b",
+      "\\baccess\\s*tokens?\\b",
+      "\\bclient\\s*secret\\b",
+      "\\bpersonal\\s*access\\s*token\\b",
+      "\\bbilling\\b",
+      "\\bpayment\\s*method\\b",
+      "\\bcredit\\s*card\\b",
+      "\\bcard\\s*number\\b",
+      "\\binvoices?\\b",
+      "\\bchange\\s*password\\b",
+      "\\bcurrent\\s*password\\b",
+      "\\brecovery\\s*codes?\\b",
+      "\\btwo[-\\s]factor\\b"
+    ],
+    "emailCountThreshold": 3
+  },
+  "tokens": {
+    "neutralSaturationMax": 0.25,
+    "stateSaturationMin": 0.35,
+    "stateLightnessRange": [0.2, 0.85],
+    "surfaceLuminanceWindow": 0.3,
+    "minTextShare": 0.005,
+    "spaceKeys": [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16],
+    "spaceUnitCandidates": [8, 4, 2],
+    "spaceUnitMinShare": 0.85,
+    "spacingMaxPx": 200,
+    "hueBuckets": {
+      "negative": [[345, 360], [0, 15]],
+      "warning": [[15, 65]],
+      "positive": [[75, 170]],
+      "accent": [[180, 300]]
+    },
+    "monoFamilyPattern": "mono|code|courier|consolas|menlo|monaco|jetbrains|fira\\s*code|source\\s*code|ibm\\s*plex\\s*mono|sfmono",
+    "iconPrefixes": ["lucide", "tabler", "ph-", "phosphor", "material-symbols", "material-icons", "fa-", "bi-", "heroicon", "feather", "ri-", "iconify", "icon-", "codicon", "remixicon", "mdi-", "bx-", "octicon"]
+  },
+  "gitleaks": {
+    "image": "zricethezav/gitleaks:latest"
+  }
+}
