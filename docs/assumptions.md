@@ -25,3 +25,20 @@ Claude Code does not wait for answers. It uses each default below and continues.
 | 19 | Demand model factors | Planning defaults in config/demand-model.yaml. Mohamed confirms them |
 | 20 | Development users | viewer, analyst, analyst2, approver, approver2 and admin at strata.local, with one password from .env |
 | 21 | Real data in the build environment | A snapshot of real items from WebSearch in data/snapshots/. The collectors use the live sources on a machine with normal network access |
+| 22 | Time of the daily and weekly runs | Daily at 05:00 and weekly on Monday at 05:00, Africa/Lusaka (config/collectors.yaml) |
+| 23 | Near duplicate threshold | Hamming distance 3 or less of a 64 bit simhash over shingles of three words. Only sources fetched in the last 60 days are candidates |
+| 24 | robots.txt that does not load | HTTP 404 allows all paths. HTTP 401, 403, 5xx or a network error disallows all paths. The cache keeps a result for 24 hours, or 10 minutes after an error |
+| 25 | Retry rule | Three retries after 2, 4 and 8 seconds, for network errors and HTTP 429, 500, 502, 503 and 504. Other 4xx responses are not retried |
+| 26 | Sitemap limit | 50 pages in one run. A sitemap inside a sitemap is not followed |
+| 27 | Web page sources | One document for each configured page. The collector does not follow the article links of a section page |
+| 28 | Licence of a manual upload | verify_then_purge unless the analyst gives a licence code from the brief. A manual URL obeys robots.txt and the google_news_only guard |
+| 29 | Object storage keys | sources/<source id>/raw.<ext> and sources/<source id>/text.txt. A link_only source keeps no raw file |
+| 30 | Excerpt | The first 280 characters of the text after whitespace is collapsed. The purge keeps the excerpt |
+| 31 | Google News item URL | The publisher URL when the Google News link carries it. Else the Google News link. The metadata keeps the Google News link and the publisher site |
+| 32 | Section of an approved source | sources.early_signal when the proposal gives a source_type, else sources.news |
+| 33 | Version number of a new brief from the API | The next free number. The content hash does not include the version number, so the same content gives the existing version |
+| 34 | OCR | A page with fewer than 20 characters goes to OCR at 200 dpi. Tesseract when the binary exists, else RapidOCR |
+| 35 | Language | langdetect with a fixed seed. No language for a text with fewer than three words |
+| 36 | Watch level of a site that leaves the brief | The start-up step sets watch none for a site that the active brief does not list |
+| 37 | Health window | Error rate and documents for each run from the last 20 runs of a source |
+| 38 | Snapshot enrichment | Each new snapshot source gets an enrich_source job, like any other source |

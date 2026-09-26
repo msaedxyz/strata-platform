@@ -7,8 +7,8 @@ The fixture creates a fresh database for the test session, runs the migrations a
 
 from __future__ import annotations
 
+import hashlib
 import os
-import secrets
 import time
 import uuid
 from collections.abc import Iterator
@@ -36,8 +36,11 @@ def database() -> Iterator[dict]:
     if not ADMIN_URL:
         pytest.skip("STRATA_TEST_ADMIN_URL is not set")
     dbname = f"strata_test_{uuid.uuid4().hex[:8]}"
-    app_password = secrets.token_urlsafe(16)
-    owner_password = secrets.token_urlsafe(16)
+    # Roles are cluster wide. Derive the test role passwords from the admin URL, so that two test
+    # sessions on one server set the same password and do not break each other.
+    seed = hashlib.sha256(ADMIN_URL.encode()).hexdigest()
+    app_password = os.environ.get("STRATA_TEST_APP_PASSWORD") or f"t{seed[:24]}"
+    owner_password = os.environ.get("STRATA_TEST_OWNER_PASSWORD") or f"o{seed[24:48]}"
     with psycopg.connect(ADMIN_URL, autocommit=True) as conn:
         conn.execute(f'CREATE DATABASE "{dbname}"')
     admin_db_url = _with_db(ADMIN_URL, dbname)
