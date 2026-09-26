@@ -53,3 +53,18 @@ Record each decision that changes this pack or that chooses between options.
 | 2026-09-26 | The snapshot has 146 items, not 250 | The session web search budget ended after 35 searches. No item was invented | data/snapshots/2026-09-26/README.md |
 | 2026-09-26 | Agriculture and industry is a known gap in the snapshot | The search budget ended before these searches | 04, data/snapshots/2026-09-26/README.md |
 | 2026-09-26 | The topic field is a label from the search query group, not a fact from the source | Rule 1 needs facts to link to a source span. The topic is not a canonical fact | 03, data/snapshots/2026-09-26/README.md |
+| 2026-09-26 | Brief v1 was built from public research with WebSearch | The Argo files and config/monitoring-brief/v1.yaml were not in the repository or on the host | 04, v1.yaml |
+| 2026-09-26 | Items that the research could not find are known gaps or null fields. No value was guessed | The session web search budget ended after about 55 searches | v1.yaml |
+| 2026-09-26 | All sources other than Google News use licence code verify_then_purge. The collector confirms reachability and terms on its first run | The build environment blocks direct fetches, so no page or terms of use were read | 04, v1.yaml |
+| 2026-09-26 | Where no feed URL was found, a source uses the root or a section of a domain from a result. The verification text marks it as derived | Search results gave article URLs but not feed URLs | v1.yaml |
+| 2026-09-26 | Site coordinates come only from Wikipedia or Wikidata values in search results. Mindat is not used. 36 of 57 sites have geometry null | docs/03 forbids invented coordinates. The search budget ended before the district centre lookups | 03, v1.yaml |
+| 2026-09-26 | status_hint "producing" means "in operation" for power, industrial, transport, border and fuel_supply sites | The status list comes from mines | v1.yaml |
+| 2026-09-26 | Site entries can have two optional fields: corridor and note | Corridors link border and transport sites to geography codes. Notes show what the research did not confirm | v1.yaml |
+| 2026-09-26 | Early signal sources can have an extra source type market_regulator (ERB, Ministry of Energy) | ERB price decisions are Tier 0 market demand drivers but are not one of the nine early signal types | 04, v1.yaml |
+| 2026-09-26 | The google_news_only list is a conservative default of e-paper, subscription and paywalled domains | Direct access was not tested | 04, v1.yaml |
+| 2026-09-26 | Activity type codes use the format theme__keyword_slug. A spelling variant gets a numeric suffix | Each keyword needs a unique code | 05, activity-types.yaml |
+| 2026-09-26 | fuel_shortage and pipeline_outage have direction demand_up. border_delay and erb_price_change have direction demand_down | A shortage or outage makes customers need another supply. Delays and price rises reduce consumption. Tier rules treat all four as market demand drivers | 05, v1.yaml |
+| 2026-09-26 | Geography codes include zw, bw, mw, na, corr_chirundu_beitbridge and corr_trans_caprivi | The watched border posts connect to these countries and corridors | 05, geographies.yaml |
+| 2026-09-26 | The province parents of Chirundu and Shibuyunji districts need confirmation | Research did not confirm them | geographies.yaml |
+| 2026-09-26 | external_ids are empty for all organisations | Research found no PACRA, LEI, ISIN or SEDAR numbers | v1.yaml |
+| 2026-09-26 | The two proposed sources are Copperbelt Katanga Mining and the Logistics Cluster Zambia fuel assessment | They cover the DRC side of the corridor and fuel supply infrastructure | 04, v1.yaml |
