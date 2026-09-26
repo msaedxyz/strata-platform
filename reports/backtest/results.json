@@ -1,0 +1,728 @@
+{
+  "run_at": "2026-09-26T14:14:18+00:00",
+  "backend": "deterministic",
+  "brief_version": 1,
+  "dataset": {
+    "events": 7,
+    "traces": 19,
+    "documents": 14,
+    "events_file": "tests/backtest/events.yaml",
+    "traces_file": "tests/backtest/traces.yaml"
+  },
+  "window": {
+    "start": "2023-10-01",
+    "end": "2026-09-26",
+    "strict": false
+  },
+  "matching": {
+    "count_tiers": [
+      0,
+      1,
+      2
+    ],
+    "company_level_counts": true,
+    "rule_order": [
+      "project",
+      "site",
+      "title",
+      "company"
+    ]
+  },
+  "pass_conditions": {
+    "min_detection_rate": 0.7,
+    "min_median_lead_months": 6.0,
+    "min_events": 20,
+    "days_per_month": 30.44
+  },
+  "replay": [
+    {
+      "seq": 1,
+      "url": "https://im-mining.com/2022/05/09/first-quantum-board-signs-off-development-of-kansanshi-s3-expansion-enterprise-nickel-project/",
+      "trace_ids": [
+        "TR-019"
+      ],
+      "published_at": "2022-05-09T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F125W86Z0SQF35SB38QYGR",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F125WG2G4CWWN4ZRGFNA1H",
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "sources_visible": 1,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 2,
+      "url": "https://www.barrick.com/English/news/news-details/2023/great-future-beckons-for-lumwana-as-barrick-unlocks-potential/default.aspx",
+      "trace_ids": [
+        "TR-001",
+        "TR-003"
+      ],
+      "published_at": "2023-07-07T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126AYBQNG39WPCKTB11S4",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126B5G1FZT85JHH3NH7YV",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 2,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 3,
+      "url": "https://www.bloomberg.com/news/articles/2023-10-04/barrick-to-spend-2-billion-on-super-pit-copper-mine-in-zambia",
+      "trace_ids": [
+        "TR-002",
+        "TR-004"
+      ],
+      "published_at": "2023-10-04T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126CT4D8F04YYMGEX4XYE",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126D1HXPCFA9P6ZGC2KAP",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 3,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 4,
+      "url": "https://im-mining.com/2023/12/12/lycopodium-engaged-by-barrick-for-lumwana-copper-expansion-study/",
+      "trace_ids": [
+        "TR-005"
+      ],
+      "published_at": "2023-12-12T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126EGEQC7C69W9K4F8M4G",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126EQKBBKZNC2CGRP8Z89",
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "sources_visible": 4,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 5,
+      "url": "https://www.actusnews.com/en/zccm/pr/2023/12/22/zccm-ih-transaction-announcement-regarding-mopani-copper-mines",
+      "trace_ids": [
+        "TR-008",
+        "TR-012"
+      ],
+      "published_at": "2023-12-22T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126HJ92EKVCHXJCWZPKRS",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126HVFXQNZTS34BJCVD2T",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 5,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 6,
+      "url": "https://www.bloomberg.com/news/articles/2023-12-22/abu-dhabi-s-irh-will-invest-1-1-billion-in-mopani-copper-deal",
+      "trace_ids": [
+        "TR-009",
+        "TR-013"
+      ],
+      "published_at": "2023-12-22T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126KQT69HDGFE05FGYRG1",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126M3EP8A3ND5N1MDTDE4",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 6,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 7,
+      "url": "https://www.globalminingreview.com/mining/29012024/barrick-gold-accelerates-lumwana-mine-expansion-project/",
+      "trace_ids": [
+        "TR-006"
+      ],
+      "published_at": "2024-01-29T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126P6E8DVAQ76QTMGWV1A",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126PFYFCDJDWHJ9SNRYT2",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 7,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 8,
+      "url": "https://www.luse.co.zm/wp-content/uploads/2024/04/ZCCM-IH-PROPOSED-ENTRY-OF-STRATEGIC-EQUITY-PARTNER-IN-MOPANI-COPPERMINESPLC-02.02.2024-Copy.pdf",
+      "trace_ids": [
+        "TR-010",
+        "TR-014"
+      ],
+      "published_at": "2024-02-02T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126R2AM37ZJSRYN8DHNCK",
+      "enrich_status": "out_of_scope",
+      "run_id": "01M3F126R8DERG9FJ5DQTRKNVJ",
+      "tier": null,
+      "tier_rule": null,
+      "sources_visible": 8,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 9,
+      "url": "https://www.prnewswire.com/news-releases/vedanta-regains-control-of-konkola-copper-mines-in-zambia-302202425.html",
+      "trace_ids": [
+        "TR-015"
+      ],
+      "published_at": "2024-07-22T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126RQ69YBVV8G0XCFBGRN",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126S2MHJD710H9QP0TQS1",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 9,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 10,
+      "url": "https://im-mining.com/2024/09/11/feasibility-study-on-lumwana-super-pit-expansion-expected-by-year-end/",
+      "trace_ids": [
+        "TR-007"
+      ],
+      "published_at": "2024-09-11T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126V4F53AC68QEFJTA7T5",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126VCVJT9G78RW82XFZT5",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 10,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 11,
+      "url": "https://www.business-standard.com/companies/news/vedanta-resources-weighs-zambia-copper-ipo-to-fund-1-billion-investment-125050200699_1.html",
+      "trace_ids": [
+        "TR-016"
+      ],
+      "published_at": "2025-05-02T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126X4393GZ2BPFRADCP8Z",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126XD8ANJVAP6XRT31RFP",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 11,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 12,
+      "url": "https://efficacynews.africa/2025/06/24/afdb-invests-1b-in-lobito-corridor-signs-zambia-rail-pact/",
+      "trace_ids": [
+        "TR-018"
+      ],
+      "published_at": "2025-06-24T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F126ZK3A6PP1C9X6HQ3N7H",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F126ZTNXNW06NS39MGMEQS",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 12,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 13,
+      "url": "https://im-mining.com/2025/11/07/vedanta-spins-off-konkola-copper-mines-into-us-domiciled-coppertech-metals-inc/",
+      "trace_ids": [
+        "TR-017"
+      ],
+      "published_at": "2025-11-07T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F12728A94GX2PVHMF56AMS",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F1272FBEJB6300KP4TJBW3",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 13,
+      "later_sources_visible": 0
+    },
+    {
+      "seq": 14,
+      "url": "https://im-mining.com/2026/04/10/epiroc-wins-large-order-from-mopani-copper-mines-in-zambia/",
+      "trace_ids": [
+        "TR-011"
+      ],
+      "published_at": "2026-04-10T00:00:00+00:00",
+      "ingest_status": "new",
+      "source_id": "01M3F12741PTD6PHVFADVPT9ZA",
+      "enrich_status": "in_scope",
+      "run_id": "01M3F12748NWB2EPFFBFE966GC",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "sources_visible": 14,
+      "later_sources_visible": 0
+    }
+  ],
+  "events": [
+    {
+      "event_id": "EV-007",
+      "date": "2023-07-04",
+      "project": "Kansanshi S3 Expansion",
+      "site": "Kansanshi mine, Solwezi",
+      "operator": "First Quantum Minerals",
+      "event_type": "equipment_order",
+      "title": "Metso wins major flotation cell order from First Quantum for Kansanshi S3 expansion",
+      "url": "https://im-mining.com/2023/07/04/metso-wins-major-flotation-cell-order-from-first-quantum-for-kansanshi-s3-expansion/",
+      "in_window": false,
+      "counted": true,
+      "traces_before": 1,
+      "detected": true,
+      "first_signal_date": "2022-05-09",
+      "first_signal_title": "First Quantum board signs off development of Kansanshi S3 Expansion, Enterprise nickel project",
+      "first_signal_url": "https://im-mining.com/2022/05/09/first-quantum-board-signs-off-development-of-kansanshi-s3-expansion-enterprise-nickel-project/",
+      "first_signal_source_id": "01M3F125W86Z0SQF35SB38QYGR",
+      "first_signal_tier": 0,
+      "first_signal_tier_rule": "t0_new_project_first_trace",
+      "first_signal_entities": [
+        "organisation:First Quantum Minerals",
+        "site:Kansanshi mine",
+        "site:Enterprise nickel mine",
+        "project:Kansanshi S3 Expansion",
+        "project:Enterprise nickel project"
+      ],
+      "match_basis": "project",
+      "match_detail": "entity 'Kansanshi S3 Expansion'",
+      "match_all": [
+        "project: entity 'Kansanshi S3 Expansion'",
+        "site: entity 'Kansanshi mine' (kansanshi)",
+        "title: words Kansanshi"
+      ],
+      "company_level": false,
+      "lead_days": 421,
+      "lead_months": 13.8
+    },
+    {
+      "event_id": "EV-001",
+      "date": "2023-12-12",
+      "project": "Lumwana Super Pit Expansion",
+      "site": "Lumwana mine",
+      "operator": "Barrick Gold Corporation",
+      "event_type": "epc_award",
+      "title": "Lycopodium engaged by Barrick for Lumwana copper expansion study",
+      "url": "https://im-mining.com/2023/12/12/lycopodium-engaged-by-barrick-for-lumwana-copper-expansion-study/",
+      "in_window": true,
+      "counted": true,
+      "traces_before": 2,
+      "detected": true,
+      "first_signal_date": "2023-07-07",
+      "first_signal_title": "Great Future Beckons for Lumwana as Barrick Unlocks Potential",
+      "first_signal_url": "https://www.barrick.com/English/news/news-details/2023/great-future-beckons-for-lumwana-as-barrick-unlocks-potential/default.aspx",
+      "first_signal_source_id": "01M3F126AYBQNG39WPCKTB11S4",
+      "first_signal_tier": 2,
+      "first_signal_tier_rule": "t2_relevant",
+      "first_signal_entities": [
+        "organisation:Barrick Mining Corporation"
+      ],
+      "match_basis": "title",
+      "match_detail": "words Lumwana",
+      "match_all": [
+        "title: words Lumwana",
+        "company: entity 'Barrick Mining Corporation' (barrick)"
+      ],
+      "company_level": false,
+      "lead_days": 158,
+      "lead_months": 5.2
+    },
+    {
+      "event_id": "EV-002",
+      "date": "2024-09-30",
+      "project": "Lumwana Super Pit Expansion",
+      "site": "Lumwana mine",
+      "operator": "Barrick Gold Corporation",
+      "event_type": "equipment_order",
+      "title": "Metso secures major contract for key process equipment at Barrick's Lumwana copper project in Zambia",
+      "url": "https://www.metso.com/corporate/media/news/2024/9/metso-secures-major-contract-for-key-process-equipment-at-barricks-lumwana-copper-project-in-zambia/",
+      "in_window": true,
+      "counted": true,
+      "traces_before": 5,
+      "detected": true,
+      "first_signal_date": "2023-07-07",
+      "first_signal_title": "Great Future Beckons for Lumwana as Barrick Unlocks Potential",
+      "first_signal_url": "https://www.barrick.com/English/news/news-details/2023/great-future-beckons-for-lumwana-as-barrick-unlocks-potential/default.aspx",
+      "first_signal_source_id": "01M3F126AYBQNG39WPCKTB11S4",
+      "first_signal_tier": 2,
+      "first_signal_tier_rule": "t2_relevant",
+      "first_signal_entities": [
+        "organisation:Barrick Mining Corporation"
+      ],
+      "match_basis": "title",
+      "match_detail": "words Lumwana",
+      "match_all": [
+        "title: words Lumwana",
+        "company: entity 'Barrick Mining Corporation' (barrick)"
+      ],
+      "company_level": false,
+      "lead_days": 451,
+      "lead_months": 14.8
+    },
+    {
+      "event_id": "EV-004",
+      "date": "2026-04-10",
+      "project": "Mopani underground fleet renewal",
+      "site": "Mopani Copper Mines (Nkana and Mufulira)",
+      "operator": "Mopani Copper Mines Plc (IRH 51 percent, ZCCM-IH 49 percent)",
+      "event_type": "equipment_order",
+      "title": "Epiroc wins large order from Mopani Copper Mines in Zambia",
+      "url": "https://im-mining.com/2026/04/10/epiroc-wins-large-order-from-mopani-copper-mines-in-zambia/",
+      "in_window": true,
+      "counted": true,
+      "traces_before": 3,
+      "detected": true,
+      "first_signal_date": "2023-12-22",
+      "first_signal_title": "ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines",
+      "first_signal_url": "https://www.actusnews.com/en/zccm/pr/2023/12/22/zccm-ih-transaction-announcement-regarding-mopani-copper-mines",
+      "first_signal_source_id": "01M3F126HJ92EKVCHXJCWZPKRS",
+      "first_signal_tier": 2,
+      "first_signal_tier_rule": "t2_relevant",
+      "first_signal_entities": [
+        "organisation:ZCCM Investments Holdings Plc",
+        "organisation:Mopani Copper Mines Plc"
+      ],
+      "match_basis": "title",
+      "match_detail": "words Mopani",
+      "match_all": [
+        "title: words Mopani",
+        "company: entity 'Mopani Copper Mines Plc' (mopani_copper_mines)"
+      ],
+      "company_level": false,
+      "lead_days": 840,
+      "lead_months": 27.6
+    },
+    {
+      "event_id": "EV-006",
+      "date": "2026-04-28",
+      "project": "Zambia Lobito Rail (Jimbe to Chingola greenfield line)",
+      "site": "Lobito corridor, North-Western and Copperbelt provinces",
+      "operator": "Africa Finance Corporation (lead developer)",
+      "event_type": "tender",
+      "title": "Lobito Corridor project advances to construction bidding phase as financing builds momentum",
+      "url": "https://dailynews.co.za/business-report/companies/2026-04-28-lobito-corridor-project-advances-to-construction-bidding-phase-as-financing-builds-momentum/",
+      "in_window": true,
+      "counted": true,
+      "traces_before": 1,
+      "detected": true,
+      "first_signal_date": "2025-06-24",
+      "first_signal_title": "AfDB invests $1B in Lobito Corridor, signs Zambia rail pact",
+      "first_signal_url": "https://efficacynews.africa/2025/06/24/afdb-invests-1b-in-lobito-corridor-signs-zambia-rail-pact/",
+      "first_signal_source_id": "01M3F126ZK3A6PP1C9X6HQ3N7H",
+      "first_signal_tier": 2,
+      "first_signal_tier_rule": "t2_relevant",
+      "first_signal_entities": [
+        "organisation:African Development Bank"
+      ],
+      "match_basis": "title",
+      "match_detail": "words Lobito + Zambia + rail",
+      "match_all": [
+        "title: words Lobito + Zambia + rail"
+      ],
+      "company_level": false,
+      "lead_days": 308,
+      "lead_months": 10.1
+    },
+    {
+      "event_id": "EV-003",
+      "date": "2026-06-22",
+      "project": "Mopani underground development",
+      "site": "Mopani Copper Mines (Nkana and Mufulira)",
+      "operator": "Mopani Copper Mines Plc (IRH 51 percent, ZCCM-IH 49 percent)",
+      "event_type": "drilling_contract",
+      "title": "IPO-bound Laxyo expands operations in Africa, bags 200-cr order in Zambia",
+      "url": "https://www.business-standard.com/companies/news/ipo-bound-laxyo-expands-operations-in-africa-bags-200-cr-order-in-zambia-126062200620_1.html",
+      "in_window": true,
+      "counted": true,
+      "traces_before": 4,
+      "detected": true,
+      "first_signal_date": "2023-12-22",
+      "first_signal_title": "ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines",
+      "first_signal_url": "https://www.actusnews.com/en/zccm/pr/2023/12/22/zccm-ih-transaction-announcement-regarding-mopani-copper-mines",
+      "first_signal_source_id": "01M3F126HJ92EKVCHXJCWZPKRS",
+      "first_signal_tier": 2,
+      "first_signal_tier_rule": "t2_relevant",
+      "first_signal_entities": [
+        "organisation:ZCCM Investments Holdings Plc",
+        "organisation:Mopani Copper Mines Plc"
+      ],
+      "match_basis": "title",
+      "match_detail": "words Mopani",
+      "match_all": [
+        "title: words Mopani",
+        "company: entity 'Mopani Copper Mines Plc' (mopani_copper_mines)"
+      ],
+      "company_level": false,
+      "lead_days": 913,
+      "lead_months": 30.0
+    },
+    {
+      "event_id": "EV-005",
+      "date": "2026-09-17",
+      "project": "KCM Tailings Leach Plant",
+      "site": "Konkola Copper Mines, Chingola (Nchanga)",
+      "operator": "Konkola Copper Mines (Vedanta Resources, CopperTech Metals)",
+      "event_type": "epc_award",
+      "title": "KCM signs $498 million deal with Chinese firm for copper recovery plant",
+      "url": "https://www.kitco.com/news/off-the-wire/2026-09-17/kcm-signs-498-million-deal-chinese-firm-copper-recovery-plant",
+      "in_window": true,
+      "counted": true,
+      "traces_before": 3,
+      "detected": true,
+      "first_signal_date": "2024-07-22",
+      "first_signal_title": "Vedanta Regains Control of Konkola Copper Mines in Zambia",
+      "first_signal_url": "https://www.prnewswire.com/news-releases/vedanta-regains-control-of-konkola-copper-mines-in-zambia-302202425.html",
+      "first_signal_source_id": "01M3F126RQ69YBVV8G0XCFBGRN",
+      "first_signal_tier": 2,
+      "first_signal_tier_rule": "t2_relevant",
+      "first_signal_entities": [
+        "organisation:Konkola Copper Mines Plc",
+        "organisation:Vedanta Resources"
+      ],
+      "match_basis": "title",
+      "match_detail": "words Konkola",
+      "match_all": [
+        "title: words Konkola",
+        "company: entity 'Konkola Copper Mines Plc' (kcm)"
+      ],
+      "company_level": false,
+      "lead_days": 787,
+      "lead_months": 25.9
+    }
+  ],
+  "summary": {
+    "events": 7,
+    "detected": 7,
+    "detection_rate": 1.0,
+    "median_lead_days": 451,
+    "median_lead_months": 14.8,
+    "company_level_hits": 0,
+    "conditions": [
+      {
+        "id": "detection_rate",
+        "text": "Strata finds an earlier signal for 70 percent or more of the events",
+        "value": 1.0,
+        "threshold": 0.7,
+        "passed": true
+      },
+      {
+        "id": "median_lead",
+        "text": "The median lead time is 6 months or more",
+        "value": 14.8,
+        "threshold": 6.0,
+        "passed": true
+      },
+      {
+        "id": "event_count",
+        "text": "The dataset has 20 or more events (docs/09 step 1)",
+        "value": 7,
+        "threshold": 20,
+        "passed": false
+      }
+    ],
+    "docs09_conditions_passed": true,
+    "passed": false,
+    "in_window_only": {
+      "events": 6,
+      "detected": 6,
+      "detection_rate": 1.0,
+      "median_lead_days": 619.0,
+      "median_lead_months": 20.3,
+      "company_level_hits": 0
+    },
+    "miss_reasons": {}
+  },
+  "sensitivity": [
+    {
+      "name": "Without the title words",
+      "rules": [
+        "project",
+        "site",
+        "company"
+      ],
+      "events": 7,
+      "detected": 6,
+      "detection_rate": 0.8571,
+      "median_lead_months": 20.3,
+      "docs09_conditions_passed": true,
+      "per_event": {
+        "EV-001": "2023-07-07",
+        "EV-002": "2023-07-07",
+        "EV-003": "2023-12-22",
+        "EV-004": "2023-12-22",
+        "EV-005": "2024-07-22",
+        "EV-006": null,
+        "EV-007": "2022-05-09"
+      }
+    },
+    {
+      "name": "Entity links only, no company level",
+      "rules": [
+        "project",
+        "site"
+      ],
+      "events": 7,
+      "detected": 2,
+      "detection_rate": 0.2857,
+      "median_lead_months": 11.7,
+      "docs09_conditions_passed": false,
+      "per_event": {
+        "EV-001": null,
+        "EV-002": "2023-12-12",
+        "EV-003": null,
+        "EV-004": null,
+        "EV-005": null,
+        "EV-006": null,
+        "EV-007": "2022-05-09"
+      }
+    }
+  ],
+  "signals": [
+    {
+      "source_id": "01M3F125W86Z0SQF35SB38QYGR",
+      "date": "2022-05-09",
+      "title": "First Quantum board signs off development of Kansanshi S3 Expansion, Enterprise nickel project",
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "entities": [
+        "organisation:First Quantum Minerals",
+        "site:Kansanshi mine",
+        "site:Enterprise nickel mine",
+        "project:Kansanshi S3 Expansion",
+        "project:Enterprise nickel project"
+      ]
+    },
+    {
+      "source_id": "01M3F126AYBQNG39WPCKTB11S4",
+      "date": "2023-07-07",
+      "title": "Great Future Beckons for Lumwana as Barrick Unlocks Potential",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:Barrick Mining Corporation"
+      ]
+    },
+    {
+      "source_id": "01M3F126CT4D8F04YYMGEX4XYE",
+      "date": "2023-10-04",
+      "title": "Barrick Earmarks $2 Billion for Copper 'Super Pit' in Zambia",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:Barrick Mining Corporation"
+      ]
+    },
+    {
+      "source_id": "01M3F126EGEQC7C69W9K4F8M4G",
+      "date": "2023-12-12",
+      "title": "Lycopodium engaged by Barrick for Lumwana copper expansion study",
+      "tier": 0,
+      "tier_rule": "t0_new_project_first_trace",
+      "entities": [
+        "organisation:Barrick Mining Corporation",
+        "project:Lumwana copper expansion"
+      ]
+    },
+    {
+      "source_id": "01M3F126HJ92EKVCHXJCWZPKRS",
+      "date": "2023-12-22",
+      "title": "ZCCM-IH Transaction Announcement Regarding Mopani Copper Mines",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:ZCCM Investments Holdings Plc",
+        "organisation:Mopani Copper Mines Plc"
+      ]
+    },
+    {
+      "source_id": "01M3F126KQT69HDGFE05FGYRG1",
+      "date": "2023-12-22",
+      "title": "Abu Dhabi's IRH Will Invest $1.1 Billion in Mopani Copper Deal",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:Mopani Copper Mines Plc",
+        "organisation:International Resources Holding"
+      ]
+    },
+    {
+      "source_id": "01M3F126P6E8DVAQ76QTMGWV1A",
+      "date": "2024-01-29",
+      "title": "Barrick Gold accelerates Lumwana mine expansion project",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:Barrick Mining Corporation",
+        "site:Lumwana mine"
+      ]
+    },
+    {
+      "source_id": "01M3F126RQ69YBVV8G0XCFBGRN",
+      "date": "2024-07-22",
+      "title": "Vedanta Regains Control of Konkola Copper Mines in Zambia",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:Konkola Copper Mines Plc",
+        "organisation:Vedanta Resources"
+      ]
+    },
+    {
+      "source_id": "01M3F126V4F53AC68QEFJTA7T5",
+      "date": "2024-09-11",
+      "title": "Feasibility study on Lumwana Super Pit expansion expected by year-end",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": []
+    },
+    {
+      "source_id": "01M3F126X4393GZ2BPFRADCP8Z",
+      "date": "2025-05-02",
+      "title": "Vedanta Resources weighs Zambia copper IPO to fund $1 billion investment",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:Vedanta Resources"
+      ]
+    },
+    {
+      "source_id": "01M3F126ZK3A6PP1C9X6HQ3N7H",
+      "date": "2025-06-24",
+      "title": "AfDB invests $1B in Lobito Corridor, signs Zambia rail pact",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:African Development Bank"
+      ]
+    },
+    {
+      "source_id": "01M3F12728A94GX2PVHMF56AMS",
+      "date": "2025-11-07",
+      "title": "Vedanta spins off Konkola Copper Mines into US-domiciled CopperTech Metals Inc",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:Konkola Copper Mines Plc",
+        "organisation:Vedanta Resources"
+      ]
+    },
+    {
+      "source_id": "01M3F12741PTD6PHVFADVPT9ZA",
+      "date": "2026-04-10",
+      "title": "Epiroc wins large order from Mopani Copper Mines in Zambia",
+      "tier": 2,
+      "tier_rule": "t2_relevant",
+      "entities": [
+        "organisation:Mopani Copper Mines Plc"
+      ]
+    }
+  ]
+}
