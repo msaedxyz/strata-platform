@@ -25,6 +25,7 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 ## In progress
 
 - M6 integration: priority calculator, demand estimates, evidence ids for all facts in the read API, frontend write types from the real API, live update test on the real stack.
+- M7: end-to-end suite on the Compose stack (tests/e2e), CI e2e job, clean clone check.
 
 ## Next
 
