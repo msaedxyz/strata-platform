@@ -1,0 +1,70 @@
+{
+  "id": "k03",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "TAZAMA pumping halted after leak near Mpika",
+    "publisher": "Zambia Business Daily (synthetic)",
+    "url": "https://synthetic.test/heldout2/k03",
+    "published_at": "2026-09-30T08:00:00Z",
+    "fetched_at": "2026-10-01T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "TAZAMA pumping halted after leak near Mpika\n\nTAZAMA Pipelines Limited stopped pumping diesel to the Ndola fuel terminal on Tuesday after a leak on the pipeline near Mpika. Oil marketing companies said that stocks at Ndola would last about ten days.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "fuel_supply"
+    ],
+    "geographies": [
+      "dist_ndola",
+      "prov_copperbelt",
+      "corr_dar_es_salaam",
+      "zm"
+    ],
+    "themes": [
+      "pipeline_outage"
+    ],
+    "directions": [
+      "demand_up"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "TAZAMA",
+        "type": "site",
+        "resolution": "site:tazama_pipeline",
+        "accept": [
+          "org:tazama_pipelines"
+        ]
+      },
+      {
+        "text": "TAZAMA Pipelines Limited",
+        "type": "organisation",
+        "resolution": "org:tazama_pipelines",
+        "accept": [
+          "site:tazama_pipeline"
+        ]
+      },
+      {
+        "text": "Ndola fuel terminal",
+        "type": "site",
+        "resolution": "site:ndola_fuel_terminal"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "TAZAMA",
+        "certainty": "stated",
+        "value": "suspended"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

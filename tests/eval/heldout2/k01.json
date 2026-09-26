@@ -1,0 +1,78 @@
+{
+  "id": "k01",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Mimosa completes feasibility study at Kashime",
+    "publisher": "Central Province Mining Review (synthetic)",
+    "url": "https://synthetic.test/heldout2/k01",
+    "published_at": "2026-09-28T08:00:00Z",
+    "fetched_at": "2026-09-29T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Mimosa completes feasibility study at Kashime\n\nMimosa Resources has completed a definitive feasibility study for the Fishtie North Extension Project at the Kashime copper mine in Mkushi District. The study puts the capital cost at US$185 million. The company plans to apply for environmental approval in 2027.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_mkushi",
+      "prov_central",
+      "zm"
+    ],
+    "themes": [
+      "feasibility_study"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Mimosa",
+        "type": "organisation",
+        "resolution": "org:mimosa_resources"
+      },
+      {
+        "text": "Mimosa Resources",
+        "type": "organisation",
+        "resolution": "org:mimosa_resources"
+      },
+      {
+        "text": "Kashime",
+        "type": "site",
+        "resolution": "site:kashime"
+      },
+      {
+        "text": "Kashime copper mine",
+        "type": "site",
+        "resolution": "site:kashime"
+      },
+      {
+        "text": "Fishtie North Extension Project",
+        "type": "project",
+        "resolution": "new"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "capex",
+        "subject": "Fishtie North Extension Project",
+        "certainty": "stated",
+        "value": "185000000 USD"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Fishtie North Extension Project",
+        "stage": "feasibility"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "id": "k12",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "PowerChina wins EPC contract for Kariba North Bank Extension Phase II",
+    "publisher": "Southern Province Energy News (synthetic)",
+    "url": "https://synthetic.test/heldout2/k12",
+    "published_at": "2026-10-09T08:00:00Z",
+    "fetched_at": "2026-10-10T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "PowerChina wins EPC contract for Kariba North Bank Extension Phase II\n\nKariba North Bank Extension Power Corporation Limited awarded the EPC contract for the Kariba North Bank Phase II Project to PowerChina. The contract is worth US$410 million and adds 180 MW.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power"
+    ],
+    "geographies": [
+      "dist_siavonga",
+      "prov_southern",
+      "zm"
+    ],
+    "themes": [
+      "contractor_award",
+      "power_project"
+    ],
+    "directions": [
+      "procurement",
+      "project_pipeline"
+    ],
+    "deal_types": [
+      "epc_contract"
+    ],
+    "entities": [
+      {
+        "text": "PowerChina",
+        "type": "organisation",
+        "resolution": "org:powerchina"
+      },
+      {
+        "text": "Kariba North Bank Extension",
+        "type": "site",
+        "resolution": "site:kariba_north_bank"
+      },
+      {
+        "text": "Kariba North Bank Extension Power Corporation Limited",
+        "type": "organisation",
+        "resolution": "org:knbepc"
+      },
+      {
+        "text": "Kariba North Bank Phase II Project",
+        "type": "project",
+        "resolution": "new"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "buyer_role_epc_contractor",
+        "subject": "Kariba North Bank Phase II Project",
+        "certainty": "stated",
+        "object": "PowerChina"
+      },
+      {
+        "predicate": "contract_value",
+        "subject": "Kariba North Bank Phase II Project",
+        "certainty": "stated",
+        "value": "410000000 USD"
+      },
+      {
+        "predicate": "generation_mw",
+        "subject": "Kariba North Bank Phase II Project",
+        "certainty": "stated",
+        "value": "180"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Kariba North Bank Phase II Project",
+        "stage": "contractor_procurement"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 1
+  }
+}

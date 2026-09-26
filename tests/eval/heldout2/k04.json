@@ -1,0 +1,61 @@
+{
+  "id": "k04",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Zambeef adds centre pivots at Mpongwe",
+    "publisher": "Farming Zambia (synthetic)",
+    "url": "https://synthetic.test/heldout2/k04",
+    "published_at": "2026-10-01T08:00:00Z",
+    "fetched_at": "2026-10-02T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Zambeef adds centre pivots at Mpongwe\n\nZambeef Products Plc will add 1,200 hectares of irrigated wheat at its Mpongwe farm after the 2027 rains. The company said it will buy 15 new tractors and two combine harvesters for the expansion.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "agriculture"
+    ],
+    "geographies": [
+      "dist_mpongwe",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "agri_expansion"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Zambeef",
+        "type": "organisation",
+        "resolution": "org:zambeef"
+      },
+      {
+        "text": "Zambeef Products Plc",
+        "type": "organisation",
+        "resolution": "org:zambeef"
+      },
+      {
+        "text": "Mpongwe",
+        "type": "site",
+        "resolution": "site:zambeef_mpongwe"
+      },
+      {
+        "text": "Mpongwe farm",
+        "type": "site",
+        "resolution": "site:zambeef_mpongwe"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

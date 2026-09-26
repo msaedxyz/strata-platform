@@ -1,0 +1,73 @@
+{
+  "id": "k05",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Lubambe seeks contract mining partner",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/heldout2/k05",
+    "published_at": "2026-10-02T08:00:00Z",
+    "fetched_at": "2026-10-03T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Lubambe seeks contract mining partner\n\nLubambe Copper Mines Plc invites expressions of interest from mining contractors for load and haul services at the Lubambe mine in Chililabombwe. Interested firms must submit their documents by 20 November 2026.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_chililabombwe",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "eoi_notice",
+      "contract_mining"
+    ],
+    "directions": [
+      "procurement"
+    ],
+    "deal_types": [
+      "contract_mining",
+      "eoi"
+    ],
+    "entities": [
+      {
+        "text": "Lubambe",
+        "type": "organisation",
+        "resolution": "org:lubambe_copper_mines",
+        "accept": [
+          "site:lubambe"
+        ]
+      },
+      {
+        "text": "Lubambe Copper Mines Plc",
+        "type": "organisation",
+        "resolution": "org:lubambe_copper_mines",
+        "accept": [
+          "site:lubambe"
+        ]
+      },
+      {
+        "text": "Lubambe mine",
+        "type": "site",
+        "resolution": "site:lubambe"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "tender_deadline",
+        "subject": "Lubambe Copper Mines Plc",
+        "certainty": "stated",
+        "value": "2026-11-20"
+      }
+    ],
+    "projects": [],
+    "deal_expected": true,
+    "expected_tier": 0
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "k08",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Queues return at Kasumbalesa",
+    "publisher": "Corridor Logistics Monitor (synthetic)",
+    "url": "https://synthetic.test/heldout2/k08",
+    "published_at": "2026-10-05T08:00:00Z",
+    "fetched_at": "2026-10-06T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Queues return at Kasumbalesa\n\nCopper trucks heading to the Democratic Republic of Congo queued for up to 60 kilometres at the Kasumbalesa border post on Friday after Congolese customs officers began a strike. Transporters said that drivers slept in their cabs for three nights.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "transport"
+    ],
+    "geographies": [
+      "dist_chililabombwe",
+      "prov_copperbelt",
+      "corr_kasumbalesa",
+      "zm",
+      "cd"
+    ],
+    "themes": [
+      "border_delay"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Kasumbalesa",
+        "type": "site",
+        "resolution": "site:kasumbalesa_border"
+      },
+      {
+        "text": "Kasumbalesa border post",
+        "type": "site",
+        "resolution": "site:kasumbalesa_border"
+      }
+    ],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

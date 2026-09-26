@@ -1,0 +1,79 @@
+{
+  "id": "k02",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "web",
+    "title": "ZEMA receives environmental impact statement for Chikowa solar farm",
+    "publisher": "ZEMA notices (synthetic)",
+    "url": "https://synthetic.test/heldout2/k02",
+    "published_at": "2026-09-29T08:00:00Z",
+    "fetched_at": "2026-09-30T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": true
+  },
+  "text": "ZEMA receives environmental impact statement for Chikowa solar farm\n\nThe Zambia Environmental Management Agency has received an Environmental Impact Statement for the Chikowa Solar PV Project, a 60 MW plant in Mpika District. Public disclosure meetings will take place in Mpika on 14 October 2026. The developer is Luangwa Renewables Limited.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "power"
+    ],
+    "geographies": [
+      "prov_muchinga",
+      "zm"
+    ],
+    "themes": [
+      "eia_filed",
+      "power_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "ZEMA",
+        "type": "organisation",
+        "resolution": "org:zema"
+      },
+      {
+        "text": "Zambia Environmental Management Agency",
+        "type": "organisation",
+        "resolution": "org:zema"
+      },
+      {
+        "text": "Chikowa Solar PV Project",
+        "type": "project",
+        "resolution": "new"
+      },
+      {
+        "text": "Luangwa Renewables Limited",
+        "type": "organisation",
+        "resolution": "new"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "generation_mw",
+        "subject": "Chikowa Solar PV Project",
+        "certainty": "stated",
+        "value": "60"
+      },
+      {
+        "predicate": "buyer_role_owner",
+        "subject": "Chikowa Solar PV Project",
+        "certainty": "stated",
+        "object": "Luangwa Renewables Limited"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Chikowa Solar PV Project",
+        "stage": "eia_filed"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

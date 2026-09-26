@@ -1,0 +1,69 @@
+{
+  "id": "k11",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Mopani restarts Nkana cobalt plant",
+    "publisher": "Copperbelt Mining Wire (synthetic)",
+    "url": "https://synthetic.test/heldout2/k11",
+    "published_at": "2026-10-08T08:00:00Z",
+    "fetched_at": "2026-10-09T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Mopani restarts Nkana cobalt plant\n\nMopani Copper Mines Plc restarted production at the Nkana cobalt plant in Kitwe this week after an 18 month shutdown. The plant will process 5,000 tonnes of cobalt hydroxide a year.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "mining"
+    ],
+    "geographies": [
+      "dist_kitwe",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "mine_restart"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Mopani",
+        "type": "organisation",
+        "resolution": "org:mopani_copper_mines"
+      },
+      {
+        "text": "Mopani Copper Mines Plc",
+        "type": "organisation",
+        "resolution": "org:mopani_copper_mines"
+      },
+      {
+        "text": "Nkana cobalt plant",
+        "type": "site",
+        "resolution": "site:mopani_nkana"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Nkana cobalt plant",
+        "certainty": "stated",
+        "value": "producing"
+      },
+      {
+        "predicate": "production_target",
+        "subject": "Nkana cobalt plant",
+        "certainty": "stated",
+        "value": "5000 t/y"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

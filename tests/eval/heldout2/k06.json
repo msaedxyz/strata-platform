@@ -1,0 +1,64 @@
+{
+  "id": "k06",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Talk of new owner for Ndola Lime",
+    "publisher": "Copperbelt Business Monitor (synthetic)",
+    "url": "https://synthetic.test/heldout2/k06",
+    "published_at": "2026-10-03T08:00:00Z",
+    "fetched_at": "2026-10-04T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Talk of new owner for Ndola Lime\n\nIndustry sources say that a Chinese cement group is in talks to buy Ndola Lime Company and could restart the kiln in 2027. The plant has been on care and maintenance since 2023.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "industry"
+    ],
+    "geographies": [
+      "dist_ndola",
+      "prov_copperbelt",
+      "zm"
+    ],
+    "themes": [
+      "care_and_maintenance"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Ndola Lime",
+        "type": "site",
+        "resolution": "site:ndola_lime",
+        "accept": [
+          "org:ndola_lime_company"
+        ]
+      },
+      {
+        "text": "Ndola Lime Company",
+        "type": "organisation",
+        "resolution": "org:ndola_lime_company",
+        "accept": [
+          "site:ndola_lime"
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "site_status",
+        "subject": "Ndola Lime",
+        "certainty": "reported",
+        "value": "care_and_maintenance"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 2
+  }
+}

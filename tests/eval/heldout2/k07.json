@@ -1,0 +1,79 @@
+{
+  "id": "k07",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Lusaka South MFEZ glass plant secures loan",
+    "publisher": "Zambia Industry Journal (synthetic)",
+    "url": "https://synthetic.test/heldout2/k07",
+    "published_at": "2026-10-04T08:00:00Z",
+    "fetched_at": "2026-10-05T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Lusaka South MFEZ glass plant secures loan\n\nSilica Glass Industries Limited signed a US$90 million loan with Afreximbank for the Chongwe Float Glass Project at the Lusaka South Multi-Facility Economic Zone. Construction will start in March 2027 and the plant will employ 450 workers.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "industry"
+    ],
+    "geographies": [
+      "dist_lusaka",
+      "prov_lusaka",
+      "zm"
+    ],
+    "themes": [
+      "financing_close",
+      "industrial_project"
+    ],
+    "directions": [
+      "project_pipeline"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "Lusaka South MFEZ",
+        "type": "site",
+        "resolution": "site:lusaka_south_mfez"
+      },
+      {
+        "text": "Silica Glass Industries Limited",
+        "type": "organisation",
+        "resolution": "new"
+      },
+      {
+        "text": "Afreximbank",
+        "type": "organisation",
+        "resolution": "new"
+      },
+      {
+        "text": "Chongwe Float Glass Project",
+        "type": "project",
+        "resolution": "new"
+      },
+      {
+        "text": "Lusaka South Multi-Facility Economic Zone",
+        "type": "site",
+        "resolution": "site:lusaka_south_mfez"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "expected_start",
+        "subject": "Chongwe Float Glass Project",
+        "certainty": "stated",
+        "value": "2027-03"
+      }
+    ],
+    "projects": [
+      {
+        "name": "Chongwe Float Glass Project",
+        "stage": "financing_fid"
+      }
+    ],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

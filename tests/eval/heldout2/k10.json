@@ -1,0 +1,30 @@
+{
+  "id": "k10",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "rss",
+    "title": "Chipolopolo coach names squad",
+    "publisher": "Sports Desk (synthetic)",
+    "url": "https://synthetic.test/heldout2/k10",
+    "published_at": "2026-10-07T08:00:00Z",
+    "fetched_at": "2026-10-08T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": false
+  },
+  "text": "Chipolopolo coach names squad\n\nThe national football team coach named 23 players for the Africa Cup of Nations qualifier against Ghana in Lusaka.",
+  "labels": {
+    "in_scope": false,
+    "sectors": [],
+    "geographies": [],
+    "themes": [],
+    "directions": [],
+    "deal_types": [],
+    "entities": [],
+    "claims": [],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": null
+  }
+}

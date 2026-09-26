@@ -1,0 +1,62 @@
+{
+  "id": "k09",
+  "synthetic": true,
+  "note": "Second held-out synthetic document (M4). Written and labelled after the M4 rule fixes and committed before any evaluation run on it. Not used to change the rules.",
+  "source": {
+    "type": "web",
+    "title": "ERB raises diesel price for December",
+    "publisher": "Energy Regulation Board (synthetic)",
+    "url": "https://synthetic.test/heldout2/k09",
+    "published_at": "2026-10-06T08:00:00Z",
+    "fetched_at": "2026-10-07T06:00:00Z",
+    "retention_policy": "verify_then_purge",
+    "read_at_source": false,
+    "early_signal": true
+  },
+  "text": "ERB raises diesel price for December\n\nThe Energy Regulation Board has increased the pump price of diesel by K1.35 to K29.75 per litre from 1 December 2026. Petrol rises to K30.10 per litre.",
+  "labels": {
+    "in_scope": true,
+    "sectors": [
+      "fuel_supply"
+    ],
+    "geographies": [
+      "zm"
+    ],
+    "themes": [
+      "erb_price_change"
+    ],
+    "directions": [
+      "demand_down"
+    ],
+    "deal_types": [],
+    "entities": [
+      {
+        "text": "ERB",
+        "type": "organisation",
+        "resolution": "org:erb"
+      },
+      {
+        "text": "Energy Regulation Board",
+        "type": "organisation",
+        "resolution": "org:erb"
+      }
+    ],
+    "claims": [
+      {
+        "predicate": "fuel_price",
+        "subject": "fuel market",
+        "certainty": "stated",
+        "value": "29.75 ZMW"
+      },
+      {
+        "predicate": "fuel_price",
+        "subject": "fuel market",
+        "certainty": "stated",
+        "value": "30.1 ZMW"
+      }
+    ],
+    "projects": [],
+    "deal_expected": false,
+    "expected_tier": 0
+  }
+}

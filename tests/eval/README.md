@@ -8,6 +8,7 @@ This directory holds the evaluation data of docs/05-enrichment.md. The labels ar
 |---|---|
 | gold/g01.json to gold/g50.json | 50 synthetic documents with labels. The CI gate uses this set |
 | holdout/h01.json to holdout/h12.json | 12 synthetic documents that were written after the rule changes. The runner reports them. They do not gate CI |
+| heldout2/k01.json to heldout2/k12.json | 12 more synthetic documents (M4). They were written and labelled after the M4 rule fixes and committed before any run on them. The runner reports them. They do not gate CI |
 | baseline.json | The metrics of the last accepted run for each backend |
 | results/latest.json | The result of the last run on the gold set (deterministic backend) |
 | results/holdout-latest.json | The result of the last run on the held-out set |
