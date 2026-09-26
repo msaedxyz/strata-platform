@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly VITE_OIDC_ISSUER?: string;
   readonly VITE_OIDC_CLIENT_ID?: string;
   readonly VITE_MAP_STYLE_URL?: string;
+  readonly VITE_TIME_ZONE?: string;
 }
 
 interface ImportMeta {
