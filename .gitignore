@@ -1,0 +1,6 @@
+# Infora audit output. Screenshots can show live data (docs/01-audit.md, access and safety 3).
+/audit
+
+node_modules/
+test-results/
+playwright-report/
