@@ -3,7 +3,7 @@
 // in the map has no test.
 import type { Page } from "@playwright/test";
 import { shortcuts, WORKSPACE_SHORTCUTS } from "../src/config/shortcuts";
-import { expect, openWorkspace, panel, test } from "./fixtures";
+import { expect, openWorkspace, panel, test } from "./harness";
 
 /** Press a binding with Playwright key names. */
 function keyName(b: { key: string; ctrl?: boolean; meta?: boolean; shift?: boolean }): string {

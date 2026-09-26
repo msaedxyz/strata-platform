@@ -1,5 +1,5 @@
 // The shell: session start and end, live connection, role-aware controls.
-import { expect, openWorkspace, panel, test } from "./fixtures";
+import { expect, openWorkspace, panel, test } from "./harness";
 
 test.describe("session", () => {
   test("after login the app calls POST /api/session/login and GET /api/me", async ({ page, api }) => {

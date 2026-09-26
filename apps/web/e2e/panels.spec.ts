@@ -1,6 +1,6 @@
 // docs/07 criterion 3: each panel behaviour has an end to end test. The behaviour is the provisional one in
 // packages/panel-framework/BEHAVIOUR.md until audit/layout-system.md exists.
-import { expect, grid, openWorkspace, panel, test } from "./fixtures";
+import { expect, grid, openWorkspace, panel, test } from "./harness";
 
 const MARGIN_TOLERANCE = 1.5;
 
@@ -47,9 +47,11 @@ test.describe("criterion 3: panel behaviour", () => {
     }
   });
 
-  test("each placeholder panel shows the empty state with the module name", async ({ page }) => {
+  test("each panel shows its Strata module (M6 replaced the placeholders)", async ({ page }) => {
     await openWorkspace(page, "origination");
-    await expect(panel(page, "priority-list").locator(".sds-state__title")).toHaveText("Priority list");
+    for (const id of ["priority-list", "procurement-calendar", "project-pipeline", "deal-map"]) {
+      await expect(panel(page, id).locator(`[data-module="${id}"]`)).toBeVisible();
+    }
   });
 
   test("drag: a panel moves by its header to another grid position", async ({ page }) => {

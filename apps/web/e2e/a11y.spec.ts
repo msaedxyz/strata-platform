@@ -5,7 +5,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { expect, openWorkspace, test } from "./fixtures";
+import { expect, openWorkspace, test } from "./harness";
 
 const OUT = join(dirname(fileURLToPath(import.meta.url)), "..", "test-results", "a11y");
 
