@@ -301,6 +301,13 @@ def _resolve(c: _Ctx, a: Analysis) -> dict[tuple[str, str], dict]:
             continue
         exact = c.index.exact(g["text"], types)
         if len(exact) > 1:
+            # Two existing entities of one type with one normalised name are a duplicate pair when their
+            # countries do not differ. The resolver never merges them: the pair goes to the approval queue.
+            same_type = [r for r in exact if not r.pending and r.type == g["type"]]
+            known = {r.country for r in same_type if r.country}
+            if len(same_type) > 1 and len(known) <= 1:
+                a.merges.append({"entity_ids": sorted(r.id for r in same_type), "name": g["text"], "type": g["type"],
+                                 "spans": [evidence]})
             countries = [x for x in (a.classification or {}).get("geographies", []) if len(x) == 2]
             narrowed = [r for r in exact if r.country and r.country in countries]
             if len(narrowed) == 1:
@@ -310,11 +317,8 @@ def _resolve(c: _Ctx, a: Analysis) -> dict[tuple[str, str], dict]:
                            "method": "normalised_name", "spans": [evidence]}
             continue
         if len(exact) > 1:
-            ids = sorted(r.id for r in exact if not r.pending)
-            if len(ids) > 1:
-                a.merges.append({"entity_ids": ids, "name": g["text"], "type": g["type"], "spans": [evidence]})
             result[key] = {"decision": "no_decision", "entity_id": None, "confidence": 0.0, "method": "duplicate",
-                           "spans": [evidence], "duplicates": ids}
+                           "spans": [evidence], "duplicates": sorted(r.id for r in exact)}
             continue
         cands = c.index.candidates(g["text"], types, int(t["candidate_limit"]), float(t["candidate_min_similarity"]))
         pending.append((key, g, cands))
@@ -722,7 +726,11 @@ def _plan(c: _Ctx, a: Analysis, res: dict) -> None:
                             events=events, force_review=True))
 
     # Merges of two existing entities (always review).
+    seen_pairs: set[tuple[str, ...]] = set()
     for m in a.merges:
+        if tuple(m["entity_ids"]) in seen_pairs:
+            continue
+        seen_pairs.add(tuple(m["entity_ids"]))
         into, merged = m["entity_ids"][0], m["entity_ids"][1:]
         a.facts.append(Fact(
             kind="EntityMerged", agent="resolver", title=f"Merge {len(m['entity_ids'])} entities named {m['name']}",

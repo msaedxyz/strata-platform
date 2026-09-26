@@ -280,6 +280,11 @@ def classify(text: str, ctx: dict) -> dict:
         other = site_sectors | {x for t in themes if t != theme for x in c.theme_sectors.get(t, [])}
         if theme in themes and other & set(blocked):
             del themes[theme]
+    site_classes = {(by_id.get(m["entity_id"]) or {}).get("site_class") for m in mentions if m["type"] == "site"}
+    for theme, need in (cfg.get("theme_requires_context") or {}).items():
+        if theme in themes and not (site_classes & set(need.get("site_classes") or []) or
+                                    any(config.compile_pattern(p).search(text) for p in need.get("cues") or [])):
+            del themes[theme]
     for theme, needed in (cfg.get("theme_requires_sector") or {}).items():
         other = site_sectors | {x for t in themes if t != theme for x in c.theme_sectors.get(t, [])}
         if theme in themes and site_sectors and not other & set(needed):

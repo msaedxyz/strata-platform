@@ -128,6 +128,10 @@ classifier:
   # sector (an "expansion project" at a power station is not a mine expansion).
   theme_requires_sector:
     mine_expansion: [mining]
+  # A theme counts only when the document has one of these cues or names a site of one of these classes
+  # (a queue of tankers at a fuel terminal is not a border delay).
+  theme_requires_context:
+    border_delay: {cues: ['\bborders?\b', '\bcustoms\b', '(?-i:\bOSBP\b)'], site_classes: [border]}
   # A theme does not count when the document has a site or a theme of one of these sectors (a processing
   # plant or a smelter at a mine is part of the mine, not an industrial project).
   theme_suppressed_by_sector:
