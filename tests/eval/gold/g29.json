@@ -8,7 +8,7 @@
     "publisher": "ERB (synthetic)",
     "url": "https://synthetic.test/gold/g29",
     "published_at": "2026-09-30T08:00:00Z",
-    "fetched_at": "2026-09-31T06:00:00Z",
+    "fetched_at": "2026-10-01T06:00:00Z",
     "retention_policy": "verify_then_purge",
     "read_at_source": false,
     "early_signal": true

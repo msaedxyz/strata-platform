@@ -58,6 +58,7 @@ class EntityRecord:
     stage_pending: str | None = None
     forecast_start: str | None = None
     pending: bool = False          # a new entity of an open proposal
+    site_classes: list[str] = field(default_factory=list)  # organisations: classes of the sites they operate
 
     def surfaces(self) -> list[str]:
         return [s for s in dict.fromkeys([self.name, *self.aliases]) if s]
@@ -175,6 +176,13 @@ class DbIndex(MemoryIndex):
                 corridor=r["corridor"], country=r["country"], external_ids=r["external_ids"] or {},
             )
         for r in conn.execute(
+            """SELECT r.subject_id, array_agg(DISTINCT s.site_class) AS classes FROM proj_relationship r
+               JOIN proj_entity s ON s.id = r.object_id AND s.type = 'site'
+               WHERE r.predicate = 'operates' AND r.superseded_by IS NULL GROUP BY r.subject_id"""
+        ).fetchall():
+            if r["subject_id"] in records:
+                records[r["subject_id"]].site_classes = sorted(c for c in r["classes"] if c)
+        for r in conn.execute(
             "SELECT id, name, site_id, stage, forecast_start FROM proj_project"
         ).fetchall():
             watch = records[r["site_id"]].watch if r["site_id"] in records else "none"
@@ -223,10 +231,16 @@ class DbIndex(MemoryIndex):
 def brief_records(brief: dict) -> list[EntityRecord]:
     """Entity records for the watch lists and organisations of a brief. Ids are "site:<key>" and "org:<key>"."""
     records = []
+    operated: dict[str, list[str]] = {}
+    for level in ("daily", "weekly"):
+        for site in (brief.get("watch") or {}).get(level) or []:
+            if site.get("operator"):
+                operated.setdefault(site["operator"], []).append(site.get("site_class"))
     for org in brief.get("organisations") or []:
         records.append(EntityRecord(
             id=f"org:{org['id']}", type="organisation", name=org["name"], aliases=list(org.get("aliases") or []),
             key=org["id"], country=org.get("country"), external_ids=org.get("external_ids") or {},
+            site_classes=sorted(set(operated.get(org["id"], []))),
         ))
     for level in ("daily", "weekly"):
         for site in (brief.get("watch") or {}).get(level) or []:

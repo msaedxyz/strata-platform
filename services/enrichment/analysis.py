@@ -137,7 +137,8 @@ class _Ctx:
 
 def entity_context(index: MemoryIndex) -> list[dict]:
     return [{"entity_id": r.id, "type": r.type, "surfaces": index.surfaces_of(r), "site_class": r.site_class,
-             "district": r.district, "province": r.province, "corridor": r.corridor, "watch": r.watch}
+             "district": r.district, "province": r.province, "corridor": r.corridor, "watch": r.watch,
+             "site_classes": list(r.site_classes)}
             for r in index.all()]
 
 
@@ -362,6 +363,27 @@ def _resolve(c: _Ctx, a: Analysis) -> dict[tuple[str, str], dict]:
     return result
 
 
+def _merge_claims(c: _Ctx, a: Analysis, res: dict) -> None:
+    """Two claims with the same predicate, value, subject entity and object entity are one claim.
+
+    A title and a body often state the same fact. The merged claim keeps the evidence of both.
+    """
+    merged: list[dict] = []
+    keys: dict[tuple, dict] = {}
+    for claim in a.claims:
+        subject = _entity_for(res, claim["subject"], ("project", "site", "organisation")) or normalise_name(claim["subject"])
+        obj = _entity_for(res, claim.get("object") or "", ("site", "project", "organisation")) or \
+            normalise_name(claim.get("object") or "")
+        key = (claim["predicate"], claim.get("normalised"), subject, obj)
+        if key in keys:
+            first = keys[key]
+            first["spans"] = first["spans"] + [s for s in claim["spans"] if s not in first["spans"]]
+            continue
+        keys[key] = claim
+        merged.append(claim)
+    a.claims = merged
+
+
 def _entity_for(res: dict, text: str, types: tuple[str, ...]) -> str | None:
     norm = normalise_name(text)
     for t in types:
@@ -584,6 +606,9 @@ def _plan(c: _Ctx, a: Analysis, res: dict) -> None:
         pred = claim["predicate"]
         if pred == "site_status":
             site_id = _entity_for(res, claim["subject"], ("site",))
+            if site_id is None:
+                exact = c.index.exact(claim["subject"], ["site"])
+                site_id = exact[0].id if len(exact) == 1 else None
             rec = c.index.get(site_id)
             if not rec or rec.watch == "none":
                 continue
@@ -837,6 +862,7 @@ def analyse(doc: Doc, index: MemoryIndex, runner: AgentRunner, id_factory: Calla
     a.status = "in_scope"
     _extract(c, a, entities)
     res = _resolve(c, a)
+    _merge_claims(c, a, res)
     _lifecycle(c, a, res)
     _summarise(c, a)
     _plan(c, a, res)

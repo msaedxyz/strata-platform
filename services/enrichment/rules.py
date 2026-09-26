@@ -30,8 +30,10 @@ def weaker(a: str, b: str | None) -> str:
 
 
 def _keyword_pattern(word: str) -> re.Pattern:
+    """A brief keyword as a pattern: a space and a hyphen are equal, and a plural ending is allowed."""
     flags = 0 if (word.isupper() and len(word) <= 6) or re.fullmatch(r"[A-Z][A-Z0-9 -]+", word) else re.IGNORECASE
-    return re.compile(r"(?<![\w-])" + re.escape(word) + r"(?![\w-])", flags)
+    body = r"[ -]".join(re.escape(part) for part in re.split(r"[ -]", word))
+    return re.compile(r"(?<![\w-])" + body + r"(?:s|es)?(?![\w-])", flags)
 
 
 @dataclass
@@ -191,7 +193,7 @@ def _surface_pattern(surface: str) -> re.Pattern:
     return re.compile(r"(?<![\w-])" + re.escape(surface) + r"(?![\w-])", flags)
 
 
-def gazetteer_mentions(text: str, entities: list[dict]) -> list[dict]:
+def gazetteer_mentions(text: str, entities: list[dict], prefer: bool = True) -> list[dict]:
     """Mentions of known entities: {text, type, start, end, entity_id}. The longest match wins."""
     items: list[tuple[str, dict]] = []
     for e in entities:
@@ -216,7 +218,26 @@ def gazetteer_mentions(text: str, entities: list[dict]) -> list[dict]:
         out.append({"text": text[start:end], "type": e["type"], "start": start, "end": end, "entity_id": e["entity_id"]})
         taken_until = end
         current = (start, end)
-    return out
+    return _prefer_names(out, entities) if prefer else out
+
+
+def _prefer_names(mentions: list[dict], entities: list[dict]) -> list[dict]:
+    """One span can match entities of two types (a site alias that is also an organisation name).
+
+    When the span is the name (not only an alias) of exactly one of them, only that entity keeps the mention.
+    """
+    by_id = {e["entity_id"]: e for e in entities}
+    spans: dict[tuple[int, int], list[dict]] = {}
+    for m in mentions:
+        spans.setdefault((m["start"], m["end"]), []).append(m)
+    out = []
+    for group in spans.values():
+        if len(group) > 1:
+            named = [m for m in group if normalise_name(by_id[m["entity_id"]]["surfaces"][0]) == normalise_name(m["text"])]
+            if len(named) == 1:
+                group = named
+        out.extend(group)
+    return sorted(out, key=lambda m: (m["start"], m["type"]))
 
 
 # ---------------------------------------------------------------------------
@@ -233,20 +254,37 @@ def classify(text: str, ctx: dict) -> dict:
             return {"in_scope": False, "reason": f"exclusion in title: {term}", "sectors": [], "geographies": [],
                     "themes": [], "activity_types": [], "deal_types": [], "evidence": []}
     sents = sentences(text)
+    cfg = config.rules().get("classifier") or {}
+    event_themes = set(cfg.get("event_themes") or [])
     themes: dict[str, Span] = {}
-    acts: list[str] = []
+    act_themes: dict[str, str] = {}
     for s in sents:
+        planned = is_future(s.quote)
         for theme, act, p in c.keywords:
-            if p.search(s.quote):
+            if p.search(s.quote) and not (planned and theme in event_themes):
                 themes.setdefault(theme, s)
-                if act not in acts:
-                    acts.append(act)
+                act_themes.setdefault(act, theme)
         for theme, p in c.synonyms:
-            if p.search(s.quote):
+            if p.search(s.quote) and not (planned and theme in event_themes):
                 themes.setdefault(theme, s)
     entities = ctx.get("_entities") or []
     mentions = gazetteer_mentions(text, entities)
     by_id = {e["entity_id"]: e for e in entities}
+    site_sectors = {c.site_class_sectors.get((by_id.get(m["entity_id"]) or {}).get("site_class") or "")
+                    for m in mentions if m["type"] == "site"}
+    for theme, others in (cfg.get("theme_suppressed_by_theme") or {}).items():
+        if theme in themes and any(o in themes for o in others):
+            del themes[theme]
+    site_sectors.discard(None)
+    for theme, blocked in (cfg.get("theme_suppressed_by_sector") or {}).items():
+        other = site_sectors | {x for t in themes if t != theme for x in c.theme_sectors.get(t, [])}
+        if theme in themes and other & set(blocked):
+            del themes[theme]
+    for theme, needed in (cfg.get("theme_requires_sector") or {}).items():
+        other = site_sectors | {x for t in themes if t != theme for x in c.theme_sectors.get(t, [])}
+        if theme in themes and site_sectors and not other & set(needed):
+            del themes[theme]
+    acts = [a for a, t in act_themes.items() if t in themes]
     sectors: list[str] = []
     geos: list[str] = []
     for theme in themes:
@@ -262,9 +300,17 @@ def classify(text: str, ctx: dict) -> dict:
             for code in (e.get("district"), e.get("province"), e.get("corridor")):
                 if code and code not in geos:
                     geos.append(code)
+        elif e.get("type") == "organisation":
+            # An organisation gives the sectors of the sites that it operates.
+            for site_class in e.get("site_classes") or []:
+                sector = c.site_class_sectors.get(site_class or "")
+                if sector and sector not in sectors:
+                    sectors.append(sector)
+    short = len(text) <= int(cfg.get("short_text_chars", 0))
+    min_hits = 1 if short else int(config.get("sector_cue_min_hits", 2))
     for sector, pats in c.sector_cues.items():
         hits = sum(len(p.findall(text)) for p in pats)
-        if hits >= int(config.get("sector_cue_min_hits", 2)) and sector not in sectors:
+        if hits >= min_hits and sector not in sectors:
             sectors.append(sector)
     for code, p in c.geography:
         if p.search(text) and code not in geos:
@@ -281,13 +327,20 @@ def classify(text: str, ctx: dict) -> dict:
         if p.search(text) and code not in deal_types:
             deal_types.append(code)
     watched = [m for m in mentions if m["type"] in ("site", "organisation")]
-    in_scope = bool(themes or (watched and sectors)) and bool(watched or geos) and bool(sectors or themes)
+    targeted = ctx.get("source_type") in (cfg.get("targeted_source_types") or [])
+    in_scope = bool(sectors or themes) and bool(watched or geos or targeted)
     evidence: list[Span] = []
     for s in themes.values():
         if s not in evidence:
             evidence.append(s)
     if not evidence and watched:
         s = next((x for x in sents if x.start <= watched[0]["start"] < x.end), None)
+        if s:
+            evidence.append(s)
+    if not evidence:
+        # The first sentence with a sector cue supports a scope decision from the sector alone.
+        cue_pats = [p for sector in sectors for p in c.sector_cues.get(sector, [])]
+        s = next((x for x in sents if any(p.search(x.quote) for p in cue_pats)), None)
         if s:
             evidence.append(s)
     evidence = [clip(text, s, s.start, s.end) for s in evidence[:6]]
@@ -311,7 +364,8 @@ def classify(text: str, ctx: dict) -> dict:
 
 
 def _pattern_mentions(text: str, patterns: list[re.Pattern], stopwords: set[str], kind: str,
-                      taken: list[tuple[int, int]], reject: list[str] | None = None) -> list[dict]:
+                      taken: list[tuple[int, int]], reject: list[str] | None = None,
+                      followers: list[str] | None = None) -> list[dict]:
     out = []
     for p in patterns:
         for m in p.finditer(text):
@@ -324,12 +378,14 @@ def _pattern_mentions(text: str, patterns: list[re.Pattern], stopwords: set[str]
             phrase = " ".join(words)
             if not phrase:
                 continue
-            name_words = [w for w in words[:-1] if w[:1].isupper() or re.fullmatch(r"S\d", w)]
+            name_words = [w for w in words[:-1] if (w[:1].isupper() or re.fullmatch(r"S\d", w)) and w not in stopwords]
             if kind == "project" and not name_words:
                 continue
             if kind == "organisation" and (len(words) < 2 or not name_words):
                 continue
             if reject and any(phrase.endswith(r) for r in reject):
+                continue
+            if followers and text[start + len(phrase):].lstrip(" ").split(" ", 1)[0].rstrip(".,;:") in followers:
                 continue
             if "\n" in phrase:
                 continue
@@ -350,7 +406,7 @@ def extract_mentions(text: str, ctx: dict) -> list[dict]:
     taken = [(m["start"], m["end"]) for m in known]
     projects = _pattern_mentions(text, c.project_patterns, set(r["project_stopwords"]), "project", taken)
     orgs = _pattern_mentions(text, c.org_patterns, set(r["organisation_stopwords"]), "organisation", taken,
-                             r.get("organisation_reject_heads"))
+                             r.get("organisation_reject_heads"), r.get("organisation_reject_followers"))
     known_projects = [m for m in known if m["type"] == "project"]
     out = [{k: m[k] for k in ("text", "type", "start", "end")} for m in known]
     for m in projects:
@@ -385,7 +441,7 @@ def _claim(subject: dict | None, subject_type: str, predicate: str, value_text: 
     }
 
 
-def extract_claims(text: str, mentions: list[dict], ctx: dict) -> list[dict]:
+def extract_claims(text: str, mentions: list[dict], ctx: dict, alt_sites: list[dict] | None = None) -> list[dict]:
     r = config.rules()["claims"]
     c = compiled()
     floor = document_floor(text, ctx.get("title"))
@@ -401,12 +457,26 @@ def extract_claims(text: str, mentions: list[dict], ctx: dict) -> list[dict]:
         def subj(types: tuple[str, ...], s: Span = sent) -> dict | None:
             return _nearest(mentions, types, s, s.start) or (main if main and main["type"] in types else None)
 
+        def by_noun(types: tuple[str, ...], q: str = q) -> tuple[str, ...]:
+            """The sentence noun ("the mine", "the project") puts its entity type first."""
+            for kind, pats in (r.get("subject_nouns") or {}).items():
+                if kind in types and any(re.search(p, q, re.IGNORECASE) for p in pats):
+                    return (kind, *[t for t in types if t != kind])
+            return types
+
+        in_sentence = [m for m in mentions if sent.start <= m["start"] < sent.end]
+        site_spans = {(m["start"], m["end"]) for m in in_sentence if m["type"] == "site"}
+        other_project = any(m["type"] == "project" and (m["start"], m["end"]) not in site_spans for m in in_sentence)
         # Site status.
         for status, p in c.status_cues:
             m = p.search(q)
             if m and not is_future(q, m.start(), m.end()):
-                claims.append(_claim(_nearest(mentions, ("site",), sent, sent.start), "site", "site_status",
-                                     m.group(0), status, cert, span))
+                if status in (config.get("site_status_project_statuses") or []) and other_project:
+                    break
+                # A site that shares its name with its operator ("Ndola Lime") is still the subject of a status.
+                site = _nearest(mentions, ("site",), sent, sent.start) or \
+                    _nearest(alt_sites or [], ("site",), sent, sent.start)
+                claims.append(_claim(site, "site", "site_status", m.group(0), status, cert, span))
                 break
         # Money.
         for s, e, normal in parse_money(q):
@@ -425,39 +495,57 @@ def extract_claims(text: str, mentions: list[dict], ctx: dict) -> list[dict]:
                                      normal, cert, span))
         # Numbers.
         for predicate, pattern in r["number_cues"].items():
+            if predicate == "employees" and any(re.search(p, q, re.IGNORECASE) for p in r.get("employees_exclude") or []):
+                continue
             for m in re.finditer(pattern, q, re.IGNORECASE):
                 value_text = m.group("value")
                 normal = normalise_value("number", value_text)
                 if normal is None:
                     continue
-                subject_types = ("project", "site") if predicate != "employees" else ("site", "project", "organisation")
-                claims.append(_claim(subj(subject_types), "site", predicate, value_text, normal, cert, span))
+                subject_types = ("project", "site", "organisation") if predicate != "employees" \
+                    else ("site", "project", "organisation")
+                claims.append(_claim(subj(by_noun(subject_types)), "site", predicate, value_text, normal, cert, span))
         # Quantities.
-        for predicate, pattern in r["quantity_cues"].items():
-            for m in re.finditer(pattern, q, re.IGNORECASE):
-                value_text = m.group(0)
-                found = parse_quantities(value_text)
-                if len(found) != 1:
-                    continue
-                claims.append(_claim(subj(("project", "site")), "site", predicate, value_text, found[0][2], cert, span))
+        if any(re.search(p, q, re.IGNORECASE) for p in r.get("production_cues") or []):
+            for predicate, pattern in r["quantity_cues"].items():
+                for m in re.finditer(pattern, q, re.IGNORECASE):
+                    value_text = m.group(0)
+                    found = parse_quantities(value_text)
+                    if len(found) != 1:
+                        continue
+                    claims.append(_claim(subj(by_noun(("project", "site"))), "site", predicate, value_text,
+                                         found[0][2], cert, span))
         # Dates.
         dates = parse_dates(q)
         if dates:
             for predicate, pats in r["date_cues"].items():
-                if any(re.search(p, q, re.IGNORECASE) for p in pats):
-                    s, e, normal = dates[-1] if predicate == "tender_deadline" else dates[0]
-                    subject_types = ("site", "project", "organisation") if predicate == "tender_deadline" \
-                        else ("project", "site")
-                    claims.append(_claim(subj(subject_types), "opportunity" if predicate == "tender_deadline"
-                                         else "project", predicate, q[s:e], normal, cert, span))
-        # Ownership share.
+                cue = next((mm for mm in (re.search(p, q, re.IGNORECASE) for p in pats) if mm), None)
+                if cue is None:
+                    continue
+                if predicate == "tender_deadline":
+                    if not any(re.search(p, q, re.IGNORECASE) for p in r.get("tender_deadline_context") or []):
+                        continue
+                    s, e, normal = dates[-1]
+                    subject = subj(("project",)) or subj(("site", "organisation"))
+                    claims.append(_claim(subject, "opportunity", predicate, q[s:e], normal, cert, span))
+                else:
+                    after = [d for d in dates if d[0] >= cue.start()]
+                    s, e, normal = (after or dates)[0]
+                    claims.append(_claim(subj(("project", "site")), "project", predicate, q[s:e], normal, cert, span))
+        # Ownership shares: each percentage belongs to the organisation before it. The asset follows the first one.
         percents = parse_percents(q)
         if percents and any(re.search(p, q, re.IGNORECASE) for p in r["percent_cues"]["ownership_percent"]):
-            owner = _nearest(mentions, ("organisation",), sent, sent.start)
-            asset = next((m for m in mentions if m["type"] == "site" and sent.start <= m["start"] < sent.end), None)
-            s, e, normal = percents[0]
-            claim = _claim(owner, "organisation", "ownership_percent", q[s:e], normal, cert, span, asset)
-            claims.append(claim)
+            first_end = sent.start + percents[0][1]
+            asset = next((m for m in in_sentence if m["start"] >= first_end and m["type"] in ("site", "organisation",
+                                                                                                "project")), None)
+            previous_end = sent.start
+            for s, e, normal in percents:
+                owners = [m for m in in_sentence if m["type"] == "organisation" and previous_end <= m["start"] < sent.start + s
+                          and (asset is None or m["start"] != asset["start"])]
+                owner = owners[-1] if owners else None
+                if owner is not None:
+                    claims.append(_claim(owner, "organisation", "ownership_percent", q[s:e], normal, cert, span, asset))
+                previous_end = sent.start + e
         # Licence number.
         m = re.search(r["licence_number"], q)
         if m:
@@ -518,7 +606,8 @@ def _resolve_conflicts(text: str, claims: list[dict]) -> list[dict]:
 
 def extract(text: str, ctx: dict) -> dict:
     mentions = extract_mentions(text, ctx)
-    claims = extract_claims(text, mentions, ctx)
+    alt_sites = [m for m in gazetteer_mentions(text, ctx.get("_entities") or [], prefer=False) if m["type"] == "site"]
+    claims = extract_claims(text, mentions, ctx, alt_sites)
     return {"mentions": mentions, "claims": claims}
 
 

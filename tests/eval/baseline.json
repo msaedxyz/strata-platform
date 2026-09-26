@@ -1,0 +1,14 @@
+{
+  "deterministic": {
+    "metrics": {
+      "canonical_facts_verified": 1.0,
+      "extraction_precision": 0.9524,
+      "extraction_recall": 0.9524,
+      "resolution_precision": 0.9797,
+      "classification_macro_f1": 0.9845,
+      "lifecycle_stage_accuracy": 1.0
+    },
+    "prompt_version": "rules-v1",
+    "model_id": "deterministic-v1"
+  }
+}

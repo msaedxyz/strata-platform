@@ -62,7 +62,8 @@ _NUMBER = re.compile(
 
 _QUANTITY = re.compile(
     r"(?P<num>\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)(?:\s(?P<mult>million|thousand)\b)?\s?"
-    r"(?:tonnes|tons|t)\b(?: of [a-z]+)?(?P<year>\s(?:a|per|each) year\b|\sper annum\b|/y\b|\s?tpa\b)?",
+    r"(?:tonnes|tons|t)\b(?: of [a-z]+(?: (?!a\b|per\b|each\b)[a-z]+)?)?"
+    r"(?P<year>\s(?:a|per|each) year\b|\sper annum\b|/y\b|\s?tpa\b)?",
     re.IGNORECASE,
 )
 _QUANTITY_NORMAL = re.compile(r"^(?P<num>\d+(?:\.\d+)?) (?P<unit>t|t/y)$")
