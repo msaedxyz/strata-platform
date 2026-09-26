@@ -1,0 +1,35 @@
+# Settings for the end to end tests (make e2e and the CI job "e2e"). Use this file on top of docker-compose.yml:
+#   docker compose -f docker-compose.yml -f tests/e2e/compose.e2e.yml --profile test up -d
+# 1. The agents use the deterministic backend. Each run gives the same result.
+# 2. The Google News collector reads the search feeds of the fixture server.
+# 3. The Python services reach only the services of the stack. A request to a different host goes to a
+#    closed port and fails at once. The real sources of brief v1 fail fast and do not fill the queue.
+# 4. The fixture server publishes its port on 127.0.0.1. The tests read its request log.
+# Relative paths start at the directory of docker-compose.yml (the project directory).
+x-e2e-env: &e2e-env
+  STRATA_AGENT_BACKEND: deterministic
+  STRATA_GOOGLE_NEWS_BASE_URL: http://fixtures:8765/rss/search
+  HTTP_PROXY: http://127.0.0.1:9
+  HTTPS_PROXY: http://127.0.0.1:9
+  NO_PROXY: fixtures,keycloak,mail,objectstore,db,api,web,localhost,127.0.0.1
+  http_proxy: http://127.0.0.1:9
+  https_proxy: http://127.0.0.1:9
+  no_proxy: fixtures,keycloak,mail,objectstore,db,api,web,localhost,127.0.0.1
+
+services:
+  migrate:
+    environment: *e2e-env
+  api:
+    environment: *e2e-env
+  worker:
+    environment: *e2e-env
+  fixtures:
+    # The fixture server serves the fixture files of the working copy, so a new fixture needs no image build.
+    volumes: ["./tests/fixtures:/app/tests/fixtures:ro"]
+    ports: ["127.0.0.1:8765:8765"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8765/robots.txt')"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
