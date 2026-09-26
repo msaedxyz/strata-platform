@@ -33,7 +33,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-ocr-fallback = ["rapidocr-onnxruntime>=1.3"]
+# RapidOCR runs when the tesseract binary is not installed. The headless OpenCV build needs no X11
+# libraries, so it works in the slim container image. The override below removes the GUI build.
+ocr-fallback = ["rapidocr-onnxruntime>=1.3", "opencv-python-headless>=4.5"]
 
 [dependency-groups]
 dev = [
@@ -45,6 +47,9 @@ dev = [
   "reportlab>=4.2",
   "pillow>=10.4",
 ]
+
+[tool.uv]
+override-dependencies = ["opencv-python; sys_platform == 'never'"]
 
 [build-system]
 requires = ["hatchling"]
