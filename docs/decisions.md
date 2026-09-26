@@ -68,3 +68,4 @@ Record each decision that changes this pack or that chooses between options.
 | 2026-09-26 | The province parents of Chirundu and Shibuyunji districts need confirmation | Research did not confirm them | geographies.yaml |
 | 2026-09-26 | external_ids are empty for all organisations | Research found no PACRA, LEI, ISIN or SEDAR numbers | v1.yaml |
 | 2026-09-26 | The two proposed sources are Copperbelt Katanga Mining and the Logistics Cluster Zambia fuel assessment | They cover the DRC side of the corridor and fuel supply infrastructure | 04, v1.yaml |
+| 2026-09-26 | Claude Sonnet 5 runs with no temperature parameter and with thinking disabled. Claude Haiku 4.5 runs with temperature 0 | Sonnet 5 rejects the temperature parameter. 05 guardrail 7 asks for the lowest randomness that the model allows | 05, config/models.yaml |
