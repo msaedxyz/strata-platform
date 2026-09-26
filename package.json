@@ -8,7 +8,13 @@
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "api-client": "pnpm --filter @strata/api-client generate"
+    "api-client": "pnpm --filter @strata/api-client generate",
+    "tokens:sync": "pnpm --filter @strata/design-system tokens:sync",
+    "tokens:build": "pnpm --filter @strata/design-system tokens:build",
+    "storybook": "pnpm --filter @strata/design-system storybook",
+    "dev:web": "pnpm --filter @strata/web dev",
+    "test:e2e": "pnpm --filter @strata/web test:e2e",
+    "test:visual": "pnpm --filter @strata/design-system test:visual"
   },
   "devDependencies": {
     "turbo": "^2.5.0",

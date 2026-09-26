@@ -1,0 +1,43 @@
+{
+  "name": "@strata/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The Strata web app: the Infora shell with the Strata panels.",
+  "scripts": {
+    "dev": "pnpm --filter @strata/design-system tokens:build && vite",
+    "build": "tsc --noEmit -p . && vite build && node scripts/check-no-mock-auth.mjs",
+    "preview": "vite preview",
+    "lint": "eslint . && stylelint \"src/**/*.css\"",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@strata/api-client": "workspace:*",
+    "@strata/design-system": "workspace:*",
+    "@strata/panel-framework": "workspace:*",
+    "oidc-client-ts": "^3.5.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "1.56.1",
+    "@strata/eslint-plugin-strata": "workspace:*",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.11.0",
+    "jsdom": "^30.1.1",
+    "stylelint": "^17.15.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}
