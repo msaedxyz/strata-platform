@@ -173,3 +173,8 @@
 .sds-table__status {
   padding: var(--space-4);
 }
+
+.sds-table__spacer td {
+  padding: 0;
+  border: 0;
+}

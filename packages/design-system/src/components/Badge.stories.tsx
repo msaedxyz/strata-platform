@@ -28,6 +28,7 @@ export const Unconfirmed: Story = { render: () => <StatusBadge status="unconfirm
 export const Reported: Story = { render: () => <StatusBadge status="reported" /> };
 export const Confirmed: Story = { render: () => <StatusBadge status="confirmed" /> };
 export const Dismissed: Story = { render: () => <StatusBadge status="dismissed" /> };
+export const FalsePositive: Story = { render: () => <StatusBadge status="false_positive" /> };
 export const PendingApproval: Story = { render: () => <StatusBadge status="pending_approval" /> };
 export const AllStatuses: Story = {
   render: () => (
@@ -36,6 +37,7 @@ export const AllStatuses: Story = {
       <StatusBadge status="reported" />
       <StatusBadge status="confirmed" />
       <StatusBadge status="dismissed" />
+      <StatusBadge status="false_positive" />
       <StatusBadge status="pending_approval" />
     </div>
   ),

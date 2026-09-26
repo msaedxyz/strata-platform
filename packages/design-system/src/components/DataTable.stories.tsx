@@ -48,6 +48,18 @@ export const Comfortable: Story = { args: { defaultDensity: "comfortable" } };
 export const Sorted: Story = { args: { defaultSort: { columnId: "score", direction: "desc" } } };
 export const Filtered: Story = { args: { defaultShowFilters: true } };
 export const Selected: Story = { args: { selectedRowId: "2" } };
+
+const manyRows: Row[] = Array.from({ length: 500 }, (_, i) => ({
+  id: `v${i}`,
+  site: `Site ${i + 1}`,
+  siteClass: ["Mine", "Exploration", "Power", "Transport", "Farm"][i % 5]!,
+  province: ["North-Western", "Copperbelt", "Southern", "Central", "Eastern"][i % 5]!,
+  status: (["confirmed", "reported", "unconfirmed", "pending_approval", "dismissed"] as Status[])[i % 5]!,
+  score: (i * 37) % 100,
+}));
+
+/** 500 rows. Only the rows in view are in the document. */
+export const Virtualized: Story = { args: { rows: manyRows, virtualize: true } };
 export const Loading: Story = { args: { loading: true } };
 export const Empty: Story = { args: { rows: [] } };
 export const Error: Story = { args: { error: "The site list did not load.", onRetry: noop } };

@@ -34,5 +34,10 @@ export const appConfig = {
     /** The MapLibre style URL. Empty means the empty style with no tiles (docs/assumptions.md item 7). */
     styleUrl: env.VITE_MAP_STYLE_URL || "",
   },
+  format: {
+    /** Date and number formats. The time zone is the brief time zone (config/monitoring-brief/v1.yaml). */
+    locale: "en-GB",
+    timeZone: env.VITE_TIME_ZONE || "Africa/Lusaka",
+  },
   defaultWorkspace: "origination",
 } as const;

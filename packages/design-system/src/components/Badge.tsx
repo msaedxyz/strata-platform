@@ -19,8 +19,8 @@ export function Badge({ tone = "neutral", appearance = "outline", className, chi
   );
 }
 
-/** The status values from docs/06 (alerts) and docs/07 rule 3 (pending approval). */
-export type Status = "unconfirmed" | "reported" | "confirmed" | "dismissed" | "pending_approval";
+/** The status values from docs/06 (alerts, with the outcome false positive) and docs/07 rule 3 (pending approval). */
+export type Status = "unconfirmed" | "reported" | "confirmed" | "dismissed" | "false_positive" | "pending_approval";
 
 /**
  * One visual style per status. Unconfirmed and reported items share ONE style in every module (docs/07 rule 4).
@@ -31,6 +31,7 @@ export const STATUS_STYLE: Record<Status, { tone: BadgeTone; label: string }> = 
   reported: { tone: "unverified", label: "Reported" },
   confirmed: { tone: "positive", label: "Confirmed" },
   dismissed: { tone: "neutral", label: "Dismissed" },
+  false_positive: { tone: "negative", label: "False positive" },
   pending_approval: { tone: "warning", label: "Pending approval" },
 };
 

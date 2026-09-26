@@ -1,5 +1,5 @@
 // The shell: session start and end, live connection, role-aware controls.
-import { expect, openWorkspace, panel, test } from "./fixtures";
+import { expect, openWorkspace, panel, test } from "./harness";
 
 test.describe("session", () => {
   test("after login the app calls POST /api/session/login and GET /api/me", async ({ page, api }) => {
@@ -49,7 +49,7 @@ test.describe("role-aware controls: viewer", () => {
     await page.keyboard.press("Escape");
     await page.keyboard.press("/");
     await page.keyboard.type("brief editor");
-    await expect(page.getByRole("option")).toHaveCount(0);
+    await expect(page.getByRole("dialog", { name: "Command input" }).getByRole("option")).toHaveCount(0);
   });
 });
 
