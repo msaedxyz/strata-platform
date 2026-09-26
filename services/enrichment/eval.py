@@ -309,12 +309,25 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--backend", default="deterministic")
     parser.add_argument("--update-baseline", action="store_true")
     parser.add_argument("--no-fail", action="store_true")
+    parser.add_argument("--gold-dir", default=None, help="another set, for example tests/eval/holdout")
+    parser.add_argument("--report-only", action="store_true",
+                        help="write the result without the targets and the baseline (for the held-out set)")
     args = parser.parse_args(argv)
     cfg = config.eval_targets()
-    result = evaluate(args.backend)
+    gold_dir = _path(args.gold_dir) if args.gold_dir else None
+    result = evaluate(args.backend, gold_dir)
     results_path = _path(cfg["results"])
+    if gold_dir is not None:
+        results_path = results_path.with_name(f"{gold_dir.name}-latest.json")
     if result["backend"] != "deterministic":
-        results_path = results_path.with_name(f"latest-{result['backend']}.json")
+        results_path = results_path.with_name(results_path.stem + f"-{result['backend']}.json")
+    if args.report_only:
+        result["failures"] = []
+        results_path.parent.mkdir(parents=True, exist_ok=True)
+        results_path.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        print(json.dumps({"backend": result["backend"], "set": str(gold_dir or cfg["gold_dir"]),
+                          "metrics": result["metrics"], "counts": result["extra"]["counts"]}, indent=2))
+        return 0
     results_path.parent.mkdir(parents=True, exist_ok=True)
     baseline_path = _path(cfg["baseline"])
     baseline = json.loads(baseline_path.read_text()) if baseline_path.exists() else {}
