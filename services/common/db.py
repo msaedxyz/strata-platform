@@ -28,6 +28,9 @@ def get_pool() -> ConnectionPool:
             max_size=10,
             kwargs={"row_factory": dict_row},
             configure=_configure,
+            # Check a connection before a request gets it. After a database restart the pool drops the old
+            # connections at once, and no request fails with "terminating connection due to administrator command".
+            check=ConnectionPool.check_connection,
             open=True,
         )
     return _pool

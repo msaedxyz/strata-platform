@@ -88,7 +88,10 @@ e2e-python: ## Run the Python end to end suite on the running e2e stack
 
 e2e-browser: ## Run the browser end to end suite on the running e2e stack
 	pnpm --dir tests/e2e/browser install --ignore-workspace --frozen-lockfile
-	$(E2E_ENV) pnpm --dir tests/e2e/browser test
+	@st=0; pf=0; \
+	$(E2E_ENV) E2E_BROWSER_REPORT=browser pnpm --dir tests/e2e/browser exec playwright test --project=stack || st=$$?; \
+	$(E2E_ENV) E2E_BROWSER_REPORT=browser-perf pnpm --dir tests/e2e/browser exec playwright test --project=perf || pf=$$?; \
+	echo "browser: scenarios exit $$st, performance exit $$pf"; test $$st -eq 0 -a $$pf -eq 0
 
 e2e-logs: ## Write the logs of the e2e stack to test-results/e2e/compose.log
 	@mkdir -p $(E2E_RESULTS)

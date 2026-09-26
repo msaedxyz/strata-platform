@@ -94,6 +94,14 @@ services:
     command: ["python", "-m", "services.worker"]
     depends_on:
       migrate: {condition: service_completed_successfully}
+    # Healthy when a worker sent a heartbeat to the job queue in the last minute. After a database restart the worker
+    # stops and the restart policy starts it again.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,psycopg;c=psycopg.connect(os.environ['STRATA_DATABASE_URL'],connect_timeout=5);n=c.execute(\"SELECT count(*) FROM public.procrastinate_workers WHERE last_heartbeat > now() - interval '60 seconds'\").fetchone()[0];raise SystemExit(0 if n else 1)"]
+      interval: 10s
+      timeout: 10s
+      retries: 6
+      start_period: 20s
 
   web:
     image: strata/web:dev
@@ -103,6 +111,11 @@ services:
     ports: ["127.0.0.1:8088:8088"]
     depends_on:
       api: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8088/"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
     restart: unless-stopped
 
   fixtures:

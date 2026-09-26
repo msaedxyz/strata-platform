@@ -27,7 +27,6 @@ const WORKSPACE_MODULES: Record<string, string[]> = {
   review: ["approval-queue", "quarantine", "alert-telemetry"],
 };
 
-test.describe.configure({ mode: "serial" });
 
 function seed(signals: number, deals: number, delayMs = 0): string {
   const script = readFileSync(join(REPO_ROOT, "tests", "e2e", "seed_volume.py"));

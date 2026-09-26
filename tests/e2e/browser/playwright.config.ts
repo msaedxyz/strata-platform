@@ -10,6 +10,8 @@ if (!process.env.PLAYWRIGHT_BROWSERS_PATH && existsSync("/opt/pw-browsers")) {
 
 const WEB_URL = process.env.E2E_WEB_URL ?? "http://localhost:8088";
 const OUT = process.env.E2E_RESULTS_DIR ?? "../../../test-results/e2e";
+// The Makefile runs the project "stack", then the project "perf", each with its own report name.
+const REPORT = process.env.E2E_BROWSER_REPORT ?? "browser";
 
 export default defineConfig({
   testDir: "tests",
@@ -22,8 +24,8 @@ export default defineConfig({
   expect: { timeout: 20_000 },
   reporter: [
     ["list"],
-    ["junit", { outputFile: `${OUT}/browser.xml` }],
-    ["json", { outputFile: `${OUT}/browser.json` }],
+    ["junit", { outputFile: `${OUT}/${REPORT}.xml` }],
+    ["json", { outputFile: `${OUT}/${REPORT}.json` }],
   ],
   use: {
     ...devices["Desktop Chrome"],
@@ -36,7 +38,8 @@ export default defineConfig({
   },
   projects: [
     { name: "stack", testIgnore: /perf\.spec\.ts/ },
-    // docs/07 criteria 6 and 7 seed 10 000 signals and 500 deals. They run last, after the scenarios.
-    { name: "perf", testMatch: /perf\.spec\.ts/, dependencies: ["stack"] },
+    // docs/07 criteria 6 and 7 seed 10 000 signals and 500 deals. Run them last, after the scenarios
+    // (make e2e-browser runs this project in a second command, also when a scenario fails).
+    { name: "perf", testMatch: /perf\.spec\.ts/ },
   ],
 });
