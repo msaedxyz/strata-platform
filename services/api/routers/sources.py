@@ -20,6 +20,7 @@ from services.collectors.schedule import next_fire
 from services.collectors.text import collectors_config
 from services.common.db import connection
 from services.common.storage import get_storage
+from services.governance.bootstrap import bootstrap_brief
 from services.governance.event_store import append_event
 from services.governance.source_proposals import ProposalError, ProposalForbidden, approve_source_proposal
 
@@ -283,6 +284,9 @@ def create_brief(body: NewBrief, user: User = Depends(require_admin)) -> dict:
         if body.activate:
             brief_mod.activate(conn, row["id"], actor_type="human", actor_id=user.id)
         conn.commit()
+        if body.activate:
+            # New watched sites and organisations get their entities at once (M7 bug B5).
+            bootstrap_brief(conn)
         active = brief_mod.active_brief(conn)
     return {**_brief_summary(row, active["id"] if active else None), "created": created}
 
@@ -295,6 +299,8 @@ def activate_brief(version: int, user: User = Depends(require_admin)) -> dict:
             raise HTTPException(404, "brief version not found")
         brief_mod.activate(conn, row["id"], actor_type="human", actor_id=user.id)
         conn.commit()
+        # New watched sites and organisations get their entities at once (M7 bug B5).
+        bootstrap_brief(conn)
     return {**_brief_summary(row, row["id"])}
 
 

@@ -60,8 +60,30 @@ def _finish(conn: psycopg.Connection, run_id: str, status: str, **fields) -> Non
     )
 
 
+# One lock serialises enrichment runs across all workers. Two runs at the same time could enrich one
+# source twice, or create two entities for one company (entity resolution reads, then writes).
+ENRICH_LOCK_KEY = 0x5354524154410001  # "STRATA" + 1
+
+
 def enrich(conn: psycopg.Connection, source_id: str, *, backend: Backend | None = None, force: bool = False) -> dict:
-    """Enrich one source. Commits. Never raises for a failure inside the agents."""
+    """Enrich one source. Commits. Never raises for a failure inside the agents.
+
+    The run holds a session advisory lock, so only one enrichment runs at a time. The check for a
+    finished run happens after the lock is held.
+    """
+    conn.commit()
+    conn.execute("SELECT pg_advisory_lock(%s)", (ENRICH_LOCK_KEY,))
+    try:
+        return _enrich_locked(conn, source_id, backend=backend, force=force)
+    finally:
+        try:
+            conn.rollback()
+        finally:
+            conn.execute("SELECT pg_advisory_unlock(%s)", (ENRICH_LOCK_KEY,))
+            conn.commit()
+
+
+def _enrich_locked(conn: psycopg.Connection, source_id: str, *, backend: Backend | None, force: bool) -> dict:
     source = conn.execute("SELECT * FROM source WHERE id = %s", (source_id,)).fetchone()
     if source is None:
         return {"source_id": source_id, "status": "not_found"}

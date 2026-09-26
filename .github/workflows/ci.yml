@@ -174,7 +174,6 @@ jobs:
           pnpm --dir tests/e2e/browser install --ignore-workspace --frozen-lockfile
           pnpm --dir tests/e2e/browser exec playwright install --with-deps chromium
       - name: Start-up log check (no ERROR or Traceback outside the known benign lines)
-        continue-on-error: true
         run: E2E_COMPOSE="docker compose -p strata-e2e -f docker-compose.yml -f tests/e2e/compose.e2e.yml --profile test" uv run python tests/e2e/check_logs.py
       - name: Python end to end suite
         run: make e2e-python

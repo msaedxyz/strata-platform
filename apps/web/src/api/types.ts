@@ -47,6 +47,11 @@ export interface Taxonomy {
 }
 
 /** proj_signal */
+export interface SummarySentence {
+  text: string;
+  evidence_ids: string[];
+}
+
 export interface Signal {
   id: string;
   source_id: string;
@@ -65,7 +70,8 @@ export interface Signal {
   directions: string[];
   deal_types: string[];
   entity_ids: string[];
-  summary: string[] | string | null;
+  /** Summary sentences. Each sentence carries the evidence ids that support it (docs/05 Summariser). */
+  summary: SummarySentence[] | null;
   certainty: Certainty | null;
   read_at_source: boolean;
   evidence_ids: string[];

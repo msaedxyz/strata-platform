@@ -3320,7 +3320,12 @@
     "kansanshi"
    ],
    "summary": [
-    "Kansanshi Mining Plc has filed an environmental impact statement for the expansion of Kansanshi mine with the Zambia Environmental Management Agency."
+    {
+     "text": "Kansanshi Mining Plc has filed an environmental impact statement for the expansion of Kansanshi mine with the Zambia Environmental Management Agency.",
+     "evidence_ids": [
+      "ev-sig-0"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": true,
@@ -3366,7 +3371,12 @@
     "mingomba"
    ],
    "summary": [
-    "KoBold Metals appointed a haulage contractor to move concentrate from Mingomba copper project to the Ndola smelter."
+    {
+     "text": "KoBold Metals appointed a haulage contractor to move concentrate from Mingomba copper project to the Ndola smelter.",
+     "evidence_ids": [
+      "ev-sig-1"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -3410,7 +3420,12 @@
     "chirundu_border"
    ],
    "summary": [
-    "The operator reached financial close on the loan facility for the Chirundu one-stop border post project."
+    {
+     "text": "The operator reached financial close on the loan facility for the Chirundu one-stop border post project.",
+     "evidence_ids": [
+      "ev-sig-2"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -3456,7 +3471,12 @@
     "mimbula"
    ],
    "summary": [
-    "Mimbula Minerals Limited signed an engineering, procurement and construction contract for the new processing plant at Mimbula copper mine."
+    {
+     "text": "Mimbula Minerals Limited signed an engineering, procurement and construction contract for the new processing plant at Mimbula copper mine.",
+     "evidence_ids": [
+      "ev-sig-3"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -3500,7 +3520,12 @@
     "kasenseli"
    ],
    "summary": [
-    "Kamushinshi Mineral Resources completed the definitive feasibility study for the new open pit at Kasenseli gold mine."
+    {
+     "text": "Kamushinshi Mineral Resources completed the definitive feasibility study for the new open pit at Kasenseli gold mine.",
+     "evidence_ids": [
+      "ev-sig-4"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -3544,7 +3569,12 @@
     "kafue_sugar"
    ],
    "summary": [
-    "Consolidated Farming Limited (Kafue Sugar) reported power supply interruptions that affected operations at Kafue Sugar estate."
+    {
+     "text": "Consolidated Farming Limited (Kafue Sugar) reported power supply interruptions that affected operations at Kafue Sugar estate.",
+     "evidence_ids": [
+      "ev-sig-5"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -3588,7 +3618,12 @@
     "chilanga_cement_chilanga"
    ],
    "summary": [
-    "Chilanga Cement PLC started a drilling programme on the licence area near Chilanga Cement Chilanga plant."
+    {
+     "text": "Chilanga Cement PLC started a drilling programme on the licence area near Chilanga Cement Chilanga plant.",
+     "evidence_ids": [
+      "ev-sig-6"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -3634,7 +3669,12 @@
     "tz_zm_products_pipeline"
    ],
    "summary": [
-    "TAZAMA Pipelines Limited invites prequalified contractors to bid for load and haul services at Tanzania-Zambia petroleum products pipeline (new)."
+    {
+     "text": "TAZAMA Pipelines Limited invites prequalified contractors to bid for load and haul services at Tanzania-Zambia petroleum products pipeline (new).",
+     "evidence_ids": [
+      "ev-sig-7"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -3680,7 +3720,12 @@
     "katima_mulilo_border"
    ],
    "summary": [
-    "The operator plans to add 40 haul trucks to the mining fleet at Katima Mulilo-Sesheke border post in 2027."
+    {
+     "text": "The operator plans to add 40 haul trucks to the mining fleet at Katima Mulilo-Sesheke border post in 2027.",
+     "evidence_ids": [
+      "ev-sig-8"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -3726,7 +3771,12 @@
     "kcm_konkola"
    ],
    "summary": [
-    "Konkola Copper Mines Plc calls for expressions of interest for the supply of diesel to KCM Konkola mine."
+    {
+     "text": "Konkola Copper Mines Plc calls for expressions of interest for the supply of diesel to KCM Konkola mine.",
+     "evidence_ids": [
+      "ev-sig-9"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -3770,7 +3820,12 @@
     "kasumbalesa_border"
    ],
    "summary": [
-    "The operator has filed an environmental impact statement for the expansion of Kasumbalesa border post with the Zambia Environmental Management Agency."
+    {
+     "text": "The operator has filed an environmental impact statement for the expansion of Kasumbalesa border post with the Zambia Environmental Management Agency.",
+     "evidence_ids": [
+      "ev-sig-10"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -3816,7 +3871,12 @@
     "enterprise"
    ],
    "summary": [
-    "First Quantum Minerals appointed a haulage contractor to move concentrate from Enterprise nickel mine to the Ndola smelter."
+    {
+     "text": "First Quantum Minerals appointed a haulage contractor to move concentrate from Enterprise nickel mine to the Ndola smelter.",
+     "evidence_ids": [
+      "ev-sig-11"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": true,
@@ -3860,7 +3920,12 @@
     "munali"
    ],
    "summary": [
-    "Mabiza Resources Ltd reached financial close on the loan facility for the Munali nickel mine project."
+    {
+     "text": "Mabiza Resources Ltd reached financial close on the loan facility for the Munali nickel mine project.",
+     "evidence_ids": [
+      "ev-sig-12"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -3906,7 +3971,12 @@
     "nakambala"
    ],
    "summary": [
-    "Zambia Sugar Plc signed an engineering, procurement and construction contract for the new processing plant at Zambia Sugar Nakambala estate."
+    {
+     "text": "Zambia Sugar Plc signed an engineering, procurement and construction contract for the new processing plant at Zambia Sugar Nakambala estate.",
+     "evidence_ids": [
+      "ev-sig-13"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -3950,7 +4020,12 @@
     "chilanga_cement_ndola"
    ],
    "summary": [
-    "Chilanga Cement PLC completed the definitive feasibility study for the new open pit at Chilanga Cement Ndola plant."
+    {
+     "text": "Chilanga Cement PLC completed the definitive feasibility study for the new open pit at Chilanga Cement Ndola plant.",
+     "evidence_ids": [
+      "ev-sig-14"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -3994,7 +4069,12 @@
     "ndola_fuel_terminal"
    ],
    "summary": [
-    "The operator reported power supply interruptions that affected operations at Ndola fuel terminal."
+    {
+     "text": "The operator reported power supply interruptions that affected operations at Ndola fuel terminal.",
+     "evidence_ids": [
+      "ev-sig-15"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4038,7 +4118,12 @@
     "mwami_border"
    ],
    "summary": [
-    "The operator started a drilling programme on the licence area near Mwami-Mchinji one-stop border post."
+    {
+     "text": "The operator started a drilling programme on the licence area near Mwami-Mchinji one-stop border post.",
+     "evidence_ids": [
+      "ev-sig-16"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4084,7 +4169,12 @@
     "kcm_nchanga"
    ],
    "summary": [
-    "Konkola Copper Mines Plc invites prequalified contractors to bid for load and haul services at KCM Nchanga mine and smelter."
+    {
+     "text": "Konkola Copper Mines Plc invites prequalified contractors to bid for load and haul services at KCM Nchanga mine and smelter.",
+     "evidence_ids": [
+      "ev-sig-17"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -4130,7 +4220,12 @@
     "maamba"
    ],
    "summary": [
-    "Maamba Energy Limited plans to add 40 haul trucks to the mining fleet at Maamba coal mine and power station in 2027."
+    {
+     "text": "Maamba Energy Limited plans to add 40 haul trucks to the mining fleet at Maamba coal mine and power station in 2027.",
+     "evidence_ids": [
+      "ev-sig-18"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4175,7 +4270,12 @@
     "lusaka_ndola_dual_carriageway"
    ],
    "summary": [
-    "Macro Ocean Investment Consortium calls for expressions of interest for the supply of diesel to Lusaka-Ndola dual carriageway (T2 and T3)."
+    {
+     "text": "Macro Ocean Investment Consortium calls for expressions of interest for the supply of diesel to Lusaka-Ndola dual carriageway (T2 and T3).",
+     "evidence_ids": [
+      "ev-sig-19"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -4219,7 +4319,12 @@
     "muntanga"
    ],
    "summary": [
-    "GoviEx Uranium Inc. has filed an environmental impact statement for the expansion of Muntanga uranium project with the Zambia Environmental Management Agency."
+    {
+     "text": "GoviEx Uranium Inc. has filed an environmental impact statement for the expansion of Muntanga uranium project with the Zambia Environmental Management Agency.",
+     "evidence_ids": [
+      "ev-sig-20"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4265,7 +4370,12 @@
     "chisamba_solar"
    ],
    "summary": [
-    "Kariba North Bank Extension Power Corporation Limited appointed a haulage contractor to move concentrate from Chisamba solar power plant to the Ndola smelter."
+    {
+     "text": "Kariba North Bank Extension Power Corporation Limited appointed a haulage contractor to move concentrate from Chisamba solar power plant to the Ndola smelter.",
+     "evidence_ids": [
+      "ev-sig-21"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4309,7 +4419,12 @@
     "ncz_kafue"
    ],
    "summary": [
-    "Nitrogen Chemicals of Zambia Limited reached financial close on the loan facility for the Nitrogen Chemicals of Zambia plant project."
+    {
+     "text": "Nitrogen Chemicals of Zambia Limited reached financial close on the loan facility for the Nitrogen Chemicals of Zambia plant project.",
+     "evidence_ids": [
+      "ev-sig-22"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": true,
@@ -4354,7 +4469,12 @@
     "lumwana_mfez"
    ],
    "summary": [
-    "The operator signed an engineering, procurement and construction contract for the new processing plant at Lumwana Multi-Facility Economic Zone."
+    {
+     "text": "The operator signed an engineering, procurement and construction contract for the new processing plant at Lumwana Multi-Facility Economic Zone.",
+     "evidence_ids": [
+      "ev-sig-23"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4398,7 +4518,12 @@
     "kazungula_border"
    ],
    "summary": [
-    "The operator completed the definitive feasibility study for the new open pit at Kazungula one-stop border post."
+    {
+     "text": "The operator completed the definitive feasibility study for the new open pit at Kazungula one-stop border post.",
+     "evidence_ids": [
+      "ev-sig-24"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -4442,7 +4567,12 @@
     "mopani_nkana"
    ],
    "summary": [
-    "Mopani Copper Mines Plc reported power supply interruptions that affected operations at Mopani Nkana mine."
+    {
+     "text": "Mopani Copper Mines Plc reported power supply interruptions that affected operations at Mopani Nkana mine.",
+     "evidence_ids": [
+      "ev-sig-25"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4486,7 +4616,12 @@
     "chambishi"
    ],
    "summary": [
-    "NFC Africa Mining Plc started a drilling programme on the licence area near Chambishi mine (NFC Africa Mining)."
+    {
+     "text": "NFC Africa Mining Plc started a drilling programme on the licence area near Chambishi mine (NFC Africa Mining).",
+     "evidence_ids": [
+      "ev-sig-26"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4532,7 +4667,12 @@
     "zambia_lobito_rail"
    ],
    "summary": [
-    "Africa Finance Corporation invites prequalified contractors to bid for load and haul services at Zambia-Lobito greenfield rail line."
+    {
+     "text": "Africa Finance Corporation invites prequalified contractors to bid for load and haul services at Zambia-Lobito greenfield rail line.",
+     "evidence_ids": [
+      "ev-sig-27"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -4578,7 +4718,12 @@
     "kagem"
    ],
    "summary": [
-    "Kagem Mining Limited plans to add 40 haul trucks to the mining fleet at Kagem emerald mine in 2027."
+    {
+     "text": "Kagem Mining Limited plans to add 40 haul trucks to the mining fleet at Kagem emerald mine in 2027.",
+     "evidence_ids": [
+      "ev-sig-28"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4623,7 +4768,12 @@
     "batoka_gorge"
    ],
    "summary": [
-    "Zambezi River Authority calls for expressions of interest for the supply of diesel to Batoka Gorge hydro-electric scheme."
+    {
+     "text": "Zambezi River Authority calls for expressions of interest for the supply of diesel to Batoka Gorge hydro-electric scheme.",
+     "evidence_ids": [
+      "ev-sig-29"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -4667,7 +4817,12 @@
     "nansanga_farm_block"
    ],
    "summary": [
-    "Ministry of Agriculture has filed an environmental impact statement for the expansion of Nansanga farm block with the Zambia Environmental Management Agency."
+    {
+     "text": "Ministry of Agriculture has filed an environmental impact statement for the expansion of Nansanga farm block with the Zambia Environmental Management Agency.",
+     "evidence_ids": [
+      "ev-sig-30"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4713,7 +4868,12 @@
     "chambishi_mfez"
    ],
    "summary": [
-    "The operator appointed a haulage contractor to move concentrate from Chambishi Multi-Facility Economic Zone to the Ndola smelter."
+    {
+     "text": "The operator appointed a haulage contractor to move concentrate from Chambishi Multi-Facility Economic Zone to the Ndola smelter.",
+     "evidence_ids": [
+      "ev-sig-31"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4757,7 +4917,12 @@
     "jimbe_border"
    ],
    "summary": [
-    "The operator reached financial close on the loan facility for the Jimbe border post project."
+    {
+     "text": "The operator reached financial close on the loan facility for the Jimbe border post project.",
+     "evidence_ids": [
+      "ev-sig-32"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -4803,7 +4968,12 @@
     "mopani_mufulira"
    ],
    "summary": [
-    "Mopani Copper Mines Plc signed an engineering, procurement and construction contract for the new processing plant at Mopani Mufulira mine."
+    {
+     "text": "Mopani Copper Mines Plc signed an engineering, procurement and construction contract for the new processing plant at Mopani Mufulira mine.",
+     "evidence_ids": [
+      "ev-sig-33"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": true,
@@ -4847,7 +5017,12 @@
     "lubambe"
    ],
    "summary": [
-    "Lubambe Copper Mines Plc completed the definitive feasibility study for the new open pit at Lubambe copper mine."
+    {
+     "text": "Lubambe Copper Mines Plc completed the definitive feasibility study for the new open pit at Lubambe copper mine.",
+     "evidence_ids": [
+      "ev-sig-34"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -4891,7 +5066,12 @@
     "indeni"
    ],
    "summary": [
-    "Indeni Energy Company reported power supply interruptions that affected operations at Indeni refinery and storage terminal."
+    {
+     "text": "Indeni Energy Company reported power supply interruptions that affected operations at Indeni refinery and storage terminal.",
+     "evidence_ids": [
+      "ev-sig-35"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4935,7 +5115,12 @@
     "kabwe_tailings"
    ],
    "summary": [
-    "Enviro Processing Limited started a drilling programme on the licence area near Kabwe mine tailings reprocessing."
+    {
+     "text": "Enviro Processing Limited started a drilling programme on the licence area near Kabwe mine tailings reprocessing.",
+     "evidence_ids": [
+      "ev-sig-36"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -4981,7 +5166,12 @@
     "kariba_north_bank"
    ],
    "summary": [
-    "ZESCO Limited invites prequalified contractors to bid for load and haul services at Kariba North Bank power station and extension."
+    {
+     "text": "ZESCO Limited invites prequalified contractors to bid for load and haul services at Kariba North Bank power station and extension.",
+     "evidence_ids": [
+      "ev-sig-37"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -5027,7 +5217,12 @@
     "mkushi_farm_block"
    ],
    "summary": [
-    "The operator plans to add 40 haul trucks to the mining fleet at Mkushi farm block in 2027."
+    {
+     "text": "The operator plans to add 40 haul trucks to the mining fleet at Mkushi farm block in 2027.",
+     "evidence_ids": [
+      "ev-sig-38"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5073,7 +5268,12 @@
     "lusaka_south_mfez"
    ],
    "summary": [
-    "The operator calls for expressions of interest for the supply of diesel to Lusaka South Multi-Facility Economic Zone."
+    {
+     "text": "The operator calls for expressions of interest for the supply of diesel to Lusaka South Multi-Facility Economic Zone.",
+     "evidence_ids": [
+      "ev-sig-39"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -5117,7 +5317,12 @@
     "mwinilunga_jimbe_t5"
    ],
    "summary": [
-    "The operator has filed an environmental impact statement for the expansion of Mwinilunga-Jimbe road (T5) upgrade with the Zambia Environmental Management Agency."
+    {
+     "text": "The operator has filed an environmental impact statement for the expansion of Mwinilunga-Jimbe road (T5) upgrade with the Zambia Environmental Management Agency.",
+     "evidence_ids": [
+      "ev-sig-40"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5162,7 +5367,12 @@
     "lumwana"
    ],
    "summary": [
-    "Barrick Mining Corporation appointed a haulage contractor to move concentrate from Lumwana mine to the Ndola smelter."
+    {
+     "text": "Barrick Mining Corporation appointed a haulage contractor to move concentrate from Lumwana mine to the Ndola smelter.",
+     "evidence_ids": [
+      "ev-sig-41"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5206,7 +5416,12 @@
     "kitumba"
    ],
    "summary": [
-    "Sinomine Resource Group reached financial close on the loan facility for the Kitumba copper mine project."
+    {
+     "text": "Sinomine Resource Group reached financial close on the loan facility for the Kitumba copper mine project.",
+     "evidence_ids": [
+      "ev-sig-42"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -5252,7 +5467,12 @@
     "tazama_pipeline"
    ],
    "summary": [
-    "TAZAMA Pipelines Limited signed an engineering, procurement and construction contract for the new processing plant at TAZAMA pipeline."
+    {
+     "text": "TAZAMA Pipelines Limited signed an engineering, procurement and construction contract for the new processing plant at TAZAMA pipeline.",
+     "evidence_ids": [
+      "ev-sig-43"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5296,7 +5516,12 @@
     "kashime"
    ],
    "summary": [
-    "Mimosa Resources completed the definitive feasibility study for the new open pit at Kashime copper mine (Fishtie project)."
+    {
+     "text": "Mimosa Resources completed the definitive feasibility study for the new open pit at Kashime copper mine (Fishtie project).",
+     "evidence_ids": [
+      "ev-sig-44"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": true,
@@ -5340,7 +5565,12 @@
     "kafue_gorge_lower"
    ],
    "summary": [
-    "ZESCO Limited reported power supply interruptions that affected operations at Kafue Gorge Lower power station."
+    {
+     "text": "ZESCO Limited reported power supply interruptions that affected operations at Kafue Gorge Lower power station.",
+     "evidence_ids": [
+      "ev-sig-45"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5384,7 +5614,12 @@
     "amatheon_mumbwa"
    ],
    "summary": [
-    "Amatheon Agri Zambia Ltd started a drilling programme on the licence area near Amatheon Agri Mumbwa farm."
+    {
+     "text": "Amatheon Agri Zambia Ltd started a drilling programme on the licence area near Amatheon Agri Mumbwa farm.",
+     "evidence_ids": [
+      "ev-sig-46"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5430,7 +5665,12 @@
     "ndola_lime"
    ],
    "summary": [
-    "Ndola Lime invites prequalified contractors to bid for load and haul services at Ndola Lime cement and lime plant."
+    {
+     "text": "Ndola Lime invites prequalified contractors to bid for load and haul services at Ndola Lime cement and lime plant.",
+     "evidence_ids": [
+      "ev-sig-47"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -5476,7 +5716,12 @@
     "tazara"
    ],
    "summary": [
-    "TAZARA plans to add 40 haul trucks to the mining fleet at TAZARA railway in 2027."
+    {
+     "text": "TAZARA plans to add 40 haul trucks to the mining fleet at TAZARA railway in 2027.",
+     "evidence_ids": [
+      "ev-sig-48"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5522,7 +5767,12 @@
     "sentinel"
    ],
    "summary": [
-    "First Quantum Minerals calls for expressions of interest for the supply of diesel to Sentinel mine."
+    {
+     "text": "First Quantum Minerals calls for expressions of interest for the supply of diesel to Sentinel mine.",
+     "evidence_ids": [
+      "ev-sig-49"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -5566,7 +5816,12 @@
     "luanshya"
    ],
    "summary": [
-    "CNMC Luanshya Copper Mines Plc has filed an environmental impact statement for the expansion of CNMC Luanshya Copper Mines (Baluba and Muliashi) with the Zambia Environmental Management Agency."
+    {
+     "text": "CNMC Luanshya Copper Mines Plc has filed an environmental impact statement for the expansion of CNMC Luanshya Copper Mines (Baluba and Muliashi) with the Zambia Environmental Management Agency.",
+     "evidence_ids": [
+      "ev-sig-50"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5612,7 +5867,12 @@
     "nakonde_border"
    ],
    "summary": [
-    "The operator appointed a haulage contractor to move concentrate from Nakonde-Tunduma border post to the Ndola smelter."
+    {
+     "text": "The operator appointed a haulage contractor to move concentrate from Nakonde-Tunduma border post to the Ndola smelter.",
+     "evidence_ids": [
+      "ev-sig-51"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5656,7 +5916,12 @@
     "kalengwa"
    ],
    "summary": [
-    "Euro Africa Kalengwa Mines Limited reached financial close on the loan facility for the Kalengwa copper mine project."
+    {
+     "text": "Euro Africa Kalengwa Mines Limited reached financial close on the loan facility for the Kalengwa copper mine project.",
+     "evidence_ids": [
+      "ev-sig-52"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -5701,7 +5966,12 @@
     "arc_minerals_nw"
    ],
    "summary": [
-    "Arc Minerals signed an engineering, procurement and construction contract for the new processing plant at Arc Minerals North-Western copper licences."
+    {
+     "text": "Arc Minerals signed an engineering, procurement and construction contract for the new processing plant at Arc Minerals North-Western copper licences.",
+     "evidence_ids": [
+      "ev-sig-53"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5745,7 +6015,12 @@
     "zambeef_mpongwe"
    ],
    "summary": [
-    "Zambeef Products Plc completed the definitive feasibility study for the new open pit at Zambeef Mpongwe farm."
+    {
+     "text": "Zambeef Products Plc completed the definitive feasibility study for the new open pit at Zambeef Mpongwe farm.",
+     "evidence_ids": [
+      "ev-sig-54"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,
@@ -5789,7 +6064,12 @@
     "dangote_masaiti"
    ],
    "summary": [
-    "Dangote Cement Zambia reported power supply interruptions that affected operations at Dangote Cement Masaiti plant."
+    {
+     "text": "Dangote Cement Zambia reported power supply interruptions that affected operations at Dangote Cement Masaiti plant.",
+     "evidence_ids": [
+      "ev-sig-55"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": true,
@@ -5833,7 +6113,12 @@
     "lobito_lusaka_pipeline"
    ],
    "summary": [
-    "The operator started a drilling programme on the licence area near Lobito-Lusaka oil products pipeline."
+    {
+     "text": "The operator started a drilling programme on the licence area near Lobito-Lusaka oil products pipeline.",
+     "evidence_ids": [
+      "ev-sig-56"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5877,7 +6162,12 @@
     "kansanshi"
    ],
    "summary": [
-    "Kansanshi Mining Plc completed the definitive feasibility study for the new open pit at Kansanshi mine."
+    {
+     "text": "Kansanshi Mining Plc completed the definitive feasibility study for the new open pit at Kansanshi mine.",
+     "evidence_ids": [
+      "ev-sig-57"
+     ]
+    }
    ],
    "certainty": "reported",
    "read_at_source": false,
@@ -5921,7 +6211,12 @@
     "mingomba"
    ],
    "summary": [
-    "KoBold Metals reported power supply interruptions that affected operations at Mingomba copper project."
+    {
+     "text": "KoBold Metals reported power supply interruptions that affected operations at Mingomba copper project.",
+     "evidence_ids": [
+      "ev-sig-58"
+     ]
+    }
    ],
    "certainty": "stated",
    "read_at_source": false,
@@ -5965,7 +6260,12 @@
     "chirundu_border"
    ],
    "summary": [
-    "The operator started a drilling programme on the licence area near Chirundu one-stop border post."
+    {
+     "text": "The operator started a drilling programme on the licence area near Chirundu one-stop border post.",
+     "evidence_ids": [
+      "ev-sig-59"
+     ]
+    }
    ],
    "certainty": "speculative",
    "read_at_source": false,

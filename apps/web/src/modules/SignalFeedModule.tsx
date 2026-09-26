@@ -133,7 +133,7 @@ function geographyOptions(tax: Taxonomy | undefined): SelectOption[] {
 }
 
 const SignalRow = memo(function SignalRow({ s, fresh, tax, onOpen }: { s: Signal; fresh: boolean; tax: Taxonomy | undefined; onOpen: (s: Signal) => void }) {
-  const summary = Array.isArray(s.summary) ? s.summary[0] : s.summary;
+  const summary = s.summary?.[0]?.text;
   const tags = [
     ...s.sectors.map((c) => nameOf(tax?.sectors, c)),
     ...s.geographies.slice(0, 3).map((c) => nameOf(tax?.geographies, c)),

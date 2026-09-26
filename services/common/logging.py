@@ -53,7 +53,7 @@ class RedactFilter(logging.Filter):
 
 
 _REDACT = RedactFilter()
-_LOGGERS_WITH_OWN_HANDLERS = ("uvicorn", "uvicorn.access", "uvicorn.error", "httpx", "httpcore")
+_LOGGERS_WITH_OWN_HANDLERS = ("uvicorn", "uvicorn.access", "uvicorn.error", "httpx", "httpx2", "httpcore")
 
 
 def install_redaction() -> None:

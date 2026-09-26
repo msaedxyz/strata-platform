@@ -23,11 +23,13 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 - Backtest harness: 7 of 7 events found, median 14.8 months. Fails the 20-event minimum. Report: reports/backtest/results.md.
 - M6 done: priority calculator, opportunities from projects, demand estimates, fresh forecasts, evidence ids on every fact, frontend on the real API shapes. Live stream delay 0.004 s on the real API. 335 Python tests, 351 unit tests, 79 e2e tests. Report: reports/M6.md.
 - Tokens are removed from all logs (Python log filter and nginx log format).
+- M7 e2e suite: 24 Python scenario tests and 8 browser tests on the Compose stack, make e2e targets, CI job e2e, clean clone check, DB restart hardening. The lead fixed bugs B1 (parallel enrichment), B2 (signal feed summary) and B5 (brief activation without entities). Report: reports/M7-e2e.md.
+- Tool for the parallel run with Argo: scripts/argo_compare.py.
 
 ## In progress
 
 - M6 integration: priority calculator, demand estimates, evidence ids for all facts in the read API, frontend write types from the real API, live update test on the real stack.
-- M7: end-to-end suite on the Compose stack (tests/e2e), CI e2e job, clean clone check.
+- Final check of CI with the e2e job, then the final report.
 
 ## Next
 

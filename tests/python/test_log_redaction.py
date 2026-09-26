@@ -13,7 +13,7 @@ def test_query_token_and_bearer_are_redacted():
     assert "eyJ" not in out and "access_token=[redacted]" in out and "&x=1" in out
 
 
-def test_uvicorn_access_log_arguments_are_redacted(caplog):
+def test_uvicorn_access_log_arguments_are_redacted():
     install_redaction()
     record = logging.LogRecord("uvicorn.access", logging.INFO, __file__, 1, '%s - "%s %s HTTP/%s" %d',
                                ("127.0.0.1:1", "GET", "/api/live?access_token=secret-token-value", "1.1", 200), None)

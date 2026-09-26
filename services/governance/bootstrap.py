@@ -106,7 +106,12 @@ def entry_span(entry: yaml.MappingNode, last_key: str, text: str) -> tuple[int, 
     """
     start = entry.start_mark.index
     kspan = _key_span(entry, last_key)
+    if kspan and kspan[1] <= kspan[0]:
+        # A YAML alias (for example *id001) points at an anchor earlier in the text. Use the key only.
+        kspan = None
     end = kspan[1] if kspan else entry.end_mark.index
+    if end <= start:
+        end = entry.end_mark.index
     while end > start and text[end - 1] in " \n":
         end -= 1
     if end - start <= MAX_QUOTE:

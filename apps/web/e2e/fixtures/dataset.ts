@@ -538,7 +538,7 @@ export function buildDataset({ signals: nSignals, deals: nDeals, seed = 7 }: Bui
       directions: [t.theme.includes("tender") || t.theme === "eoi" ? "procurement" : "project_pipeline"],
       deal_types: t.deal_type ? [t.deal_type] : [],
       entity_ids: [site.id],
-      summary: [`${operator} ${fill(t.quote)}.`],
+      summary: [{ text: `${operator} ${fill(t.quote)}.`, evidence_ids: [evId] }],
       certainty: certainties[i % certainties.length]!,
       read_at_source: i % 11 === 0,
       evidence_ids: [evId],
