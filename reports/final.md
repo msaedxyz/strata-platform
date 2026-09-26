@@ -99,8 +99,8 @@ All 14 criteria pass in CI on the fixture server. reports/M2.md gives the test f
 | 3 | Each layout behaviour and shortcut has an e2e test with the Infora result | Pass against the provisional behaviour. Blocked against Infora | apps/web/e2e/panels.spec.ts, shortcuts.spec.ts |
 | 4 | The raw value lint rule gives zero findings | Pass | packages/eslint-plugin-strata tests, `pnpm lint` |
 | 5 | A new event in its live module in 2 s or less, on the local stack | Pass. Kanban move 0.2 s, Tier 0 alert 0.3 s on the Compose stack | tests/e2e/browser/tests/05-live.spec.ts, tests/python/test_m6_live.py |
-| 6 | Interactive in 3 s or less with 10 000 signals and 500 deals | Pass on the Compose stack in the sandbox (2.0 s to 2.5 s). CI result: see section 9 | tests/e2e/browser/tests/perf.spec.ts |
-| 7 | No task longer than 200 ms during live updates | Pass on the Compose stack in the sandbox. CI result: see section 9 | tests/e2e/browser/tests/perf.spec.ts |
+| 6 | Interactive in 3 s or less with 10 000 signals and 500 deals | Pass (CI e2e job on the Compose stack. Sandbox: 2.0 s to 2.5 s) | tests/e2e/browser/tests/perf.spec.ts |
+| 7 | No task longer than 200 ms during live updates | Pass (CI e2e job on the Compose stack) | tests/e2e/browser/tests/perf.spec.ts |
 | 8 | Each module works with fixture data and has an e2e test | Pass | apps/web/e2e/modules.spec.ts (22 module tests) |
 
 ### docs/09 Acceptance scenarios (M7)
@@ -205,7 +205,20 @@ docs/decisions.md records every change with its date and reason. The main change
 
 ## 9. CI state at the end of the build
 
-The last CI runs pass every job except as stated here. See the Actions page of the repository for the run of the final commit. The e2e job ran the Python scenarios and the browser scenarios with success on a clean clone. The performance step of the e2e job failed once because the test split the compose command wrongly. The fix is in commit "e2e: split the compose command on any whitespace".
+CI run 27 (commit "Add the final report and update progress") passes every job:
+
+| Job | Result |
+|---|---|
+| Python lint and tests | Pass |
+| Frontend lint, typecheck, tests and build | Pass |
+| Frontend end to end, accessibility and visual parity (Playwright) | Pass. The visual parity test skips, because the Infora audit is missing |
+| OpenAPI schema and typed client | Pass |
+| Agent evaluation on the gold set | Pass (deterministic backend) |
+| Infora audit tool tests (mock site) | Pass |
+| Secret scan (gitleaks) | Pass, zero findings |
+| End to end acceptance tests on the Docker Compose stack | Pass: clean clone, start-up log check, 24 Python scenario tests, 8 browser tests and 5 performance tests |
+
+The blocked criteria in section 3 have tests that skip with a "blocked" message. A skipped test does not count as a pass (CLAUDE.md rule 8).
 
 ## 10. Start the two-week parallel run with Argo
 

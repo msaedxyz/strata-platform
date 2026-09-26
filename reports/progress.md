@@ -30,7 +30,7 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 
 ## In progress
 
-- CI run of the final commits.
+- Nothing. CI run 27 passes every job. The open items need Mohamed (see Next).
 
 ## Next
 
