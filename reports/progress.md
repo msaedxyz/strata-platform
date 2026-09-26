@@ -9,17 +9,18 @@ Last update: 2026-09-26. The lead agent keeps this file current after each task.
 - M1 tests pass locally: 21 Python tests (event store, roles, auth, security log).
 - Research: 146 real items in data/snapshots/2026-09-26, 7 backtest events with 19 traces, lifecycle history of 27 projects with the interval script.
 - Brief v1 from public research: 20 daily and 37 weekly sites, 71 organisations, 36 themes, 69 Google News queries, 13 news sources, 30 early signal sources, 18 known gaps.
-- Projection tests pass: rebuild hash, `as_of`, correction (24 Python tests in total).
+- Projection tests pass: rebuild hash, `as_of`, correction.
+- M2 done: brief loader, entity registry from the brief, collectors, pipeline, queue, worker, source API, fixture server. 104 Python tests pass locally. Report: reports/M2.md.
 
 ## In progress
 
 - M0: audit tooling subagent (tools/audit). The live audit is blocked.
-- Track 1 (M2): collectors subagent.
+- Track 1 (M3): enrichment agents subagent.
 - Track 2 (M5): design system, panel framework and shell subagent.
 
 ## Next
 
-- Track 1: M3 agents, then M4 governance.
+- Track 1: M4 governance after M3.
 - M6 modules, then M7 acceptance tests, backtest and the final report.
 
 ## Problems and workarounds
