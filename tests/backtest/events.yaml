@@ -1,0 +1,117 @@
+# Lead time backtest: contractor procurement events (docs 09-acceptance.md).
+# Source: WebSearch results only, collected 2026-09-26. No fact comes from memory.
+# STATUS: PARTIAL. 7 events. The target is 26 (minimum 20 in 09-acceptance.md).
+# The session web search budget ran out. See reports/notes/research-backtest.md.
+# event_type "equipment_order" is not in the brief enum. See the decision rows in the report.
+- id: EV-001
+  project: Lumwana Super Pit Expansion
+  site: Lumwana mine
+  operator: Barrick Gold Corporation
+  event_type: epc_award
+  date: 2023-12-12
+  date_precision: day
+  title: Lycopodium engaged by Barrick for Lumwana copper expansion study
+  url: https://im-mining.com/2023/12/12/lycopodium-engaged-by-barrick-for-lumwana-copper-expansion-study/
+  publisher: International Mining
+  contractor: Lycopodium
+  value: approx. A$19 million (about US$12.5 million)
+  note: >-
+    Award for the feasibility study and basic engineering, not a full EPC contract.
+    epc_award is the nearest type in the list. Date basis is the URL path.
+- id: EV-002
+  project: Lumwana Super Pit Expansion
+  site: Lumwana mine
+  operator: Barrick Gold Corporation
+  event_type: equipment_order
+  date: 2024-09-30
+  date_precision: day
+  title: Metso secures major contract for key process equipment at Barrick's Lumwana copper project in Zambia
+  url: https://www.metso.com/corporate/media/news/2024/9/metso-secures-major-contract-for-key-process-equipment-at-barricks-lumwana-copper-project-in-zambia/
+  publisher: Metso
+  contractor: Metso
+  value: approx. EUR 70 million
+  note: >-
+    Copper concentrator plant equipment. Booked in Metso Q3 2024 order intake.
+    Same day reports by International Mining and Mining Weekly (URL paths dated 2024-09-30).
+- id: EV-003
+  project: Mopani underground development
+  site: Mopani Copper Mines (Nkana and Mufulira)
+  operator: Mopani Copper Mines Plc (IRH 51 percent, ZCCM-IH 49 percent)
+  event_type: drilling_contract
+  date: 2026-06-22
+  date_precision: day
+  title: IPO-bound Laxyo expands operations in Africa, bags 200-cr order in Zambia
+  url: https://www.business-standard.com/companies/news/ipo-bound-laxyo-expands-operations-in-africa-bags-200-cr-order-in-zambia-126062200620_1.html
+  publisher: Business Standard
+  contractor: Laxyo Evapeta Zambia Ltd (subsidiary of Laxyo Ltd)
+  value: INR 2 billion (about US$23 million)
+  note: >-
+    Raise boring contract for underground mining services. Raise boring makes
+    ventilation shafts and ore passes by drilling, so drilling_contract is used.
+    Date basis is the Business Standard article id (126062200620) and the search
+    result metadata (22 to 23 June 2026). Exact award date is not stated.
+- id: EV-004
+  project: Mopani underground fleet renewal
+  site: Mopani Copper Mines (Nkana and Mufulira)
+  operator: Mopani Copper Mines Plc (IRH 51 percent, ZCCM-IH 49 percent)
+  event_type: equipment_order
+  date: 2026-04-10
+  date_precision: day
+  title: Epiroc wins large order from Mopani Copper Mines in Zambia
+  url: https://im-mining.com/2026/04/10/epiroc-wins-large-order-from-mopani-copper-mines-in-zambia/
+  publisher: International Mining
+  contractor: Epiroc
+  value: SEK 180 million
+  note: >-
+    Minetruck haulers and Scooptram loaders with service support. Epiroc booked the
+    order in Q1 2026. The date is the date of the International Mining report (URL path).
+    The Epiroc release on Cision may be earlier. Diesel fleet growth at the site.
+- id: EV-005
+  project: KCM Tailings Leach Plant
+  site: Konkola Copper Mines, Chingola (Nchanga)
+  operator: Konkola Copper Mines (Vedanta Resources, CopperTech Metals)
+  event_type: epc_award
+  date: 2026-09-17
+  date_precision: day
+  title: KCM signs $498 million deal with Chinese firm for copper recovery plant
+  url: https://www.kitco.com/news/off-the-wire/2026-09-17/kcm-signs-498-million-deal-chinese-firm-copper-recovery-plant
+  publisher: Kitco News (Reuters wire)
+  contractor: China NERIN Engineering
+  value: US$498 million
+  note: >-
+    EPC and installation contract for a tailings leach plant of about 70,000 t/y copper.
+    Signed on 17 September. The contract is not yet effective and has conditions,
+    such as an advance payment (mining-technology.com report).
+- id: EV-006
+  project: Zambia Lobito Rail (Jimbe to Chingola greenfield line)
+  site: Lobito corridor, North-Western and Copperbelt provinces
+  operator: Africa Finance Corporation (lead developer)
+  event_type: tender
+  date: 2026-04-28
+  date_precision: day
+  title: Lobito Corridor project advances to construction bidding phase as financing builds momentum
+  url: https://dailynews.co.za/business-report/companies/2026-04-28-lobito-corridor-project-advances-to-construction-bidding-phase-as-financing-builds-momentum/
+  publisher: Business Report (dailynews.co.za)
+  contractor: null
+  value: null
+  note: >-
+    EPC bid phase. Search results say nine EPC contractors made site visits and bids
+    were due in May 2026, with preferred bidders in July to August 2026. The date is
+    the date of the report (URL path). The date of the invitation to bid is not known.
+    No award found by 2026-09-26.
+- id: EV-007
+  project: Kansanshi S3 Expansion
+  site: Kansanshi mine, Solwezi
+  operator: First Quantum Minerals
+  event_type: equipment_order
+  date: 2023-07-04
+  date_precision: day
+  title: Metso wins major flotation cell order from First Quantum for Kansanshi S3 expansion
+  url: https://im-mining.com/2023/07/04/metso-wins-major-flotation-cell-order-from-first-quantum-for-kansanshi-s3-expansion/
+  publisher: International Mining
+  contractor: Metso
+  value: null
+  note: >-
+    OUTSIDE WINDOW. The date is about three months before October 2023. Kept because
+    it is a verified procurement event with a verified earlier trace. Exclude it if
+    the backtest window is strict. Date basis is the URL path.
