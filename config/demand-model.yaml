@@ -24,6 +24,9 @@ formulas:
       litres_per_tonne: 0.9
   - id: generator_capacity
     name: "Diesel generation"
+    # The formula applies only when the evidence of each input names diesel generation.
+    # A coal, hydro or solar plant also has a generation_mw fact, but burns no diesel for it.
+    evidence_must_mention: [diesel, "heavy fuel oil", hfo, genset, generator, "gas oil"]
     expression: "megawatts * litres_per_mwh * hours_per_month * load_factor"
     inputs:
       megawatts: {evidence_required: true, predicate: generation_mw, units: [""], description: "Installed diesel generation, MW"}

@@ -239,6 +239,17 @@ def test_a_project_takes_the_input_from_its_site_and_the_site_gets_its_own_estim
     assert rows[p["id"]]["events"][0]["payload"]["value"] == round(20 * 270 * 730 * 0.6, 1)
 
 
+def test_generation_of_a_coal_plant_gives_no_diesel_estimate(edb):
+    """The diesel generation formula needs evidence that names diesel (config/demand-model.yaml)."""
+    from services.enrichment import demand
+
+    p = new_project(edb, "Coal Plant Phase Two Project", "feasibility")
+    assert_fact(edb, "project", p["id"], "generation_mw", "300", "The coal-fired power station adds 300 MW.", "300 MW")
+    edb.commit()
+    assert demand.estimate(edb, [("project", p["id"])]) is None
+    assert [r for r in pending(edb, "DemandEstimated") if r["stream_id"] == p["id"]] == []
+
+
 def test_formula_evaluator_allows_arithmetic_only():
     from services.enrichment import demand
 

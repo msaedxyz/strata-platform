@@ -104,11 +104,34 @@ def estimate(conn: psycopg.Connection, subjects: list[tuple[str, str]]) -> dict 
             inputs[name] = found
         if len(inputs) != len(formula["inputs"]):
             continue
+        if not _evidence_mentions(conn, inputs, formula.get("evidence_must_mention")):
+            continue
         factors = dict(formula.get("factors") or {})
         value = evaluate(formula["expression"], {**{k: v["value"] for k, v in inputs.items()}, **factors})
         return {"formula_id": formula["id"], "formula_name": formula.get("name"), "expression": formula["expression"],
                 "inputs": inputs, "factors": factors, "value": round(value, 1), "unit": model["unit"], "label": "estimate"}
     return None
+
+
+def _evidence_mentions(conn: psycopg.Connection, inputs: dict, words: list[str] | None) -> bool:
+    """True when the evidence of each input names one of the words (config), or when no words are set.
+
+    The check reads the evidence quote and the title and excerpt of its source. A quote is often the value only
+    ("20 MW"), and the words that name the fuel stand next to it. If none of these texts names the fuel, Strata
+    gives no estimate. No estimate is better than a wrong one.
+    """
+    if not words:
+        return True
+    lowered = [w.lower() for w in words]
+    for spec in inputs.values():
+        rows = conn.execute(
+            "SELECT v.quote, s.title, s.excerpt FROM evidence v JOIN source s ON s.id = v.source_id WHERE v.id = ANY(%s)",
+            (spec["evidence_ids"],),
+        ).fetchall()
+        texts = [" ".join(filter(None, (r["quote"], r["title"], r["excerpt"]))).lower() for r in rows]
+        if not any(any(w in t for w in lowered) for t in texts):
+            return False
+    return True
 
 
 def _certainty(inputs: dict) -> str:

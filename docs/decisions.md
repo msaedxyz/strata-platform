@@ -199,3 +199,4 @@ docs/07 asks to record the Infora components that each module uses. The list use
 | 2026-09-26 | One advisory lock lets only one enrichment run at a time | Two runs at the same time enriched one source twice, or made two entities for one company (M7 bug B1) | 05 |
 | 2026-09-26 | Brief activation through the API runs the watch list step at once | New watched sites had no entities until the next start-up (M7 bug B5) | 04 |
 | 2026-09-26 | The brief span code accepts YAML anchors and aliases | A brief saved through the API can contain aliases. The span of an alias points back into the text | 04 |
+| 2026-09-26 | The diesel generation formula applies only when the evidence names diesel or a generator | The pipeline estimated diesel demand for the Maamba coal power station from its MW value | 03, config/demand-model.yaml |
