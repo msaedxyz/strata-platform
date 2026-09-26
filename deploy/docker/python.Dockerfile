@@ -34,7 +34,7 @@ RUN --mount=type=secret,id=extra_ca,required=false \
     if [ -s /run/secrets/extra_ca ]; then export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt; fi; \
     uv sync --frozen --no-dev --extra ocr-fallback
 ENV PATH="/opt/venv/bin:$PATH"
-RUN useradd --system --uid 10001 strata && mkdir -p /data && chown strata /data
+RUN useradd --system --uid 10001 strata && mkdir -p /data/objects && chown -R strata /data
 USER strata
 EXPOSE 8000
 CMD ["uvicorn", "services.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
