@@ -320,6 +320,17 @@ def _resolve(c: _Ctx, a: Analysis) -> dict[tuple[str, str], dict]:
             result[key] = {"decision": "no_decision", "entity_id": None, "confidence": 0.0, "method": "duplicate",
                            "spans": [evidence], "duplicates": sorted(r.id for r in exact)}
             continue
+        if g["type"] == "project":
+            same_site = _same_site_projects(c, g["text"])
+            if len(same_site) == 1:
+                result[key] = {"decision": "match", "entity_id": same_site[0].id,
+                               "confidence": float(t.get("same_site_project_confidence", 0.85)), "method": "same_site",
+                               "spans": [evidence]}
+                continue
+            if len(same_site) > 1:
+                result[key] = {"decision": "no_decision", "entity_id": None, "confidence": 0.0, "method": "same_site",
+                               "spans": [evidence], "duplicates": sorted(r.id for r in same_site)}
+                continue
         cands = c.index.candidates(g["text"], types, int(t["candidate_limit"]), float(t["candidate_min_similarity"]))
         pending.append((key, g, cands))
     if pending:
@@ -350,6 +361,8 @@ def _resolve(c: _Ctx, a: Analysis) -> dict[tuple[str, str], dict]:
                 decision = "no_decision"
             if decision == "new" and g["type"] not in set(t.get("creatable_types") or []):
                 decision = "no_decision"
+            if decision == "new" and g["type"] == "project" and not rules.distinctive_project_name(g["text"]):
+                decision = "no_decision"  # "Solar Project" names no project (M4)
             entry = {"decision": decision, "entity_id": d.get("entity_id") if decision == "match" else None,
                      "confidence": float(d.get("confidence") or 0.0), "method": "trigram", "spans": spans or evidence_default,
                      "reason": d.get("reason")}
@@ -365,6 +378,55 @@ def _resolve(c: _Ctx, a: Analysis) -> dict[tuple[str, str], dict]:
         a.resolutions.append({"type": key[0], "mention": groups[key]["text"], **{k: v for k, v in entry.items() if k != "spans"},
                               "spans": entry["spans"]})
     return result
+
+
+_KIND_WORDS = ("project", "expansion", "restart")
+
+
+def _kind_word(name: str) -> str | None:
+    last = normalise_name(name).split()[-1:] or [""]
+    return last[0] if last[0] in _KIND_WORDS else None
+
+
+def _site_tokens(c: _Ctx, text: str) -> tuple[set[str], set[str]]:
+    """The sites that a project name names (by a full name or alias, or the first word of one) and those words."""
+    norm = f" {normalise_name(text)} "
+    sites: set[str] = set()
+    tokens: set[str] = set()
+    for r in c.index.all(["site"]):
+        for surface in c.index.surfaces_of(r):
+            s = normalise_name(surface)
+            first = s.split()[0] if s else ""
+            if s and f" {s} " in norm:
+                sites.add(r.id)
+                tokens.add(s)
+            elif len(first) >= 5 and f" {first} " in norm and first not in (config.get(
+                    "mentions.project_generic_words") or []):
+                sites.add(r.id)
+                tokens.add(first)
+    return sites, tokens
+
+
+def _same_site_projects(c: _Ctx, text: str) -> list[EntityRecord]:
+    """Existing projects at the site that the mention names, with the same kind word (M4: no duplicate project).
+
+    "Barrick Lumwana Super Pit Copper Expansion" is the known "Lumwana Expansion". Two known projects of one
+    kind at the site give no decision, so that the resolver never creates a third.
+    """
+    kind = _kind_word(text)
+    if kind is None:
+        return []
+    sites, tokens = _site_tokens(c, text)
+    if not sites:
+        return []
+    out = []
+    for r in c.index.all(["project"]):
+        if _kind_word(r.name) != kind:
+            continue
+        name = f" {normalise_name(r.name)} "
+        if (r.site_id and r.site_id in sites) or any(f" {tok} " in name for tok in tokens):
+            out.append(r)
+    return sorted(out, key=lambda r: r.id)
 
 
 def _merge_claims(c: _Ctx, a: Analysis, res: dict) -> None:
@@ -413,6 +475,10 @@ def _link_site(c: _Ctx, a: Analysis, res: dict, project: dict) -> str | None:
     for r in c.index.all(["site"]):
         if any(s.split()[0].lower() == first_word for s in r.surfaces()):
             return r.id
+    # M4: a site name word elsewhere in the project name ("Barrick Lumwana Super Pit Copper Expansion").
+    named, _tokens = _site_tokens(c, project["name"])
+    if len(named) == 1:
+        return next(iter(named))
     sent = sentence_at(c.sents, first_span[0])
     if sent:
         for m in a.mentions:
@@ -581,8 +647,10 @@ def _plan(c: _Ctx, a: Analysis, res: dict) -> None:
             if p["confidence"] >= auto_conf:
                 auto_new.add(p["id"])
             if p.get("site_id"):
+                site = c.index.get(p["site_id"])
                 a.facts.append(Fact(
-                    kind="RelationshipAsserted", agent="lifecycle", title=f"{p['name']} is at a site",
+                    kind="RelationshipAsserted", agent="lifecycle",
+                    title=f"{p['name']} is at {site.name if site else 'a site'}",
                     key=f"RelationshipAsserted:project_at_site:{normalise_name(p['name'])}",
                     events=[PlannedEvent("project", p["id"], "RelationshipAsserted",
                                          {"subject_id": p["id"], "predicate": "project_at_site", "object_id": p["site_id"]},
@@ -620,11 +688,16 @@ def _plan(c: _Ctx, a: Analysis, res: dict) -> None:
                 continue
             if any(f.kind == "SiteStatusChanged" and f.events[0].stream_id == site_id for f in a.facts):
                 continue
+            # The status before the change: the recorded status of the site projection, else the status hint of
+            # the brief (M4). The payload says which one it is.
+            from_status = rec.status or rec.status_hint
+            from_source = "recorded" if rec.status else ("brief_status_hint" if rec.status_hint else None)
             a.facts.append(Fact(
                 kind="SiteStatusChanged", agent="extractor", title=f"{rec.name}: {claim['normalised'].replace('_', ' ')}",
                 key=f"SiteStatusChanged:{site_id}:{claim['normalised']}",
                 events=[PlannedEvent("entity", site_id, "SiteStatusChanged",
-                                     {"from_status": rec.status, "to_status": claim["normalised"], "site_name": rec.name},
+                                     {"from_status": from_status, "from_status_source": from_source,
+                                      "to_status": claim["normalised"], "site_name": rec.name},
                                      claim["spans"], claim["certainty"], doc.published_at or doc.fetched_at)]))
         elif pred in ATTRIBUTE_PREDICATES:
             subject_id = _entity_for(res, claim["subject"], ("project", "site", "organisation"))
@@ -784,7 +857,7 @@ def _features(c: _Ctx, a: Analysis, res: dict) -> dict:
         "early_signal_source": bool(c.doc.early_signal),
         "certainty": a.certainty,
         "is_project": bool(a.projects),
-        "project_first_trace": any(p["new"] for p in a.projects),
+        "project_first_trace": any(p["new"] and _before_first_trace_limit(p.get("stage")) for p in a.projects),
         "enters_engagement_window": enters,
         "forecast_shift_months_nearer": max(shifts) if shifts else None,
         "open_procurement_notice": bool(open_deals),
@@ -801,6 +874,24 @@ def _features(c: _Ctx, a: Analysis, res: dict) -> dict:
     for d in ("demand_up", "procurement", "project_pipeline", "demand_down"):
         features[f"direction_{d}"] = d in a.directions
     return features
+
+
+def _before_first_trace_limit(stage: str | None) -> bool:
+    """True when a new project is an early signal: its stage is unknown or comes before the limit of
+    config/tiers.yaml (first_trace_before_stage). A restart stage uses the order of the restart path."""
+    if stage is None:
+        return True
+    limit = common_config.tiers().get("first_trace_before_stage")
+    if not limit:
+        return True
+    lc = common_config.lifecycle()
+    main = [s["code"] for s in lc["stages"]]
+    restart = [s["code"] for s in lc.get("restart_path") or []]
+    if stage in main and limit in main:
+        return main.index(stage) < main.index(limit)
+    if stage in restart and limit in restart:
+        return restart.index(stage) < restart.index(limit)
+    return False
 
 
 def _score(c: _Ctx, a: Analysis, res: dict) -> None:

@@ -12,7 +12,7 @@
   },
   "extra": {
     "certainty_accuracy_on_matched_claims": 0.9833,
-    "tier_accuracy": 0.9787,
+    "tier_accuracy": 0.8936,
     "deal_accuracy": 1.0,
     "counts": {
       "documents": 50,
@@ -447,8 +447,8 @@
       "id": "g05",
       "status": "in_scope",
       "gold_in_scope": true,
-      "tier": 0,
-      "tier_rule": "t0_new_project_first_trace",
+      "tier": 1,
+      "tier_rule": "t1_stage_change_watched",
       "expected_tier": 0,
       "sectors": [
         "mining"
@@ -561,7 +561,7 @@
       "status": "in_scope",
       "gold_in_scope": true,
       "tier": 0,
-      "tier_rule": "t0_new_project_first_trace",
+      "tier_rule": "t0_daily_site_status_change",
       "expected_tier": 0,
       "sectors": [
         "mining"
@@ -842,8 +842,8 @@
       "id": "g09",
       "status": "in_scope",
       "gold_in_scope": true,
-      "tier": 0,
-      "tier_rule": "t0_new_project_first_trace",
+      "tier": 1,
+      "tier_rule": "t1_stage_change_watched",
       "expected_tier": 0,
       "sectors": [
         "mining"
@@ -958,7 +958,7 @@
       "status": "in_scope",
       "gold_in_scope": true,
       "tier": 0,
-      "tier_rule": "t0_new_project_first_trace",
+      "tier_rule": "t0_open_procurement_notice",
       "expected_tier": 0,
       "sectors": [
         "power"
@@ -1056,8 +1056,8 @@
       "id": "g11",
       "status": "in_scope",
       "gold_in_scope": true,
-      "tier": 0,
-      "tier_rule": "t0_new_project_first_trace",
+      "tier": 1,
+      "tier_rule": "t1_stage_change_watched",
       "expected_tier": 0,
       "sectors": [
         "mining"
@@ -1241,8 +1241,8 @@
       "id": "g13",
       "status": "in_scope",
       "gold_in_scope": true,
-      "tier": 0,
-      "tier_rule": "t0_new_project_first_trace",
+      "tier": 1,
+      "tier_rule": "t1_stage_change_watched",
       "expected_tier": 0,
       "sectors": [
         "power"
@@ -1750,7 +1750,7 @@
       "status": "in_scope",
       "gold_in_scope": true,
       "tier": 0,
-      "tier_rule": "t0_new_project_first_trace",
+      "tier_rule": "t0_open_procurement_notice",
       "expected_tier": 0,
       "sectors": [
         "mining"

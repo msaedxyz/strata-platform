@@ -48,6 +48,7 @@ class EntityRecord:
     site_class: str | None = None
     status: str | None = None
     status_pending: str | None = None
+    status_hint: str | None = None  # sites: the status_hint of the brief (not a recorded status)
     district: str | None = None
     province: str | None = None
     corridor: str | None = None
@@ -162,17 +163,19 @@ class DbIndex(MemoryIndex):
         records: dict[str, EntityRecord] = {}
         rows = conn.execute(
             """SELECT p.id, p.type, p.name, p.aliases, p.watch, p.site_class, p.status, p.status_pending, p.district,
-                      p.province, p.country, e.brief_key, e.external_ids,
-                      (SELECT ev.payload->>'corridor' FROM event ev WHERE ev.stream_type = 'entity' AND ev.stream_id = p.id
-                         AND ev.event_type = 'EntityIdentified' ORDER BY ev.sequence LIMIT 1) AS corridor
+                      p.province, p.country, e.brief_key, e.external_ids, first.payload->>'corridor' AS corridor,
+                      first.payload->>'status_hint' AS status_hint
                FROM proj_entity p LEFT JOIN entity e ON e.id = p.id
+               LEFT JOIN LATERAL (SELECT ev.payload FROM event ev WHERE ev.stream_type = 'entity' AND ev.stream_id = p.id
+                         AND ev.event_type = 'EntityIdentified' ORDER BY ev.sequence LIMIT 1) first ON true
                WHERE p.merged_into IS NULL AND p.type IN ('organisation', 'site', 'project')"""
         ).fetchall()
         for r in rows:
             records[r["id"]] = EntityRecord(
                 id=r["id"], type=r["type"], name=r["name"], aliases=list(r["aliases"] or []), key=r["brief_key"],
                 watch=r["watch"] or "none", site_class=r["site_class"], status=r["status"],
-                status_pending=r["status_pending"], district=r["district"], province=r["province"],
+                status_pending=r["status_pending"], status_hint=r["status_hint"], district=r["district"],
+                province=r["province"],
                 corridor=r["corridor"], country=r["country"], external_ids=r["external_ids"] or {},
             )
         for r in conn.execute(
@@ -248,5 +251,6 @@ def brief_records(brief: dict) -> list[EntityRecord]:
                 id=f"site:{site['id']}", type="site", name=site["name"], aliases=list(site.get("aliases") or []),
                 key=site["id"], watch=level, site_class=site.get("site_class"), district=site.get("district"),
                 province=site.get("province"), corridor=site.get("corridor"), country="zm",
+                status_hint=site.get("status_hint"),
             ))
     return records

@@ -36,6 +36,9 @@ resolver:
   new_entity_confidence: 0.9
   # Entity types that the resolver can create. Persons are not created (personal data, docs/06).
   creatable_types: [project, organisation]
+  # M4: a project mention that names the same site (or site name word) as one existing project, with the same
+  # kind word (project, expansion, restart), is that project. Two or more such projects give no decision.
+  same_site_project_confidence: 0.85
   # Mention types that each entity type can match.
   type_compatibility:
     organisation: [organisation]
@@ -99,6 +102,12 @@ future_cues:
   - '\bif the\b'
   - '\bin talks\b'
   - '\bis considering\b'
+  # M4: a plan in other words ("expects first production in 2030", "set for commissioning", "due to start").
+  - '\bexpects?\b'
+  - '\banticipates?\b'
+  - '\bset (?:for|to)\b'
+  - '\bdue to (?:start|begin|open|be)\b'
+  - '\bscheduled (?:for|to)\b'
 
 # Lines that start with one of these labels are a summary or a standfirst. A claim from the body
 # wins over a conflicting claim from such a line (docs/05, adversarial test 4).
@@ -135,6 +144,8 @@ classifier:
   # (a queue of tankers at a fuel terminal is not a border delay).
   theme_requires_context:
     border_delay: {cues: ['\bborders?\b', '\bcustoms\b', '(?-i:\bOSBP\b)'], site_classes: [border]}
+    # M4: a place name such as "one-stop border post" is no project. The theme needs project words in the document.
+    transport_infrastructure_project: {cues: ['\bconstruct', '\bupgrad', '\brehabilit', '\bproject\b', '\bworks\b', '\bbuil[dt]', '\bmoderni[sz]', '\bexpan', '\btender', '\bcontract', '\bfinanc', '\bconcession', '\bfeasibility', '\bdevelop', '\bgroundbreaking\b', '\bbreaks? ground\b', '\bbroke ground\b', '\bcommission', '\bimprovement']}
   # A theme does not count when the document has a site or a theme of one of these sectors (a processing
   # plant or a smelter at a mine is part of the mine, not an industrial project).
   theme_suppressed_by_sector:
@@ -153,7 +164,7 @@ theme_synonyms:
   mining_licence_granted: ['\bmining licen[cs]e\b', '\bmining rights?\b']
   financing_close: ['\bfinancial close\b', '\bfinancing\b', '\bloan\b', '\bfinal investment decision\b', '\bdebt (?:package|facility)\b']
   power_project: ['\bsolar (?:plant|project|farm|power plant)\b', '\bhydro(?:power|-?electric) (?:project|scheme|station)\b', '\bpower (?:project|plant construction)\b', '\badds? \d[\d,]* ?MW\b', '\b\d[\d,]* ?MW (?:project|expansion|solar|plant)\b', '\bMW expansion\b']
-  transport_infrastructure_project: ['\broad (?:project|upgrade|works|construction|rehabilitation)\b', '\brail(?:way)? (?:line|project|rehabilitation|revitali[sz]ation)\b', '\bbridge (?:project|construction)\b', '\brevitali[sz]ation\b', '\brehabilitation\b', '\brevival\b', '\bone[- ]stop border\b', '\bnew railway\b']
+  transport_infrastructure_project: ['\broad (?:project|upgrade|works|construction|rehabilitation)\b', '\brail(?:way)? (?:line|project|rehabilitation|revitali[sz]ation)\b', '\bbridge (?:project|construction)\b', '\brevitali[sz]ation\b', '\brehabilitation\b', '\brevival\b', '\b(?:construction|upgrad(?:e|ing)|modernisation|improvement|building) of (?:the |a )?(?:[\w-]+ ){0,2}one[- ]stop border\b', '\bone[- ]stop border (?:post )?(?:project|construction|upgrade|works|facilities|infrastructure)\b', '\bnew railway\b']
   industrial_project: ['\bplant (?:project|upgrade|construction|expansion)\b', '\bkiln\b', '\bfertili[sz]er (?:plant|blending)\b', '\bmanufacturing plant\b', '\bindustrial park\b', '\bnew (?:cement )?(?:factory|mill|plant)\b', '\bsmelter\b']
   agri_expansion: ['\birrigat(?:ion|ed)\b', '\badd(?:s|ed)? \d[\d,]* hectares\b', '\bcentre pivots?\b', '\bfarm (?:expansion|block)\b']
   tender_notice: ['\binvit(?:es|ed|ing) (?:bids|tenders)\b', '\binvitation to tender\b', '\bbids? (?:for|from)\b', '\btenders? for\b', '\bcall(?:s|ed)? for (?:bids|tenders|proposals)\b']
@@ -175,7 +186,7 @@ theme_synonyms:
   care_and_maintenance: ['\bcare and maintenance\b']
   closure: ['\bclos(?:e|es|ed|ure) (?:the |its )?(?:mine|plant|smelter|refinery|operation)\b', '\bshut(?:s)? down\b']
   retrenchment: ['\bretrench(?:ed|es|ment)?\b', '\blaid off\b', '\bjob losses\b']
-  border_delay: ['\btruck queues?\b', '\b(?:trucks|tankers) (?:waited|queued|queue|are stuck|were stuck|stuck)\b', '\bqueue of trucks\b', '\bqueues? (?:stretch|of trucks)\b', '\bborder (?:delays?|backlog|queues?)\b', '\bcustoms (?:system )?outage\b']
+  border_delay: ['\btruck queues?\b', '\b(?:trucks|tankers|truckers|lorries|drivers)\b(?:\W+\w+){0,6}?\W+(?:waited|wait|waits|queued|queue|are stuck|were stuck|stuck|stranded)\b', '\bqueue of trucks\b', '\bqueues? (?:stretch|of trucks)\b', '\bborder (?:delays?|backlog|queues?)\b', '\bcustoms (?:system )?outage\b']
   erb_price_change: ['\bpump prices?\b', '\bEnergy Regulation Board\b.{0,80}\bprices?\b', '\bfuel prices?\b', '\b(?:diesel|petrol) prices?\b']
   drought: ['\bdrought\b', '\bpoor rains?\b', '\bdry spell\b', '\blow water levels?\b', '\blow rainfall\b']
   road_disruption: ['\broad (?:was |is )?closed\b', '\bwashed away\b', '\bbridge (?:collapsed|collapse)\b', '\bderail(?:ed|ment)\b']
@@ -395,6 +406,10 @@ lifecycle_stage_cues:
     - '\bhas awarded (?:\w+ ){0,3}contracts? for\b'
     - '\b(?:invites?|invited|calls? for) expressions of interest (?:from )?(?:\w+ ){0,3}(?:contractors|companies|firms)\b'
   construction_mobilisation:
+    # M4: title and noun forms ("Construction of X kicks off", "Upgrade takes off", "Modernisation of X underway").
+    - '\b(?:construction|works|upgrade|upgrading|modernisation|rehabilitation)\b(?:\W+[\w-]+){0,8}?\W+(?:kicks?[- ]off|kicked off|takes off|took off|(?<!not )underway|(?<!not )under way)\b'
+    - '\bkick-?starts? (?:\w+ ){0,3}(?:construction|works|phase)\b'
+    - '(?<!to )(?<!will )\bbreaks ground\b'
     - '\b(?:started|began|has started|has begun|begins) to mobilis'
     - '\bmobilis(?:ed|ing) (?:a |the |its )?(?:\w+ ){0,3}(?:fleet|contractor|equipment|workforce)\b'
     - '\bconstruction (?:began|has begun|started|has started|is under way)\b'
@@ -402,6 +417,8 @@ lifecycle_stage_cues:
     - '\bbroke ground\b'
     - '\bgroundbreaking (?:ceremony )?(?:took place|was held)\b'
   commissioning_rampup:
+    # M4: the noun form in titles ("Announces Commissioning of 100 MW Solar Project").
+    - '\b(?:announces?|announced|marks?|marked|celebrates?|celebrated|completes?|completed) (?:the )?commissioning of\b'
     - '\b(?:began|started|begins|starts) (?:full-line |trial )?production\b'
     - '\bcommissioned (?:the |its )?(?:\w+ ){0,3}(?:plant|concentrator|smelter|station|line|units?)\b'
     - '\b(?:delivered|produced|poured) (?:its )?first (?:ore|concentrate|copper|cathode|gold|power)\b'
@@ -420,6 +437,8 @@ lifecycle_stage_cues:
     - '\b(?:completed|agreed|announced|signed) (?:a |an |the )?(?:\w+ ){0,3}recapitali[sz]ation\b'
     - '\brecapitali[sz]ation (?:deal|agreement|package) (?:was|has been) (?:signed|completed|agreed)\b'
   restart:
+    # M4: the stage named as a noun ("Luanshya Copper Mine Restart"), not a restart plan.
+    - '\b(?:mine|smelter|plant|concentrator|operations?) restart\b(?! plan)(?! programme)'
     - '\b(?:restarted|resumed) (?:\w+ ){0,2}(?:production|operations|mining)\b'
     - '\breopened (?:the |its )?mine\b'
 
@@ -434,7 +453,26 @@ mentions:
   project_patterns:
     - '(?-i:\b((?:[A-Z][A-Za-z0-9''-]+|S\d)(?:[ -](?:[A-Z][A-Za-z0-9''-]+|S\d|\d{1,2}|[IVX]{1,4}|of|and))*(?: (?:copper|gold|nickel|cobalt|coal|uranium|emerald|solar|hydro|hydropower|power|rail|road|pipeline|irrigation|cement|mine|mining|deep|lime|smelter))* (?:[Pp]roject|[Ee]xpansion|[Rr]estart)))\b'
   # Leading words that are not part of a project name. A name of units or stop words only is no name.
-  project_stopwords: [The, This, That, A, An, Its, Our, Each, Under, For, New, Phase, With, After, Before, In, On, At, By, From, To, MW, GW, US, Expansion, Project, Restart]
+  project_stopwords: [The, This, That, A, An, Its, Our, Each, Under, For, New, Phase, With, After, Before, In, "On", At, By, From, To, MW, GW, US, Expansion, Project, Restart]
+  # M4: words that end a title phrase before a project name ("A Peek Into The X Project", "Nava Announces ...").
+  # The name starts after the last of these words. Matching ignores case.
+  project_name_boundary_words: [into, inside, peek, look, behind, about, spotlight, focus, update, explainer, exclusive,
+                                announces, announced, launches, launched, unveils, unveiled, begins, starts, kick-starts,
+                                completes, commissions, secures, signs, wins, approves, progresses, highlights, supports,
+                                boosts, marks, celebrates, awards, opens, eyes, targets, plans, fast-tracks, accelerates,
+                                for, at, "on", with, from, as, how, why, what, when, where]
+  # M4: a project name needs one distinctive word: a word that is not generic, not a stop word and not a country.
+  # "Solar Project" or "Zambia copper expansion" is no project name.
+  project_generic_words: [solar, hydro, hydropower, power, energy, wind, copper, gold, nickel, cobalt, coal, uranium,
+                          emerald, lime, cement, mine, mining, pit, open, deep, shaft, smelter, plant, refinery, rail,
+                          railway, road, bridge, border, post, one-stop, stop, one, two, three, phase, stage, new,
+                          upgrade, upgrading, improvement, modernisation, construction, rehabilitation, expansion,
+                          project, restart, programme, infrastructure, facilities, works, irrigation, pipeline,
+                          line, station, farm, super, major, big, large, first, second, mw, gw, kv, us, super-pit,
+                          zambia, zambian, drc, congo, angola, tanzania, zimbabwe, botswana, malawi, namibia, africa,
+                          african, southern, northern, eastern, western, central, national, regional, government]
+  # A project phrase in the title line after a separator (" | ", " - ", " – ") is the name of a publisher or a site.
+  title_separators: [' | ', ' - ', ' – ', ' — ']
   # An organisation with a legal suffix that the gazetteer does not know.
   organisation_patterns:
     - '(?-i:\b((?:[A-Z][A-Za-z&''-]+ ){1,5}(?:Plc|PLC|Limited|Ltd|Corporation|Corp|Group|Holdings|Company|Mining|Minerals|Metals|Resources|Energy|Engineering|Contractors|Construction)))\b'
@@ -455,7 +493,9 @@ claims:
   # The owner in "X, the developer of the Y project" or "owned by X" is at most this many characters from the cue.
   owner_max_gap_chars: 12
   money_cues:
-    capex: ['\binvest(?:s|ed|ing|ment)?\b', '\bcost(?:s)?\b', '\bcapital (?:expenditure|cost|spending)\b', '(?-i:\bcapex\b)', '\bbudget\b', '\bspend\b', '\bproject worth\b']
+    # M4: an amount before a plan or a project noun ("a US$300 million plan to sink a new shaft"). A project loan or
+    # a finance facility is no capital spending.
+    capex: ['(?:million|billion|bn|m)\b(?:\s+[\w-]+){0,3}?\s+(?:plan|project|expansion|development|programme|upgrade|scheme)\b(?!\s+(?:finance|financing|loan|facility|bond|debt))', '\binvest(?:s|ed|ing|ment)?\b', '\bcost(?:s)?\b', '\bcapital (?:expenditure|cost|spending)\b', '(?-i:\bcapex\b)', '\bbudget\b', '\bspend\b', '\bproject worth\b']
     contract_value: ['\bcontracts? (?:\w+ ){0,4}(?:worth|valued at|value of)\b', '\bworth\b.{0,40}\bcontract\b', '\bcontract value\b', '\btender (?:\w+ ){0,3}(?:worth|valued at)\b']
     fuel_price: ['\bper litre\b', '\ba litre\b', '/litre\b']
   number_cues:
@@ -475,6 +515,8 @@ claims:
   tender_deadline_context: ['\bbids?\b', '\btenders?\b', '\bbidders\b', '\bsubmissions?\b', '\bclosing date\b', '\bexpressions? of interest\b', '\bregister\b', '\bsuppliers\b', '\bapplications\b']
   percent_cues:
     ownership_percent: ['\b(?:owns|holds|has|acquired?|bought|sold) (?:a |an )?\d', '\bstake\b', '\binterest in\b', '\bshareholding\b']
+  # A sentence about a sale or a planned purchase of a stake does not state who holds the share now.
+  percent_exclude: ['\bsale of\b', '\bto sell\b', '\bsell(?:s|ing)?\b', '\bdispos(?:e|es|al|ing)\b', '\bdivest', '\b(?:will|to|plans? to) (?:buy|acquire)\b']
   licence_number: '(?:licen[cs]e|permit) (?:No\.?|number)(?: is|:)? (?P<value>[A-Z0-9][A-Z0-9/-]{2,}[A-Z0-9])'
   # The noun of a sentence chooses between the site and the project as the subject of a number claim.
   subject_nouns:

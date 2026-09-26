@@ -4,30 +4,30 @@
   "prompt_version": "rules-v1",
   "metrics": {
     "canonical_facts_verified": 1.0,
-    "extraction_precision": 0.7273,
-    "extraction_recall": 0.6667,
+    "extraction_precision": 0.9,
+    "extraction_recall": 0.75,
     "resolution_precision": 0.9697,
-    "classification_macro_f1": 0.8731,
+    "classification_macro_f1": 0.9376,
     "lifecycle_stage_accuracy": 1.0
   },
   "extra": {
     "certainty_accuracy_on_matched_claims": 1.0,
-    "tier_accuracy": 0.9091,
+    "tier_accuracy": 1.0,
     "deal_accuracy": 1.0,
     "counts": {
       "documents": 12,
       "fact_events": 38,
-      "claims_predicted": 11,
+      "claims_predicted": 10,
       "claims_gold": 12,
-      "claims_matched": 8,
+      "claims_matched": 9,
       "resolution_decisions": 33,
       "lifecycle_projects": 3
     },
     "class_f1": {
-      "direction:demand_down": 0.8,
-      "direction:demand_up": 0.6667,
+      "direction:demand_down": 1.0,
+      "direction:demand_up": 1.0,
       "direction:procurement": 1.0,
-      "direction:project_pipeline": 0.8889,
+      "direction:project_pipeline": 1.0,
       "in_scope": 1.0,
       "sector:fuel_supply": 0.6667,
       "sector:industry": 1.0,
@@ -70,6 +70,14 @@
       "deal_expected": true,
       "claims": [
         {
+          "predicate": "capex",
+          "subject": "Lubambe New Shaft Project",
+          "value": "300000000 USD",
+          "object": null,
+          "certainty": "stated",
+          "matched": true
+        },
+        {
           "predicate": "employees",
           "subject": "Lubambe mine",
           "value": "1800",
@@ -78,14 +86,7 @@
           "matched": true
         }
       ],
-      "missed_claims": [
-        {
-          "predicate": "capex",
-          "subject": "Lubambe New Shaft Project",
-          "certainty": "stated",
-          "value": "300000000 USD"
-        }
-      ],
+      "missed_claims": [],
       "resolutions": [
         {
           "mention": "Lubambe",
@@ -143,8 +144,8 @@
       "id": "h02",
       "status": "in_scope",
       "gold_in_scope": true,
-      "tier": 2,
-      "tier_rule": "t2_relevant",
+      "tier": 0,
+      "tier_rule": "t0_market_demand_driver",
       "expected_tier": 0,
       "sectors": [
         "fuel_supply",
@@ -155,13 +156,13 @@
         "transport"
       ],
       "directions": [
-        "project_pipeline"
+        "demand_down"
       ],
       "gold_directions": [
         "demand_down"
       ],
       "themes": [
-        "transport_infrastructure_project"
+        "border_delay"
       ],
       "gold_themes": [
         "border_delay"
@@ -712,16 +713,7 @@
       "gold_themes": [],
       "deals": [],
       "deal_expected": false,
-      "claims": [
-        {
-          "predicate": "ownership_percent",
-          "subject": "Barrick Mining Corporation",
-          "value": "20%",
-          "object": "Lumwana mine",
-          "certainty": "speculative",
-          "matched": false
-        }
-      ],
+      "claims": [],
       "missed_claims": [],
       "resolutions": [
         {
@@ -766,14 +758,12 @@
         "mining"
       ],
       "directions": [
-        "demand_up",
         "project_pipeline"
       ],
       "gold_directions": [
         "project_pipeline"
       ],
       "themes": [
-        "commissioning_rampup",
         "financing_close"
       ],
       "gold_themes": [
@@ -782,14 +772,6 @@
       "deals": [],
       "deal_expected": false,
       "claims": [
-        {
-          "predicate": "site_status",
-          "subject": "Mingomba copper project",
-          "value": "ramping_up",
-          "object": null,
-          "certainty": "stated",
-          "matched": false
-        },
         {
           "predicate": "expected_start",
           "subject": "Mingomba copper project",

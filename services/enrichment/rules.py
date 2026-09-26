@@ -368,15 +368,65 @@ def classify(text: str, ctx: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def _word_key(word: str) -> str:
+    return word.lower().strip(".,;:'’\"()&")
+
+
+def distinctive_project_name(name: str) -> bool:
+    """A project name needs one word that is not generic, not a stop word and not a country (M4).
+
+    "Solar Project" and "Zambia copper expansion" are no names. "Nakonde Border Post Upgrade Project" is a name.
+    """
+    r = config.rules()["mentions"]
+    generic = {w.lower() for w in r.get("project_generic_words") or []}
+    stop = {w.lower() for w in r.get("project_stopwords") or []}
+    for word in name.split():
+        for part in re.split(r"[-–]", word):
+            key = _word_key(part)
+            if key and key not in generic and key not in stop and not key.isdigit() and re.search(r"[a-z]", key):
+                return True
+    return False
+
+
+def _title_tail_start(text: str) -> int | None:
+    """The start of a short publisher or site suffix after the last separator of the title line, or None."""
+    title_end = text.find("\n")
+    title = text if title_end < 0 else text[:title_end]
+    best = None
+    for sep in config.get("mentions.title_separators", []) or []:
+        pos = title.rfind(sep)
+        if pos >= 0 and (best is None or pos > best[0]):
+            best = (pos, pos + len(sep))
+    if best is None:
+        return None
+    tail = title[best[1]:]
+    return best[1] if len(tail.split()) <= 6 else None
+
+
+def _cut_at_boundary(words: list[str], start: int) -> tuple[list[str], int]:
+    """Drop the title words before a project name: the name starts after the last boundary word."""
+    boundary = {w.lower() for w in config.get("mentions.project_name_boundary_words", []) or []}
+    last = None
+    for i, w in enumerate(words[:-1]):
+        if _word_key(w) in boundary:
+            last = i
+    if last is None:
+        return words, start
+    return words[last + 1:], start + sum(len(w) + 1 for w in words[:last + 1])
+
+
 def _pattern_mentions(text: str, patterns: list[re.Pattern], stopwords: set[str], kind: str,
                       taken: list[tuple[int, int]], reject: list[str] | None = None,
                       followers: list[str] | None = None) -> list[dict]:
     out = []
+    tail_start = _title_tail_start(text) if kind == "project" else None
     for p in patterns:
         for m in p.finditer(text):
             start, end = m.start(1), m.end(1)
             phrase = text[start:end]
             words = phrase.split(" ")
+            if kind == "project":
+                words, start = _cut_at_boundary(words, start)
             while words and words[0] in stopwords:
                 start += len(words[0]) + 1
                 words = words[1:]
@@ -384,7 +434,9 @@ def _pattern_mentions(text: str, patterns: list[re.Pattern], stopwords: set[str]
             if not phrase:
                 continue
             name_words = [w for w in words[:-1] if (w[:1].isupper() or re.fullmatch(r"S\d", w)) and w not in stopwords]
-            if kind == "project" and not name_words:
+            if kind == "project" and (not name_words or not distinctive_project_name(phrase)):
+                continue
+            if kind == "project" and tail_start is not None and start >= tail_start and "\n" not in text[tail_start:start]:
                 continue
             if kind == "organisation" and (len(words) < 2 or not name_words):
                 continue
@@ -496,7 +548,12 @@ def extract_claims(text: str, mentions: list[dict], ctx: dict, alt_sites: list[d
                 claims.append(_claim(subj(("site", "project", "organisation")), "opportunity", predicate, q[s:e],
                                      normal, cert, span))
             elif predicate == "capex":
-                claims.append(_claim(subj(("project", "site", "organisation")), "project", predicate, q[s:e],
+                # Capital spending belongs to a project: the project of the sentence, else the first project of the
+                # document, else the site or the organisation of the sentence (M4: "a plan to sink a new shaft
+                # at the X mine" is about the project that the next sentence names).
+                project = next((m for m in in_sentence if m["type"] == "project"), None) or \
+                    next((m for m in mentions if m["type"] == "project"), None)
+                claims.append(_claim(project or subj(("site", "organisation")), "project", predicate, q[s:e],
                                      normal, cert, span))
         # Numbers.
         for predicate, pattern in r["number_cues"].items():
@@ -539,7 +596,8 @@ def extract_claims(text: str, mentions: list[dict], ctx: dict, alt_sites: list[d
                     claims.append(_claim(subj(("project", "site")), "project", predicate, q[s:e], normal, cert, span))
         # Ownership shares: each percentage belongs to the organisation before it. The asset follows the first one.
         percents = parse_percents(q)
-        if percents and any(re.search(p, q, re.IGNORECASE) for p in r["percent_cues"]["ownership_percent"]):
+        if percents and any(re.search(p, q, re.IGNORECASE) for p in r["percent_cues"]["ownership_percent"]) and \
+                not any(re.search(p, q, re.IGNORECASE) for p in r.get("percent_exclude") or []):
             first_end = sent.start + percents[0][1]
             asset = next((m for m in in_sentence if m["start"] >= first_end and m["type"] in ("site", "organisation",
                                                                                                 "project")), None)
