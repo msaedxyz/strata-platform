@@ -49,6 +49,28 @@ def test_second_run_does_not_duplicate_proposals_or_alerts(edb):
     assert edb.execute("SELECT count(*) AS n FROM event WHERE event_type = 'AlertRaised'").fetchone()["n"] == alerts_before
 
 
+def test_sweep_enriches_sources_without_a_finished_run(edb):
+    from services.enrichment.backends import DeterministicBackend
+    from services.enrichment.pipeline import enrich_pending
+
+    from .enrichment_support import add_source
+
+    waiting = add_source(edb, "Diesel shortage in Kabwe\n\nFilling stations in Kabwe ran out of diesel.")
+    results = enrich_pending(edb, backend=DeterministicBackend())
+    assert waiting["id"] in {r["source_id"] for r in results}
+    assert all(r["status"] in ("in_scope", "out_of_scope", "skipped", "quarantined") for r in results)
+    assert not [r for r in enrich_pending(edb, backend=DeterministicBackend()) if r["source_id"] == waiting["id"]]
+
+
+def test_the_brief_document_is_not_enriched(edb):
+    from services.enrichment.backends import DeterministicBackend
+    from services.enrichment.pipeline import enrich
+
+    brief_source = edb.execute("SELECT id FROM source WHERE metadata->>'kind' = 'monitoring_brief'").fetchone()
+    assert enrich(edb, brief_source["id"], backend=DeterministicBackend())["status"] in ("skipped", "already_enriched")
+    assert enrich(edb, "no-such-source")["status"] == "not_found"
+
+
 def test_watch_site_suspension_gives_pending_status(edb):
     text = ("Mines regulator suspends Mopani's Mufulira mine pending a compliance review\n\n"
             "The Mines Safety Department has suspended underground operations at the Mufulira mine of Mopani Copper "

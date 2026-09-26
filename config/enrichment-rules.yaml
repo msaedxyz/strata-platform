@@ -18,6 +18,9 @@ pipeline:
   summary_max_sentences: 3
   # Documents from the monitoring brief itself are not enriched.
   skip_metadata_kinds: [monitoring_brief]
+  # The worker enriches each source without a finished run on this schedule (a source whose job was not queued).
+  sweep_cron: "*/10 * * * *"
+  sweep_limit: 200
 
 resolver:
   # Step 2: normalised name (and country) equal to a name or alias of an entity.
