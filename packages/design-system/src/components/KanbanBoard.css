@@ -1,0 +1,112 @@
+.sds-kanban {
+  display: flex;
+  gap: var(--space-3);
+  height: 100%;
+  min-height: 0;
+  overflow-x: auto;
+}
+
+.sds-kanban__column {
+  display: flex;
+  flex: 0 0 var(--size-kanban-column);
+  flex-direction: column;
+  min-height: 0;
+  border: var(--border-width-hairline) solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface-1);
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sds-kanban__column--target {
+  border-color: var(--color-state-accent);
+  border-style: dashed;
+}
+
+.sds-kanban__column--terminal {
+  background: var(--color-bg-base);
+}
+
+.sds-kanban__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  height: var(--size-panel-header);
+  padding: 0 var(--space-3);
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sds-kanban__title {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--font-letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.sds-kanban__count {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-2xs);
+}
+
+.sds-kanban__cards {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: var(--size-control-lg);
+  margin: 0;
+  padding: var(--space-2);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.sds-kanban__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: var(--border-width-hairline) solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface-2);
+  cursor: pointer;
+}
+
+.sds-kanban__card[draggable="true"] {
+  cursor: grab;
+}
+
+.sds-kanban__card:hover {
+  border-color: var(--color-border-strong);
+}
+
+.sds-kanban__card--dragging {
+  opacity: 0.5;
+}
+
+.sds-kanban__card--grabbed {
+  border-color: var(--color-state-accent);
+  box-shadow: var(--shadow-md);
+}
+
+.sds-kanban__card-title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.sds-kanban__card-subtitle {
+  margin: 0;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+.sds-kanban__card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}

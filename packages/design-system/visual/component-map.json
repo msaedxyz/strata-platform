@@ -1,0 +1,31 @@
+{
+  "$comment": "Map an Infora component name from audit/components.md to the Strata Storybook title. Names that are not here map to themselves.",
+  "map": {
+    "Application shell": "AppShell",
+    "App shell": "AppShell",
+    "Navigation": "NavRail",
+    "Sidebar": "NavRail",
+    "Top bar": "TopBar",
+    "Search": "SearchInput",
+    "Command input": "CommandPalette",
+    "Command palette": "CommandPalette",
+    "User menu": "UserMenu",
+    "Ticker strip": "TickerStrip",
+    "Ticker": "TickerStrip",
+    "Panel frame": "PanelFrame",
+    "Panel": "PanelFrame",
+    "Panel header": "PanelFrame",
+    "Feed item": "FeedItem",
+    "Data table": "DataTable",
+    "Table": "DataTable",
+    "Icon button": "IconButton",
+    "Text input": "TextInput",
+    "Date picker": "DatePicker",
+    "Empty state": "EmptyState",
+    "Error state": "ErrorState",
+    "Loading state": "LoadingState",
+    "Bar chart": "BarChart",
+    "Map": "MapView",
+    "Kanban": "KanbanBoard"
+  }
+}

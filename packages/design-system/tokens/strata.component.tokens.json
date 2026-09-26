@@ -1,0 +1,50 @@
+{
+  "$description": "Component tokens. Each token refers to a base token in infora.tokens.json where a base token fits. The few raw values are structural sizes that the base groups do not have. The audit replaces or confirms these values.",
+  "$extensions": {
+    "strata": {
+      "provisional": true,
+      "reason": "beta.infora.io blocked by the build network policy on 2026-09-26; confirm against audit/components.md and audit/layout-system.md"
+    }
+  },
+  "border": {
+    "width": {
+      "$type": "dimension",
+      "hairline": { "$value": { "value": 1, "unit": "px" } },
+      "focus": { "$value": "{space.1}" }
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "control": {
+      "sm": { "$value": "{space.10}" },
+      "md": { "$value": "{space.12}" },
+      "lg": { "$value": "{space.16}" }
+    },
+    "icon": {
+      "sm": { "$value": "{space.6}" },
+      "md": { "$value": "{space.8}" }
+    },
+    "nav-rail": { "$value": { "value": 72, "unit": "px" } },
+    "top-bar": { "$value": { "value": 40, "unit": "px" } },
+    "ticker": { "$value": "{space.12}" },
+    "panel-header": { "$value": "{space.12}" },
+    "row": {
+      "compact": { "$value": "{space.12}" },
+      "comfortable": { "$value": "{space.16}" }
+    },
+    "overlay": {
+      "sm": { "$value": { "value": 400, "unit": "px" } },
+      "md": { "$value": { "value": 640, "unit": "px" } },
+      "drawer": { "$value": { "value": 480, "unit": "px" } },
+      "menu": { "$value": { "value": 200, "unit": "px" } },
+      "tooltip": { "$value": { "value": 280, "unit": "px" } },
+      "toast": { "$value": { "value": 360, "unit": "px" } }
+    },
+    "kanban-column": { "$value": { "value": 240, "unit": "px" } },
+    "chart": {
+      "sparkline-width": { "$value": { "value": 80, "unit": "px" } },
+      "sparkline-height": { "$value": "{space.10}" },
+      "stroke": { "$value": { "value": 1.5, "unit": "px" } }
+    }
+  }
+}

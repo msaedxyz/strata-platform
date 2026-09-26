@@ -1,0 +1,111 @@
+.sds-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+}
+
+.sds-overlay--drawer {
+  z-index: var(--z-drawer);
+}
+
+.sds-overlay--inline {
+  position: absolute;
+}
+
+.sds-overlay--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.sds-overlay--top {
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: var(--size-top-bar);
+}
+
+.sds-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg-overlay);
+  animation: sds-fade var(--motion-duration-normal) var(--motion-easing-standard);
+}
+
+.sds-modal,
+.sds-drawer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  border: var(--border-width-hairline) solid var(--color-border-default);
+  background: var(--color-bg-surface-1);
+  box-shadow: var(--shadow-lg);
+  color: var(--color-text-primary);
+}
+
+.sds-modal:focus-visible,
+.sds-drawer:focus-visible {
+  outline: none;
+}
+
+.sds-modal {
+  width: min(var(--size-overlay-md), calc(100% - var(--space-16)));
+  max-height: calc(100% - var(--space-16) * 2);
+  border-radius: var(--radius-lg);
+  animation: sds-rise var(--motion-duration-normal) var(--motion-easing-emphasized);
+}
+
+.sds-modal--sm {
+  width: min(var(--size-overlay-sm), calc(100% - var(--space-16)));
+}
+
+.sds-drawer {
+  width: min(var(--size-overlay-drawer), 100%);
+  height: 100%;
+  animation: sds-slide var(--motion-duration-normal) var(--motion-easing-emphasized);
+}
+
+.sds-drawer--right {
+  margin-left: auto;
+  border-width: 0 0 0 var(--border-width-hairline);
+}
+
+.sds-drawer--left {
+  margin-right: auto;
+  border-width: 0 var(--border-width-hairline) 0 0;
+}
+
+.sds-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--size-control-lg);
+  padding: var(--space-2) var(--space-4);
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sds-dialog__header--bare {
+  display: none;
+}
+
+.sds-dialog__title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.sds-dialog__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--space-4);
+}
+
+.sds-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-top: var(--border-width-hairline) solid var(--color-border-subtle);
+}

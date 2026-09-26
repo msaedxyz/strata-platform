@@ -1,0 +1,85 @@
+.sds-command .sds-dialog__body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.sds-command__field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--size-control-lg);
+  padding: 0 var(--space-4);
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+}
+
+.sds-command__icon {
+  color: var(--color-text-tertiary);
+}
+
+.sds-command__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: var(--font-size-lg);
+}
+
+.sds-command__input:focus-visible {
+  outline: none;
+}
+
+.sds-command__input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.sds-command__list {
+  max-height: var(--size-overlay-sm);
+  margin: 0;
+  padding: var(--space-2) 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.sds-command__list:empty {
+  display: none;
+}
+
+.sds-command__group {
+  padding: var(--space-3) var(--space-4) var(--space-1);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--font-letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.sds-command__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--size-control-md);
+  padding: 0 var(--space-4);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.sds-command__option--active {
+  background: var(--color-bg-surface-3);
+  box-shadow: inset var(--border-width-focus) 0 0 var(--color-state-accent);
+}
+
+.sds-command__label {
+  flex: 1;
+}
+
+.sds-command__message {
+  margin: 0;
+  padding: var(--space-6) var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}

@@ -1,0 +1,88 @@
+.sds-feed-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width-hairline) solid var(--color-border-subtle);
+  border-left: var(--border-width-focus) solid transparent;
+  background: transparent;
+  transition: background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+
+.sds-feed-item[tabindex]:hover,
+.sds-feed-item[data-force-state="hover"] {
+  background: var(--color-bg-surface-2);
+  cursor: pointer;
+}
+
+.sds-feed-item:focus-visible,
+.sds-feed-item[data-force-state="focus"] {
+  outline: var(--border-width-focus) solid var(--color-focus-ring);
+  outline-offset: calc(-1 * var(--border-width-focus));
+}
+
+.sds-feed-item--selected {
+  border-left-color: var(--color-state-accent);
+  background: var(--color-bg-surface-2);
+}
+
+.sds-feed-item--fresh {
+  animation: sds-flash calc(var(--motion-duration-slow) * 4) var(--motion-easing-standard);
+}
+
+@keyframes sds-flash {
+  from {
+    background: var(--color-bg-surface-3);
+  }
+}
+
+.sds-feed-item__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-2xs);
+}
+
+.sds-feed-item__source {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sds-feed-item__title {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--font-line-height-tight);
+}
+
+.sds-feed-item__summary {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: var(--font-line-height-normal);
+}
+
+.sds-feed-item__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sds-feed-item__tag {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-2xs);
+}
+
+.sds-feed-item__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}

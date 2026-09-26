@@ -3,3 +3,7 @@ packages:
   - "packages/*"
   # The audit tool installs on its own with its own lock file.
   - "!tools/audit"
+
+# Packages that may run install scripts.
+onlyBuiltDependencies:
+  - esbuild

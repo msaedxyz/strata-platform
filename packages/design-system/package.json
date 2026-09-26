@@ -1,0 +1,64 @@
+{
+  "name": "@strata/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Infora design tokens and components for Strata. Components use only the token CSS variables.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens": "./src/tokens.ts",
+    "./tokens.css": "./src/tokens.css",
+    "./styles.css": "./src/styles/index.css",
+    "./tokens.json": "./tokens/infora.tokens.json"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "tokens:build": "node scripts/build-tokens.mjs",
+    "tokens:sync": "node scripts/sync-tokens.mjs",
+    "build": "node scripts/build-tokens.mjs && tsc --noEmit -p .",
+    "build:storybook": "node scripts/build-tokens.mjs && storybook build -o storybook-static --quiet",
+    "storybook": "node scripts/build-tokens.mjs && storybook dev -p 6006",
+    "lint": "node scripts/build-tokens.mjs && eslint . && stylelint \"src/**/*.css\"",
+    "typecheck": "node scripts/build-tokens.mjs && tsc --noEmit -p .",
+    "test": "node scripts/build-tokens.mjs && vitest run",
+    "test:visual": "playwright test -c visual/playwright.config.ts"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "lucide-react": "^1.48.0",
+    "maplibre-gl": "^6.11.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@storybook/react": "^10.6.0",
+    "@storybook/react-vite": "^10.6.0",
+    "@strata/eslint-plugin-strata": "workspace:*",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/node": "^24.0.0",
+    "@types/pngjs": "^6.0.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.11.0",
+    "jsdom": "^30.1.1",
+    "pixelmatch": "^7.2.0",
+    "pngjs": "^7.0.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "storybook": "^10.6.0",
+    "stylelint": "^17.15.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}
