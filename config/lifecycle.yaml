@@ -28,4 +28,6 @@ engagement_window:
 procurement_stage: contractor_procurement
 # The forecaster shows no date when fewer projects than this support an interval.
 min_projects_per_interval: 5
-intervals: []   # filled by scripts/compute_lifecycle_intervals.py
+# The window forecaster reads the intervals from this generated file (docs/decisions.md).
+intervals_file: lifecycle-intervals.generated.yaml
+intervals: []   # see intervals_file

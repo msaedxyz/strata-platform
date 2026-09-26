@@ -1,0 +1,433 @@
+# Rules of the deterministic backend and the thresholds of the enrichment pipeline.
+# Source: docs/05-enrichment.md. Rule 11 keeps cue words, thresholds and mappings here, not in code.
+#
+# The deterministic backend runs when ANTHROPIC_API_KEY is not set (docs/decisions.md). It uses the
+# taxonomy, the brief themes and keywords, a gazetteer of entity names and aliases, regular expressions
+# for money, dates, percentages and quantities, and the certainty cue words below. It has no randomness.
+#
+# Each pattern is a Python regular expression. Matching ignores case, except inside (?-i:...).
+
+version: rules-v1          # the prompt_version of each deterministic call
+model_id: deterministic-v1  # the model_id of each deterministic call
+
+# ---------------------------------------------------------------------------
+# Pipeline thresholds
+# ---------------------------------------------------------------------------
+pipeline:
+  max_quote_chars: 500
+  summary_max_sentences: 3
+  # Documents from the monitoring brief itself are not enriched.
+  skip_metadata_kinds: [monitoring_brief]
+
+resolver:
+  # Step 2: normalised name (and country) equal to a name or alias of an entity.
+  exact_match_confidence: 0.97
+  # Step 3 and 4: trigram candidates. A candidate at or above match_similarity with a margin of
+  # match_margin over the next candidate is a match. Below new_similarity no candidate is close.
+  candidate_limit: 5
+  candidate_min_similarity: 0.3
+  match_similarity: 0.72
+  match_margin: 0.12
+  new_similarity: 0.45
+  # Confidence of a new entity that a pattern found (a project name, or an organisation with a legal suffix).
+  new_entity_confidence: 0.9
+  # Entity types that the resolver can create. Persons are not created (personal data, docs/06).
+  creatable_types: [project, organisation]
+  # Mention types that each entity type can match.
+  type_compatibility:
+    organisation: [organisation]
+    site: [site]
+    project: [project]
+
+scoring:
+  # Weight of the optional model judgement feature (the scorer agent). It never sets the tier.
+  judgement_weight: 1.0
+
+# ---------------------------------------------------------------------------
+# Certainty from the language of the source (docs/05, extractor rule 2 and 3)
+# ---------------------------------------------------------------------------
+certainty:
+  speculative:
+    - '\bcould\b'
+    - '\bmight\b'
+    - '(?-i:\bmay\b)'
+    - '\bin talks\b'
+    - '\bis considering\b'
+    - '\bare considering\b'
+    - '\bconsidering (?:a|an|the)\b'
+    - '\brumou?rs?\b'
+    - '\brumou?red\b'
+    - '\bspeculat(?:ion|ed|es|ive)\b'
+    - '\bpossibly\b'
+    - '\bpossible\b'
+    - '\bexploring (?:a|an|the) (?:sale|deal|merger|option)'
+  reported:
+    - '\breportedly\b'
+    - '\bsources? (?:say|said|says|close to)\b'
+    - '\baccording to (?:people|sources|industry sources|two sources|three sources)\b'
+    - '\bpeople familiar with\b'
+    - '\bit is understood\b'
+    - '\bsaid to be\b'
+    - '\ballegedly\b'
+    - '\balleged\b'
+    - '\bunconfirmed\b'
+    - '\breports? (?:say|said|suggest|suggested|indicate)\b'
+    - '\bwas reported\b'
+  # A document with this many rumour cues, or a cue in its title, gives each claim at most "reported".
+  document_rumour_min_cues: 2
+
+# A sentence with one of these cues describes a plan, not an event. Stage and status rules skip it.
+future_cues:
+  - '\bwill\b'
+  - '\bplans? to\b'
+  - '\bplanned\b'
+  - '\bexpects? to\b'
+  - '\bexpected to\b'
+  - '\bintends? to\b'
+  - '\baims? to\b'
+  - '\btargets?\b'
+  - '\bafter the\b'
+  - '\bbefore the\b'
+  - '\bonce\b'
+  - '\bwould\b'
+  - '\bnext year\b'
+
+# Lines that start with one of these labels are a summary or a standfirst. A claim from the body
+# wins over a conflicting claim from such a line (docs/05, adversarial test 4).
+summary_line_labels: ['summary:', 'in brief:', 'standfirst:', 'highlights:', 'editor''s summary:', 'at a glance:']
+
+# ---------------------------------------------------------------------------
+# Classifier
+# ---------------------------------------------------------------------------
+classifier:
+  # A document is in scope when it has a theme hit, or a watched entity together with a sector cue.
+  # An exclusion term in the title makes the document out of scope.
+  min_theme_hits: 1
+
+# Words that the brief keywords do not cover (docs/05: find activities that the source describes in
+# other words). Each list adds patterns to one theme of config/taxonomy/activity-types.yaml.
+theme_synonyms:
+  new_mine_project: ['\bnew (?:copper |gold |nickel |open[- ]pit )?mine\b', '\bproposed (?:\w+ ){0,3}(?:mine|project)\b', '\bgreenfield\b']
+  mine_expansion: ['\bexpansion\b', '\bexpand(?:s|ed|ing)? (?:the |its )?(?:mine|pit|plant|output|capacity)\b', '\bnew (?:process )?plant\b']
+  mine_restart: ['\brestart(?:s|ed|ing)?\b', '\breopen(?:s|ed|ing)?\b', '\bresum(?:e|es|ed|ing) (?:mining|operations|production)\b', '\brecapitali[sz]']
+  exploration_drilling: ['\bexploration\b', '\bdrilling\b', '\bdrill(?:ing)? programme\b', '\bprospecting licen[cs]e\b', '\bresource estimate\b']
+  feasibility_study: ['\bfeasibility\b', '\bPFS\b', '\bDFS\b', '\bBFS\b']
+  eia_filed: ['\benvironmental impact\b', '\bEIS\b', '\bESIA\b', '\bdisclosure meetings?\b']
+  eia_approved: ['\benvironmental (?:approval|authori[sz]ation)\b']
+  mining_licence_granted: ['\bmining licen[cs]e\b', '\bmining rights?\b']
+  financing_close: ['\bfinancial close\b', '\bfinancing\b', '\bloan\b', '\bfinal investment decision\b', '\bdebt (?:package|facility)\b']
+  power_project: ['\bsolar (?:plant|project|farm|power)\b', '\bhydro(?:power|electric)?\b', '\bpower (?:station|plant|project)\b', '\bmegawatts?\b', '\b\d+ ?MW\b']
+  transport_infrastructure_project: ['\broad (?:project|upgrade|works|construction|rehabilitation)\b', '\brail(?:way)? (?:line|project|rehabilitation|revitali[sz]ation)\b', '\bbridge (?:project|construction)\b', '\brevitali[sz]ation\b']
+  industrial_project: ['\bplant (?:project|upgrade|construction|expansion)\b', '\bkiln\b', '\bfertili[sz]er (?:plant|blending)\b', '\bmanufacturing plant\b', '\bindustrial park\b', '\bnew (?:cement )?(?:factory|mill|plant)\b', '\bsmelter\b']
+  agri_expansion: ['\birrigat(?:ion|ed)\b', '\bhectares\b', '\bcentre pivots?\b', '\bfarm (?:expansion|block)\b']
+  tender_notice: ['\binvit(?:es|ed|ing) (?:bids|tenders)\b', '\binvitation to tender\b', '\bbids? (?:for|from)\b', '\btenders? for\b', '\bcall(?:s|ed)? for (?:bids|tenders|proposals)\b']
+  eoi_notice: ['\bexpressions? of interest\b']
+  prequalification_notice: ['\bsupplier portal\b', '\bregister (?:as|on) (?:a |the )?(?:supplier|vendor)', '\bsupplier (?:database|list)\b']
+  contractor_award: ['\baward(?:s|ed)? (?:\w+ ){0,4}contracts?\b', '\bappoint(?:s|ed)? (?:\w+ ){0,5}(?:as )?(?:the )?(?:\w+ )?contractor\b', '\bshortlist(?:ed)?\b', '\bwon (?:a|the) (?:\w+ ){0,3}contract\b']
+  contract_mining: ['\bmining fleet\b', '\bcontract mining fleet\b', '\bpre-strip\b']
+  haulage_contract: ['\bhaulage\b', '\bhaul(?:s|ed|ing)? (?:ore|concentrate|copper|cathode|coal)\b']
+  fleet_purchase: ['\b\d+ (?:new )?(?:haul )?trucks\b', '\bexcavators\b', '\bloaders\b', '\blocomotives\b', '\bwagons\b']
+  fuel_supply_tender: ['\bfuel supplier\b', '\bsupply (?:of )?(?:diesel|fuel)\b']
+  load_shedding: ['\bload[- ]?shedding\b', '\bpower cuts?\b', '\bblackouts?\b', '\belectricity (?:shortage|deficit|supply cuts)\b']
+  fuel_shortage: ['\bran out of (?:diesel|fuel|petrol)\b', '\bshortage of (?:diesel|fuel|petrol)\b', '\b(?:diesel|fuel) (?:is )?in short supply\b', '\bfuel supply (?:crisis|disruption)\b']
+  pipeline_outage: ['\bpipeline (?:was |is )?(?:shut|closed|damaged|out of service|repairs?)\b', '\bpumping (?:stopped|halted|suspended)\b']
+  construction_mobilisation: ['\bmobilis(?:e|es|ed|ing)\b', '\bmobiliz(?:e|es|ed|ing)\b', '\bbroke ground\b', '\bconstruction (?:has )?(?:began|begun|started|starts)\b', '\bstart(?:s|ed)? construction\b']
+  commissioning_rampup: ['\bcommission(?:s|ed)\b', '\bfirst (?:copper|concentrate|cathode|power|gold)\b', '\bramp(?:s|ed|ing)? up\b']
+  production_increase: ['\b(?:raised|increased|higher) (?:production|output)\b', '\boutput (?:rose|increased|grew)\b', '\bproduction (?:rose|increased|grew)\b']
+  harvest_marketing: ['\bharvest\b', '\bFood Reserve Agency\b', '\bcrop marketing\b', '\bmaize (?:purchases|marketing)\b']
+  suspension: ['\bsuspend(?:s|ed)?\b', '\bhalt(?:s|ed)? (?:operations|production|mining)\b']
+  care_and_maintenance: ['\bcare and maintenance\b']
+  closure: ['\bclos(?:e|es|ed|ure) (?:the |its )?(?:mine|plant|smelter|refinery|operation)\b', '\bshut(?:s)? down\b']
+  retrenchment: ['\bretrench(?:ed|es|ment)?\b', '\blaid off\b', '\bjob losses\b']
+  border_delay: ['\btruck queues?\b', '\btrucks (?:waited|queued|queue|are stuck|stuck)\b', '\bqueues? (?:stretch|of trucks)\b', '\bborder (?:delays?|backlog|queues?)\b', '\bcustoms (?:system )?outage\b']
+  erb_price_change: ['\bpump prices?\b', '\bEnergy Regulation Board\b.{0,80}\bprices?\b', '\bfuel prices?\b']
+  drought: ['\bdrought\b', '\bpoor rains?\b', '\bdry spell\b']
+  road_disruption: ['\broad (?:was |is )?closed\b', '\bwashed away\b', '\bbridge (?:collapsed|collapse)\b', '\bderail(?:ed|ment)\b']
+
+# Sector for each theme. The classifier adds these sectors when a theme matches.
+theme_sectors:
+  new_mine_project: [mining]
+  mine_expansion: [mining]
+  mine_restart: [mining]
+  exploration_drilling: [mining]
+  feasibility_study: []
+  eia_filed: []
+  eia_approved: []
+  mining_licence_granted: [mining]
+  financing_close: []
+  power_project: [power]
+  transport_infrastructure_project: [transport]
+  industrial_project: [industry]
+  agri_expansion: [agriculture]
+  tender_notice: []
+  eoi_notice: []
+  prequalification_notice: []
+  contractor_award: []
+  contract_mining: [mining]
+  haulage_contract: [transport]
+  fleet_purchase: []
+  fuel_supply_tender: [fuel_supply]
+  load_shedding: [power]
+  fuel_shortage: [fuel_supply]
+  pipeline_outage: [fuel_supply]
+  construction_mobilisation: []
+  commissioning_rampup: []
+  production_increase: []
+  harvest_marketing: [agriculture]
+  suspension: []
+  care_and_maintenance: []
+  closure: []
+  retrenchment: []
+  border_delay: [transport]
+  erb_price_change: [fuel_supply]
+  drought: [agriculture]
+  road_disruption: [transport]
+
+# Sector for each site class of a matched site.
+site_class_sectors:
+  mine: mining
+  exploration: mining
+  farm: agriculture
+  power: power
+  industrial: industry
+  transport: transport
+  border: transport
+  fuel_supply: fuel_supply
+
+# Words that show a sector when no site or theme gives it.
+sector_cues:
+  mining: ['\bmin(?:e|es|ing)\b', '\bcopper\b', '\bcobalt\b', '\bnickel\b', '\bemeralds?\b', '\buranium\b', '\bore\b', '\bconcentrate\b', '\bsmelter\b']
+  agriculture: ['\bfarm(?:s|ers|ing)?\b', '\bmaize\b', '\bsugar ?cane\b', '\bwheat\b', '\bsoya\b', '\bcrops?\b', '\birrigation\b']
+  power: ['\bpower (?:station|plant|project|supply)\b', '\bsolar\b', '\bhydro', '\belectricity\b', '\bZESCO\b', '\bgenerators?\b', '\bload[- ]?shedding\b']
+  industry: ['\bcement\b', '\bfertili[sz]er\b', '\bfactory\b', '\bmanufactur', '\beconomic zone\b', '\bMFEZ\b', '\blime\b']
+  transport: ['\bhaulage\b', '\btrucks?\b', '\btransporters?\b', '\brail(?:way)?\b', '\broad\b', '\bborder\b', '\bcorridor\b', '\blogistics\b']
+  fuel_supply: ['\bdiesel\b', '\bpetrol\b', '\bfuel\b', '\bpipeline\b', '\bfilling stations?\b', '\boil marketing\b', '\btankers?\b']
+
+# Minimum count of cue matches before a sector cue alone adds a sector.
+sector_cue_min_hits: 2
+
+# Names that point to a geography code. Taxonomy names without "District" and "Province" also match.
+geography_aliases:
+  zm: ['\bZambia(?:n)?\b', '\bLusaka\b']
+  cd: ['\bDRC\b', '\bCongo(?:lese)?\b', '\bKatanga\b', '\bLubumbashi\b']
+  ao: ['\bAngola(?:n)?\b']
+  tz: ['\bTanzania(?:n)?\b', '\bDar es Salaam\b']
+  zw: ['\bZimbabwe(?:an)?\b']
+  bw: ['\bBotswana\b']
+  mw: ['\bMalawi(?:an)?\b']
+  na: ['\bNamibia(?:n)?\b']
+  prov_copperbelt: ['\bCopperbelt\b']
+  prov_north_western: ['\bNorth[- ]Western\b']
+  corr_lobito: ['\bLobito\b']
+  corr_kasumbalesa: ['\bKasumbalesa\b']
+  corr_dar_es_salaam: ['\bDar es Salaam corridor\b', '\bTAZARA\b', '\bTAZAMA\b']
+
+# Deal types of the commercial opportunities that a document mentions.
+deal_type_cues:
+  fuel_supply_contract: ['\bfuel supply\b', '\bdiesel supply\b', '\bsupply of (?:diesel|fuel)\b', '\bfuel supplier\b', '\bbulk fuel\b']
+  haulage_contract: ['\bhaulage\b', '\btrucking contract\b', '\btransport contract\b']
+  contract_mining: ['\bcontract mining\b', '\bmining contractor\b', '\bload and haul\b', '\bdrill and blast\b', '\bwaste stripping\b', '\bunderground mining contractor\b']
+  epc_contract: ['(?-i:\bEPC\b)', '\bengineering, procurement and construction\b']
+  construction_contract: ['\bconstruction contract\b', '\bcivil works\b', '\bshaft sinking contractor\b']
+  tender: ['\btenders?\b', '\binvitation to bid\b', '\binvit(?:es|ed) bids\b', '\brequest for proposals\b', '(?-i:\bRFP\b)', '\bbid notice\b']
+  eoi: ['\bexpressions? of interest\b', '(?-i:\bEOI\b)', '\brequest for information\b']
+  prequalification: ['\bpre-?qualification\b', '\bsupplier registration\b', '\bvendor registration\b', '\bsupplier portal\b', '\bapproved supplier list\b']
+  fleet_purchase: ['\bfleet purchase\b', '\bbuy (?:a )?new fleet\b', '\bequipment order\b', '\bnew locomotives\b', '\bnew wagons\b', '\border(?:ed)? (?:\d+ )?(?:new )?(?:haul trucks|locomotives|wagons)\b']
+  power_supply: ['\bpower purchase agreement\b', '(?-i:\bPPA\b)', '\bstandby generat', '\bpower supply agreement\b']
+  equipment_rental: ['\bequipment (?:hire|rental)\b', '\bplant hire\b', '\bgenerator (?:hire|rental)\b']
+
+# A demand driver sentence with one of these cues does not change demand (for example prices kept unchanged).
+demand_driver_negations: ['\bunchanged\b', '\bkept (?:\w+ ){0,4}prices?\b', '\bmaintain(?:s|ed)? (?:\w+ ){0,4}prices?\b', '\bno change\b']
+
+# ---------------------------------------------------------------------------
+# Procurement and deals
+# ---------------------------------------------------------------------------
+procurement:
+  # An open notice: a tender, EOI or prequalification that suppliers can answer now.
+  open_notice:
+    - '\binvit(?:es|ed|ing) (?:sealed )?(?:bids|tenders|proposals|expressions of interest|applications)\b'
+    - '\binvitation (?:to|for) (?:bid|tender)s?\b'
+    - '\bcalls? for (?:bids|tenders|proposals|expressions of interest)\b'
+    - '\brequest for (?:proposals|information|quotations)\b'
+    - '\bpre-?qualification (?:notice|exercise|window|of suppliers)\b'
+    - '\bis open for (?:bids|registration|applications)\b'
+    - '\bclosing date\b'
+    - '\bdeadline for (?:submissions?|bids|applications)\b'
+    - '\bbids? (?:must|should) (?:reach|be submitted)\b'
+    - '\bsubmissions? (?:must|should) reach\b'
+    - '\bgeneral procurement notice\b'
+    - '\bsupplier registration (?:is )?open\b'
+    - '\bregister (?:on|through) (?:the |its )?(?:\w+ )?supplier portal\b'
+  # A planned procurement: a contract opportunity that the owner will open.
+  planned:
+    - '\bwill (?:issue|invite|launch|open|appoint|tender|procure|select)\b'
+    - '\bexpects? to (?:issue|invite|tender|award|appoint|launch)\b'
+    - '\bplans? to (?:issue|tender|invite|appoint|launch)\b'
+    - '\bthrough a tender\b'
+    - '\bafter a tender process\b'
+  # An award: the procurement is closed for other suppliers.
+  award:
+    - '\baward(?:s|ed)? (?:\w+ ){0,4}contracts?\b'
+    - '\bhas awarded\b'
+    - '\bappointed (?:\w+ ){1,6}as (?:the )?(?:\w+ )?contractor\b'
+    - '\bpreferred bidder\b'
+    - '\bwon (?:a|the) (?:\w+ ){0,3}contract\b'
+  # Categories of the Tier 0 open procurement rule (config/tiers.yaml procurement_categories_in_scope).
+  categories:
+    fuel: ['\bdiesel\b', '\bfuel\b', '\bpetroleum products\b', '\blubricants\b']
+    haulage: ['\bhaulage\b', '\btransport(?:ation)? of (?:ore|concentrate|copper|cathode|goods|fuel)\b', '\btrucking\b']
+    mining_services: ['\bmining services\b', '\bexplosives\b', '\bunderground (?:mining )?services\b']
+    contract_mining: ['\bcontract mining\b', '\bmining contractor\b', '\bload and haul\b', '\bdrill and blast\b']
+    drilling: ['\bdrilling (?:services|contract)\b', '\bdiamond drilling\b']
+    epc: ['(?-i:\bEPC\b)', '\bengineering, procurement and construction\b', '\bshaft sinking\b']
+  # Deal types of an opportunity. The first category that matches the notice sentence wins.
+  category_deal_types:
+    fuel: fuel_supply_contract
+    haulage: haulage_contract
+    contract_mining: contract_mining
+    mining_services: contract_mining
+    drilling: contract_mining
+    epc: epc_contract
+
+# ---------------------------------------------------------------------------
+# Site status (predicate site_status). Values from config/taxonomy/site-classes.yaml.
+# ---------------------------------------------------------------------------
+site_status_cues:
+  suspended: ['\bsuspend(?:s|ed)? (?:\w+ ){0,2}(?:operations|mining|production|work)\b', '\b(?:operations|mining|production) (?:\w+ ){0,2}(?:were|was|have been|has been) suspended\b', '\bstop order\b', '\bhalt(?:s|ed)? (?:all )?(?:operations|production|mining)\b', '\bunder suspension\b']
+  care_and_maintenance: ['\b(?:placed|put|went|go(?:es)?) (?:on|under|into) care and maintenance\b', '\bon care and maintenance\b']
+  closed: ['\bclosed (?:the mine|the plant|permanently)\b', '\bpermanent(?:ly)? clos(?:ure|ed)\b', '\bshut down permanently\b']
+  producing: ['\bresumed (?:full )?(?:production|operations|mining)\b', '\blifted the suspension\b', '\bback in production\b', '\brestarted (?:production|operations)\b']
+  ramping_up: ['\b(?:began|started|begins|starts) (?:full-line |trial )?production\b', '\bfirst (?:ore|production|concentrate|copper)\b']
+  under_construction: ['\bconstruction (?:began|begins|has begun|started|has started|is under way)\b', '\bbroke ground\b']
+
+# ---------------------------------------------------------------------------
+# Lifecycle stages (config/lifecycle.yaml). A pattern names the stage or an event of the stage.
+# The lifecycle agent skips a sentence with a future cue, and chooses the highest stage in the document.
+# ---------------------------------------------------------------------------
+lifecycle_stage_cues:
+  exploration:
+    - '\b(?:began|started|completed|launched|continues|resumed) (?:\w+ ){0,3}(?:exploration|drilling)\b'
+    - '\bexploration licen[cs]e (?:was )?(?:granted|issued)\b'
+    - '\bdrill(?:ing)? results\b'
+  resource_defined:
+    - '\b(?:published|released|announced|reported|declared) (?:a |an |its )?(?:maiden |updated |first )?(?:mineral )?resource estimate\b'
+    - '\bmaiden resource\b'
+    - '(?-i:\b(?:JORC|NI 43-101)\b)'
+  scoping_prefeasibility:
+    - '\b(?:completed|published|released|announced) (?:a |an |the |its )?(?:scoping|pre-?feasibility) study\b'
+    - '\bpre-?feasibility study (?:shows|showed|found|confirmed|was completed|results)\b'
+    - '\bscoping study (?:shows|showed|found|confirmed|was completed|results)\b'
+    - '\bpreliminary economic assessment\b'
+  feasibility:
+    - '\b(?:completed|published|released|announced|finished) (?:a |an |the |its )?(?:definitive |bankable )?(?<!pre-)feasibility study\b'
+    - '\b(?:definitive|bankable) feasibility study (?:shows|showed|found|confirmed|was completed|results)\b'
+    - '(?<!pre-)(?<!pre)\bfeasibility study (?:shows|showed|found|confirmed|was completed|results)\b'
+    - '\bstarted (?:a |an |the |its )?(?:definitive |bankable )?(?<!pre-)feasibility study\b'
+  eia_filed:
+    - '\b(?:submitted|filed|lodged) (?:an? |the |its )?(?:\w+ ){0,2}(?:Environmental Impact (?:Statement|Assessment)|EIS|ESIA|environmental project brief|Environmental and Social Impact Assessment)\b'
+    - '\bpublic (?:disclosure|consultation|hearing) meetings? (?:will take place|took place|were held|was held|are scheduled)\b'
+    - '\b(?:Environmental Impact Statement|EIS|ESIA) (?:is|was) (?:open|available) for (?:public )?(?:review|comment)\b'
+  environmental_approval:
+    - '\b(?:granted|issued|received|obtained|gave|approved) (?:an? |the |its )?(?:environmental (?:approval|authori[sz]ation|licen[cs]e)|decision letter)\b'
+    - '\b(?:ZEMA|the agency) (?:has )?approved (?:the |its )?(?:\w+ ){0,3}(?:EIS|ESIA|Environmental Impact Statement|project)\b'
+    - '\benvironmental (?:approval|authori[sz]ation) (?:was|has been) (?:granted|issued)\b'
+  licence_granted:
+    - '\b(?:granted|issued|awarded|received|obtained) (?:a |an |the |its )?(?:large-scale |small-scale )?mining licen[cs]e\b'
+    - '\bmining licen[cs]e (?:was |has been )?(?:granted|issued)\b'
+    - '\bsigned (?:a |an |the )?concession agreement\b'
+  financing_fid:
+    - '\breach(?:ed|es)? financial close\b'
+    - '\bfinancial close (?:was|has been) reached\b'
+    - '\b(?:took|made|approved|announced) (?:a |an |the )?final investment decision\b'
+    - '(?-i:\breached FID\b)'
+    - '\b(?:approved|signed|secured) (?:a |an |the )?(?:US\$ ?[\d.,]+ ?(?:million|billion|bn|m) )?(?:loan|debt facility|financing package|project finance)\b'
+    - '\bboard (?:has )?approved (?:the )?(?:\w+ ){0,3}(?:investment|construction|development|budget)\b'
+  contractor_procurement:
+    - '\b(?:named|announced) (?:\w+ ){0,3}(?:companies|firms|bidders) on (?:the|a) shortlist\b'
+    - '\bshortlist(?:ed)? (?:\w+ ){0,4}(?:bidders|contractors|companies)\b'
+    - '\b(?:awarded|awards|signed) (?:the |a |an |two |three )?(?:\w+ ){0,4}(?:EPC|contract mining|mining|haulage|construction|shaft sinking) contracts?\b'
+    - '\bappointed (?:\w+ ){1,6}as (?:the )?(?:EPC|mining|haulage|construction) contractor\b'
+    - '\binvit(?:es|ed) (?:bids|tenders) for (?:the )?(?:\w+ ){0,3}(?:EPC|construction|contract mining|haulage)\b'
+    - '\bhas awarded (?:\w+ ){0,3}contracts? for\b'
+  construction_mobilisation:
+    - '\b(?:started|began|has started|has begun|begins) to mobilis'
+    - '\bmobilis(?:ed|ing) (?:a |the |its )?(?:\w+ ){0,3}(?:fleet|contractor|equipment|workforce)\b'
+    - '\bconstruction (?:began|has begun|started|has started|is under way)\b'
+    - '\b(?:started|began|begins) construction\b'
+    - '\bbroke ground\b'
+    - '\bgroundbreaking (?:ceremony )?(?:took place|was held)\b'
+  commissioning_rampup:
+    - '\b(?:began|started|begins|starts) (?:full-line |trial )?production\b'
+    - '\bcommissioned (?:the |its )?(?:\w+ ){0,3}(?:plant|concentrator|smelter|station|line|units?)\b'
+    - '\b(?:delivered|produced|poured) (?:its )?first (?:ore|concentrate|copper|cathode|gold|power)\b'
+    - '\bfirst (?:ore|concentrate|copper|power) (?:was|has been) (?:delivered|produced)\b'
+  steady_operation:
+    - '\b(?:declared|reached|achieved) commercial production\b'
+    - '\breached (?:its )?(?:design|nameplate) capacity\b'
+  care_maintenance_suspension_closure:
+    - '\b(?:placed|put) (?:on|under|into) care and maintenance\b'
+    - '\bsuspended (?:\w+ ){0,2}operations\b'
+    - '\bclosed (?:the mine|permanently)\b'
+  restart_plan:
+    - '\b(?:published|announced|approved|outlined|presented) (?:a |an |the |its )?(?:\w+ ){0,3}(?:restart|revival|recovery) plan\b'
+    - '\b(?:published|outlined|announced) (?:a |an |the )?(?:\w+ ){0,2}plan for the\b'
+  recapitalisation:
+    - '\b(?:completed|agreed|announced|signed) (?:a |an |the )?(?:\w+ ){0,3}recapitali[sz]ation\b'
+    - '\brecapitali[sz]ation (?:deal|agreement|package) (?:was|has been) (?:signed|completed|agreed)\b'
+  restart:
+    - '\b(?:restarted|resumed) (?:\w+ ){0,2}(?:production|operations|mining)\b'
+    - '\breopened (?:the |its )?mine\b'
+
+# Restart path codes. When one of these matches, the agent chooses among the restart path stages.
+restart_stage_codes: [restart_plan, recapitalisation, restart]
+
+# ---------------------------------------------------------------------------
+# Extractor: projects, organisations and claims
+# ---------------------------------------------------------------------------
+mentions:
+  # A project name: capitalised words and optional commodity words, then "project" or "expansion".
+  project_patterns:
+    - '(?-i:\b((?:[A-Z][A-Za-z0-9''-]+|S\d)(?:[ -](?:[A-Z][A-Za-z0-9''-]+|S\d|of|and))*(?: (?:copper|gold|nickel|cobalt|coal|uranium|emerald|solar|hydro|hydropower|power|rail|road|pipeline|irrigation|cement|mine|mining|deep|lime|smelter))* (?:[Pp]roject|[Ee]xpansion|[Rr]estart)))\b'
+  # Leading words that are not part of a project name.
+  project_stopwords: [The, This, That, A, An, Its, Our, Each, Under, For, New, Phase, With, After, Before, In, On, At, By, From, To]
+  # An organisation with a legal suffix that the gazetteer does not know.
+  organisation_patterns:
+    - '(?-i:\b((?:[A-Z][A-Za-z&''-]+ ){1,5}(?:Plc|PLC|Limited|Ltd|Corporation|Corp|Group|Holdings|Company|Mining|Minerals|Metals|Resources|Energy|Engineering|Contractors|Construction)))\b'
+  organisation_stopwords: [The, A, An, Its, Our, This, That, Under, For, And, Local, Mines, Zambian, Chinese, Two, Three]
+  # Words that end a phrase that is not an organisation, although it has a capital letter.
+  organisation_reject_heads: [Mining Review, Mining Wire, Mining News, Mining Weekly]
+  # Gazetteer surfaces of one word are matched with case. Longer surfaces ignore case.
+  min_case_insensitive_words: 2
+  # A site name also matches by its first word ("Kansanshi" for "Kansanshi mine"), when the word is not
+  # a geography name, not in this stop list and belongs to one site only.
+  derive_site_short_names: true
+  short_name_min_chars: 5
+  short_name_stoplist: [Sentinel, Enterprise, Phoenix, Trident, Zambia, Zambian, Mopani, Chilanga, Lusaka, Tanzania, Ndola, Kafue, Kariba, Batoka, Chambishi, Lumwana, Tunduma, Mwinilunga, Nkana, Broken, Katima, Wenela, Mkushi, Mpongwe, Chisamba, Masaiti, Lobito, Angola, Dangote, Amatheon, Zambeef, Mwami, Mchinji, Kasenseli, Kazungula, Jimbe, Kabwe]
+
+claims:
+  # The owner in "X, the developer of the Y project" or "owned by X" is at most this many characters from the cue.
+  owner_max_gap_chars: 12
+  money_cues:
+    capex: ['\binvest(?:s|ed|ing|ment)?\b', '\bcost(?:s)?\b', '\bcapital (?:expenditure|cost|spending)\b', '(?-i:\bcapex\b)', '\bbudget\b', '\bspend\b', '\bproject worth\b']
+    contract_value: ['\bcontracts? (?:\w+ ){0,4}(?:worth|valued at|value of)\b', '\bworth\b.{0,40}\bcontract\b', '\bcontract value\b', '\btender (?:\w+ ){0,3}(?:worth|valued at)\b']
+    fuel_price: ['\bper litre\b', '\ba litre\b', '/litre\b']
+  number_cues:
+    fleet_trucks: '(?P<value>\d[\d,]*|\b(?:two|three|four|five|six|seven|eight|nine|ten|twelve|fifteen|twenty|thirty|forty|fifty|sixty)\b) (?:new )?(?:large )?(?:haul trucks|dump trucks|mining trucks)\b'
+    employees: '(?P<value>\d[\d,]*) (?:workers|employees|jobs|staff)\b'
+    generation_mw: '(?P<value>\d[\d,.]*) ?(?:MW|megawatts?)\b'
+  quantity_cues:
+    production_target: '(?P<value>\d[\d,.]*(?: (?:million|thousand))? (?:tonnes|t|tons)(?: of \w+)?) (?:a|per|each) year\b'
+  date_cues:
+    tender_deadline: ['\bclosing date\b', '\bdeadline\b', '\bmust reach\b', '\bsubmitted by\b', '\bclose(?:s)? on\b', '\bno later than\b']
+    expected_start: ['\bexpects? (?:the )?(?:\w+ ){0,3}(?:first production|to start|to begin|production|commissioning|to commission)\b', '\bfirst production (?:is )?(?:targeted|expected|planned)\b', '\btargets? first\b']
+  percent_cues:
+    ownership_percent: ['\b(?:owns|holds|has|acquired?|bought|sold) (?:a |an )?\d', '\bstake\b', '\binterest in\b', '\bshareholding\b']
+  licence_number: '(?:licen[cs]e|permit) (?:No\.?|number) (?P<value>[A-Z0-9][A-Z0-9/-]{2,})'
+  # Relationship claims. subject and object are the organisation or project mentions around the verb.
+  operates: ['\boperates\b', '\boperator of\b', '\bwhich runs\b', '\boperated by\b']
+  buyer_roles:
+    buyer_role_owner: ['\bowner of\b', '\bowners of\b', '\bdeveloper of\b', '\bowned by\b', '\bdeveloped by\b', '\bowns the\b']
+    buyer_role_epc_contractor: ['\bappointed (?:\w+ ){1,6}as (?:the )?EPC contractor\b', '\bEPC contract (?:\w+ ){0,3}(?:to|with)\b', '\bawarded (?:\w+ ){0,3}the EPC contract\b']
+    buyer_role_mining_contractor: ['\bappointed (?:\w+ ){1,6}as (?:the )?(?:underground )?mining contractor\b', '\bcontract mining (?:contract )?(?:to|with)\b', '\bawarded (?:\w+ ){0,3}(?:the )?contract mining (?:contract|work)\b']
+    buyer_role_haulage_contractor: ['\bappointed (?:\w+ ){1,6}as (?:the )?haulage contractor\b', '\bhaulage contract (?:\w+ ){0,3}(?:to|with)\b', '\bawarded (?:\w+ ){0,3}(?:the )?haulage contract\b']
+    buyer_role_fuel_supplier: ['\bappointed (?:\w+ ){1,6}as (?:the )?fuel supplier\b', '\bfuel supply contract (?:\w+ ){0,3}(?:to|with)\b', '\bawarded (?:\w+ ){0,3}(?:the )?(?:diesel|fuel) supply contract\b']

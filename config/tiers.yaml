@@ -19,7 +19,7 @@ tiers:
         all: {open_procurement_notice: true, procurement_category_in_scope: true}
       - id: t0_daily_site_status_change
         description: "A status change at a site on the daily watch list"
-        all: {site_status_change: true, watch_daily: true}
+        all: {site_status_change: true, status_change_at_daily_site: true}
       - id: t0_market_demand_driver
         description: "A market demand driver, such as a fuel shortage, pipeline outage, border closure or ERB change"
         all: {market_demand_driver: true}
@@ -44,3 +44,6 @@ tiers:
 # Features that the market_demand_driver flag accepts.
 demand_driver_themes: [fuel_shortage, pipeline_outage, border_closure, border_delay, erb_price_change, load_shedding]
 procurement_categories_in_scope: [fuel, haulage, mining_services, contract_mining, drilling, epc]
+# Boolean features that the scorer derives from a numeric feature and a threshold.
+feature_thresholds:
+  forecast_shift_months_nearer_gte_6: {feature: forecast_shift_months_nearer, min: 6}
