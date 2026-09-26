@@ -163,3 +163,5 @@ docs/07 asks to record the Infora components that each module uses. The list use
 | 2026-09-26 | The perf tests run on a production build with the test-only auth (dist-e2e/) and `vite preview`, after the other tests | The dev server and the React development build are slower than the product. Other tests must not compete for the CPU | 07 |
 | 2026-09-26 | The e2e fixture uses the brief sites and organisations with fictional articles, fictional publishers and the domain fixtures.strata.test | Realistic data with no text attributed to a real outlet | 09 |
 | 2026-09-26 | The M4 endpoints are typed by hand in apps/web/src/api/writes.ts | The generated client has no M4 endpoints yet. The lead regenerates it after M4 | 07 |
+| 2026-09-26 | The 20-event minimum of the backtest is a third reported condition. The backtest passes only when all three conditions pass | 09 needs at least 20 events. The dataset has 7 because the search budget ended | 09 |
+| 2026-09-26 | The backtest report shows the sensitivity to the matching rules | Most hits come from title words or the operator company, not from entity links | 09 |

@@ -91,3 +91,8 @@ Claude Code does not wait for answers. It uses each default below and continues.
 | 115 | Owner of a next action | The form gives the user id of the current user. The user can change it |
 | 116 | Selection | A click on an opportunity in the Kanban board, the priority list or the next actions selects it for the relationship panel and the timeline. A click on a project or a site selects it for the timeline. The selection is not stored |
 | 117 | Map start view | Zambia and its neighbours (21.5 W to 34 E, 18.5 S to 8 S). Zambia is filled. The countries are Zambia, DR Congo, Angola, Tanzania, Zimbabwe, Botswana, Malawi, Namibia and Mozambique |
+| 120 | Backtest replay | One source per distinct URL. Type snapshot, licence gn_link_only, read_at_source true. published_at and fetched_at are the trace date at 00:00 UTC |
+| 121 | Backtest signal | A SignalScored event with tier 0, 1 or 2, dated strictly before the procurement event |
+| 122 | Backtest match order | Project, site, title words, company. Only the site operator counts at company level |
+| 123 | Backtest median | Over detected events only, with 30.44 days for each month |
+| 124 | Backtest window | 2023-10-01 to 2026-09-26, not strict. EV-007 stays in with a flag |
