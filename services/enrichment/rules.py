@@ -721,11 +721,10 @@ def summarise(text: str, ctx: dict) -> dict:
             chosen.append(s)
         if len(chosen) >= limit:
             break
-    for s in sents:
-        if len(chosen) >= limit:
-            break
-        if s.quote not in [c.quote for c in chosen]:
-            chosen.append(s)
+    if not chosen and sents:
+        # No evidence sentence: the first sentence (the title) is the summary. The summary never takes other
+        # sentences, so that text without evidence (for example an injected instruction) does not reach it.
+        chosen.append(sents[0])
     chosen.sort(key=lambda s: s.start)
     out = []
     for s in chosen[:limit]:
