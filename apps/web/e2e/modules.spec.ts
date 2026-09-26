@@ -199,7 +199,7 @@ test.describe("criterion 8: modules with fixture data", () => {
     await expect(rel.getByLabel("Opportunity")).toHaveValue(first.id);
   });
 
-  test("approval queue: proposals with evidence; the analyst sees no decision buttons", async ({ page, mock }) => {
+  test("approval queue: proposals with evidence, and the analyst sees no decision buttons", async ({ page, mock }) => {
     await openWorkspace(page, "review");
     const m = await moduleReady(page, "approval-queue");
     await expect(m.locator("[data-proposal-id]")).toHaveCount(mock.data.proposals.length);
@@ -212,7 +212,7 @@ test.describe("criterion 8: modules with fixture data", () => {
 
   test.describe("approval queue as an approver", () => {
     test.use({ role: "approver" });
-    test("approve, reject with a required reason, edit and approve; no Approve on an own proposal", async ({ page, api }) => {
+    test("approve, reject with a required reason, edit and approve, and no Approve on an own proposal", async ({ page, api }) => {
       await openWorkspace(page, "review");
       const m = await moduleReady(page, "approval-queue");
       // prop-005 was created by this approver (docs/06: a user never approves an own proposal).

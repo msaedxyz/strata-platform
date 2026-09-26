@@ -18,7 +18,7 @@ async function timeToVisible(page: Page, events: LiveOut[], target: Locator): Pr
 const live = (type: string, streamType: string, streamId: string): LiveOut => ({ type, data: { id: `evt-${type}-${Date.now()}`, stream_type: streamType, stream_id: streamId, event_type: type } });
 
 test.describe("criterion 5 (mocked API): live updates in 2 seconds or less", () => {
-  test("a new signal appears in the signal feed and the ticker; a new Tier 0 alert appears as Unconfirmed; a new demand driver appears", async ({ page, mock }) => {
+  test("a new signal appears in the signal feed and the ticker, a new Tier 0 alert appears as Unconfirmed, and a new demand driver appears", async ({ page, mock }) => {
     await openWorkspace(page, "monitoring");
     await moduleReady(page, "signal-feed");
     await moduleReady(page, "tier0-alerts");
@@ -47,7 +47,7 @@ test.describe("criterion 5 (mocked API): live updates in 2 seconds or less", () 
     for (const [name, ms] of [["signal", t1], ["alert", t2], ["driver", t3]] as const) expect(ms, `${name}: ${ms} ms`).toBeLessThanOrEqual(LIMIT_MS);
   });
 
-  test("a stage move by another analyst shows Pending approval on the Kanban card; a site status proposal shows the pending status", async ({ page, mock }) => {
+  test("a stage move by another analyst shows Pending approval on the Kanban card, and a site status proposal shows the pending status", async ({ page, mock }) => {
     await openWorkspace(page, "relationships");
     await moduleReady(page, "kanban");
     mock.userId = "analyst-2";

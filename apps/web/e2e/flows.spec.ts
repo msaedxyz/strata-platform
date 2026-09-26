@@ -6,7 +6,7 @@ import { addPanel, emitLive, expect, moduleReady, openWorkspace, test } from "./
 const toast = (page: Page, text: string) => page.locator(".sds-toast-region").getByText(text, { exact: true });
 const yesterdayUtc = () => new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
 
-test("scenario 4 (UI part): a Kanban drag shows Pending approval; after approval the card moves, the timeline shows the event with evidence, and as of the previous day shows the old stage", async ({ page, mock, api }) => {
+test("scenario 4 (UI part): a Kanban drag shows Pending approval, after approval the card moves, the timeline shows the event with evidence, and as of the previous day shows the old stage", async ({ page, mock, api }) => {
   await openWorkspace(page, "relationships");
   const k = await moduleReady(page, "kanban");
   const card = k.locator('[data-card-id="deal-0014"]');
@@ -69,7 +69,7 @@ test("the as of control re-queries the timeline with as_of and shows the state a
   await expect(t.getByText("No events up to 01 Jan 2020")).toBeVisible();
 });
 
-test("scenario 17 (UI part): an analyst logs a touchpoint and sets a next action; the relationship panel and the next actions show both", async ({ page, api }) => {
+test("scenario 17 (UI part): an analyst logs a touchpoint and sets a next action, and the relationship panel and the next actions show both", async ({ page, api }) => {
   await openWorkspace(page, "relationships");
   const rel = await moduleReady(page, "relationship-panel");
   await rel.getByLabel("Opportunity").selectOption("deal-0001");

@@ -58,8 +58,9 @@ Each component has a Storybook story for each state. Run `pnpm storybook` to see
 | TickerStrip | default, paused, fast, empty, loading, error |
 | PanelFrame and PanelHeader | default, focus, collapsed, maximised, loading, empty, error, interactive |
 | FeedItem | default, hover, focus, selected, fresh, unconfirmed, reported, with actions, loading |
-| DataTable | default, comfortable, sorted, filtered, selected, loading, empty, error |
-| Badge and StatusBadge | default, tones, unconfirmed, reported, confirmed, dismissed, pending approval, all statuses |
+| DataTable | default, comfortable, sorted, filtered, selected, loading, empty, error, virtualized (M6) |
+| VirtualList (M6, needs audit confirmation) | default, loading more, loading, empty, error |
+| Badge and StatusBadge | default, tones, unconfirmed, reported, confirmed, dismissed, false positive (M6), pending approval, all statuses |
 | Toast | default, positive, warning, error, with provider |
 | Modal | default, small, interactive |
 | Drawer | default, left, loading |
@@ -67,6 +68,7 @@ Each component has a Storybook story for each state. Run `pnpm storybook` to see
 | Button | default, primary, ghost, danger, with icon, hover, focus, active, disabled, loading |
 | IconButton | default, small, pressed, hover, focus, active, disabled, loading |
 | TextInput | default, filled, with hint, hover, focus, disabled, loading, error |
+| TextArea (M6, needs audit confirmation) | default, filled, code, hover, focus, disabled, loading, error |
 | Select | default, placeholder, hover, focus, disabled, error |
 | Checkbox | default, checked, indeterminate, focus, disabled, disabled checked, error |
 | DatePicker | default, empty, with range, hover, focus, disabled, error |
@@ -77,7 +79,7 @@ Each component has a Storybook story for each state. Run `pnpm storybook` to see
 | Sparkline | default, positive, negative, flat, empty |
 | BarChart | default, percent, loading, empty, error |
 | TimelineAxis | default, selectable, twelve months, loading, empty, error |
-| MapView | default, selected, loading, error |
+| MapView | default, selected, loading, error, with boundaries (M6) |
 | KanbanBoard | default, interactive, read only, empty, loading, error |
 | ProvenanceControl | default, single source, open, loading, empty, error |
 | Fact | default, multiple sources, open |
@@ -91,6 +93,18 @@ Each component has a Storybook story for each state. Run `pnpm storybook` to see
 5. Each control has a visible focus ring (token color.focus.ring).
 6. Motion obeys the reduced motion setting.
 7. MapView loads MapLibre only when a map shows. Without a style URL, it uses an empty style and loads no tiles.
+
+### Additions in M6
+
+The Strata modules (M6) needed these changes. Each one needs confirmation against the Infora audit. reports/M6-frontend.md gives the reasons.
+
+1. DataTable has the option `virtualize`. The table renders only the rows in view. Spacer rows keep the table semantics. The option is off by default.
+2. VirtualList is a new component. It renders only the items of a long list that are in view, for example 10 000 signals. It has no visual style of its own. Each item keeps its own component, for example FeedItem.
+3. TextArea is a new form component for text with more than one line: a reason, a note, a YAML brief or JSON events. It uses the TextInput styles.
+4. StatusBadge has the status false_positive (docs/06 alert outcome).
+5. MapView has the options `boundaries`, `highlightId` and `bounds`. The map draws country outlines from a GeoJSON collection with the border and surface tokens, and loads no tiles.
+6. A click on a control in a DataTable cell (for example a provenance control) does not also select the row.
+7. The MapView canvas keeps its absolute position after the MapLibre stylesheet loads.
 
 ## Panel framework
 
