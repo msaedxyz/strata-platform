@@ -3,10 +3,16 @@ provider: anthropic
 api_key_env: ANTHROPIC_API_KEY
 # When the key is not set, agents use the deterministic backend. See docs/decisions.md.
 fallback_backend: deterministic
+# Sampling rules per model. docs/05 guardrail 7 asks for the lowest randomness that the model allows.
+# Claude Sonnet 5 rejects temperature and top_p (HTTP 400). It is deterministic enough with thinking disabled.
+# Claude Haiku 4.5 accepts temperature 0.
+model_capabilities:
+  claude-sonnet-5: {temperature: false, thinking_disable: true}
+  claude-haiku-4-5-20251001: {temperature: true, thinking_disable: true}
 defaults:
   model: claude-sonnet-5
   temperature: 0
-  max_tokens: 4096
+  max_tokens: 8000
   timeout_seconds: 60
   retries_on_schema_failure: 1
 agents:
